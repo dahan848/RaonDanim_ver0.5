@@ -5,8 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.raon.raondanim.service.AccountsService;
+
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,8 +32,9 @@ public class AccountsController {
 	}
 	
 	@RequestMapping(value ="/signup")
-	public String signup() {
-		return "/home";
+	public String signup(@RequestParam Map<String, Object> param) { //가입요청
+		System.out.println(param);
+		return "redirect:/home";
 	}
 	
 	@RequestMapping("/logout")
