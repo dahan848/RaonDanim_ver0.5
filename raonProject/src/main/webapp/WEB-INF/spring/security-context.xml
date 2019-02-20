@@ -22,9 +22,15 @@
 			password-parameter="user_pw" 
 			login-page="/accounts/loginForm"
 			login-processing-url="/accounts/login"
-			default-target-url="/home"
+			authentication-success-handler-ref="loginSuccessHandler"
 			authentication-failure-handler-ref="loginFailureHandler" />
 	</security:http>
+	
+	<!-- 시큐리티 로그인 성공 핸들러 -->
+	<bean id="loginSuccessHandler" class="com.raon.raondanim.handler.LoginSuccessHandler">
+	        <property name="loginidname" value="user_id"/>
+        	<property name="defaultUrl" value="/"/>
+	</bean>
 	
 	<!-- 시큐리티 로그인 실패 핸들러 -->
 	<bean id="loginFailureHandler"

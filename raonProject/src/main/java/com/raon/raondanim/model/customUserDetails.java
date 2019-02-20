@@ -52,7 +52,8 @@ public class customUserDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return getUSER_LNM() +" "+getUSER_FNM();
+		this.NAME = getUSER_LNM() +" "+getUSER_FNM();
+		return this.NAME;
 	}
 
 	@Override
