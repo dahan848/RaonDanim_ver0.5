@@ -13,12 +13,12 @@
         	<li><a href="${contextPath}/introduction">라온 다님</a></li>
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
-	         <li><a href="${contextPath}/statics/profile/update1">나의 정보</a></li>
+	         <li><a href="#">나의 정보</a></li>
         </sec:authorize>
-	         <li><a href="#">회원 검색</a></li>
-	         <li><a href="#">여행</a></li>
-	         <li><a href="#">숙박</a></li>
-	         <li><a href="#">후기</a></li>
+	         <li><a href="${contextPath}/search/test">회원 검색</a></li>
+	         <li><a href="${contextPath}/trip/test">여행</a></li>
+	         <li><a href="${contextPath}/motel/test">숙박</a></li>
+	         <li><a href="${contextPath}/review/test">후기</a></li>
         </ul>
     </div>
 </div>
