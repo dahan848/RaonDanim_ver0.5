@@ -20,7 +20,7 @@
 		<security:form-login 
 			username-parameter="user_id"
 			password-parameter="user_pw" 
-			login-page="/statics/loginForm"
+			login-page="/accounts/loginForm"
 			login-processing-url="/accounts/login"
 			default-target-url="/home"
 			authentication-failure-handler-ref="loginFailureHandler" />

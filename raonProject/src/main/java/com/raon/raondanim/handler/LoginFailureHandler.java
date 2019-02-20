@@ -35,6 +35,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 		//로그인 실패시 사용자가 입력한 아이디와 비밀번호 변수에 참조 
 		String userId = request.getParameter(Loginidname);
 		String userPw = request.getParameter(Loginpwdname);
+		
 		//로그인 실패 정보 담기 
 		request.setAttribute(Loginidname, userId);
 		request.setAttribute(Loginpwdname, userPw);
@@ -42,9 +43,11 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 		String errormsg = null;
 		//조건문으로 에러메시지 구분
         if(exception instanceof BadCredentialsException) { //비밀번호가 일치하지 않음
+        	System.out.println("비번 틀림 : " + userPw);
         	loginFailureCount(userId); //비밀번호가 틀리면 사용자가 입력한 아이디를 해당 메서드로 넘겨줌 
             errormsg = MessageUtils.getMessage("error.BadCredentials");
         } else if(exception instanceof InternalAuthenticationServiceException) { //아이디 존재 하지 않음.
+        	System.out.println("아이디");
             errormsg = MessageUtils.getMessage("error.BadCredentials");
         } else if(exception instanceof DisabledException) { //비활성화 계정
             errormsg = MessageUtils.getMessage("error.Disaled");
@@ -53,6 +56,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         }
 		//에러 메시지 담기
 		request.setAttribute("errormsgname", errormsg);
+		System.out.println(errormsg);
 		//보내기
 		request.getRequestDispatcher(defaultFailureUrl).forward(request, response);
 	}

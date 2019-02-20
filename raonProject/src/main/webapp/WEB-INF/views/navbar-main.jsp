@@ -22,13 +22,13 @@
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="org.springframework.security.core.Authentication" %>
 <%
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    Object principal = auth.getPrincipal();
+//     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//     Object principal = auth.getPrincipal();
  
-    String name = "";
-    if(principal != null) {
-        name = auth.getName();
-    }
+//     String name = "";
+//     if(principal != null) {
+//         name = auth.getName();
+//     }
 %>
 <!-- navbar-main -->
 <header>
@@ -45,7 +45,7 @@
 	                       <img src="${contextPath}/img/profile_2.jpg">
 	                   </a>
 	                   <a href="#">
-	                 		  <%=name%>
+	                 		 	더미
 	                       <strong class="text-potluck">(숙박포인트)</strong>
 	                   </a>
 	             </div>

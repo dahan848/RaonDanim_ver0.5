@@ -5,22 +5,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.raon.raondanim.dao.UserAuthDAO">
 	<select id="getUserById" resultType="customUserDetails">
 		SELECT 	*
-		FROM 	test_user2
-		WHERE 	EMAIL = #{user_id}
+		FROM 	user_tb001
+		WHERE 	USER_ID = #{user_id}
 	</select>
 	<update id="updateFailureCount">
-		UPDATE test_user2
-		   SET failure_cnt = failure_cnt + 1
-		 WHERE EMAIL = #{user_id}
+		UPDATE user_tb001
+		   SET USER_FAILURE_CNT = USER_FAILURE_CNT + 1
+		 WHERE USER_ID = #{user_id}
 	</update>
-	<select id="checkFailureCount" resultType="int">
-		SELECT 	failure_cnt
-		FROM 	test_user2
-		WHERE 	EMAIL = #{user_id}
+	<select id="checkFailureCount" resultType="int" parameterType="string">
+		SELECT 	USER_FAILURE_CNT
+		FROM 	user_tb001
+		WHERE 	USER_ID = #{user_id}
 	</select>
 	<update id="updateDisabled">
-		UPDATE test_user2
+		UPDATE user_tb001
 		   SET enabled = 0
-		 WHERE EMAIL = #{user_id}
+		 WHERE USER_ID = #{user_id}
 	</update>
 </mapper>
