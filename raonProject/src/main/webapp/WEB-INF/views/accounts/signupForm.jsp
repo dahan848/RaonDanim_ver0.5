@@ -18,7 +18,7 @@
             <div class="form-block">
                 <img src="../img/logo-raon.png" alt="">
                 <!-- 가입자 폼 -->
-                <form action="join" method="post">
+                <form action="signup" method="post">
                  	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                     <div class="form-group">
                     	<label class="sr-only control-label" for="id_email">이메일</label>
