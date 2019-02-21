@@ -22,13 +22,13 @@
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="org.springframework.security.core.Authentication" %>
 <%
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    Object principal = auth.getPrincipal();
+//     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//     Object principal = auth.getPrincipal();
  
-    String name = "";
-    if(principal != null) {
-        name = auth.getName();
-    }
+//     String name = "";
+//     if(principal != null) {
+//         name = auth.getName();
+//     }
 %>
 <!-- navbar-main -->
 <header>
@@ -40,13 +40,23 @@
         		</a>
 		        <!-- 로그인 상태에서 출력 되는 회원 정보  -->
 		        <sec:authorize access="isAuthenticated()">
+		        <sec:authentication property="principal.user_profile_pic" var="pic"/>
 	        	<div class="profile-summary">
-	                   <a href="#">
-	                       <img src="${contextPath}/img/profile_2.jpg">
-	                 		 	<%=name%>
+	            	<a href="#">
+	              		<c:choose>
+	              			<c:when test="${pic eq 'n'}">
+	              				<img src="${contextPath}/img/home_profile_2.jpg">
+	              			</c:when>
+	              			<c:otherwise>
+	              				<img src="${contextPath}/img/home_Message.png">
+	              			</c:otherwise>
+	              		</c:choose>   	
+	                 		 	<sec:authentication property="principal.username"/>
 	                   </a>
 	                   <a href="#">
-	                       <strong class="text-potluck"><sec:authentication property="principal.USER_POINT"/></strong>
+	                       <strong class="text-potluck">
+	                       		<sec:authentication property="principal.user_point"/>
+	                       </strong>	                   		
 	                   </a>
 	             </div>
 	             </sec:authorize>

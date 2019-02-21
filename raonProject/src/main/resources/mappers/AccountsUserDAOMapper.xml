@@ -15,4 +15,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				sysdate
 				)
 	</insert>
+	<select id="selectByUserId" resultType="User" parameterType="string">
+		SELECT *
+		  FROM user_tb002
+		 WHERE user_id = #{userid}
+	</select>
 </mapper>

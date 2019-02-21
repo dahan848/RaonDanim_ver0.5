@@ -4,4 +4,5 @@ import com.raon.raondanim.model.User;
 
 public interface AccountsUserDAO {
 	public int joinUser (User user);
+	public User selectByUserId (String UserId);
 }

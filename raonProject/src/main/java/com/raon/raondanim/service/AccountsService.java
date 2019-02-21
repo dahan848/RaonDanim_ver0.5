@@ -21,6 +21,10 @@ public class AccountsService {
 	private AccountsUserDAO dao;
 	private User user;
 	
+	public User selectByUserId(String userid) {
+		return dao.selectByUserId(userid);
+	}
+	
 	public void logout(HttpServletRequest request,HttpServletResponse response) { //로그아웃
 		//현재 서비스에서 권한부분을 삭제 
 		//현재 서비스에서 권한을 얻어와서 권한이 null아니면, 

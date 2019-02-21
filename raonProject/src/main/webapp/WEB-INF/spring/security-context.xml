@@ -38,7 +38,7 @@
 		<property name="loginidname" value="user_id" />
 		<property name="loginpwdname" value="user_pw" />
 		<property name="errormsgname" value="ERRORMSG" />
-		<property name="defaultFailureUrl" value="/accounts/loginForm?error" />
+		<property name="defaultFailureUrl" value="/accounts/loginError" />
 	</bean>
 	
 	<!-- 시큐리티 로그인 DB 연결부 -->

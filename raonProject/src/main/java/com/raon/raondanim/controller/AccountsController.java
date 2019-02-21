@@ -29,6 +29,11 @@ public class AccountsController {
 		return"accounts/loginForm";
 	}
 	
+	@RequestMapping(value = "/loginError")
+	public String loginError() {
+		return "redirect:/accounts/loginForm";
+	}
+	
 	@RequestMapping(value ="/signupForm")
 	public String signupForm() {
 		return "accounts/signupForm";
@@ -40,7 +45,7 @@ public class AccountsController {
 		if(service.join(param)) {
 			return "redirect:/home"; //가입성공
 		}else {
-			return "redirect:/signupForm"; //가입실패
+			return "redirect:/accounts/signupForm"; //가입실패
 		}
 	}
 	
