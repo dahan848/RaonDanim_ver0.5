@@ -28,4 +28,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   SET enabled = 0
 		 WHERE USER_ID = #{user_id}
 	</update>
+	<update id="updateFailureCountReset">
+		UPDATE user_tb002
+		   SET USER_FAILURE_CNT = 0
+		 WHERE USER_ID = #{user_id}
+	</update>
+	<update id="tryLoginDataReset">
+		UPDATE user_tb002
+		   SET USER_LAST_TRY_LOGIN_TIME = null
+		 WHERE USER_ID = #{user_id}
+	</update>
+	<update id="checkLastLoginTime">
+		UPDATE user_tb002
+		   SET USER_LAST_LOGIN_TIME = sysdate
+		 WHERE USER_ID = #{user_id}
+	</update>
 </mapper>

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -16,6 +17,8 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
+import com.raon.raondanim.service.securityUserService;
+
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	 
 	private RequestCache requestCache = new HttpSessionRequestCache();
@@ -23,12 +26,18 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	
     private String loginidname;
     private String defaultUrl;
+    
+    @Autowired
+    private securityUserService service;
  
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
     	resultRedirectStrategy(request, response, authentication);
     	clearAuthenticationAttributes(request); //로그인 실패 세션 삭제
+    	
+    	String username = request.getParameter("user_id");
+    	service.updateFailureCountReset(username);
     }
     
     //로그인 성공 후 화면 이동시켜주는 ()
