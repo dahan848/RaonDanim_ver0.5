@@ -37,10 +37,10 @@ public class AccountsService {
 		//유저 객체 초기화
 		user = new User();   
 		//USER 객체에 파라미터로 받은 데이터 set
-		user.setUSER_ID((String)param.get("user_id")); //아이디 : 이메일
-		user.setUSER_PW((String)param.get("user_pw")); //비밀번호
-		user.setUSER_LNM((String)param.get("user_lnm")); //성
-		user.setUSER_FNM((String)param.get("user_fnm")); //이름
+		user.setUser_id((String)param.get("user_id")); //아이디 : 이메일
+		user.setUser_pw((String)param.get("user_pw")); //비밀번호
+		user.setUser_lnm((String)param.get("user_lnm")); //성
+		user.setUser_fnm((String)param.get("user_fnm")); //이름
 		//조건문을 통해서 boolean 값 반환  
 		if(dao.joinUser(user) > 0) {
 			return true;

@@ -3,188 +3,219 @@ package com.raon.raondanim.model;
 import java.util.Date;
 
 public class User {
-    //회원가입 때 입력 받거나 생성 되는 부분 : NOT NULL
-	private int USER_NUM; 
-    private String AUTHORITY; 
-    private int ENABLED; 
-    private String USER_ID;
-    private String USER_PW; 
-    private String USER_FNM; 
-    private String USER_LNM; 
-    private Date USER_REG_DATE;
-    private String USER_VERIFY_CODE; //이메일 인증키 
+    //회원가입 때 입력 받거나 생성 되는 부분 : : NOT NUUL
+	private int user_num; 
+    private String authority; 
+    private int enabled; 
+    private String user_id; //이메일 주소
+    private String user_pw; 
+    private String user_fnm; 
+    private String user_lnm; 
+    private Date user_reg_date; //가입일
     
-    //로그인 관련 속성 
-    private Date USER_LAST_LOGIN_TIME; 
-    private Date USER_LAST_TRY_LOGIN_TIME; 
-     
+    //로그인 및 인증과 관련된 변수 
+    private Date user_last_login_time; 
+    private Date user_last_try_login_time; 
+    private int user_failure_cnt; //로그인 실패 회수
+    private String user_verify_code; //이메일 인증키
+    
+    //회원의 상태 관련 변수 
+    private int user_email_verify; //이메일 인증 유/무 default 0 (거짓)
+    private int user_profile_st; //추가 프로필 작성 유/무 default 0 (거짓)
+    
     //추가 프로필 입력부
-    private String USER_NICK; 
-    private String USER_NATION; 
-    private String USER_CITY; 
-    private String USER_PHONE_NUM; 
-    private String USER_INTRO; //자기소개 
-    private int USER_ACCOM_ST; //숙박 제공 여부 상태값  
-    private Date USER_BIRTH_DATE; 
-    private int USER_GENDER; 
-    private String USER_PROFILE_PIC;
+    private String user_nick; 
+    private String user_nation; 
+    private String user_city; 
+    private String user_phone_num; 
+    private String user_intro; //자기소개 
+    private int user_accom_st; //숙박 제공 여부 default0(불가) 가능1 무료2 유료3
+    private Date user_birth_date; 
+    private int user_gender; 
+    private String user_profile_pic; // 프로필 사진 default 'n' (없음을 표시)
     
     //평점 및 포인트 속성 
-    private int USER_WITH_AVG; 
-    private int USER_MOTEL_AVG; 
-    private int USER_POINT;
+    private int user_with_avg; 
+    private int user_motel_avg; 
+    private int user_point;
     
-    //get/set
-	public int getUSER_NUM() {
-		return USER_NUM;
+    
+    //get,set
+	public int getUser_num() {
+		return user_num;
 	}
-	public void setUSER_NUM(int uSER_NUM) {
-		USER_NUM = uSER_NUM;
+	public void setUser_num(int user_num) {
+		this.user_num = user_num;
 	}
-	public String getAUTHORITY() {
-		return AUTHORITY;
+	public String getAuthority() {
+		return authority;
 	}
-	public void setAUTHORITY(String aUTHORITY) {
-		AUTHORITY = aUTHORITY;
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
-	public int getENABLED() {
-		return ENABLED;
+	public int getEnabled() {
+		return enabled;
 	}
-	public void setENABLED(int eNABLED) {
-		ENABLED = eNABLED;
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
 	}
-	public String getUSER_ID() {
-		return USER_ID;
+	public String getUser_id() {
+		return user_id;
 	}
-	public void setUSER_ID(String uSER_ID) {
-		USER_ID = uSER_ID;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
-	public String getUSER_PW() {
-		return USER_PW;
+	public String getUser_pw() {
+		return user_pw;
 	}
-	public void setUSER_PW(String uSER_PW) {
-		USER_PW = uSER_PW;
+	public void setUser_pw(String user_pw) {
+		this.user_pw = user_pw;
 	}
-	public String getUSER_FNM() {
-		return USER_FNM;
+	public String getUser_fnm() {
+		return user_fnm;
 	}
-	public void setUSER_FNM(String uSER_FNM) {
-		USER_FNM = uSER_FNM;
+	public void setUser_fnm(String user_fnm) {
+		this.user_fnm = user_fnm;
 	}
-	public String getUSER_LNM() {
-		return USER_LNM;
+	public String getUser_lnm() {
+		return user_lnm;
 	}
-	public void setUSER_LNM(String uSER_LNM) {
-		USER_LNM = uSER_LNM;
+	public void setUser_lnm(String user_lnm) {
+		this.user_lnm = user_lnm;
 	}
-	public Date getUSER_REG_DATE() {
-		return USER_REG_DATE;
+	public Date getUser_reg_date() {
+		return user_reg_date;
 	}
-	public void setUSER_REG_DATE(Date uSER_REG_DATE) {
-		USER_REG_DATE = uSER_REG_DATE;
+	public void setUser_reg_date(Date user_reg_date) {
+		this.user_reg_date = user_reg_date;
 	}
-	public String getUSER_VERIFY_CODE() {
-		return USER_VERIFY_CODE;
+	public Date getUser_last_login_time() {
+		return user_last_login_time;
 	}
-	public void setUSER_VERIFY_CODE(String uSER_VERIFY_CODE) {
-		USER_VERIFY_CODE = uSER_VERIFY_CODE;
+	public void setUser_last_login_time(Date user_last_login_time) {
+		this.user_last_login_time = user_last_login_time;
 	}
-	public Date getUSER_LAST_LOGIN_TIME() {
-		return USER_LAST_LOGIN_TIME;
+	public Date getUser_last_try_login_time() {
+		return user_last_try_login_time;
 	}
-	public void setUSER_LAST_LOGIN_TIME(Date uSER_LAST_LOGIN_TIME) {
-		USER_LAST_LOGIN_TIME = uSER_LAST_LOGIN_TIME;
+	public void setUser_last_try_login_time(Date user_last_try_login_time) {
+		this.user_last_try_login_time = user_last_try_login_time;
 	}
-	public Date getUSER_LAST_TRY_LOGIN_TIME() {
-		return USER_LAST_TRY_LOGIN_TIME;
+	public int getUser_failure_cnt() {
+		return user_failure_cnt;
 	}
-	public void setUSER_LAST_TRY_LOGIN_TIME(Date uSER_LAST_TRY_LOGIN_TIME) {
-		USER_LAST_TRY_LOGIN_TIME = uSER_LAST_TRY_LOGIN_TIME;
+	public void setUser_failure_cnt(int user_failure_cnt) {
+		this.user_failure_cnt = user_failure_cnt;
 	}
-	public String getUSER_NICK() {
-		return USER_NICK;
+	public String getUser_verify_code() {
+		return user_verify_code;
 	}
-	public void setUSER_NICK(String uSER_NICK) {
-		USER_NICK = uSER_NICK;
+	public void setUser_verify_code(String user_verify_code) {
+		this.user_verify_code = user_verify_code;
 	}
-	public String getUSER_NATION() {
-		return USER_NATION;
+	public int getUser_email_verify() {
+		return user_email_verify;
 	}
-	public void setUSER_NATION(String uSER_NATION) {
-		USER_NATION = uSER_NATION;
+	public void setUser_email_verify(int user_email_verify) {
+		this.user_email_verify = user_email_verify;
 	}
-	public String getUSER_CITY() {
-		return USER_CITY;
+	public int getUser_profile_st() {
+		return user_profile_st;
 	}
-	public void setUSER_CITY(String uSER_CITY) {
-		USER_CITY = uSER_CITY;
+	public void setUser_profile_st(int user_profile_st) {
+		this.user_profile_st = user_profile_st;
 	}
-	public String getUSER_PHONE_NUM() {
-		return USER_PHONE_NUM;
+	public String getUser_nick() {
+		return user_nick;
 	}
-	public void setUSER_PHONE_NUM(String uSER_PHONE_NUM) {
-		USER_PHONE_NUM = uSER_PHONE_NUM;
+	public void setUser_nick(String user_nick) {
+		this.user_nick = user_nick;
 	}
-	public String getUSER_INTRO() {
-		return USER_INTRO;
+	public String getUser_nation() {
+		return user_nation;
 	}
-	public void setUSER_INTRO(String uSER_INTRO) {
-		USER_INTRO = uSER_INTRO;
+	public void setUser_nation(String user_nation) {
+		this.user_nation = user_nation;
 	}
-	public int getUSER_ACCOM_ST() {
-		return USER_ACCOM_ST;
+	public String getUser_city() {
+		return user_city;
 	}
-	public void setUSER_ACCOM_ST(int uSER_ACCOM_ST) {
-		USER_ACCOM_ST = uSER_ACCOM_ST;
+	public void setUser_city(String user_city) {
+		this.user_city = user_city;
 	}
-	public Date getUSER_BIRTH_DATE() {
-		return USER_BIRTH_DATE;
+	public String getUser_phone_num() {
+		return user_phone_num;
 	}
-	public void setUSER_BIRTH_DATE(Date uSER_BIRTH_DATE) {
-		USER_BIRTH_DATE = uSER_BIRTH_DATE;
+	public void setUser_phone_num(String user_phone_num) {
+		this.user_phone_num = user_phone_num;
 	}
-	public int getUSER_GENDER() {
-		return USER_GENDER;
+	public String getUser_intro() {
+		return user_intro;
 	}
-	public void setUSER_GENDER(int uSER_GENDER) {
-		USER_GENDER = uSER_GENDER;
+	public void setUser_intro(String user_intro) {
+		this.user_intro = user_intro;
 	}
-	public String getUSER_PROFILE_PIC() {
-		return USER_PROFILE_PIC;
+	public int getUser_accom_st() {
+		return user_accom_st;
 	}
-	public void setUSER_PROFILE_PIC(String uSER_PROFILE_PIC) {
-		USER_PROFILE_PIC = uSER_PROFILE_PIC;
+	public void setUser_accom_st(int user_accom_st) {
+		this.user_accom_st = user_accom_st;
 	}
-	public int getUSER_WITH_AVG() {
-		return USER_WITH_AVG;
+	public Date getUser_birth_date() {
+		return user_birth_date;
 	}
-	public void setUSER_WITH_AVG(int uSER_WITH_AVG) {
-		USER_WITH_AVG = uSER_WITH_AVG;
+	public void setUser_birth_date(Date user_birth_date) {
+		this.user_birth_date = user_birth_date;
 	}
-	public int getUSER_MOTEL_AVG() {
-		return USER_MOTEL_AVG;
+	public int getUser_gender() {
+		return user_gender;
 	}
-	public void setUSER_MOTEL_AVG(int uSER_MOTEL_AVG) {
-		USER_MOTEL_AVG = uSER_MOTEL_AVG;
+	public void setUser_gender(int user_gender) {
+		this.user_gender = user_gender;
 	}
-	public int getUSER_POINT() {
-		return USER_POINT;
+	public String getUser_profile_pic() {
+		return user_profile_pic;
 	}
-	public void setUSER_POINT(int uSER_POINT) {
-		USER_POINT = uSER_POINT;
+	public void setUser_profile_pic(String user_profile_pic) {
+		this.user_profile_pic = user_profile_pic;
+	}
+	public int getUser_with_avg() {
+		return user_with_avg;
+	}
+	public void setUser_with_avg(int user_with_avg) {
+		this.user_with_avg = user_with_avg;
+	}
+	public int getUser_motel_avg() {
+		return user_motel_avg;
+	}
+	public void setUser_motel_avg(int user_motel_avg) {
+		this.user_motel_avg = user_motel_avg;
+	}
+	public int getUser_point() {
+		return user_point;
+	}
+	public void setUser_point(int user_point) {
+		this.user_point = user_point;
 	}
 	
 	//toString
 	@Override
 	public String toString() {
-		return "User [USER_NUM=" + USER_NUM + ", AUTHORITY=" + AUTHORITY + ", ENABLED=" + ENABLED + ", USER_ID="
-				+ USER_ID + ", USER_PW=" + USER_PW + ", USER_FNM=" + USER_FNM + ", USER_LNM=" + USER_LNM
-				+ ", USER_REG_DATE=" + USER_REG_DATE + ", USER_VERIFY_CODE=" + USER_VERIFY_CODE
-				+ ", USER_LAST_LOGIN_TIME=" + USER_LAST_LOGIN_TIME + ", USER_LAST_TRY_LOGIN_TIME="
-				+ USER_LAST_TRY_LOGIN_TIME + ", USER_NICK=" + USER_NICK + ", USER_NATION=" + USER_NATION
-				+ ", USER_CITY=" + USER_CITY + ", USER_PHONE_NUM=" + USER_PHONE_NUM + ", USER_INTRO=" + USER_INTRO
-				+ ", USER_ACCOM_ST=" + USER_ACCOM_ST + ", USER_BIRTH_DATE=" + USER_BIRTH_DATE + ", USER_GENDER="
-				+ USER_GENDER + ", USER_PROFILE_PIC=" + USER_PROFILE_PIC + ", USER_WITH_AVG=" + USER_WITH_AVG
-				+ ", USER_MOTEL_AVG=" + USER_MOTEL_AVG + ", USER_POINT=" + USER_POINT + "]";
+		return "User [user_num=" + user_num + ", authority=" + authority + ", enabled=" + enabled + ", user_id="
+				+ user_id + ", user_pw=" + user_pw + ", user_fnm=" + user_fnm + ", user_lnm=" + user_lnm
+				+ ", user_reg_date=" + user_reg_date + ", user_last_login_time=" + user_last_login_time
+				+ ", user_last_try_login_time=" + user_last_try_login_time + ", user_failure_cnt=" + user_failure_cnt
+				+ ", user_verify_code=" + user_verify_code + ", user_email_verify=" + user_email_verify
+				+ ", user_profile_st=" + user_profile_st + ", user_nick=" + user_nick + ", user_nation=" + user_nation
+				+ ", user_city=" + user_city + ", user_phone_num=" + user_phone_num + ", user_intro=" + user_intro
+				+ ", user_accom_st=" + user_accom_st + ", user_birth_date=" + user_birth_date + ", user_gender="
+				+ user_gender + ", user_profile_pic=" + user_profile_pic + ", user_with_avg=" + user_with_avg
+				+ ", user_motel_avg=" + user_motel_avg + ", user_point=" + user_point + "]";
 	}
+    
+	
+	
+	
+	
+    
 }

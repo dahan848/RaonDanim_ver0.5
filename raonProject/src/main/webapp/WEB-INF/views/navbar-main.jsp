@@ -43,10 +43,10 @@
 	        	<div class="profile-summary">
 	                   <a href="#">
 	                       <img src="${contextPath}/img/profile_2.jpg">
+	                 		 	<%=name%>
 	                   </a>
 	                   <a href="#">
-	                 		 	<%=name%>
-	                       <strong class="text-potluck">(숙박포인트)</strong>
+	                       <strong class="text-potluck"><sec:authentication property="principal.USER_POINT"/></strong>
 	                   </a>
 	             </div>
 	             </sec:authorize>
