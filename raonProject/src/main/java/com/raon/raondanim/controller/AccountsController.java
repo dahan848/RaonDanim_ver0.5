@@ -45,7 +45,7 @@ public class AccountsController {
 		if(service.join(param)) {
 			return "redirect:/home"; //가입성공
 		}else {
-			return "redirect:/accounts/signupForm"; //가입실패
+			return "redirect:accounts/signupForm"; //가입실패
 		}
 	}
 	
@@ -63,20 +63,34 @@ public class AccountsController {
 		return "";
 	}
 	
+	
 	public String profile() {
 		return "";
 	}
-	
+	@RequestMapping(value = "/update1")
 	public String update1() {
-		return "";
+		//나의 정보를 클릭하면, 추가 프로필 등록 1단계 화면이 나옴.
+		//사용자의 정보를 추가 프로필 1단계 화면으로 넘겨주어야 한다.
+		//1. 수정(입력)된 정보 발생
+		//'다음'버튼 클릭 시 별도의 알림 창 없이 [저장]
+		//'다른 탭'을 클릭 하려고 하면 수정된 정보가 있는데 저장 할 것인가를 물음.
+		return "accounts/profile-update1";
+	}
+	
+	@RequestMapping(value = "/update2")
+	public String update2() {
+		return "accounts/profile-update2";
+	}
+	
+	@RequestMapping(value = "/update3")
+	public String update3() {
+		return "accounts/profile-update3";
 	}
 
+	@RequestMapping(value = "/personal")
 	public String personal() {
-		return "";
+		return "accounts/profile-personal";
 	}
 	
-	public String gallery() {
-		return "";
-	}
 
 }

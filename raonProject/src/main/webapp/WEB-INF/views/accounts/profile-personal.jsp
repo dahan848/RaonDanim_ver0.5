@@ -18,8 +18,8 @@
 		class="navbar navbar-inverse navbar-sub navbar-sub-light hidden-xs">
 		<div class="container">
 			<ul class="nav navbar-nav navbar-core">
-				<li><a href="${contextPath}/statics/profile/update1">프로필 수정</a></li>
-				<li><a href="${contextPath}/statics/profile/personal">계정설정</a></li>
+				<li><a href="${contextPath}/accounts/update1">프로필 수정</a></li>
+				<li><a href="${contextPath}/accounts/personal">계정설정</a></li>
 				<li><a href="#">대시보드</a></li>
 			</ul>
 		</div>
@@ -30,7 +30,7 @@
 			<div class="container">
 				<h3 class="section-title">
 					<img class="section-header-icon"
-						src="${contextPath}/img/Profile.png"> 개인정보 수정
+						src="${contextPath}/img/accounts_Profile.png"> 개인정보 수정
 				</h3>
 				<form method="post" class="form-horizontal"
 					enctype="multipart/form-data" novalidate>

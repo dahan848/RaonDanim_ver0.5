@@ -16,20 +16,15 @@
 <link href="${contextPath}/css/commonness.css" rel="stylesheet"> <!-- 공통 스타일 CSS -->
 <link href="${contextPath}/css/bootstrap-social.css" rel="stylesheet"> <!-- 부트스트랩 소셜 -->
 <link href="${contextPath}/css/font-awesome.css" rel="stylesheet"> <!-- 폰트어썸 -->
+<link href="${contextPath}/css/chatList.css" rel="stylesheet"> <!-- 채팅목록 창  -->
 <!-- CSS END -->  
+<!-- JS -->
+<script type='text/javascript' src="${contextPath}/js/chat.js" ></script>
 <!-- 스프링 시큐리티 설정 -->
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="org.springframework.security.core.Authentication" %>
-<%
-//     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//     Object principal = auth.getPrincipal();
- 
-//     String name = "";
-//     if(principal != null) {
-//         name = auth.getName();
-//     }
-%>
+
 <!-- navbar-main -->
 <header>
 	<nav class="navbar navbar-default">
@@ -69,7 +64,11 @@
 					<li><span class="vertical-separator"></span><a href="${contextPath}/inquiry"><i class="fa fa-info-circle fa-lg"></i></a></li>
 					</sec:authorize>
 					<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 O -->
-						<li><span class="vertical-separator"></span><a href="#"><i class="fa fa-envelope fa-lg"></i></a></li>
+						<li><span class="vertical-separator"></span>
+						<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
+								<i class="fa fa-envelope fa-lg"></i>
+							</a>
+						</li>
 						<li><span class="vertical-separator"></span><a href="${contextPath}/inquiry"><i class="fa fa-info-circle fa-lg"></i></a></li>
 						<li><span class="vertical-separator"></span><a href="${contextPath}/accounts/logout">로그아웃</a></li>
 					</sec:authorize>
@@ -89,6 +88,14 @@
 	            </ul>
 	        </div>
 	    </div>
+<div id="chatList" class="hide">
+	This is a popover list:
+	<ul>
+		<li>List item 1</li>
+		<li>List item 2</li>
+		<li>List item 3</li>
+	</ul>
+</div>
 	</nav>
 </header>
 <!-- navbar-main END -->
