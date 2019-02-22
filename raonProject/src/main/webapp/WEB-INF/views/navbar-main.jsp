@@ -31,26 +31,19 @@
 <script type="text/javascript">
 	var check = ${verify}
 	if(check == 0){
+		logout();
 		swal({
 			  title: "이메일 인증이 되지 않은 계정입니다.",
 			  text: "이메일 인증 이후 사이트 이용이 가능합니다.",
 			  button: "확인",
-			});
-		logout();
-		reload();
+			  confirmButtonColor: "#484848",
+			}).then(function() {
+				location.reload();
+			});		
 	}//CHECK IF END
-	
-	//location.reload(); << 이 놈 쓰면 경고창 안뜸
-	
 	function logout() {
 		$.ajax({
 			url:"/accounts/logout"
-		});
-	}
-	
-	function reload() {
-		$.ajax({
-			url:"redirect:/home"
 		});
 	}
 </script>
