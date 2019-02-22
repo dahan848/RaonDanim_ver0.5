@@ -1,10 +1,14 @@
 package com.raon.raondanim.service;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,11 +49,105 @@ public class AccountsService {
 		user.setUser_pw((String)param.get("user_pw")); //비밀번호
 		user.setUser_lnm((String)param.get("user_lnm")); //성
 		user.setUser_fnm((String)param.get("user_fnm")); //이름
+		
+		//이메일 인증에 사용 될 key 넣기 
+		user.setUser_verify_code(create_key());
+		
 		//조건문을 통해서 boolean 값 반환  
 		if(dao.joinUser(user) > 0) {
+			send_mail(user); //이메일 인증 메일 전송 하기 
 			return true;
 		}else{
 			return false;
 		}
 	}
+	
+	///////////////////////////////회원 인증 및 이메일 관련 () 
+	//회원가입시 전송 될 인증KEY
+	public String create_key() { 
+		String key ="";
+		Random ran = new Random();
+		
+		for (int i = 0; i<8; i++) {
+			key += ran.nextInt(10);
+		}
+		return key;
+	}
+	
+	//이메일 발송 () 
+	public void send_mail(User user){
+		// Mail Server 설정
+		String charSet = "utf-8";
+		String hostSMTP = "smtp.naver.com";
+		String hostSMTPid = "manzza_@naver.com";
+		String hostSMTPpwd = "Qjfrmffjf1!";
+
+		// 보내는 사람 EMail, 제목, 내용
+		String fromEmail = "manzza_@naver.com";
+		String fromName = "라온다님 ";
+		String subject = "";
+		String msg = "";
+
+		// 회원가입 메일 내용
+		String name = user.getUser_lnm() + user.getUser_fnm(); //유저 이름을 담는 변수
+		
+		subject = "라온다님 회원가입 인증 메일입니다.";
+		msg += "<div align='center' style='border:1px solid black; font-family:verdana'>";
+		msg += "<h3 style='color: blue;'>";
+		msg += name + "님 회원가입을 환영합니다.</h3>";
+		msg += "<div style='font-size: 130%'>";
+		msg += "하단의 인증 버튼 클릭 시 정상적으로 회원가입이 완료됩니다.</div><br/>";
+		msg += "<form method='post' action='http://localhost:8081/accounts/certify'>";
+		msg += "<input type='hidden' name='user_id' value='" + user.getUser_id() + "'>";
+		msg += "<input type='hidden' name='user_verify_code' value='" + user.getUser_verify_code() + "'>";
+		msg += "<input type='submit' value='인증'></form><br/></div>";
+
+		// 받는 사람 E-Mail 주소
+		String mail = user.getUser_id();
+		try {
+			HtmlEmail email = new HtmlEmail();
+			email.setDebug(true);
+			email.setCharset(charSet);
+			email.setSSL(true);
+			email.setHostName(hostSMTP);
+			email.setSmtpPort(587);
+
+			email.setAuthentication(hostSMTPid, hostSMTPpwd);
+			email.setTLS(true);
+			email.addTo(mail, charSet);
+			email.setFrom(fromEmail, fromName, charSet);
+			email.setSubject(subject);
+			email.setHtmlMsg(msg);
+			email.send();
+		} catch (Exception e) {
+			System.out.println("메일발송 실패 : " + e);
+		}
+	}
+	
+	//회원 인증 
+	public void email_verify(User user, HttpServletResponse response) {
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			if (dao.email_verify(user) == 0) { // 이메일 인증에 실패하였을 경우
+				out.println("<script>");
+				out.println("alert('잘못된 접근입니다.');");
+				out.println("history.go(-1);");
+				out.println("</script>");
+				out.close();
+			} else { // 이메일 인증을 성공하였을 경우
+				out.println("<script>");
+				out.println("alert('인증이 완료되었습니다. 로그인 후 이용하세요.');");
+				out.println("location.href='../home';");
+				out.println("</script>");
+				out.close();
+			}
+		} catch (IOException e) {
+			System.out.println("회원 인증 실패 : " + e);
+		}
+	
+	}
+	
+	
 }

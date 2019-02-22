@@ -29,4 +29,5 @@ public class HomeController {
 		logger.info("");
 		return "home/inquiry";
 	}	
+
 }

@@ -4,10 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.raon.raondanim.model.User;
 import com.raon.raondanim.service.AccountsService;
 
 import java.util.Map;
@@ -41,12 +43,16 @@ public class AccountsController {
 	
 	@RequestMapping(value ="/signup", method = RequestMethod.POST)
 	public String signup(@RequestParam Map<String, Object> param) { //가입요청
-		System.out.println(param);
 		if(service.join(param)) {
 			return "redirect:/home"; //가입성공
 		}else {
 			return "redirect:accounts/signupForm"; //가입실패
 		}
+	}
+	
+	@RequestMapping(value = "/certify", method = RequestMethod.POST)
+	public void emailVerifySuccess(@ModelAttribute User user, HttpServletResponse response) {
+		service.email_verify(user, response);
 	}
 	
 	@RequestMapping("/logout")
