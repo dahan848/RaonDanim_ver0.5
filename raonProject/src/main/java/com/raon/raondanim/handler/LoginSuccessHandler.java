@@ -33,6 +33,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
+    	    	
     	resultRedirectStrategy(request, response, authentication);
     	clearAuthenticationAttributes(request); //로그인 실패 세션 삭제
     	

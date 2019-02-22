@@ -29,5 +29,11 @@ public class HomeController {
 		logger.info("");
 		return "home/inquiry";
 	}	
+	
+	@RequestMapping("/test")
+	public String test() {
+		System.out.println("home 테스트 요청 받음 ");
+		return "home/test";
+	}
 
 }

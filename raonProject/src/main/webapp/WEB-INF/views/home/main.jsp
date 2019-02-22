@@ -9,7 +9,7 @@
 <body>
 <jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
-
+	
 	<section id="section-intro"> <!-- 최상단 -->
 	    <div class="description-intro">
 	        <h1>외국인 여행자와 친구가 되어 <br>즐거운 교류를 경험하세요!</h1>

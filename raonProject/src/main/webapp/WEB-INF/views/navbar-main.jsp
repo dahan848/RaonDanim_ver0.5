@@ -6,11 +6,12 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!-- contextPath 설정 -->
 <%	request.setAttribute("contextPath", request.getContextPath()); %>	
-<!-- 부트스트랩 -->
+<!-- CDN -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!-- 부트스트랩 END -->
 <!-- CSS -->
 <link href="${contextPath}/css/commonness.css" rel="stylesheet"> <!-- 공통 스타일 CSS -->
@@ -24,6 +25,35 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="org.springframework.security.core.Authentication" %>
+<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal.user_email_verify" var="verify"/>
+</sec:authorize>
+<script type="text/javascript">
+	var check = ${verify}
+	if(check == 0){
+		swal({
+			  title: "이메일 인증이 되지 않은 계정입니다.",
+			  text: "이메일 인증 이후 사이트 이용이 가능합니다.",
+			  button: "확인",
+			});
+		logout();
+		reload();
+	}//CHECK IF END
+	
+	//location.reload(); << 이 놈 쓰면 경고창 안뜸
+	
+	function logout() {
+		$.ajax({
+			url:"/accounts/logout"
+		});
+	}
+	
+	function reload() {
+		$.ajax({
+			url:"redirect:/home"
+		});
+	}
+</script>
 
 <!-- navbar-main -->
 <header>

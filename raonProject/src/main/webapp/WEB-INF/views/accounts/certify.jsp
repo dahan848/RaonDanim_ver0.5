@@ -14,7 +14,6 @@
 			  icon: "success",
 			  button: "확인",
 			});
-	 setTimeout('home()',3000) 
 	});
 	
 	function home() {
