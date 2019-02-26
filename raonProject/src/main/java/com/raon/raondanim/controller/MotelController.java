@@ -16,4 +16,8 @@ public class MotelController {
 		logger.info("");
 		return "motel/NewFile";
 	}
+	
+	public String test1() {
+		return null;
+	}
 }
