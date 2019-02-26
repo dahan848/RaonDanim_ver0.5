@@ -27,6 +27,7 @@
 <%@ page import="org.springframework.security.core.Authentication" %>
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal.user_email_verify" var="verify"/>
+	<sec:authentication property="principal.user_num" var="user_num"/>
 </sec:authorize>
 <script type="text/javascript">
 	var check = ${verify}
@@ -50,6 +51,7 @@
 
 <!-- navbar-main -->
 <header>
+로그인 한 유저 넘 : ${user_num }
 	<nav class="navbar navbar-default">
     	<div class="container">
         	<div class="navbar-header" style="width: 875px;">

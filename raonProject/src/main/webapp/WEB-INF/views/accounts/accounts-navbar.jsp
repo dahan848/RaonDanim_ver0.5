@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>      
 <!-- contextPath 설정 -->
+1231321
 <%	request.setAttribute("contextPath", request.getContextPath()); %>	  
 	<!-- 서브 네브바 -->
 	<!-- 서브 네브바 -->
