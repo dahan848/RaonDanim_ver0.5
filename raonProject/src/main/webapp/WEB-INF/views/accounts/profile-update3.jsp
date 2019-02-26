@@ -162,7 +162,40 @@
 			</div>
 		</section>
 	</div>
+	
+	<!-- 프로필 사진 업로드 모달 -->
+	    <div id="modal-profile-image" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    크로핑 영역을 선택해주세요.
+                    <button id="btn-image-upload" class="btn btn-potluck btn-sm pull-right">변경하기</button>
+                </div>
+                <div class="modal-body">
+                    <div class="loading-mask" style="display: none"></div>
 
+                    <input id="id_image_temp" type="file" class="hidden" accept="image/*">
+                    <input id="id_image_cropping_temp" type="hidden">
+                    <div class="text-right">
+                    </div>
+                    <div class="crop-container">
+                        <img id="image-crop" src="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button class="btn btn-default btn-block" data-dismiss="modal">취소</button>
+                        </div>
+                        <div class="col-xs-6">
+                            <button id="btn-crop-confirm" class="btn btn-potluck btn-block">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	
 	<!-- 인클루드-푸터 -->
 	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 	<!-- 인클루드-푸터 END -->
