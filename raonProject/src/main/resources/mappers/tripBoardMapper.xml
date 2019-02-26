@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.raon.raondanim.dao.TripBoardDao">
+
+<insert id="insertBoard" parameterType="tripBoard">
+<selectKey order="BEFORE" keyProperty="trip_Board_Key" resultType="int">
+	select TRIP_BOARD_TB_SEQ.nextval from dual
+</selectKey>
+insert into TRIP_BOARD_TB
+   (TRIP_BOARD_KEY,
+	USER_NUM,
+	TRIP_BOARD_TITLE,
+	TRIP_BOARD_COUNTENT,
+	TRIP_BOARD_START,
+	TRIP_BOARD_END,
+	TRIP_BOARD_TOGETHER)
+values(#{trip_Board_Key},
+	  #{user_Num},
+	  #{trip_Board_Title},
+	  #{trip_Board_Content},
+	  #{trip_Board_Start},
+	  #{trip_Board_End},
+	  #{trip_Board_Together})
+</insert>
+
+<select id="selectOneByBoardKey" parameterType="int" resultType="tripBoard">
+
+select  TRIP_BOARD_KEY,
+		USER_NUM,
+	 	TRIP_BOARD_TITLE,
+	  	TRIP_BOARD_COUNTENT,
+	    TRIP_BOARD_START,
+	    TRIP_BOARD_END,
+	    TRIP_BOARD_TOGETHER,
+	    TRIP_BOARD_READCOUNT,
+	    TRIP_BOARD_ST
+from TRIP_BOARD_TB
+where TRIP_BOARD_KEY = #{trip_Board_Key}
+
+</select>
+
+<select id="selectOneByUserNum" parameterType="int" resultType="tripBoard">
+
+select  TRIP_BOARD_KEY,
+		USER_NUM,
+	 	TRIP_BOARD_TITLE,
+	  	TRIP_BOARD_COUNTENT,
+	    TRIP_BOARD_START,
+	    TRIP_BOARD_END,
+	    TRIP_BOARD_TOGETHER,
+	    TRIP_BOARD_READCOUNT,
+	    TRIP_BOARD_ST
+from TRIP_BOARD_TB
+where USER_NUM = #{num}
+
+</select>
+
+<select id="selectAll" resultType="tripBoard">
+
+select  TRIP_BOARD_KEY,USER_NUM,
+	 	TRIP_BOARD_TITLE,
+	  	TRIP_BOARD_COUNTENT,
+	    TRIP_BOARD_START,
+	    TRIP_BOARD_END,
+	    TRIP_BOARD_TOGETHER,
+	    TRIP_BOARD_READCOUNT,
+	    TRIP_BOARD_ST
+from TRIP_BOARD_TB
+
+</select>
+
+<!-- 페이징쿼리 -->
+<select id="getTenBoardPage" parameterType="map" resultType="map">
+<!--관심사 희망 여행도시는 못뽑음 테이블 안만듬  -->
+select *
+from (select 
+               rownum as r,
+               TRIP_BOARD_KEY,
+               USER_NUM,
+               user_nick,
+               USER_PROFILE_PIC,
+               TRIP_BOARD_TITLE,
+               TRIP_BOARD_COUNTENT,
+               TRIP_BOARD_START,
+               TRIP_BOARD_END,
+               TRIP_BOARD_TOGETHER,
+               TRIP_BOARD_READCOUNT,
+               TRIP_BOARD_ST
+        from (select    b.TRIP_BOARD_KEY,
+                        u.USER_NUM,
+                        nvl(u.USER_NICK,'noname') as user_nick,
+                        u.USER_PROFILE_PIC,
+                        b.TRIP_BOARD_TITLE,
+                        b.TRIP_BOARD_COUNTENT,
+                        b.TRIP_BOARD_START,
+                        b.TRIP_BOARD_END,
+                        b.TRIP_BOARD_TOGETHER,
+                        b.TRIP_BOARD_READCOUNT,
+                        b.TRIP_BOARD_ST
+                        from trip_board_tb b join user_tb u
+                        on b.user_num  = u.user_num
+                        where 1 = 0
+                        <if test="title!=null">
+                        	or b.TRIP_BOARD_TITLE like ('%${title}%')
+                        </if>
+                        <if test="tripStart!=null">
+                        	or b.TRIP_BOARD_START = to_date(#{tripStart},'yyyy/MM/dd')
+                        </if>
+                        <if test="tripEnd!=null">
+                        	or b.TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
+                        </if>
+                         <if test="userNick!=null">
+                        	or u.user_nick like ('%${userNick}%')
+                        </if>
+                        <if test="type==0">
+                        	or 1 = 1
+                        </if>
+                        order by b.TRIP_BOARD_KEY desc ))
+where r between #{start} and #{end} 
+
+
+
+</select>
+
+<select id="getTotalCount" parameterType="map" resultType="int">
+
+select count(*)
+from TRIP_BOARD_TB
+where 1 = 0
+<if test="title!=null">
+   or TRIP_BOARD_TITLE like ('%${title}%')
+</if>
+<if test="tripStart!=null">
+or TRIP_BOARD_START = to_date(#{tripStart},'yyyy/MM/dd')
+</if>
+<if test="tripEnd!=null">
+ or TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
+</if>
+<if test="userNick!=null">
+  or user_nick like ('%${userNick}%')
+</if>
+<if test="type==0">
+   or 1 = 1
+</if>
+
+</select>
+
+<!--도시 테이블 메소드  -->
+<insert id="insertCity" parameterType="tripCity">
+<selectKey order="BEFORE" keyProperty="trip_City_Key" resultType="int">
+select TRIP_CITY_TB_SEQ.nextval from dual
+</selectKey>
+insert into TRIP_CITY_TB
+values(	#{trip_City_Key},
+		#{trip_City_Town},
+		#{trip_City_Lat},
+		#{trip_City_Lng},
+		#{trip_City_Lng})
+
+
+</insert>
+
+<select id="selectOneByCity" parameterType="map" resultType="tripCity">
+select *
+from TRIP_CITY_TB
+where 1=0
+<if test="key!=null">
+or TRIP_CITY_KEY = ('${key}')
+</if>
+<if test="town!=null">
+or TRIP_CITY_TOWN = ('${town}')
+</if>
+<if test="lat!=null">
+or TRIP_CITY_LAT = ('${lat}')
+</if>
+<if test="lng!=null">
+or TRIP_CITY_LNG = ('${lng}')
+</if>
+<if test="pid!=null">
+or TRIP_CITY_PID = ('${pid}')
+</if>
+
+
+</select>
+
+<select id="selectAllByCity" resultType="tripCity">
+
+select * 
+from TRIP_CITY_TB
+
+</select>
+
+
+<!--도시 테이블 메소드 끝  -->
+<!--관계 테이블 메소드  -->
+<insert id="insertRel" parameterType="tripRel">
+insert into TRIP_REL_TB
+values(TRIP_REL_TB_SEQ.nextval,#{trip_Board_Key},#{trip_City_Key},#{user_Num})
+</insert>
+
+
+<select id="getListlatlng" resultType="map">
+select trip_city_lat,trip_city_lng
+from trip_city_tb
+</select>
+
+<!-- 게시판상세화면용 쿼리 -->
+<select id="getTripBoardOneInfo" parameterType="int" resultType="map">
+<!-- 게시판 상세화면용 게시판,유저 정보 뽑는거 인데 유저 키나 게시판 키가 없으면 아무것도 조회 안되는게 맞는듯-->
+SELECT  B.TRIP_BOARD_KEY,
+        U.USER_NUM,
+        U.USER_ID,
+        U.USER_PW,
+        NVL(U.USER_NICK,'NO NAME') AS USER_NICK,
+        B.TRIP_BOARD_TITLE,
+        B.TRIP_BOARD_COUNTENT,
+        B.TRIP_BOARD_START,
+        B.TRIP_BOARD_END,
+        B.TRIP_BOARD_TOGETHER,
+        B.TRIP_BOARD_READCOUNT,
+        B.TRIP_BOARD_ST
+FROM TRIP_BOARD_TB B JOIN USER_TB U
+ON B.USER_NUM =U.USER_NUM
+WHERE B.TRIP_BOARD_KEY = #{num}
+
+</select>
+<select id="getTripBoardCityOneInfo" parameterType="int" resultType="map">
+SELECT  C.TRIP_CITY_KEY,
+		R.TRIP_BOARD_KEY,
+		C.TRIP_CITY_TOWN,
+		C.TRIP_CITY_LAT,
+		C.TRIP_CITY_LNG
+FROM TRIP_REL_TB R JOIN TRIP_CITY_TB C
+ON R.TRIP_CITY_KEY =C.TRIP_CITY_KEY
+WHERE R.TRIP_BOARD_KEY = #{num}
+</select>
+
+</mapper>

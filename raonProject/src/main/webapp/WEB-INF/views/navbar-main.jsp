@@ -25,8 +25,22 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="org.springframework.security.core.Authentication" %>
+
+<!--trip파트  cdn  -->
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<!-- 스윗 얼럿 -->
+<script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal.user_email_verify" var="verify"/>
+	<sec:authentication property="principal.user_num" var="user_num"/>
 </sec:authorize>
 <script type="text/javascript">
 	var check = ${verify}
@@ -50,6 +64,7 @@
 
 <!-- navbar-main -->
 <header>
+<input type="hidden" value="${user_num}" name="user_num" id="user_num">
 	<nav class="navbar navbar-default">
     	<div class="container">
         	<div class="navbar-header" style="width: 875px;">

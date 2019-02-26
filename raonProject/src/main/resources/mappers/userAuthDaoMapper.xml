@@ -5,41 +5,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.raon.raondanim.dao.UserAuthDAO">
 	<select id="getUserById" resultType="customUserDetails">
 		SELECT 	*
-		FROM 	user_tb002
+		FROM 	USER_TB
 		WHERE 	USER_ID = #{user_id}
 	</select>
 	<update id="updateFailureCount">
-		UPDATE user_tb002
-		   SET USER_FAILURE_CNT = USER_FAILURE_CNT + 1
+		UPDATE USER_TB
+		   SET USER_FAILURE_COUNT = USER_FAILURE_COUNT + 1
 		 WHERE USER_ID = #{user_id}
 	</update>
 	<update id="tryLoginData">
-		UPDATE user_tb002
+		UPDATE USER_TB
 		   SET USER_LAST_TRY_LOGIN_TIME = sysdate
 		 WHERE USER_ID = #{user_id}
 	</update>
 	<select id="checkFailureCount" resultType="int" parameterType="string">
-		SELECT 	USER_FAILURE_CNT
-		FROM 	user_tb002
+		SELECT 	USER_FAILURE_COUNT
+		FROM 	USER_TB
 		WHERE 	USER_ID = #{user_id}
 	</select>
 	<update id="updateDisabled">
-		UPDATE user_tb002
+		UPDATE USER_TB
 		   SET enabled = 0
 		 WHERE USER_ID = #{user_id}
 	</update>
 	<update id="updateFailureCountReset">
-		UPDATE user_tb002
-		   SET USER_FAILURE_CNT = 0
+		UPDATE USER_TB
+		   SET USER_FAILURE_COUNT = 0
 		 WHERE USER_ID = #{user_id}
 	</update>
 	<update id="tryLoginDataReset">
-		UPDATE user_tb002
+		UPDATE USER_TB
 		   SET USER_LAST_TRY_LOGIN_TIME = null
 		 WHERE USER_ID = #{user_id}
 	</update>
 	<update id="checkLastLoginTime">
-		UPDATE user_tb002
+		UPDATE USER_TB
 		   SET USER_LAST_LOGIN_TIME = sysdate
 		 WHERE USER_ID = #{user_id}
 	</update>
