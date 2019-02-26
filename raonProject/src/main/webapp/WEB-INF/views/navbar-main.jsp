@@ -59,42 +59,49 @@
 		        <!-- 로그인 상태에서 출력 되는 회원 정보  -->
 		        <sec:authorize access="isAuthenticated()">
 		        <sec:authentication property="principal.user_profile_pic" var="pic"/>
-	        	<div class="profile-summary">
-	            	<a href="#">
-	              		<c:choose>
-	              			<c:when test="${pic eq 'n'}">
-	              				<img src="${contextPath}/img/home_profile_2.jpg">
-	              			</c:when>
-	              			<c:otherwise>
-	              				<img src="${contextPath}/img/home_Message.png">
-	              			</c:otherwise>
-	              		</c:choose>   	
-	                 		 	<sec:authentication property="principal.username"/>
-	                   </a>
-	                   <a href="#">
-	                       <strong class="text-potluck">
-	                       		<sec:authentication property="principal.user_point"/>
-	                       </strong>	                   		
-	                   </a>
-	             </div>
+		        <c:if test="${verify eq 1}"> <!-- 이메일 인증 사용자가 아니면 정보 안나오게 -->
+		        	<div class="profile-summary">
+		            	<a href="#">
+		              		<c:choose>
+		              			<c:when test="${pic eq 'n'}">
+		              				<img src="${contextPath}/img/home_profile_2.jpg">
+		              			</c:when>
+		              			<c:otherwise>
+		              				<img src="${contextPath}/img/home_Message.png">
+		              			</c:otherwise>
+		              		</c:choose>   	
+		                 		 	<sec:authentication property="principal.username"/>
+		                   </a>
+		                   <a href="#">
+		                       <strong class="text-potluck">
+		                       		<sec:authentication property="principal.user_point"/>
+		                       </strong>	                   		
+		                   </a>
+		             </div>
+	             </c:if>
 	             </sec:authorize>
 	        </div>
 	        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	            <ul class="nav navbar-nav navbar-right">
+	            
 	           		<sec:authorize access="isAnonymous()"> <!-- 로그인 상태 X -->
                 	<li><a href="${contextPath}/accounts/loginForm">로그인</a></li>
 					<li><span class="vertical-separator"></span><a href="${contextPath}/accounts/signupForm">회원가입</a></li>
 					<li><span class="vertical-separator"></span><a href="${contextPath}/inquiry"><i class="fa fa-info-circle fa-lg"></i></a></li>
-					</sec:authorize>
+					</sec:authorize>	            	
+
 					<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 O -->
-						<li><span class="vertical-separator"></span>
-						<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
-								<i class="fa fa-envelope fa-lg"></i>
-							</a>
-						</li>
-						<li><span class="vertical-separator"></span><a href="${contextPath}/inquiry"><i class="fa fa-info-circle fa-lg"></i></a></li>
-						<li><span class="vertical-separator"></span><a href="${contextPath}/accounts/logout">로그아웃</a></li>
-					</sec:authorize>
+						<c:if test="${verify eq 1}"> <!-- 이메일 인증 사용자가 아니면 탭 안나오게 -->
+							<li><span class="vertical-separator"></span>
+							<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
+									<i class="fa fa-envelope fa-lg"></i>
+								</a>
+							</li>
+							<li><span class="vertical-separator"></span><a href="${contextPath}/inquiry"><i class="fa fa-info-circle fa-lg"></i></a></li>
+							<li><span class="vertical-separator"></span><a href="${contextPath}/accounts/logout">로그아웃</a></li>
+						</c:if>
+					</sec:authorize>	         
+					   	
 	                <li class="dropdown">
 	                	<span class="vertical-separator"></span>
 	                    	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"

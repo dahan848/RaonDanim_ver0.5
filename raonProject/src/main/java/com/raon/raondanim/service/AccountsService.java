@@ -79,11 +79,11 @@ public class AccountsService {
 		// Mail Server 설정
 		String charSet = "utf-8";
 		String hostSMTP = "smtp.naver.com";
-		String hostSMTPid = "manzza_@naver.com";
-		String hostSMTPpwd = "Qjfrmffjf1!";
+		String hostSMTPid = "hyeungil9143@naver.com";
+		String hostSMTPpwd = "dkakwhs12!";
 
 		// 보내는 사람 EMail, 제목, 내용
-		String fromEmail = "manzza_@naver.com";
+		String fromEmail = "hyeungil9143@naver.com";
 		String fromName = "라온다님 ";
 		String subject = "";
 		String msg = "";
