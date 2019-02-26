@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class SearchController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public String test(){
-		logger.info("");
-		return "search/NewFile";
+	@RequestMapping("/home")
+	public String search() {
+		logger.info("search : 화면 요청 받음");
+		return "search/main";
 	}
-	
 }
