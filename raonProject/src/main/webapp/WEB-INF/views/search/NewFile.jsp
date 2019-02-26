@@ -10,20 +10,10 @@
 	<!-- 인클루드 심플 헤더 -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/search/search-navbar.jsp"></jsp:include>
 	<!-- 인클루드 심플 헤더 END -->
 
-	<!-- 서브 네브바 -->
-	<div
-		class="navbar navbar-inverse navbar-sub navbar-sub-light hidden-xs">
-		<div class="container" style="margin-left: 27%">
-			<ul class="nav navbar-nav navbar-core">
-				<li><a href="#">임시목록</a></li>
-				<li><a href="#">임시목록</a></li>
-				<li><a href="#">임시목록</a></li>
-			</ul>
-		</div>
-	</div>
-	<!-- 서브 네브바 END -->
+
 
 	<!-- 본문 -->
 	<div class="main-container">

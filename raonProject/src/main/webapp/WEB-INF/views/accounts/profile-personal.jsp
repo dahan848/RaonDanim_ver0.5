@@ -11,20 +11,10 @@
 	<!-- 인클루드 심플 헤더 -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/accounts/accounts-navbar.jsp"></jsp:include>
 	<!-- 인클루드 심플 헤더 END -->
 
-	<!-- 서브 네브바 -->
-	<div
-		class="navbar navbar-inverse navbar-sub navbar-sub-light hidden-xs">
-		<div class="container">
-			<ul class="nav navbar-nav navbar-core">
-				<li><a href="${contextPath}/accounts/update1">프로필 수정</a></li>
-				<li><a href="${contextPath}/accounts/personal">계정설정</a></li>
-				<li><a href="#">대시보드</a></li>
-			</ul>
-		</div>
-	</div>
-	<!-- 서브 네브바 END -->
+
 	<div class="main-container">
 		<section id="section-profile-personal-update" class="bg-gray">
 			<div class="container">
