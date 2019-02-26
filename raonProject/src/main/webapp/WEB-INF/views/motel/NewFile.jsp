@@ -14,12 +14,13 @@
 	<!-- 인클루드 심플 헤더 END -->
 
 
-
+123213
 	<!-- 본문 -->
 	<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
 			<a>임시화면</a> <!-- 이 부분에 자신의 페이지 넣기 -->
+			<a>모텔1 테스트</a>
 			</div>
 		</section>
 	</div>
