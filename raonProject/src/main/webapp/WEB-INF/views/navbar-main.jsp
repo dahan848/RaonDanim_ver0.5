@@ -51,7 +51,7 @@
 
 <!-- navbar-main -->
 <header>
-로그인 한 유저 넘 : ${user_num }
+로그인 한 유저 넘 : ${user_num}
 	<nav class="navbar navbar-default">
     	<div class="container">
         	<div class="navbar-header" style="width: 875px;">

@@ -3,15 +3,19 @@ package com.raon.raondanim.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.raon.raondanim.model.User;
+import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.AccountsService;
 
+import java.security.Principal;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -73,8 +77,9 @@ public class AccountsController {
 	public String profile() {
 		return "";
 	}
-	@RequestMapping(value = "/update1")
-	public String update1() {
+	@RequestMapping(value = "/update1Form")
+	public String update1(Authentication authentication, Model model) {
+
 		//나의 정보를 클릭하면, 추가 프로필 등록 1단계 화면이 나옴.
 		//사용자의 정보를 추가 프로필 1단계 화면으로 넘겨주어야 한다.
 		//1. 수정(입력)된 정보 발생
@@ -83,18 +88,24 @@ public class AccountsController {
 		return "accounts/profile-update1";
 	}
 	
-	@RequestMapping(value = "/update2")
+	@RequestMapping(value = "/update2Form")
 	public String update2() {
 		return "accounts/profile-update2";
 	}
 	
-	@RequestMapping(value = "/update3")
+	@RequestMapping(value = "/update3Form")
 	public String update3() {
 		return "accounts/profile-update3";
 	}
 
-	@RequestMapping(value = "/personal")
-	public String personal() {
+	@RequestMapping(value = "/personalForm")
+	public String personal(Authentication authentication, Model model) {
+		//시큐리티 세션에 저장 된 현재 접속한 user 정보 가져오기 
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		String userId = user.getUser_id();
+		Map<String, Object> userInfo = service.getPersonalInfo(userId);
+		model.addAttribute("user",userInfo);
+		System.out.println("보낸 유저 맵  : " + userInfo);
 		return "accounts/profile-personal";
 	}
 	

@@ -1,20 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%	request.setAttribute("contextPath", request.getContextPath()); %>	
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>라온다님</title>
 </head>
+
 <body>
 	<!-- 인클루드 심플 헤더 -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/accounts/accounts-navbar.jsp"></jsp:include>
 	<!-- 인클루드 심플 헤더 END -->
-
-
+	<script type="text/javascript">
+	  $(document).ready(function(){
+		  $("#select_id").val("1").prop("selected", true);
+	  });
+	  </script>
 	<div class="main-container">
 		<section id="section-profile-personal-update" class="bg-gray">
 			<div class="container">
@@ -34,14 +39,14 @@
 								<div class="col-sm-9">
 									<input class="form-control" id="id_first_name"
 										name="first_name" placeholder="이름" title="" type="text"
-										value="" required />
+										value="${user.user_fnm}" required />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label" for="id_last_name">성</label>
 								<div class="col-sm-9">
 									<input class="form-control" id="id_last_name" name="last_name"
-										placeholder="성" title="" type="text" value="" required />
+										placeholder="성" title="" type="text" value="${user.user_lnm}" required />
 								</div>
 							</div>
 							<div class="form-group">
@@ -49,9 +54,10 @@
 								<div class="col-sm-9">
 									<select class="form-control" id="id_gender" name="gender"
 										title="" required>
-										<option value="1">남</option>
-										<option value="2">여</option>
-										<option value="3">기타</option>
+										<option value=0 <c:if test="${user.user_gender == 0}">selected</c:if>>---</option>
+										<option value=1 <c:if test="${user.user_gender == 1}">selected</c:if>>남</option>										
+										<option value=2 <c:if test="${user.user_gender == 2}">selected</c:if>>여</option>
+										<option value=3 <c:if test="${user.user_gender == 3}">selected</c:if>>기타</option>
 									</select>
 								</div>
 							</div>
@@ -204,7 +210,7 @@
 								<div class="col-sm-9">
 									<input class="form-control" id="id_email" name="email"
 										placeholder="이메일" readonly="readonly" title="" type="text"
-										value="" />
+										value="${user.user_id}" />
 								</div>
 							</div>
 							<div class="form-group">

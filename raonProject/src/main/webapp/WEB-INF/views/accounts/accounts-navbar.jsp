@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>      
 <!-- contextPath 설정 -->
-1231321
 <%	request.setAttribute("contextPath", request.getContextPath()); %>	  
 	<!-- 서브 네브바 -->
 	<!-- 서브 네브바 -->
@@ -12,8 +11,8 @@
 		class="navbar navbar-inverse navbar-sub navbar-sub-light hidden-xs">
 		<div class="container">
 			<ul class="nav navbar-nav navbar-core">
-				<li><a href="${contextPath}/accounts/update1">프로필 수정</a></li>
-				<li><a href="${contextPath}/accounts/personal">계정설정</a></li>
+				<li><a href="${contextPath}/accounts/update1Form">프로필 수정</a></li>
+				<li><a href="${contextPath}/accounts/personalForm">계정설정</a></li>
 				<li><a href="#">대시보드</a></li>
 			</ul>
 		</div>

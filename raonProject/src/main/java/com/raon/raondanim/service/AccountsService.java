@@ -2,6 +2,7 @@ package com.raon.raondanim.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -24,6 +25,17 @@ public class AccountsService {
 	@Autowired
 	private AccountsUserDAO dao;
 	private User user;
+	
+	public Map<String, Object> getPersonalInfo(String userId){
+		Map<String, Object> userInfo = new HashMap<String, Object>();
+		user = dao.selectByUserId(userId);
+		userInfo.put("user_fnm", user.getUser_fnm()); //이름
+		userInfo.put("user_lnm", user.getUser_lnm()); //성
+		userInfo.put("user_gender", user.getUser_gender()); //성별
+		userInfo.put("user_birth_date", user.getUser_birth_date()); //생년월일
+		userInfo.put("user_id", user.getUser_id()); //이메일
+		return userInfo;
+	}
 	
 	public User selectByUserId(String userid) {
 		return dao.selectByUserId(userid);
