@@ -2,6 +2,9 @@ package com.raon.raondanim.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -26,15 +29,64 @@ public class AccountsService {
 	private AccountsUserDAO dao;
 	private User user;
 	
+	//개인정보 수정 페이지에 출력 될 데이터 (Map) 반환하는 서비스 
 	public Map<String, Object> getPersonalInfo(String userId){
 		Map<String, Object> userInfo = new HashMap<String, Object>();
 		user = dao.selectByUserId(userId);
+		
+		//생년월일 8자리 문자열로 만들어서 반환 하기
+		String user_birth_day = null;
+		Date birthDay; //데이트 객체 선언 
+		
+		//생일 칼럼이 Null이면 오늘 날짜를 담아서 보냄  
+		if(user.getUser_birth_date() == null) {
+			birthDay = new Date(); //오늘 날짜로 Date 객체 초기화 
+			SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd");
+			user_birth_day =transFormat.format(birthDay);			
+		}else {
+			//생일 칼럼에 값이 담겨져 있으면 해당 날짜를 문자열로 변환 후 전송 
+			birthDay = user.getUser_birth_date(); //오늘 날짜로 Date 객체 초기화 
+			SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd");
+			user_birth_day =transFormat.format(birthDay);			
+		}
+		
+		//Map에 담기
 		userInfo.put("user_fnm", user.getUser_fnm()); //이름
 		userInfo.put("user_lnm", user.getUser_lnm()); //성
 		userInfo.put("user_gender", user.getUser_gender()); //성별
-		userInfo.put("user_birth_date", user.getUser_birth_date()); //생년월일
+		userInfo.put("user_birth_date", user_birth_day); //생년월일
 		userInfo.put("user_id", user.getUser_id()); //이메일
 		return userInfo;
+	}
+	
+	//개인설정 변경 된 데이터 저장하는 서비스 
+	public boolean setPersonalInfo(Map<String, Object> param, String usernum) {
+		//인자로 받은 Map에 User_num 추가하기
+		param.put("user_num", usernum);
+		//인자로 받은 Map에서 생년월일 문자열에 참조하기 
+		String year = (String)param.get("birthday_year");
+		String month = (String)param.get("birthday_month");
+		String day = (String)param.get("birthday_day");
+		//인자로 전달 받은 문자열 하나로 합치기  (8자리 문자열 완성)
+		String birthDay = year+"-"+month+"-"+day;
+		//String to date 
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date result = transFormat.parse(birthDay);
+			//sql.Date 타입으로 변환 
+			java.sql.Date sqlDate = new java.sql.Date(result.getTime());
+			System.out.println("sqlDate : " + sqlDate);
+			//인자로 받은 Map에 추가 정보 (생년월일) 넣어주기 
+			param.put("user_birth_date", sqlDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		//Dao 활용해서 유저 정보 업데이트 하기 및 결과 처리
+		if(dao.updatePersonal(param) > 1) {
+			return true; //업데이트 성공 
+		}else {
+			return false; //업데이트 실패 
+		}
 	}
 	
 	public User selectByUserId(String userid) {

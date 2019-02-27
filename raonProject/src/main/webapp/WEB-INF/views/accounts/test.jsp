@@ -5,9 +5,24 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+	$("#profile-personal-form").on("submit", function() {
+		//fomr 요소에 있는 데이터 직렬화 
+		var personal = $(this).serialize();
+		
+		$.ajax({
+			url:"/accounts/personal",
+			type:"get",
+			success:function(data){
+				alert(data);
+			},
+		});
+	});
+
+</script>
+
 </head>
 <body>
-테스트닷1221232131
-테스트
+
 </body>
 </html>

@@ -10,7 +10,6 @@
 <meta charset="UTF-8">
 <title>라온다님</title>
 </head>
-
 <body>
 	<!-- 인클루드 심플 헤더 -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
@@ -19,32 +18,33 @@
 	<!-- 인클루드 심플 헤더 END -->
 	<script type="text/javascript">	
     $(document).ready(function(){
-    	//온로드 
-    	var birthday =  null;
+    	var birthday = '<c:out value="${user.user_birth_date}"/>';
     	setBirthday(birthday);
+    	
+        //계정설정 정보 ajax로 전송 
+     	$("#profile-personal-form").on("submit", function() {
+    		//fomr 요소에 있는 데이터 직렬화 
+    		var personal = $(this).serialize();
+    		$.ajax({
+    			url:"${contextPath}/accounts/personal",
+    			data:personal,
+    			type:"get",
+    			success:function(data){
+    				alert(data);
+    			},
+    		});
+    	});//submit END
+
      });//onLoad END
 
-    function setBirthday(birthday) {
-
+	//생년월일 목록 만들기 함수	
+    function setBirthday(birthday) { 
 		var toDay = new Date();
 		var year  = ''+toDay.getFullYear();
 		var month = ''+(toDay.getMonth()+1);
 		var day   = ''+toDay.getDate();
 		var str = "";
 
-		//전달받은 birthday이 'null'이면 birthday에 오늘 날짜 넣어줌
-		if(birthday == null){
-			//오늘 '월'이 10 보다 작으면 '0'을 붙여줌 
-			if(month < 10){
-				month = '0'+(toDay.getMonth()+1);
-			}
-			//오늘 '일'이 10보다 작으면 '0을' 붙여줌 
-			if(day < 10){
-				day = '0'+toDay.getDate();
-			}
-			//총 8자리의 날짜 생성 완료 
-			birthday = year + month + day;
-		}
 		// 년도 설정
 		for (var i=year; i>=1900; i--) {
 			if (birthday.substr(0,4) == i) {
@@ -91,7 +91,6 @@
 		}
 	}//setBirthday END
 	</script>
-	생일 : ${user.user_birth_date }
 	<div class="main-container">
 		<section id="section-profile-personal-update" class="bg-gray">
 			<div class="container">
@@ -99,8 +98,7 @@
 					<img class="section-header-icon"
 						src="${contextPath}/img/accounts_Profile.png"> 개인정보 수정
 				</h3>
-				<form method="post" class="form-horizontal"
-					enctype="multipart/form-data" novalidate>
+				<form id="profile-personal-form" method="get" class="form-horizontal">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title">개인정보</h3>
@@ -110,21 +108,21 @@
 								<label class="col-sm-3 control-label" for="id_first_name">이름</label>
 								<div class="col-sm-9">
 									<input class="form-control" id="id_first_name"
-										name="first_name" placeholder="이름" title="" type="text"
+										name="user_fnm" placeholder="이름" title="" type="text"
 										value="${user.user_fnm}" required />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label" for="id_last_name">성</label>
 								<div class="col-sm-9">
-									<input class="form-control" id="id_last_name" name="last_name"
+									<input class="form-control" id="id_last_name" name="user_lnm"
 										placeholder="성" title="" type="text" value="${user.user_lnm}" required />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label" for="id_gender">성별</label>
 								<div class="col-sm-9">
-									<select class="form-control" id="id_gender" name="gender"
+									<select class="form-control" id="id_gender" name="user_gender"
 										title="" required>
 										<option value=0 >---</option>
 										<option value=1 >남</option>										
@@ -161,7 +159,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label" for="id_email">이메일</label>
 								<div class="col-sm-9">
-									<input class="form-control" id="id_email" name="email"
+									<input class="form-control" id="id_email" name="user_id"
 										placeholder="이메일" readonly="readonly" title="" type="text"
 										value="${user.user_id}" />
 								</div>
