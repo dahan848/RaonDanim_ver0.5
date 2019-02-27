@@ -15,7 +15,7 @@
         <sec:authorize access="isAuthenticated()">
 	         <li><a href="${contextPath}/accounts/update1">나의 정보</a></li>
         </sec:authorize>
-	         <li><a href="${contextPath}/search/test">회원 검색</a></li>
+	         <li><a href="${contextPath}/search/home">회원 검색</a></li>
 	         <li><a href="${contextPath}/trip/test">여행</a></li>
 	         <li><a href="${contextPath}/motel/test">숙박</a></li>
 	         <li><a href="${contextPath}/review/test">후기</a></li>

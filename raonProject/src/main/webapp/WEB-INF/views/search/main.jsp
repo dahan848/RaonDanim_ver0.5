@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <% request.setAttribute("contextPath", request.getContextPath()); %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,9 +20,13 @@
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
 	<!-- NAV BAR END -->
 	
-	<!-- fastselect JS  -->
+	<!-- FASTSELECT JS  -->
 	<script src="${contextPath}/js/fastselect.standalone.js"></script>
-	<!-- fastselect JS END -->
+	<!-- FASTSELECT JS END -->
+	
+	<!-- SWEETALERT JS -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<!-- SWEETALERT JS END -->
 	
 	<!-- 상단 검색 섹션 -->
 	<div class="main-container">
@@ -103,7 +109,7 @@
 														$('#select-language').fastselect({
 															maxItems: 3,
 															onMaxItemsReached: function(){
-																alert('3개까지만 입력할 수 있습니다.');
+																swal("","3개까지만 입력할 수 있습니다.","warning");
 															},
 														});
 													</script>
@@ -120,7 +126,7 @@
 														$('#select-tourstyles').fastselect({
 															maxItems: 5,
 															onMaxItemsReached: function(){
-																alert('5개까지만 입력할 수 있습니다.');
+																swal("","5개까지만 입력할 수 있습니다.","warning");
 															},
 														});
 													</script>
@@ -164,7 +170,7 @@
 														$('#select-interest').fastselect({
 															maxItems: 5,
 															onMaxItemsReached: function(){
-																alert('5개까지만 입력할 수 있습니다.');
+																swal("","5개까지만 입력할 수 있습니다.","warning");
 															}
 														});
 													 </script>
@@ -187,7 +193,46 @@
 						
 					</div>
 				</form>
-			</div>
+				
+				<!-- 회원 정보 -->
+				<div class="row">
+					<div class="col-md-4 col-sm-6">
+						<div class="item-cover item-cover-sm">
+								
+							<!-- 프로필 백그라운드 이미지 -->
+							<div class="cover-background" style="background-image: url(${contextPath}/img/default/profile_cover_1.jpg)"></div>
+							
+							<!-- 프로필 이미지 -->
+							<div class="cover-profile-image">
+								<a href="#" class="img-circle img-avatar">
+								<img src="${contextPath}/img/profile/profile_circle_cover_1.jpg" class="img-profile">
+								</a>
+							</div>
+							
+							<!-- 닉네임 -->
+							<h4 class="profile-name">Joseph</h4>
+							
+							<!-- 거주도시 -->
+							<p class="profile-city">거주도시: Seoul</p>
+							
+							<hr>
+							
+							<!-- 관심사 -->
+							<div class="cover-tags cover-tags-properties">
+								<span class="label label-default">운동</span>
+								<span class="label label-default">농구</span>
+								<span class="label label-default">축구</span>
+							</div>
+							
+							<!-- 희망 여행도시 -->
+							<div class="cover-tags cover-tags-certification">
+								<span class="label label-violet label-orange label-gray label-mint label-skyblue label-pink">Seoul</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 회원 정보 END -->
+				
 		</section>
 	</div>
 	<!-- 상단 검색 섹션 END -->

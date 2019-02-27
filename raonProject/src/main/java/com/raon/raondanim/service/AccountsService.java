@@ -2,6 +2,7 @@ package com.raon.raondanim.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -148,6 +149,15 @@ public class AccountsService {
 		}
 	
 	}
+	
+	// 요셉 작성중
+	// 1. 페이지 번호 받아와서 해당하는 목록만 가져오기
+	// 2. firstRow, endRow에 해당하는 목록 가져오기
+	// 3. 반환
+	public List<Map<String, Object>> getUserList(Map<String, Object> params){
+		return dao.userList(params);
+	}
+	
 	
 	
 }

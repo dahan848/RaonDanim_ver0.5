@@ -21,6 +21,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM user_tb002
 		 WHERE user_id = #{userid}
 	</select>
+	
+	<!-- 요셉 작성중 -->
+	<select id="userList" parameterType="map" resultType="map"></select>
+	
 	<update id="email_verify" parameterType="User">
 		UPDATE user_tb002
 		   SET user_email_verify = 1

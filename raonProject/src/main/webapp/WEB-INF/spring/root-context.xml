@@ -12,32 +12,25 @@
 	<context:component-scan base-package="com.raon.raondanim.service"/>
 
 	<!-- 오라클 접속 -->
-	<bean
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		id="dataSource">
-		<property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" name="driverClassName" />
-		<property value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
-		<property value="manzza" name="username" />
-		<property value="1099" name="password" />
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
+		<property name="url" value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE"/>
+		<property name="username" value="manzza"/>
+		<property name="password" value="1099"/>
 	</bean>
-
+	
 	<!-- 마이바티스 연동 -->
-	<bean id="sqlSessionFactory"
-		class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="typeAliasesPackage" value="com.raon.raondanim.model"></property>
 		<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml" />
 	</bean>
-	<bean id="sqlSession"
-		class="org.mybatis.spring.SqlSessionTemplate"
-		destroy-method="clearCache">
-		<constructor-arg name="sqlSessionFactory"
-			ref="sqlSessionFactory"></constructor-arg>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
 	</bean>
 
 	<!-- messageSource 설정 -->
-	<bean id="messageSource"
-		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<!-- Encoding 설정 -->
 		<property name="defaultEncoding" value="UTF-8" />
 		<!-- Reload Cache 설정 -->
@@ -49,25 +42,24 @@
 			</list>
 		</property>
 	</bean>
+	
 	<!-- MessageSource를 사용하기 위한 Accessor 설정 -->
-	<bean id="messageSourceAccessor"
-		class="org.springframework.context.support.MessageSourceAccessor">
-		<constructor-arg ref="messageSource" />
+	<bean id="messageSourceAccessor" class="org.springframework.context.support.MessageSourceAccessor">
+		<constructor-arg ref="messageSource"/>
 	</bean>
+	
 	<!-- MessageSource를 사용하기위한 MessageUtils 매핑 -->
 	<bean id="message" class="com.raon.raondanim.util.MessageUtils">
-		<property name="messageSourceAccessor"
-			ref="messageSourceAccessor" />
+		<property name="messageSourceAccessor" ref="messageSourceAccessor"/>
 	</bean>
+	
 	<!-- Default Location 설정 -->
-	<bean id="localeResolver"
-		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 		<property name="defaultLocale" value="ko"></property>
 	</bean>
 	
 	<!-- DAO 목록 -->
-	<bean id="userAuthDAO"
-		class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<bean id="userAuthDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface" value="com.raon.raondanim.dao.UserAuthDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
