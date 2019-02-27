@@ -13,9 +13,9 @@
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
 <style type="text/css">
-#bb {
-	height: 45px;
-	background-color: red;
+
+#r2{
+	background-color: #eeeeee;
 }
 
 #cc {
@@ -297,16 +297,26 @@ html, body {
 		map.style.display = "none";
 		initMap2();
 		
+		$('[data-toggle="tooltip"]').tooltip();  
+		
 		
 		$("#sendWrite").on("submit", function() {
 			//JSON.stringify 배열을 json데이터로 변환해주는 뇨속
 			var arrToJson = JSON.stringify(cityNames);
-			alert(arrToJson);
+			//alert(arrToJson);
+			var datepicker = $("#datepicker").val();
+			var datepicker2 = $("#datepicker2").val();
 			
+			
+			//날짜 변경시 submit할떄 바뀐 날짜값 가져와서 히든되있는 부분의 value에 입력하고 submit
+			$("#trip_Board_Start").val(datepicker);
+			$("#trip_Board_End").val(datepicker2);
 			$("#boardWrite2").val(arrToJson);
 			
 			
 		})
+		
+	
 		
 		
 	}
@@ -332,9 +342,9 @@ html, body {
 			<div class="col-lg-4" id="cc">
 				<div class="row" id="cc">
 					<div class="col-lg-8">
-<!-- 					<input type="text" id="formatted_address"> -->
+<!-- 					<input type="text" id="formatted_address"> -->	
 						<input id="searchTextField" type="text" size="50"
-							placeholder="도시를 입력하세요" autocomplete="on" runat="server" class="form-control" /> 
+							placeholder="여행지를 선택해주세요." autocomplete="on" runat="server" class="form-control"  data-toggle="tooltip" data-placement="top" title="여행지는 국가,도시,상세주소등  입력 가능합니다."/> 
 							<input type="hidden" id="cityName"
 							name="cityName" /> 
 							<input type="hidden" id="cityLat"
@@ -358,19 +368,19 @@ html, body {
 					<div class="col-lg-4" id="ee">
 						<div class="row">
 							<div class="col-sm-12">
-								<h5>출발일</h5>
-								<p>yy-mm-dd</p>
+								<h5>출발일 변경</h5>
+<%-- 								<p id="alterStart"><mark>${tripBoard.trip_Board_Start}</mark></p> --%>
 								<input type="button" value="출발일 변경"
-									class="btn btn-primary btn-sm">
+									class="btn btn-primary btn-sm" id="datepicker">
 							</div>
 						</div>
 						<br>
 						<div class="row">
 							<div class="col-sm-12">
-								<h5>종료일</h5>
-								<p>yy-mm-dd</p>
+								<h5>종료일 변경</h5>
+<%-- 								<p id="alterEnd"><mark>${tripBoard.trip_Board_End}</mark></p> --%>
 								<input type="button" value="종료일 변경"
-									class="btn btn-primary btn-sm">
+									class="btn btn-primary btn-sm" id="datepicker2">
 							</div>
 						</div>
 						<br>
@@ -401,11 +411,12 @@ html, body {
 							<div class="col-sm-12">
 								
 								<form action="write3" id="sendWrite">
-									<input type="hidden" id="boardWrite1" value="${tripBoard.user_Num}" name="user_Num">
-									<input type="hidden" id="boardWrite1" value="${tripBoard.trip_Board_Title}" name="trip_Board_Title">
-									<input type="hidden" id="boardWrite1" value="${tripBoard.trip_Board_Start}" name="trip_Board_Start">
-									<input type="hidden" id="boardWrite1" value="${tripBoard.trip_Board_End}" name="trip_Board_End">
-									<input type="hidden" id="boardWrite1" value="${tripBoard.trip_Board_Content}" name="trip_Board_Content">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+									<input type="hidden" id="user_Num" value="${tripBoard.user_Num}" name="user_Num">
+									<input type="hidden" id="trip_Board_Title" value="${tripBoard.trip_Board_Title}" name="trip_Board_Title">
+									<input type="hidden" id="trip_Board_Start" value="${tripBoard.trip_Board_Start}" name="trip_Board_Start">
+									<input type="hidden" id="trip_Board_End" value="${tripBoard.trip_Board_End}" name="trip_Board_End">
+									<input type="hidden" id="trip_Board_Content" value="${tripBoard.trip_Board_Content}" name="trip_Board_Content">
 									<input type="hidden" id="boardWrite2" value="" name="tripCity">
 									<input type="submit" value="작성완료" class="btn btn-primary btn-sm">
 								</form>
@@ -474,6 +485,59 @@ html, body {
 			</div>
 		</div>
 	</div>
+<%--달력 스크립트 부분 헤드로 올리면 달력 뻑남 --%>	
+<script type="text/javascript">
+$(function() {
+	
+    //여행 시작 날짜
+    $("#datepicker").datepicker({
+        dateFormat: 'yy-mm-dd' //Input Display Format 변경
+        ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시 
+        ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
+        ,changeYear: true //콤보박스에서 년 선택 가능
+        ,changeMonth: true //콤보박스에서 월 선택 가능                          
+        ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
+        ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
+        ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
+        ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
+        ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
+        ,minDate: "D" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+            
+    });                    
+    
+    //초기값을 오늘 날짜로 설정
+    $('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+    
+
+    
+    
+    
+    //여행 끝 날짜
+    $("#datepicker2").datepicker({
+        dateFormat: 'yy-mm-dd' //Input Display Format 변경
+            ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+            ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
+            ,changeYear: true //콤보박스에서 년 선택 가능
+            ,changeMonth: true //콤보박스에서 월 선택 가능                
+            ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+            ,buttonImageOnly: true //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
+            ,buttonText: "종료일을 선택해주세요" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
+            ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
+            ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
+            ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
+            ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
+            ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
+            ,minDate: "1D" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+    });                    
+    
+    //초기값을 오늘 날짜로 설정
+    $('#datepicker2').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)     
+    
+    
+});
+
+</script>
+<%--달력 스크립트 부분끝 헤드로 올리면 달력 뻑남 --%>	
 
 	<!--바디 끝  -->
 	<!-- 인클루드-푸터 -->

@@ -44,7 +44,7 @@
 
 	function initMap() {
 		// 검색한 지도
-		var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		var labels = '123456789';
 
 		var uluru = {
 			lat : 37.566535,
@@ -110,6 +110,7 @@
 			<div id="search" class="collapse" style="border: 1px solid;">
 				<div class="container" style="height: 100px;">
 					<form class="form-inline" action="list" method="get">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 						<br> <br> <select class="form-control" name="type"
 							style="width: 80px;">
 							<option value="0">검색</option>
@@ -162,8 +163,8 @@
 
 					<c:forEach items="${tripData.tripBoardList}" var="list">
 						<tr>
-							<td><c:if test="${list.USER_PROFILE_PIC==n}">
-									<img alt="" src="${contextPath}/img/Profile.png">
+							<td><c:if test="${list.USER_PROFILE_PIC=='n'}">
+									<img alt="프로필이미지" src="${contextPath}/img/trip_Profile.png">
 								</c:if></td>
 							<td>${list.USER_NICK}</td>
 							<td>

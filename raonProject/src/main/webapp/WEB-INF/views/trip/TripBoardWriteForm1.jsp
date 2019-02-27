@@ -62,6 +62,7 @@ th {
 		</p>
 		<br>
 		<form action="write2" method="post">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			<input type="text" value="${user_Num}" name="user_Num">
 			<table class="table" id="ta">
 

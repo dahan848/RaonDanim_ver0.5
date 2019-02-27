@@ -154,11 +154,16 @@ or TRIP_BOARD_START = to_date(#{tripStart},'yyyy/MM/dd')
 select TRIP_CITY_TB_SEQ.nextval from dual
 </selectKey>
 insert into TRIP_CITY_TB
+(TRIP_CITY_KEY,
+TRIP_CITY_TOWN,
+TRIP_CITY_LAT,
+TRIP_CITY_LNG,
+TRIP_CITY_PID)
 values(	#{trip_City_Key},
 		#{trip_City_Town},
 		#{trip_City_Lat},
 		#{trip_City_Lng},
-		#{trip_City_Lng})
+		#{trip_City_Pid})
 
 
 </insert>
@@ -198,6 +203,7 @@ from TRIP_CITY_TB
 <!--관계 테이블 메소드  -->
 <insert id="insertRel" parameterType="tripRel">
 insert into TRIP_REL_TB
+(REL_KEY,TRIP_BOARD_KEY,TRIP_CITY_KEY,USER_NUM)
 values(TRIP_REL_TB_SEQ.nextval,#{trip_Board_Key},#{trip_City_Key},#{user_Num})
 </insert>
 

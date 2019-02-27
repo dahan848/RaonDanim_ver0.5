@@ -68,9 +68,9 @@ function toggleDisplay() {
 	leftDiv2.toggle();
 	//css속성이라 css로 했어야했는데 attr prop 쓰냐고 헷갈림
 	if(leftDiv2.css("display")=="none"){
-		leftDiv1.animate({width:"100%"},"swing")
+		leftDiv1.animate({width:"100%"},400,"swing");
 	}else if(leftDiv2.css("display")=="block"){
-		leftDiv1.animate({width:"50%"},"swing")
+		leftDiv1.animate({width:"50%"}, 400 ,"swing");
 	}
 }
 
@@ -79,8 +79,8 @@ function drawCityTable() {
 	var cityNames = "${cityTable}";
 	var leftDiv12 = $("#leftDiv-1-2");
 	var j = 1;
-	alert(cityNames);
-	for(var i in cityNames){
+	
+/* 	for(var i in cityNames){
 		var col = $("<div class='col-sm-12'>");
 		var table = $("<table class='table'>");
 		var tr = $("<tr>");
@@ -94,7 +94,7 @@ function drawCityTable() {
 		table.appendTo(col);
 		col.appendTo(leftDiv12);
 		j++;
-	}
+	} */
 }
 
 
@@ -240,7 +240,7 @@ th{
 				 			</tr>
 				 			<tr>
 				 				<th>
-				 					<img src="${contextPath}/img/Profile.png" width="30px;" onclick="#" >
+				 					<img src="${contextPath}/img/trip_Profile.png" width="30px;">
 				 					&nbsp;&nbsp;
 				 					<span>${boardInfo.USER_NICK}</span>
 				 					<button style="background-image:${contextPath}/img/Profile.png "></button>

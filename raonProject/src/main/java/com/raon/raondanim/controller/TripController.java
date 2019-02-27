@@ -34,8 +34,7 @@ public class TripController {
 	public String boardList(@RequestParam(defaultValue="1")int pageNum,
 			@RequestParam(defaultValue="0") int type,
 			@RequestParam(required=false) String keyword,
-			Model model,
-			Authentication authentication) {
+			Model model) {
 		System.out.println("list 요청받음");
 		Map<String, Object> params = new HashMap<>();
 		
@@ -48,7 +47,7 @@ public class TripController {
 		params.put("type", type);
 		params.put("keyword", keyword);
 		Map<String, Object> tripData = tripService.getTenBoardPage(params);
-		//System.out.println("list요청  tripdata 검사:"+tripData);
+		System.out.println("list요청  tripdata 검사:"+tripData);
 		model.addAttribute("tripData", tripData);
 		//지도 찍을 위도경도인데 컬럼이 구글에서 받는 형식과 다르고 자바 객체형태는 = 으로 되있다 보니까 json으로 일단 변환시켜서 보내봄
 //		JSONArray tripLatLng = new JSONArray(tripService.getListlatlng());
@@ -57,10 +56,10 @@ public class TripController {
 		Gson gson = new Gson();
 		String tripLatLng = gson.toJson(tripService.getListlatlng());
 
-		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		/*customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		int user_Num = user.getUser_num();
 		
-		model.addAttribute("user_Num", user_Num);
+		model.addAttribute("user_Num", user_Num);*/
 		model.addAttribute("tripLatLng", tripLatLng);
 		//System.out.println(tripLatLng);
 		
