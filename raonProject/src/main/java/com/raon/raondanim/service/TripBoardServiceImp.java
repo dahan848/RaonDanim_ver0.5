@@ -100,7 +100,7 @@ public class TripBoardServiceImp implements TripBoardService {
 		System.out.println("서비스 파라메터 확인  params :"+params);
 		
 		List<Map<String, Object>> tripBoardList = tripDao.getTenBoardPage(params);
-		System.out.println("서비스 게시글리스트확인 :"+tripBoardList);
+		//System.out.println("서비스 게시글리스트확인 :"+tripBoardList);
 		Map<String, Object> tripData = new HashMap<>();
 		tripData.put("tripBoardList", tripBoardList);
 		tripData.put("start", getStartPage(pageNum));
@@ -231,31 +231,25 @@ public class TripBoardServiceImp implements TripBoardService {
 
 		try {
 			// 게시판 insert
-			System.out.println("어디까지 돌아감1");
+
 			tripDao.insertBoard(tripBoard);
-			System.out.println("어디까지 돌아감2");
 			int boardKey = tripBoard.getTrip_Board_Key();
 			int userKey = tripBoard.getUser_Num();
-			System.out.println("어디까지 돌아감3");
 			//System.out.println("서비스 셀렉트 키 확인용 :" + boardKey);
 			//System.out.println("서비스 셀렉트 키 확인용 :" + userKey);
 			// 키값 제대로 가져왔음 여까진 넘어옴
 
 			// city insert
-			System.out.println("어디까지 돌아감4");
 			for (int i = 0; i < jsonArray.size(); i++) {
 				// 이렇게 해도 값 뽑음 이건 값 따로 분리해서 객체에 넣어줘야하는 형태
 				// 바로 객체에 넣어주는게 실패한건 아마 json안에 있는 이름이랑 모델의 변수명이랑 틀려서 그런걸로 보임
-				System.out.println("어디까지 돌아감5");
 				TripCity city = new TripCity();
 				TripRel rel = new TripRel();
 				JsonElement element = jsonArray.get(i);
-				System.out.println("어디까지 돌아감6");
 				city.setTrip_City_Town(element.getAsJsonObject().get("cityName").getAsString());
 				city.setTrip_City_Lat(element.getAsJsonObject().get("lat").getAsString());
 				city.setTrip_City_Lng(element.getAsJsonObject().get("lng").getAsString());
 				city.setTrip_City_Pid(element.getAsJsonObject().get("placeId").getAsString());
-				System.out.println("어디까지 돌아감7");
 				tripDao.insertCity(city);
 				// rel insert
 				int cityKey = city.getTrip_City_Key();
@@ -263,7 +257,6 @@ public class TripBoardServiceImp implements TripBoardService {
 				rel.setUser_Num(userKey);
 				rel.setTrip_City_Key(cityKey);
 				tripDao.insertRel(rel);
-				System.out.println("어디까지 돌아감8");
 			}
 
 			return true;

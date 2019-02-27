@@ -60,6 +60,10 @@ function initMap() {
 	
 }
 
+
+	
+	
+
 //div 토글용 펑션
 function toggleDisplay() {
 	var leftDiv1 = $("#leftDiv-1");
@@ -76,35 +80,59 @@ function toggleDisplay() {
 
 
 function drawCityTable() {
-	var cityNames = "${cityTable}";
+	//일단 이 펑션 보류
+	var cityNames = ${cityInfo};
 	var leftDiv12 = $("#leftDiv-1-2");
 	var j = 1;
+		
+		 for(var i =0;i<cityNames.length;i++){
+			var col = $("<div class='col-sm-12' style='padding: 0px;'>");	
+			var table = $("<table class='table'>");
+			var tr = $("<tr>");
+			var hiddenLat = $("<input type='hidden' name='lat' value='"+cityNames[i].lat+"' id='lat"+i+"'>");
+			var hiddenLng = $("<input type='hidden' name='lng' value='"+cityNames[i].lng+"' id='lng"+i+"'>");
+			var moveBtn = $("<input type='button' class='btn btn-primary btn-sm' value='>>' id='moveBtn' onclick='moveToMakerLocation("+i+")'> ")
+			$("<th style='width: 20px;'>").text(j+"번").appendTo(tr);
+			$("<th style='max-width: 90px; text-align: left; width: 90px;'>").text(cityNames[i].cityName).appendTo(tr);
+			$("<th style='max-width: 15px; text-align: right; width: 15px;'> ").append(hiddenLat).append(hiddenLng).append(moveBtn).appendTo(tr);
+			tr.appendTo(table);
+			table.appendTo(col);
+			col.appendTo(leftDiv12);
+			j++;
+			
+			
+		} 
+		
+		
+	  
+}
+
+function moveToMakerLocation(i) {
+	//버튼 클릭시 해당 마커로 이동하는 펑션 
+	//단점이 맵 을 다시 줌을 작게했을때 마커 사이에 선그린게 없어짐 
+	//마커를 지우니 어디 찍고있는지 안보임
+	swal({
+		  icon:"success"
+	  });
+	  //alert($("#lat"+i).val());
+	  var mlat = $("#lat"+i).val();
+	  var mlng = $("#lng"+i).val();
 	
-/* 	for(var i in cityNames){
-		var col = $("<div class='col-sm-12'>");
-		var table = $("<table class='table'>");
-		var tr = $("<tr>");
-		var moveBtn = $("<input type='button' class='btn btn-primary btn-sm' value='>>' id='moveBtn' onclick=''>")
-		$("<th>").text(j+"번").appendTo(tr);
-		$("<th>").text(cityNames[i].TRIP_CITY_TOWN).appendTo(tr);
-		$("<th>").html(moveBtn).appendTo(tr);
-		$("<th>").html("<input type='hidden' value='"+cityNames[i].TRIP_CITY_LAT+"' class='btn btn-primary btn-sm' id='moveLat"+i+"'>").appendTo(tr);
-		$("<th>").html("<input type='hidden' value='"+cityNames[i].TRIP_CITY_LNG+"' class='btn btn-primary btn-sm' id='moveLng"+i+"'>").appendTo(tr);
-		tr.appendTo(table);
-		table.appendTo(col);
-		col.appendTo(leftDiv12);
-		j++;
-	} */
+	  var move = {lat: parseFloat(mlat), lng: parseFloat(mlng)};
+	 
+	  var map = new google.maps.Map(
+	      document.getElementById('map'), {zoom: 15, center: move});
+	 
+	  var marker = new google.maps.Marker({position: move, map: map});
 }
 
 
-
 window.onload = function() {
-
+	
 	
 	initMap();
 	drawCityTable();
-
+	
 	
 	
 }
@@ -243,7 +271,7 @@ th{
 				 					<img src="${contextPath}/img/trip_Profile.png" width="30px;">
 				 					&nbsp;&nbsp;
 				 					<span>${boardInfo.USER_NICK}</span>
-				 					<button style="background-image:${contextPath}/img/Profile.png "></button>
+				 					
 				 				</th>
 				 			</tr>
 				 			<tr>
@@ -260,23 +288,23 @@ th{
 				 	</div>
 				 	<div class="row" id="leftDiv-1-2">
 				 	
-<%-- 				 		<c:forEach items="${cityTable}" var="list" varStatus="status"> --%>
-<!-- 				 			<div class="col-sm-12"> -->
-<!-- 								<table class="table"> -->
-<!-- 									<tr> -->
-<%-- 										<th>${status.count}번</th> --%>
-<%-- 										<th>${list.TRIP_CITY_TOWN}</th> --%>
-<!-- 										<th> -->
-<!-- 											<form action="#" id="moveMaker" method="post"> -->
-<%-- 												<input type="hidden" name="lat" value="${list.TRIP_CITY_LAT}"> --%>
-<%-- 												<input type="hidden" name="lng" value="${list.TRIP_CITY_LNG}"> --%>
-<!-- 												<input type="button" class="btn btn-primary btn-sm" value=">>" id="moveBtn" onclick=""> -->
-<!-- 											</form> -->
-<!-- 										</th> -->
-<!-- 									</tr> -->
-<!-- 								</table> -->
-<!-- 							</div> -->
-<%-- 				 		</c:forEach>	 --%>
+	<%-- 			 		<c:forEach items="${cityTable}" var="list" varStatus="status">
+ 				 			<div class="col-sm-12" style="padding: 0px;"> 
+								<table class="table"> 
+ 									<tr> 
+										<th style="width: 20px;">${status.count}번</th>
+										<th style="max-width: 90px; text-align: left; width: 90px;">${list.TRIP_CITY_TOWN}</th>
+ 										<th style="max-width: 15px; text-align: right; width: 15px;"> 
+ 											<form action="#" id="moveMaker" method="post"> 
+												<input type="hidden" name="lat" value="${list.TRIP_CITY_LAT}" id="lat${status.count}">
+												<input type="hidden" name="lng" value="${list.TRIP_CITY_LNG}" id="lng${status.count}">
+												<input type="button" class="btn btn-primary btn-sm" value=">>" id="moveBtn" onclick=""> 
+ 											</form> 
+										</th>
+ 									</tr>
+ 								</table> 
+ 							</div> 
+				 		</c:forEach>	 --%>
 				 			
 				 	</div>
 				 	
