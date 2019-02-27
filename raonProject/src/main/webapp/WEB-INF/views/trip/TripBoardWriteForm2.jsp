@@ -344,7 +344,7 @@ html, body {
 					<div class="col-lg-8">
 <!-- 					<input type="text" id="formatted_address"> -->	
 						<input id="searchTextField" type="text" size="50"
-							placeholder="여행지를 선택해주세요." autocomplete="on" runat="server" class="form-control"  data-toggle="tooltip" data-placement="top" title="여행지는 국가,도시,상세주소등  입력 가능합니다."/> 
+							placeholder="여행지를 선택해주세요." autocomplete="on" runat="server" class="form-control"  data-toggle="tooltip" data-placement="top" title="국가,도시,상세주소등  입력 가능합니다."/> 
 							<input type="hidden" id="cityName"
 							name="cityName" /> 
 							<input type="hidden" id="cityLat"

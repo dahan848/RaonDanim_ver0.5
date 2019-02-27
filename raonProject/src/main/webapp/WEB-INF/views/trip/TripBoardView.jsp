@@ -233,12 +233,28 @@ th{
 #boardContent-1{
 	font-size: 12pt;
 }
+#replyModalBody{
+	min-height: 500px;
+}
+
+#tripsogae{
+	max-width: 100px;
+	width: 50px;
+	font-size: 13pt;
+}
+#tripsogae-1{
+	max-width: 100px;
+	width: 50px;
+	font-size: 13pt;
+}
 
 #map{
 	height:	1000px;
 	width: 100%;
 
 }
+
+
 
 </style>
 </head>
@@ -275,11 +291,11 @@ th{
 				 				</th>
 				 			</tr>
 				 			<tr>
-				 				<td><input type="button" onclick="toggleDisplay()" class="btn btn-primary btn-xs" value="동행신청">
-				 				<input type="button" onclick="toggleDisplay()" class="btn btn-primary btn-xs" value="신고">
-				 				<input type="button" onclick="toggleDisplay()" class="btn btn-primary btn-xs" value="수정">
-				 				<input type="button" onclick="toggleDisplay()" class="btn btn-primary btn-xs" value="삭제">
-				 				<input type="button" onclick="toggleDisplay()" class="btn btn-primary btn-xs" value="토글">
+				 				<td><input type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#replyModal" value="동행신청">
+				 				<input type="button" onclick="toggleDisplay()" class="btn btn-primary btn-xs" value="소개">
+				 				<input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#declarationModal" value="신고">
+				 				<input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modifyModal"value="수정">
+				 				<input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deleteModal" value="삭제">
 				 				</td>
 				 			</tr>
 				 		</table>
@@ -287,25 +303,7 @@ th{
 				 	
 				 	</div>
 				 	<div class="row" id="leftDiv-1-2">
-				 	
-	<%-- 			 		<c:forEach items="${cityTable}" var="list" varStatus="status">
- 				 			<div class="col-sm-12" style="padding: 0px;"> 
-								<table class="table"> 
- 									<tr> 
-										<th style="width: 20px;">${status.count}번</th>
-										<th style="max-width: 90px; text-align: left; width: 90px;">${list.TRIP_CITY_TOWN}</th>
- 										<th style="max-width: 15px; text-align: right; width: 15px;"> 
- 											<form action="#" id="moveMaker" method="post"> 
-												<input type="hidden" name="lat" value="${list.TRIP_CITY_LAT}" id="lat${status.count}">
-												<input type="hidden" name="lng" value="${list.TRIP_CITY_LNG}" id="lng${status.count}">
-												<input type="button" class="btn btn-primary btn-sm" value=">>" id="moveBtn" onclick=""> 
- 											</form> 
-										</th>
- 									</tr>
- 								</table> 
- 							</div> 
-				 		</c:forEach>	 --%>
-				 			
+				 			<!--도시 리스트 그려지는 부분  -->
 				 	</div>
 				 	
 				</div>
@@ -316,12 +314,40 @@ th{
 				 		<table class="table">
 				 			<tr>
 				 				<th>
+				 					<h2><b><small><mark>관심사</mark></small></b></h2>
+				 				</th>
+				 			
+				 			</tr>
+				 			<tr>
+				 				<td>
+				 					default
+				 				</td>
+				 			</tr>
+				 			<tr>
+				 				<th>
+				 					<h2><b><small><mark>여행스타일</mark></small></b></h2>
+				 				</th>				
+				 			</tr>
+				 			<tr>
+				 				<td>
+				 					default
+				 				</td>
+				 			</tr>
+				 			
+				 			
+				 			<tr>
+				 			
+				 			</tr>
+				 			<tr>
+				 				<th>
 				 					<h2><b><small><mark>여행소개</mark></small></b></h2>
 				 				</th>
 				 			</tr>
 				 			<tr>
-				 				<td style="font-size: 13pt;">
-				 					${boardInfo.TRIP_BOARD_COUNTENT}
+				 				<td id="tripsogae" style="width: 50px;">
+				 					<div style="width: 300px; height: 100%;">
+				 						${boardInfo.TRIP_BOARD_COUNTENT}
+				 					</div>			
 				 				</td>
 				 			</tr>
 				 		</table>
@@ -352,7 +378,112 @@ th{
 		</div>
 	</div>
 	
+	<!--댓글창 모달  -->
+<div class="container">
+  
+
+  <!-- Modal -->
+  <div class="modal fade" id="replyModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body" id="replyModalBody">
+          <p>댓글입력 리스트 띄워야 할 부분</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+	<!--신고창 모달  -->
+<div class="container">
+  
+
+  <!-- Modal -->
+  <div class="modal fade" id="declarationModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body" id="replyModalBody">
+          <p>신고모달</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+
+	<!--수정창 모달  -->
+<div class="container">
+  
+
+  <!-- Modal -->
+  <div class="modal fade" id="modifyModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body" id="replyModalBody">
+          <p>수정모달부분</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>	
 	
+<!--삭제창 모달  -->
+<div class="container">
+  
+
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body" id="replyModalBody">
+          <p>삭제모달부분</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>		
 	
 	<!-- 인클루드-푸터 -->
 	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
