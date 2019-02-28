@@ -24,10 +24,14 @@
 			//조건문을 통해 검사 1. 기존 비밀번호 칸에 값이 입력 된 상태이면 
 			if(oldPw.length != 0){
 				if(oldPw == newPw){
-					//경고창 출력
-					swal({text: "기존 비밀번호와 같은 비밀번호로 변경 할 수 없습니다.",button: "확인"});
+					//경고창 문구 출력 
+					$("#alarm").text("기존 비밀번호와 같은 비밀번호는 사용할 수 없습니다.");
+					$("#alarm").css("color","red");
+					//swal({text: "기존 비밀번호와 같은 비밀번호로 변경 할 수 없습니다.",button: "확인"});
 					//값 비우기 
 					$(this).val('');
+				}else{
+					$("#alarm").text('');
 				}//비교 if END
 			}//oldPw If END
 		});
@@ -68,23 +72,6 @@
 	    		return false;
 	    	});//submit END
 	 });
-	 
-	 //비밀번호 유효성
-// 	 function pwCheck() {
-// 		//사용자가 입력 한 기존 비밀번호 
-// 		var = oldPassword = document.pwChange.old_user_pw;
-// 		//사용자가 새로 입력 한 비밀번호 1
-// 		var = newPassword1 = document.pwChange.new_user_pw1;
-// 		//사용자가 새로 입력 한 비밀번호 2
-// 		var = newPassword2 = document.pwChange.new_user_pw2;
-		
-// 		//새롭게 입력 한 비밀번호가 서로 다른 경우 
-// 		if(newPassword1 != newPassword2){
-// 			alert("비밀번호1,2 다름");
-// 			return false;
-// 		}
-// 	 }
-	
 	</script>
 	<section id="section-authentication" style="height: 800px;">
 		<div class="container" style="margin-top: 100px;">
@@ -92,8 +79,8 @@
 				<img src="${contextPath}/img/home_logo-raon.png" alt="">
 				<form name="pwChange" id="password-change-form" method="post">
 					<div class="form-group">
-						<label class="sr-only control-label" for="id_oldpassword">현재
-							비밀번호</label><input class="form-control" id="id_oldpassword"
+						<label class="sr-only control-label" for="id_oldpassword">현재 비밀번호</label>
+						<input class="form-control" id="id_oldpassword"
 							name="old_user_pw " placeholder="현재 비밀번호" title="" type="password"
 							required />
 					</div>
@@ -110,6 +97,8 @@
 							type="password" required />
 					</div>
 					<button type="submit" class="btn btn-potluck btn-block">비밀번호 변경</button>
+					<hr>
+                    <span id ="alarm"></span>
 				</form>
 			</div>
 			<p>라온다님에 오신것을 환영합니다</p>
