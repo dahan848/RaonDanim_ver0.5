@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.raon.raondanim.dao.AccountsUserDAO">
 	<insert id="joinUser" parameterType="User">
-		INSERT INTO USER_TB002
+		INSERT INTO USER_TB
 			   (USER_NUM, USER_ID, USER_PW, USER_FNM, USER_LNM, USER_VERIFY_CODE, USER_REG_DATE)
 		VALUES (
 				USER_TB001_SEQ.nextval,
@@ -18,22 +18,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	<select id="selectByUserId" resultType="User" parameterType="string">
 		SELECT *
-		  FROM user_tb002
+		  FROM user_tb
 		 WHERE user_id = #{userid}
 	</select>
 	<select id="selectByUserNum" resultType="User" parameterType="string">
 		SELECT *
-		  FROM user_tb002
+		  FROM user_tb
 		 WHERE user_num = #{usernum}
 	</select>
 	<update id="email_verify" parameterType="User">
-		UPDATE user_tb002
+		UPDATE user_tb
 		   SET user_email_verify = 1
 		 WHERE user_id = #{user_id}
 		   AND user_verify_code = #{user_verify_code}
 	</update>
 	<update id="updatePersonal" parameterType="map">
-		UPDATE user_tb002
+		UPDATE user_tb
 		
 		   SET user_fnm 		= #{user_fnm},
 		   	   user_lnm			= #{user_lnm},
@@ -43,10 +43,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 WHERE user_num 		= #{user_num}
 	</update>
 	<update id="passwordChange" parameterType="map">
-		UPDATE user_tb002
+		UPDATE user_tb
 		
-		   SET user_pw 		= #{USER_PW}
+		   SET user_pw 		= #{new_user_pw1}
 		   	   
-		 WHERE user_num 		= #{user_num}
+		 WHERE user_num 	= #{user_num}
 	</update>
 </mapper>

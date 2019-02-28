@@ -145,23 +145,28 @@ public class AccountsController {
 	
 	//비밀번호 변경 화면 요청
 	@RequestMapping(value ="/passwordchangeform", method=RequestMethod.GET)
-	public String passwordChangeForm() {
+	public String passwordChangeForm(Authentication authentication, Model model) {
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		String usernum = Integer.toString(user.getUser_num());
+		model.addAttribute("pass",service.getUserPass(usernum));
 		return "accounts/password-change";
 	}
 	
 	//비밀번호 변경 요청 
 	@ResponseBody
 	@RequestMapping(value = "/passwordChange" , method=RequestMethod.POST )
-	public boolean passwordChange(Authentication authentication,@RequestParam Map<String, Object> param) {
-		System.out.println("비밀번호 변경 요청 받음");
-		//반환 할 boolean 변수 선언
-		boolean result = false;
-		//현재 로그인 한 사용자 정보 가져오기 
+	public int passwordChange(Authentication authentication,@RequestParam Map<String, Object> param) {
+		//System.out.println("비밀번호 변경 요청 받음 : " + param);
+		//현재 로그인 한 사용자 정보 가져오기  : USER_NUM, USER_PW 
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
-		String userNum = Integer.toString(user.getUser_num());
-		//서비스로 비밀번호 변경 요청 전송
-		
-		return result;
+		String usernum = Integer.toString(user.getUser_num());
+		//기존 Map에 usernum 추가하기 
+		param.put("user_num", usernum);
+		//서비스로 비밀번호 변경 요청 전송, service는 int를 반환 
+		//0 : 변경 비밀번호 동일하지 않음
+		//1 : 비밀번호 변경 성공 
+		//2 : 비밀번호 변경 실패 
+		return service.passwordChange(param);
 	}
 	
 

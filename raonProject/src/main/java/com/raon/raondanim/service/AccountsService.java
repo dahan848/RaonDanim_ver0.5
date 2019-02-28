@@ -88,10 +88,38 @@ public class AccountsService {
 		}
 	}
 	
+	//사용자 비밀번호 반환 
+	public String getUserPass(String usernum) {
+		return dao.selectByUserNum(usernum).getUser_pw();
+	}
+	
 	//비밀번호 변경 ()
-	public boolean passwordChange(Map<String, Object> param, String usernum) {
+	public int passwordChange(Map<String, Object> param) {
+		System.out.println("서비스 전달 받은 MAP : " + param);
+		//반환 할 int 형 변수 선언 
+		int result;
 		
-		return false;
+		//전달 받은 Map 에서 필요한 데이터 변수에 참조
+		String user_pw = (String)param.get("user_pw"); //DB상 비밀번호 
+		String old_pw = (String)param.get("old_user_pw"); //화면에 입력한 기존 비밀번호 
+		String pw1 = (String)param.get("new_user_pw1"); //변경 비밀번호
+		String pw2 = (String)param.get("new_user_pw2"); //변경 비밀번호 확인
+		
+		if(pw1.equals(pw2)) {
+			System.out.println("새 비밀번호 동일");
+			if(user_pw.equals(old_pw)) {
+				//비밀번호 변경 성공
+				result = 1;
+				dao.passwordChange(param);
+			}else {
+				//입력한 현재 비밀번호가 틀렸을 때
+				result = 2;
+			}
+		}else {
+			//확인 비밀번호 틀림
+			result = 0;
+		}
+		return result;
 	}
 	
 	public User selectByUserId(String userid) {

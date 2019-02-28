@@ -16,7 +16,7 @@ public class User {
     //로그인 및 인증과 관련된 변수 
     private Date user_last_login_time; 
     private Date user_last_try_login_time; 
-    private int user_failure_cnt; //로그인 실패 회수
+    private int user_failure_count; //로그인 실패 회수
     private String user_verify_code; //이메일 인증키
     
     //회원의 상태 관련 변수 
@@ -24,7 +24,6 @@ public class User {
     private int user_profile_st; //추가 프로필 작성 유/무 default 0 (거짓)
     
     //추가 프로필 입력부
-    private String user_nick; 
     private String user_nation; 
     private String user_city; 
     private String user_phone_num; 
@@ -101,11 +100,11 @@ public class User {
 	public void setUser_last_try_login_time(Date user_last_try_login_time) {
 		this.user_last_try_login_time = user_last_try_login_time;
 	}
-	public int getUser_failure_cnt() {
-		return user_failure_cnt;
+	public int getUser_failure_count() {
+		return user_failure_count;
 	}
-	public void setUser_failure_cnt(int user_failure_cnt) {
-		this.user_failure_cnt = user_failure_cnt;
+	public void setUser_failure_count(int user_failure_count) {
+		this.user_failure_count = user_failure_count;
 	}
 	public String getUser_verify_code() {
 		return user_verify_code;
@@ -124,12 +123,6 @@ public class User {
 	}
 	public void setUser_profile_st(int user_profile_st) {
 		this.user_profile_st = user_profile_st;
-	}
-	public String getUser_nick() {
-		return user_nick;
-	}
-	public void setUser_nick(String user_nick) {
-		this.user_nick = user_nick;
 	}
 	public String getUser_nation() {
 		return user_nation;
@@ -204,9 +197,9 @@ public class User {
 		return "User [user_num=" + user_num + ", authority=" + authority + ", enabled=" + enabled + ", user_id="
 				+ user_id + ", user_pw=" + user_pw + ", user_fnm=" + user_fnm + ", user_lnm=" + user_lnm
 				+ ", user_reg_date=" + user_reg_date + ", user_last_login_time=" + user_last_login_time
-				+ ", user_last_try_login_time=" + user_last_try_login_time + ", user_failure_cnt=" + user_failure_cnt
+				+ ", user_last_try_login_time=" + user_last_try_login_time + ", user_failure_count=" + user_failure_count
 				+ ", user_verify_code=" + user_verify_code + ", user_email_verify=" + user_email_verify
-				+ ", user_profile_st=" + user_profile_st + ", user_nick=" + user_nick + ", user_nation=" + user_nation
+				+ ", user_profile_st=" + user_profile_st + ", user_nation=" + user_nation
 				+ ", user_city=" + user_city + ", user_phone_num=" + user_phone_num + ", user_intro=" + user_intro
 				+ ", user_accom_st=" + user_accom_st + ", user_birth_date=" + user_birth_date + ", user_gender="
 				+ user_gender + ", user_profile_pic=" + user_profile_pic + ", user_with_avg=" + user_with_avg
