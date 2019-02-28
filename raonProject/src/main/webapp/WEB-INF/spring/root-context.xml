@@ -9,14 +9,16 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	<!-- 서비스 패키지 스캔 -->
-	<context:component-scan base-package="com.raon.raondanim.service"/>
-
+	<context:component-scan
+		base-package="com.raon.raondanim.service" />
 	<!-- 오라클 접속 -->
 	<bean
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		id="dataSource">
-		<property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" name="driverClassName" />
-		<property value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
+		<property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
+			name="driverClassName" />
+		<property
+			value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
 		<property value="manzza" name="username" />
 		<property value="1099" name="password" />
 	</bean>
@@ -25,8 +27,10 @@
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
-		<property name="typeAliasesPackage" value="com.raon.raondanim.model"></property>
-		<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml" />
+		<property name="typeAliasesPackage"
+			value="com.raon.raondanim.model"></property>
+		<property name="mapperLocations"
+			value="classpath:mappers/**/*Mapper.xml" />
 	</bean>
 	<bean id="sqlSession"
 		class="org.mybatis.spring.SqlSessionTemplate"
@@ -64,16 +68,18 @@
 		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 		<property name="defaultLocale" value="ko"></property>
 	</bean>
-	
+
 	<!-- DAO 목록 -->
 	<bean id="userAuthDAO"
 		class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.raon.raondanim.dao.UserAuthDAO"></property>
+		<property name="mapperInterface"
+			value="com.raon.raondanim.dao.UserAuthDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
 	<bean id="accountsUserDAO"
 		class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.raon.raondanim.dao.AccountsUserDAO"></property>
+		<property name="mapperInterface"
+			value="com.raon.raondanim.dao.AccountsUserDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
 

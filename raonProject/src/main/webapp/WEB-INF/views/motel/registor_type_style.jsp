@@ -113,6 +113,7 @@
 </script>
 <style type="text/css">
 .registor_main {
+	padding-top : 9%;
 	background-repeat: no-reapt;
 	height: 700px;
 	width: 100%;
@@ -123,7 +124,7 @@
 
 .registor_contain {
 	margin : auto;
-	margin-top : 15%;
+/*  	margin-top : 15%;  */
 	background-position: center;
 	width: 60%;
 	height: 80%;
@@ -139,15 +140,15 @@
 #plus_minus{
 	font-size: 30px;
 }
-.btn_submit{
+.btn_next{
  background-image: url('${contextPath}/img/motel/next.jpg');
     background-position:  0px 0px;
     background-repeat: no-repeat;
     width: 50px;
     height: 45px;
     border: 0px;
- cursor:pointer;
- outline: 0;
+ 	cursor:pointer;
+ 	outline: 0;
  	margin-top : 10px;
  	float: right;
 }
@@ -164,14 +165,13 @@
 
 
 	<!-- 본문 -->
-	<div class="main-container" style="padding: 0 0 0 0">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container"
 				style="width: 100%; padding-left: 18%; padding-right: 18%;">
 				<!-- 이 부분에 자신의 페이지 넣기 -->
 				<div class="registor_main">
 					<div class="registor_contain">
-						<form action="registor_type_style" method="post" class="registor_form" onsubmit="return form_Check();">
+						<form action="registor_city_address" method="post" class="registor_form" onsubmit="return form_Check();">
 							<input type="hidden" value="${_csrf.token}" name="${_csrf.parameterName}">
 							<h5>숙소의 종류를 선택해 주세요.</h5>
 							<select name="motel_type" id="motel_type">
@@ -198,13 +198,13 @@
 							<a id="plus_minus" href='#' onclick='javascript_:bath_change(1);'><i class="fa fa-plus-circle"></i></a> <input
 								type='text' name='motel_bath' id="motel_bath" value='1' size='3' readonly> <a id="plus_minus"
 								href='#' onclick='javascript_:bath_change(-1);'><i class="fa fa-minus-circle" id="tt"></i></a><br>
-							<input type="submit" value="" class="btn_submit">
+							<input type="submit" value="" class="btn_next">
 						</form>
 					</div>
 				</div>
 			</div>
 		</section>
-	</div>
+
 	<!-- 본문 END-->
 
 	<!-- 인클루드-푸터 -->

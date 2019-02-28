@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/motel")
@@ -26,16 +27,39 @@ public class MotelController {
 		return "motel/registor_main";
 	}
 	
-	@RequestMapping("/write_registor_type_style")
+	@RequestMapping(value = "/write_registor_type_style", method = RequestMethod.GET)
 	public String registor_step1() {
 		System.out.println("숙소 등록 진입 ");
 		return "motel/registor_type_style";
 	}
-	@RequestMapping(value = "/registor_type_style", method = RequestMethod.POST)
+	
+	
+	@RequestMapping(value = "/registor_city_address", method = RequestMethod.POST)
 	public String registor_step2(@RequestParam Map<String, Object> param, Model model) {
 		System.out.println("step2 진입");
 		System.out.println(param);
 		model.addAttribute("registor", param);
+		return "motel/registor_city_address";
+	}
+	@RequestMapping(value="/registor_photo", method = RequestMethod.POST)
+	public String registor_city_address() {
+		
 		return "motel/registor_photo";
+	}
+	
+	@RequestMapping(value="/registor_intro", method = RequestMethod.POST)
+	public String registor_step4(@RequestParam Map<String, Object> param, Model model, MultipartFile cma_file,MultipartFile cma_file1) {
+		System.out.println("step4 진입");
+		System.out.println(param);
+		System.out.println("cma_file : " + cma_file);
+		System.out.println("cma_file1 : " + cma_file1);
+		
+		return "motel/registor_intro";
+	}
+	
+	@RequestMapping(value="/registor", method = RequestMethod.POST)
+	public String registor() {
+		System.out.println("registor5555");
+		return null;
 	}
 }

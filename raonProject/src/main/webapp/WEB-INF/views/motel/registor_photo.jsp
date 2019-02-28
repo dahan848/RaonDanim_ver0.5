@@ -4,22 +4,50 @@
 <html>
 <head>
 <meta charset="EUC-KR">
+<%-- <meta name="_csrf" content="${_csrf.token}"/> --%>
+<%-- <meta name="_csrf_header" content="${_csrf.headerName}"/> --%>
 <title>Insert title here</title>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-
 	function getThumbnailPrivew(html, $target) {
 		if (html.files && html.files[0]) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				$target.css('display', '');
-				//$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
-				$target
-						.html('<img src="' + e.target.result + '" border="0" alt="" height : "100%" />');
+				//$target.css('display', '');
+				//$('.filebox').css('background-image', 'url(\"' + e.target.result + '\")');
+				$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
+						
+ 				$target.css('background-repeat',"no-repeat");
+ 				$target.css('background-size',"contain");
+				//$(target).css('height','300px');
+				//$(target).css('width','500px');
+				// 				$(".label").text("");
+				/* $target
+						.html('<img src="' + e.target.result + '" border="0" alt="" height : "100%" />'); */
 			}
-			
+
+			reader.readAsDataURL(html.files[0]);
+		}
+	}
+	function getThumbnailPrivew1(html, $target) {
+		if (html.files && html.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				//$target.css('display', '');
+				//$('.filebox').css('background-image', 'url(\"' + e.target.result + '\")');
+				$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
+						
+ 				$target.css('background-repeat',"no-repeat");
+ 				$target.css('background-size',"contain");
+				//$(target).css('height','300px');
+				//$(target).css('width','500px');
+				// 				$(".label").text("");
+				/* $target
+						.html('<img src="' + e.target.result + '" border="0" alt="" height : "100%" />'); */
+			}
+
 			reader.readAsDataURL(html.files[0]);
 		}
 	}
@@ -38,9 +66,9 @@
 	border: 1px solid #c1bbbb;
 	border-bottom-color: #e2e2e2;
 	border-radius: .25em;
-	width: 100%;
-	height : 300px;
-	max-width: 100%;
+ 	width: 300px;   
+  	height: 300px;   
+  	max-width: 100%;  
 }
 
 .filebox input[type="file"] { /* 파일 필드 숨기기 */
@@ -52,6 +80,30 @@
 	overflow: hidden;
 	clip: rect(0, 0, 0, 0);
 	border: 0;
+}
+.btn_next{
+ background-image: url('${contextPath}/img/motel/next.jpg');
+    background-position:  0px 0px;
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 45px;
+    border: 0px;
+ 	cursor:pointer;
+ 	outline: 0;
+ 	margin-top : 10px;
+ 	float: right;
+}
+.btn_back{
+ background-image: url('${contextPath}/img/motel/back.jpg');
+    background-position:  0px 0px;
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 45px;
+    border: 0px;
+ 	cursor:pointer;
+ 	outline: 0;
+ 	margin-top : 10px;
+ 	float: left;
 }
 </style>
 </head>
@@ -71,15 +123,24 @@
 				<!-- 이 부분에 자신의 페이지 넣기 -->
 				<h3 style="text-align: center">게스트에게 보여줄 숙소의 사진을 등록하세요.(사진등록 5개
 					필수!!)</h3>
-				<form name="form" id="form" action="" method="post"
+				<form name="form" id="form" action="registor_intro" method="post"
 					enctype="multipart/form-data" autocomplete="off">
+					<input type="hidden" value="${_csrf.token}" name="${_csrf.parameterName}">
+					<input type="hidden" value="${registor}" name="registor_step1">
 					<div class="filebox">
-						<label for="cma_file" id="cma_image">사진 인증샷 업로드</label> <input
-							type="file" name="cma_file" id="cma_file" accept="image/*"
-							capture="camera"
+						<label for="cma_file" id="cma_image" >사진 인증샷
+							업로드</label> <input type="file" name="cma_file" id="cma_file"
+							accept="image/*" capture="camera"
 							onchange="getThumbnailPrivew(this,$('#cma_image'))" /> <br />
-						<br />
 					</div>
+					<div class="filebox">
+						<label for="cma_file1" id="cma_image1" >사진 인증샷
+							업로드</label> <input type="file" name="cma_file1" id="cma_file1"
+							accept="image/*" capture="camera"
+							onchange="getThumbnailPrivew1(this,$('#cma_image1'))" /> <br />
+					</div>
+					<input type="submit" value="" class="btn_next">
+					<input type="button" value= "" class="btn_back" onclick="history.back(-1);">
 				</form>
 			</div>
 		</section>
