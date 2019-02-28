@@ -16,7 +16,7 @@
 	<section id="section-authentication">
         <div class="container">
             <div class="form-block">
-                <img src="${contextPath}/img/logo-raon.png" alt="">
+                <img src="${contextPath}/img/home_logo-raon.png" alt="">
                 <form action="login" method="post"> <!-- 로그인 폼  -->
                 	<!-- 시큐리티 사용하기 위한 파라미터 (토큰) -->
                 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">

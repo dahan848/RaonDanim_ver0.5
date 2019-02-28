@@ -191,7 +191,7 @@
 									<div class="input-group">
 										<input type="password" class="form-control" value=""
 											readonly> <span class="input-group-btn"> <a
-											href="/accounts/password/change/" class="btn btn-default">변경하기</a>
+											href="${contextPath}/accounts/passwordchangeform" class="btn btn-default">변경하기</a>
 										</span>
 									</div>
 								</div>
