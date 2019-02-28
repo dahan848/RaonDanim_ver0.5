@@ -128,7 +128,7 @@ public class AccountsController {
 	@RequestMapping(value = "/personal" , method=RequestMethod.POST )
 	public boolean personal(Authentication authentication,@RequestParam Map<String, Object> param) {
 		//시큐리티 세션에 저장 된 현재 접속한 user 정보 가져오기 
-		System.out.println("컨트롤러 받은 MAP : " + param);
+		//System.out.println("컨트롤러 받은 MAP : " + param);
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		String userNum = Integer.toString(user.getUser_num());
 		//서비스 객체 이용해서 유저정보 (개인정보) 업데이트 하기
@@ -147,6 +147,21 @@ public class AccountsController {
 	@RequestMapping(value ="/passwordchangeform", method=RequestMethod.GET)
 	public String passwordChangeForm() {
 		return "accounts/password-change";
+	}
+	
+	//비밀번호 변경 요청 
+	@ResponseBody
+	@RequestMapping(value = "/passwordChange" , method=RequestMethod.POST )
+	public boolean passwordChange(Authentication authentication,@RequestParam Map<String, Object> param) {
+		System.out.println("비밀번호 변경 요청 받음");
+		//반환 할 boolean 변수 선언
+		boolean result = false;
+		//현재 로그인 한 사용자 정보 가져오기 
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		String userNum = Integer.toString(user.getUser_num());
+		//서비스로 비밀번호 변경 요청 전송
+		
+		return result;
 	}
 	
 

@@ -42,7 +42,7 @@
                     <hr>
                     <div class="form-link">
                         <a class="text-gray" href="#">비밀번호 찾기</a>
-                        <a class="text-gray" href="join.jsp">회원가입</a>
+                        <a class="text-gray" href="${contextPath}/accounts/signupForm">회원가입</a>
                     </div>
                 </form>
             </div>

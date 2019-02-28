@@ -10,4 +10,5 @@ public interface AccountsUserDAO {
 	public User selectByUserNum (String userNum);
 	public int email_verify (User user);
 	public int updatePersonal(Map<String, Object> param);
+	public int passwordChange(Map<String, Object> param);
 }

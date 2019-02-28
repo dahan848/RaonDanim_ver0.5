@@ -88,6 +88,12 @@ public class AccountsService {
 		}
 	}
 	
+	//비밀번호 변경 ()
+	public boolean passwordChange(Map<String, Object> param, String usernum) {
+		
+		return false;
+	}
+	
 	public User selectByUserId(String userid) {
 		return dao.selectByUserId(userid);
 	}
