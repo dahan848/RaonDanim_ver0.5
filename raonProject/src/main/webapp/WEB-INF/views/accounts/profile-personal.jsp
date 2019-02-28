@@ -27,16 +27,36 @@
     		var personal = $(this).serialize();
     		$.ajax({
     			url:"${contextPath}/accounts/personal",
+    			dataType : "json",
+    			type:"post",
     			data:personal,
-    			type:"get",
+                beforeSend : function(xhr)
+                {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                },
     			success:function(data){
-    				alert(data);
+    				if(data){
+        				swal({
+      					  text: "개인정보가 성공적으로 저장되었습니다.",
+      					  button: "확인",
+      					  confirmButtonColor: "#484848",
+      					}).then(function() {
+      						location.reload();
+      					});	
+    				}else{
+        				swal({
+        					  text: "개인정보가 저장에 실패하였습니다.",
+        					  button: "확인",
+        					  confirmButtonColor: "#484848",
+        					}).then(function() {
+        						location.reload();
+        					});	
+    				}
     			},
     		});
+    		return false;
     	});//submit END
-
      });//onLoad END
-
 	//생년월일 목록 만들기 함수	
     function setBirthday(birthday) { 
 		var toDay = new Date();
@@ -98,7 +118,8 @@
 					<img class="section-header-icon"
 						src="${contextPath}/img/accounts_Profile.png"> 개인정보 수정
 				</h3>
-				<form id="profile-personal-form" method="get" class="form-horizontal">
+				<form id="profile-personal-form" method="post" class="form-horizontal">
+<%-- 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"> --%>
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h3 class="panel-title">개인정보</h3>
@@ -124,10 +145,10 @@
 								<div class="col-sm-9">
 									<select class="form-control" id="id_gender" name="user_gender"
 										title="" required>
-										<option value=0 >---</option>
-										<option value=1 >남</option>										
-										<option value=2 >여</option>
-										<option value=3 >기타</option>
+										<option value=0 <c:if test="${user.user_gender eq '0' }">selected</c:if>>성별</option>
+										<option value=1 <c:if test="${user.user_gender eq '1' }">selected</c:if>>남</option>										
+										<option value=2 <c:if test="${user.user_gender eq '2' }">selected</c:if>>여</option>
+										<option value=3 <c:if test="${user.user_gender eq '3' }">selected</c:if>>기타</option>
 									</select>
 								</div>
 							</div>

@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -106,27 +107,26 @@ public class AccountsController {
 		String userId = user.getUser_id();
 		Map<String, Object> userInfo = service.getPersonalInfo(userId);
 		model.addAttribute("user",userInfo);
-		System.out.println("보낸 유저 맵  : " + userInfo);
 		return "accounts/profile-personal";
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/personal")
-	public String personal(Authentication authentication,@RequestParam Map<String, Object> param) {
-		System.out.println("받은 유저 맵 "+ param);
+	@RequestMapping(value = "/personal" , method=RequestMethod.POST )
+	public boolean personal(Authentication authentication,@RequestParam Map<String, Object> param) {
 		//시큐리티 세션에 저장 된 현재 접속한 user 정보 가져오기 
+		System.out.println("컨트롤러 받은 MAP : " + param);
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		String userNum = Integer.toString(user.getUser_num());
 		//서비스 객체 이용해서 유저정보 (개인정보) 업데이트 하기
-		String msg = "";
+		boolean result;
 		if(service.setPersonalInfo(param, userNum)) {
 			//업데이트 성공
-			msg = "업데이트 성공";
+			result = true;
 		}else {
 			//업데이트 실패
-			msg = "업데이트 실패";
+			result = false;
 		}
-		return "msg";
+		return result;
 	}
 	
 

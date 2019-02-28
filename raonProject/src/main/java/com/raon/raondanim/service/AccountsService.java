@@ -77,12 +77,11 @@ public class AccountsService {
 			java.sql.Date sqlDate = new java.sql.Date(result.getTime());
 			//인자로 받은 Map에 추가 정보 (생년월일) 넣어주기 
 			param.put("user_birth_date", sqlDate);
-			System.out.println("setPersonalInfo Map 확인 : " + param);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		//Dao 활용해서 유저 정보 업데이트 하기 및 결과 처리
-		if(dao.updatePersonal(param) > 1) {
+		if(dao.updatePersonal(param) > 0) {
 			return true; //업데이트 성공 
 		}else {
 			return false; //업데이트 실패 
