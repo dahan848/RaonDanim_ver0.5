@@ -29,6 +29,7 @@ public class customUserDetails implements UserDetails {
     private int user_email_verify; 	 // 이메일 인증유무
     private int user_profile_st;	 //추가 프로필 작성 유무 
     
+    private String user_nationality; //국적
     private String user_nation; //거주 국가
     private String user_city; 	//거주 도시
     private String user_phone_num; 	//전화번호 
@@ -254,19 +255,30 @@ public class customUserDetails implements UserDetails {
 		this.user_point = user_point;
 	}
 
-	
+	public String getUser_nationality() {
+		return user_nationality;
+	}
+
+	public void setUser_nationality(String user_nationality) {
+		this.user_nationality = user_nationality;
+	}
+
 	//toString
 	@Override
 	public String toString() {
 		return "customUserDetails [user_pw=" + user_pw + ", AUTHORITY=" + AUTHORITY + ", ENABLED=" + ENABLED + ", NAME="
 				+ NAME + ", user_num=" + user_num + ", user_id=" + user_id + ", user_fnm=" + user_fnm + ", user_lnm="
 				+ user_lnm + ", user_reg_date=" + user_reg_date + ", user_last_login_time=" + user_last_login_time
-				+ ", user_last_try_login_time=" + user_last_try_login_time + ", user_failure_count=" + user_failure_count
-				+ ", user_verify_code=" + user_verify_code + ", user_email_verify=" + user_email_verify
-				+ ", user_profile_st=" + user_profile_st +  ", user_nation=" + user_nation
-				+ ", user_city=" + user_city + ", user_phone_num=" + user_phone_num + ", user_accom_st=" + user_accom_st
-				+ ", user_birth_date=" + user_birth_date + ", user_gender=" + user_gender + ", user_profile_pic="
-				+ user_profile_pic + ", user_with_avg=" + user_with_avg + ", user_motel_avg=" + user_motel_avg
-				+ ", user_point=" + user_point + "]";
+				+ ", user_last_try_login_time=" + user_last_try_login_time + ", user_failure_count="
+				+ user_failure_count + ", user_verify_code=" + user_verify_code + ", user_email_verify="
+				+ user_email_verify + ", user_profile_st=" + user_profile_st + ", user_nationality=" + user_nationality
+				+ ", user_nation=" + user_nation + ", user_city=" + user_city + ", user_phone_num=" + user_phone_num
+				+ ", user_accom_st=" + user_accom_st + ", user_birth_date=" + user_birth_date + ", user_gender="
+				+ user_gender + ", user_profile_pic=" + user_profile_pic + ", user_with_avg=" + user_with_avg
+				+ ", user_motel_avg=" + user_motel_avg + ", user_point=" + user_point + "]";
 	}
+
+	
+	
+
 }

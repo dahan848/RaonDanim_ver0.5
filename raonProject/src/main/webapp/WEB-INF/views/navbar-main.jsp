@@ -62,7 +62,7 @@
 		        <sec:authentication property="principal.user_profile_pic" var="pic"/>
 		        <c:if test="${verify eq 1}"> <!-- 이메일 인증 사용자가 아니면 정보 안나오게 -->
 		        	<div class="profile-summary">
-		            	<a href="#">
+		            	<a href="${contextPath}/accounts/profile?user=${user_num}">
 		              		<c:choose>
 		              			<c:when test="${pic eq 'n'}">
 		              				<img src="${contextPath}/img/home_profile_2.jpg">

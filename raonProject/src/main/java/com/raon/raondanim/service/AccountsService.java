@@ -29,6 +29,32 @@ public class AccountsService {
 	private AccountsUserDAO dao;
 	private User user;
 	
+	//프로필 화면에 넘길 데이터 (Map) 반환하는 서비스
+	public Map<String, Object> getProfileData(int usernum){
+		//반환 할 Map 선언
+		Map<String, Object> result = new HashMap<String, Object>();
+		//인자로 받은 int 타입 usernum 형 변환 
+		String userNum = Integer.toString(usernum);
+		//Dao를 이용 한 해당 유저 선택 
+		user = dao.selectByUserNum(userNum);
+		//name 만들기 
+		String user_name = user.getUser_lnm() + user.getUser_fnm(); 
+		//반환 할 Map에 필요한 데이터 입력 
+		result.put("name", user_name); 			 						//이름
+		//작성X															//거주지역 : 패스
+		result.put("gender", user.getUser_gender()); 					//성별
+		//result.put("last_login_time", user.getUser_last_login_time());//마지막 로그인 시간 : 따로 메서드로 구해야 됨.
+		result.put("with_avg", user.getUser_with_avg());				//후기 평점
+		result.put("motel_avg", user.getUser_motel_avg());				//숙소 평점
+		//result.put("age", value)										//나이 : 따로 메서드로 구해야 됨.
+		//작성X															//좋아하는 것 : 테이블 조인 해서 얻어와야 함
+		//작성X															//사용가능 언어 : 테이블 조인 해서 얻어와야 함
+		result.put("nationality", user.getUser_nationality());			//국적
+		//나와의 거리 														//노답...
+		result.put("accom_st", user.getUser_accom_st());				//숙박가능 여부 : 불가0, 가능1, 무료2, 유료3
+		return result;
+	}
+	
 	//개인정보 수정 페이지에 출력 될 데이터 (Map) 반환하는 서비스 
 	public Map<String, Object> getPersonalInfo(String userId){
 		Map<String, Object> userInfo = new HashMap<String, Object>();

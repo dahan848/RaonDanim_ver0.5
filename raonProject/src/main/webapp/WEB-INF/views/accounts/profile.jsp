@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!-- 스프링 시큐리티 taglib -->
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<!-- 스프링 시큐리티 taglib 이용 로그인 된 사용자 user_num 변수에 담기 -->
+<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal.user_num" var="user_num"/>
+</sec:authorize>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +28,10 @@
 			<h3 class="section-title">
 				<img class="section-header-icon" src="../img/Profile.png" alt="">
             		 나의 프로필
+            	<!-- 자신의 페이지 일 때만 [프로필 수정]버튼 보임 -->
+				<c:if test="${user }">
                 <a href="#" class="btn btn-potluck pull-right">프로필 수정</a>
+                </c:if>
 			</h3>
 			<section id="section-user-detail"> <!-- 프로필 section -->
 				<div class="user-info"> <!-- 상단 사진, 기본정보 출력 되는 부분 -->
@@ -55,13 +67,11 @@
 					</div><!-- 유저 이미지 영역 END -->
 
 					<div class="user-profile"> <!-- 유저 기본 정보 영역 -->
-						<a href="/accounts/users/1705" class="img-profile-container">
+						<a href="#" class="img-profile-container">
 							<!-- 유저 프로필 사진 -->
 					        <img src="../img/profile_2.jpg" class="img-circle img-avatar">
-					        <!-- 유저 국가 사진 -->
-					        <img class="img-flag" src="../img/KR.png" alt="">
 				   		</a>
-				        <h4>dahan han (manzza)</h4>	<!-- 이름, 닉네임 -->
+				        <h4>dahan han (manzza)</h4>	<!-- 이름  -->
 					    <p class="mb-0">Seoul, South Korea</p> <!-- 도시, 국가 -->
 				   		<p>
 				     	  기타
@@ -71,11 +81,11 @@
                    		<div class="row">
                         	<div class="col-xs-6">
                             	<div class="friends-count"><i class="ion ion-ios-heart"></i> 0</div>
-                            	<small>교류 수</small> <!-- 교류 회원 수 -->
+                            	<small>숙박평점</small> <!-- 숙박평점 -->
                        		</div>
                         	<div class="col-xs-6">
                             	<div class="friends-count"><i class="ion ion-android-person"></i> 0</div>
-                            		<small>라온다님 친구</small>	<!-- 친구 수 -->
+                            		<small>후기평점</small>	<!-- 후기평점 -->
                         	</div>
                     	</div>
 					</div> <!-- 유저기본 정보 영역 END -->

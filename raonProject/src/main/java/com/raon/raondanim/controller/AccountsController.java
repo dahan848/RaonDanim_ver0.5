@@ -84,8 +84,12 @@ public class AccountsController {
 	}
 	
 	//프로필 화면 요청 
-	public String profile() {
-		return "";
+	@RequestMapping("/profile")
+	public String profile(Model model, @RequestParam(value="user") int userNum) {
+		service.getProfileData(userNum);
+		
+		model.addAttribute("userNum", userNum);
+		return "accounts/profile";
 	}
 	
 	//프로필 수정 화면 1

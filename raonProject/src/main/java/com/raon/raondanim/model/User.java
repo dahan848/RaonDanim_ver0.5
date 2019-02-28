@@ -24,6 +24,7 @@ public class User {
     private int user_profile_st; //추가 프로필 작성 유/무 default 0 (거짓)
     
     //추가 프로필 입력부
+    private String user_nationality; //국적
     private String user_nation; 
     private String user_city; 
     private String user_phone_num; 
@@ -190,25 +191,25 @@ public class User {
 	public void setUser_point(int user_point) {
 		this.user_point = user_point;
 	}
-	
+	public String getUser_nationality() {
+		return user_nationality;
+	}
+	public void setUser_nationality(String user_nationality) {
+		this.user_nationality = user_nationality;
+	}
 	//toString
 	@Override
 	public String toString() {
 		return "User [user_num=" + user_num + ", authority=" + authority + ", enabled=" + enabled + ", user_id="
 				+ user_id + ", user_pw=" + user_pw + ", user_fnm=" + user_fnm + ", user_lnm=" + user_lnm
 				+ ", user_reg_date=" + user_reg_date + ", user_last_login_time=" + user_last_login_time
-				+ ", user_last_try_login_time=" + user_last_try_login_time + ", user_failure_count=" + user_failure_count
-				+ ", user_verify_code=" + user_verify_code + ", user_email_verify=" + user_email_verify
-				+ ", user_profile_st=" + user_profile_st + ", user_nation=" + user_nation
-				+ ", user_city=" + user_city + ", user_phone_num=" + user_phone_num + ", user_intro=" + user_intro
-				+ ", user_accom_st=" + user_accom_st + ", user_birth_date=" + user_birth_date + ", user_gender="
-				+ user_gender + ", user_profile_pic=" + user_profile_pic + ", user_with_avg=" + user_with_avg
-				+ ", user_motel_avg=" + user_motel_avg + ", user_point=" + user_point + "]";
+				+ ", user_last_try_login_time=" + user_last_try_login_time + ", user_failure_count="
+				+ user_failure_count + ", user_verify_code=" + user_verify_code + ", user_email_verify="
+				+ user_email_verify + ", user_profile_st=" + user_profile_st + ", user_nationality=" + user_nationality
+				+ ", user_nation=" + user_nation + ", user_city=" + user_city + ", user_phone_num=" + user_phone_num
+				+ ", user_intro=" + user_intro + ", user_accom_st=" + user_accom_st + ", user_birth_date="
+				+ user_birth_date + ", user_gender=" + user_gender + ", user_profile_pic=" + user_profile_pic
+				+ ", user_with_avg=" + user_with_avg + ", user_motel_avg=" + user_motel_avg + ", user_point="
+				+ user_point + "]";
 	}
-    
-	
-	
-	
-	
-    
 }
