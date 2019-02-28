@@ -75,9 +75,9 @@ public class AccountsService {
 			Date result = transFormat.parse(birthDay);
 			//sql.Date 타입으로 변환 
 			java.sql.Date sqlDate = new java.sql.Date(result.getTime());
-			System.out.println("sqlDate : " + sqlDate);
 			//인자로 받은 Map에 추가 정보 (생년월일) 넣어주기 
 			param.put("user_birth_date", sqlDate);
+			System.out.println("setPersonalInfo Map 확인 : " + param);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
