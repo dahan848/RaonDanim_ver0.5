@@ -418,7 +418,7 @@ th{
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Modal Header</h4>
         </div>
-        <div class="modal-body" id="replyModalBody">
+        <div class="modal-body" id="declarationModalBody">
           <p>신고모달</p>
         </div>
         <div class="modal-footer">
@@ -445,12 +445,23 @@ th{
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Modal Header</h4>
         </div>
-        <div class="modal-body" id="replyModalBody">
-          <p>수정모달부분</p>
+        <form action="#" method="post">
+        <div class="modal-body" id="deleteModalBody">
+           
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			    <div class="form-group">
+			      <label for="pwd">비밀번호:</label>
+			      <input type="password" class="form-control" id="USER_PWCHECK" placeholder="비밀번호를 입력해주세요." name="USER_PWCHECK">
+			    </div>
+			
+			 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-danger" value="확인">
+          <button type="button" class="btn btn-info" data-dismiss="modal">닫기</button>
         </div>
+           
+	 </form>
       </div>
       
     </div>
@@ -470,14 +481,25 @@ th{
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">비밀번호 확인</h4>
         </div>
-        <div class="modal-body" id="replyModalBody">
-          <p>삭제모달부분</p>
+        <form action="#" method="post">
+        <div class="modal-body" id="deleteModalBody">
+           
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			    <div class="form-group">
+			      <label for="pwd">비밀번호:</label>
+			      <input type="password" class="form-control" id="USER_PWCHECK" placeholder="비밀번호를 입력해주세요." name="USER_PWCHECK">
+			    </div>
+			
+			 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-danger" value="확인">
+          <button type="button" class="btn btn-info" data-dismiss="modal">닫기</button>
         </div>
+           
+	 </form>
       </div>
       
     </div>
