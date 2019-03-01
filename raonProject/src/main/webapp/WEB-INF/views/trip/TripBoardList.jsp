@@ -166,7 +166,7 @@
 							<td><c:if test="${list.USER_PROFILE_PIC=='n'}">
 									<img alt="프로필이미지" src="${contextPath}/img/trip_Profile.png">
 								</c:if></td>
-							<td>${list.USER_NICK}</td>
+							<td>${list.USER_LNM}${list.USER_FNM}</td>
 							<td>
 								<a href="view?boardKey=${list.TRIP_BOARD_KEY}&userNum=${list.USER_NUM}">${list.TRIP_BOARD_TITLE}</a>
 							</td>

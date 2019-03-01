@@ -80,7 +80,8 @@ from (select
                rownum as r,
                TRIP_BOARD_KEY,
                USER_NUM,
-               user_nick,
+               USER_FNM,
+               USER_LNM,
                USER_PROFILE_PIC,
                TRIP_BOARD_TITLE,
                TRIP_BOARD_COUNTENT,
@@ -91,7 +92,8 @@ from (select
                TRIP_BOARD_ST
         from (select    b.TRIP_BOARD_KEY,
                         u.USER_NUM,
-                        nvl(u.USER_NICK,'noname') as user_nick,
+                        u.USER_FNM,
+                        u.USER_LNM,
                         u.USER_PROFILE_PIC,
                         b.TRIP_BOARD_TITLE,
                         b.TRIP_BOARD_COUNTENT,
@@ -113,11 +115,15 @@ from (select
                         	or b.TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
                         </if>
                          <if test="userNick!=null">
-                        	or u.user_nick like ('%${userNick}%')
+                        	<!-- or u.user_nick like ('%${userNick}%') -->
+                        	or 1 = 1
                         </if>
                         <if test="type==0">
                         	or 1 = 1
                         </if>
+                       <!--이부분 수정 삭제를 위해 쿼리 수정함 리스트 안뽑히면 아마 이거 때문 -->
+						and TRIP_BOARD_ST = 0
+					   <!--이부분 수정 삭제를 위해 쿼리 수정함  -->
                         order by b.TRIP_BOARD_KEY desc ))
 where r between #{start} and #{end} 
 
@@ -140,12 +146,15 @@ or TRIP_BOARD_START = to_date(#{tripStart},'yyyy/MM/dd')
  or TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
 </if>
 <if test="userNick!=null">
-  or user_nick like ('%${userNick}%')
+ <!--  or user_nick like ('%${userNick}%') -->
+ or 1 = 1
 </if>
 <if test="type==0">
    or 1 = 1
 </if>
-
+<!--이부분 수정 삭제를 위해 쿼리 수정함 리스트 안뽑히면 아마 이거 때문 -->
+and TRIP_BOARD_ST = 0
+<!--이부분 수정 삭제를 위해 쿼리 수정함  -->
 </select>
 
 <!--도시 테이블 메소드  -->
@@ -220,7 +229,8 @@ SELECT  B.TRIP_BOARD_KEY,
         U.USER_NUM,
         U.USER_ID,
         U.USER_PW,
-        NVL(U.USER_NICK,'NO NAME') AS USER_NICK,
+      	U.USER_FNM,
+      	U.USER_LNM,
         B.TRIP_BOARD_TITLE,
         B.TRIP_BOARD_COUNTENT,
         B.TRIP_BOARD_START,
@@ -231,6 +241,7 @@ SELECT  B.TRIP_BOARD_KEY,
 FROM TRIP_BOARD_TB B JOIN USER_TB U
 ON B.USER_NUM =U.USER_NUM
 WHERE B.TRIP_BOARD_KEY = #{num}
+
 
 </select>
 <select id="getTripBoardCityOneInfo" parameterType="int" resultType="map">
@@ -243,5 +254,34 @@ FROM TRIP_REL_TB R JOIN TRIP_CITY_TB C
 ON R.TRIP_CITY_KEY =C.TRIP_CITY_KEY
 WHERE R.TRIP_BOARD_KEY = #{num}
 </select>
+
+
+<update id="updateBoard"></update>
+<update id="updateCity"></update>
+
+<!--놋북이랑 디비가 좀달라서 일단 쿼리만 짜놓음  -->
+<update id="deleteBoard" parameterType="int">
+UPDATE TRIP_BOARD_TB
+SET TRIP_BOARD_ST = 1
+WHERE TRIP_BOARD_KEY = #{num}
+</update>
+
+<update id="deleteCity" parameterType="int">
+update TRIP_CITY_TB
+set TRIP_CITY_ST = 1
+where TRIP_CITY_KEY = #{num}
+
+</update>
+
+<update id="deleteRel" parameterType="int">
+update TRIP_REL_TB
+SET REL_ST = 1
+where TRIP_BOARD_KEY = #{num}
+
+
+</update>
+
+
+
 
 </mapper>

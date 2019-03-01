@@ -286,7 +286,7 @@ th{
 				 				<th>
 				 					<img src="${contextPath}/img/trip_Profile.png" width="30px;">
 				 					&nbsp;&nbsp;
-				 					<span>${boardInfo.USER_NICK}</span>
+				 					<span>${boardInfo.USER_LNM}${boardInfo.USER_FNM}</span>
 				 					
 				 				</th>
 				 			</tr>
