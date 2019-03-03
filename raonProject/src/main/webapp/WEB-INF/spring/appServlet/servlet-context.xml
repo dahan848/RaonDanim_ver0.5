@@ -27,6 +27,4 @@
 	<!-- 컨틑롤로 패키지 스캔 -->
 	<context:component-scan base-package="com.raon.raondanim" />
 	
-	
-	
 </beans:beans>

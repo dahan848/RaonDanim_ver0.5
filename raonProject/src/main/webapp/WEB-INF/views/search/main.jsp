@@ -193,9 +193,11 @@
 						
 					</div>
 				</form>
+				<!-- 상단 검색 섹션 END -->
 				
 				<!-- 회원 정보 -->
 				<div class="row">
+				<c:forEach items="${userList}" var="user">
 					<div class="col-md-4 col-sm-6">
 						<div class="item-cover item-cover-sm">
 								
@@ -210,32 +212,52 @@
 							</div>
 							
 							<!-- 닉네임 -->
-							<h4 class="profile-name">Joseph</h4>
+							<h4 class="profile-name">${user.USER_LNM} ${user.USER_FNM }</h4>
 							
 							<!-- 거주도시 -->
-							<p class="profile-city">거주도시: Seoul</p>
+							<p class="profile-city">거주도시: ${user.USER_CITY}</p>
 							
 							<hr>
 							
 							<!-- 관심사 -->
 							<div class="cover-tags cover-tags-properties">
-								<span class="label label-default">운동</span>
-								<span class="label label-default">농구</span>
-								<span class="label label-default">축구</span>
+								<span class="label label-default">${user.INTEREST}</span>
 							</div>
 							
 							<!-- 희망 여행도시 -->
 							<div class="cover-tags cover-tags-certification">
-								<span class="label label-violet label-orange label-gray label-mint label-skyblue label-pink">Seoul</span>
+								<span class="label label-violet label-orange label-gray label-mint label-skyblue label-pink">${user.HOPECITY }</span>
 							</div>
 						</div>
 					</div>
+					</c:forEach>
 				</div>
 				<!-- 회원 정보 END -->
 				
+				<!-- 페이징 처리 -->
+				<div class="text-center">
+							<c:if test="${startPage != 1}">
+								<a href="userList?page=1">[처음]</a>
+								<a href="userList?page=${startPage-1}">[이전]</a>
+							</c:if>
+							<c:forEach var="pageNum" begin="${startPage}" end="${endPage < totalPage ? endPage : totalPage }">
+								<c:choose>
+									<c:when test="${pageNum == page}">
+										<b>[${pageNum}]</b>
+									</c:when>
+									<c:otherwise>
+										<a href="userList?page=${pageNum}">[${pageNum}]</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<c:if test="${totalPage > endPage}">
+								<a href="userList?page=${endPage+1}">[다음]</a>
+								<a href="userList?page=${totalPage}">[마지막]</a>
+							</c:if>
+				</div>
+			</div>
 		</section>
 	</div>
-	<!-- 상단 검색 섹션 END -->
 	
 	<!-- 조건검색시 텍스트 변환 자바스크립트 -->
 	<script src="${contextPath}/js/search-detail.js"></script>
