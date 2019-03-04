@@ -34,8 +34,8 @@
 		
 		
 //숙박 인원 방 개수 욕실 개수 제한 스크립트
-	function personnel_change(num) {
-		var x = $('#motel_personnel').val();
+	function people_change(num) {
+		var x = $('#motel_people').val();
 		var y = Number(x) + num;
 		
 		if (y < 1){
@@ -57,7 +57,7 @@
 	            })
 			return false;
 		}
-		$('#motel_personnel').val(y);
+		$('#motel_people').val(y);
 		return false;
 	}
 	function room_change(num) {
@@ -85,8 +85,8 @@
 		$('#motel_room').val(y);
 		return false;
 	}
-	function bath_change(num) {
-		var x = $('#motel_bath').val();
+	function bathroom_change(num) {
+		var x = $('#motel_bathroom').val();
 		var y = Number(x) + num;
 		if (y < 1){
 			y = 1;
@@ -107,7 +107,7 @@
 	            })
 			return false;
 		}
-		$('#motel_bath').val(y);
+		$('#motel_bathroom').val(y);
 		return false;
 	}	
 </script>
@@ -168,7 +168,7 @@
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container"
 				style="width: 100%; padding-left: 18%; padding-right: 18%;">
-				<!-- 이 부분에 자신의 페이지 넣기 -->
+				<!-- 이 부분에 자신의 페이지 넣기 -->	
 				<div class="registor_main">
 					<div class="registor_contain">
 						<form action="registor_city_address" method="post" class="registor_form" onsubmit="return form_Check();">
@@ -187,16 +187,16 @@
 								<option value="2">개인실</option>
 							</select><br>
 							<h5>숙소의 최대 숙박 인원을 선택해 주세요.(최대 15명)</h5>
-							<a id="plus_minus" href='#' onclick='javascript_:personnel_change(1);'><i class="fa fa-plus-circle" id="tt"></i></a> <input
-								type='text' name='motel_personnel' id="motel_personnel" value='1' size='3' readonly> <a id="plus_minus"
+							<a id="plus_minus" href='#' onclick='javascript_:people_change(1);'><i class="fa fa-plus-circle" id="tt"></i></a> <input
+								type='text' name='motel_people' id="motel_people" value='1' size='3' readonly> <a id="plus_minus"
 								href='#' onclick='javascript_:personnel_change(-1);'><i class="fa fa-minus-circle" id="tt"></i></a>
-							<h5>게스트가 사용할 수 있는 침대의 개수를 선택해 주세요.(최대 5개)</h5>
+							<h5>게스트가 사용할 수 있는 방의 개수를 선택해 주세요.(최대 5개)</h5>
 							<a id="plus_minus" href='#' onclick='javascript_:room_change(1);'><i class="fa fa-plus-circle"></i></a> <input
 								type='text' name='motel_room' id="motel_room" value='1' size='3' readonly> <a id="plus_minus"
 								href='#' onclick='javascript_:room_change(-1);'><i class="fa fa-minus-circle" id="tt"></i></a>
 							<h5>게스트가 사용할 수 있는 욕실의 개수를 선택해 주세요.(최대 5개)</h5>
-							<a id="plus_minus" href='#' onclick='javascript_:bath_change(1);'><i class="fa fa-plus-circle"></i></a> <input
-								type='text' name='motel_bath' id="motel_bath" value='1' size='3' readonly> <a id="plus_minus"
+							<a id="plus_minus" href='#' onclick='javascript_:bathroom_change(1);'><i class="fa fa-plus-circle"></i></a> <input
+								type='text' name='motel_bathroom' id="motel_bathroom" value='1' size='3' readonly> <a id="plus_minus"
 								href='#' onclick='javascript_:bath_change(-1);'><i class="fa fa-minus-circle" id="tt"></i></a><br>
 							<input type="submit" value="" class="btn_next">
 						</form>

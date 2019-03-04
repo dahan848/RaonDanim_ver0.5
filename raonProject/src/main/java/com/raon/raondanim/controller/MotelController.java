@@ -1,5 +1,6 @@
 package com.raon.raondanim.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -35,15 +36,21 @@ public class MotelController {
 	
 	
 	@RequestMapping(value = "/registor_city_address", method = RequestMethod.POST)
-	public String registor_step2(@RequestParam Map<String, Object> param, Model model) {
+	public String registor_step2(@RequestParam Map<String, Object> param, Model model) throws Exception {
 		System.out.println("step2 진입");
 		System.out.println(param);
-		model.addAttribute("registor", param);
+		model.addAttribute("motel_type", param.get("motel_type"));
+		model.addAttribute("motel_category", param.get("motel_category"));
+		model.addAttribute("motel_people", param.get("motel_people"));
+		model.addAttribute("motel_room", param.get("motel_room"));
+		model.addAttribute("motel_bath", param.get("motel_bathroom"));
 		return "motel/registor_city_address";
 	}
 	@RequestMapping(value="/registor_photo", method = RequestMethod.POST)
-	public String registor_city_address() {
-		
+	public String registor_step3(@RequestParam Map<String, Object> param, Model model) {
+		System.out.println("setp3  진입");
+		System.out.println(param);
+		model.addAttribute("registor", param);
 		return "motel/registor_photo";
 	}
 	
@@ -51,15 +58,17 @@ public class MotelController {
 	public String registor_step4(@RequestParam Map<String, Object> param, Model model, MultipartFile cma_file,MultipartFile cma_file1) {
 		System.out.println("step4 진입");
 		System.out.println(param);
+		model.addAttribute("registor", param);
 		System.out.println("cma_file : " + cma_file);
 		System.out.println("cma_file1 : " + cma_file1);
 		
 		return "motel/registor_intro";
 	}
 	
-	@RequestMapping(value="/registor", method = RequestMethod.POST)
-	public String registor() {
-		System.out.println("registor5555");
-		return null;
+	@RequestMapping(value="/registor_complete", method = RequestMethod.POST)
+	public String registor_complete(@RequestParam Map<String, Object> param, Model model) {
+		System.out.println("registor_complete 진입");
+		System.out.println(param);
+		return "motel/test";
 	}
 }

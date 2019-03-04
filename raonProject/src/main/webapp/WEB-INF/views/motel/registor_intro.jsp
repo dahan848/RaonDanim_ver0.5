@@ -40,7 +40,7 @@ textarea{
  	outline: 0;
  	margin-top : 10px;
  	float: right;
- 	margin-right: 15%;
+/*  	margin-right: 15%; */
 }
 .btn_back{
  background-image: url('${contextPath}/img/motel/back.jpg');
@@ -55,9 +55,13 @@ textarea{
  	float: left;
  	
 }
+.form{
+	margin-left: 10%;
+	margin-right: 10%;
+}
 </style>
 </head>
-<body>
+<body>${registor }
 	<!-- 인클루드 심플 헤더 -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
@@ -72,22 +76,25 @@ textarea{
 			<div class="container">
 			<!-- 이 부분에 자신의 페이지 넣기 -->
 				<div class="registor_main">
-					<form action="registor" method="post" onsubmit="return form_Check();">
+					<form action="registor_complete" method="post" class="form" onsubmit="return form_Check();">
 					<input type="hidden" value="${_csrf.token}" name="${_csrf.parameterName}">
-						<h3>
+					<input type="hidden" value="${registor }" name="motel_info">
+						<h4>
 							숙소에 대한 소개를 남겨 주세요.<br>
-						</h3>
+						</h4>
 						<textarea name="motel_intro" rows="10" cols="100"></textarea>
-						<h3>
+						<h4>
 							숙소 등록을 위한 제목을 남겨 주세요.<br>
-						</h3>
-						<input type="text">
-						<h3>
+						</h4>
+						<input type="text" style="width:725px;">
+						<h4>
 							숙소의 요금을 설정해 주세요.(설정하지 않을 경우 게스트가 무료로 이용 가능합니다.)<br>			
-						</h3>
-						<input type="text">
-						<input type="submit" value="" class="btn_next">
-						<input type="button" value= "" class="btn_back" onclick="history.back(-1);">
+						</h4>
+						<input type="text" style="width:725px;">
+						<div>
+							<input type="submit" value="" class="btn_next">
+							<input type="button" value= "" class="btn_back" onclick="history.back(-1);">
+						</div>
 					</form>
 				</div>
 			</div>
