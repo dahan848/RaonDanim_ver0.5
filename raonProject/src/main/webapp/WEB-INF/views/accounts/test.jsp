@@ -20,9 +20,8 @@
 	});
 
 </script>
-
 </head>
 <body>
-
+더미 데이터 생성 완료
 </body>
 </html>

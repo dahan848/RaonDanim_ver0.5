@@ -175,5 +175,13 @@ public class AccountsController {
 		return service.passwordChange(param);
 	}
 	
+	///////더미 데이터(유저) 생성 요청
+	@RequestMapping("/dnmmyData")
+	public String dnmmyData() {
+		service.setDnmmyData();
+		System.out.println("=============더미데이터 생성완료============");
+		return "";
+	}
+	
 
 }

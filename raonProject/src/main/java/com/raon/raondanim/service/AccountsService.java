@@ -32,6 +32,18 @@ public class AccountsService {
 	private AccountsUserDAO dao;
 	private User user;
 	
+	//더미 사용자 데이터 생성 서비스
+	public void setDnmmyData() {
+		for(int i = 0 ; i<50 ; i++) {
+			user = new User();
+			user.setUser_id("test@" + i);
+			user.setUser_pw("1");
+			user.setUser_fnm("스트" + i);
+			user.setUser_lnm("테" + i);
+			dao.setDnmmyData(user);
+		}
+	}
+	
 	//프로필 화면에 넘길 데이터 (Map) 반환하는 서비스
 	public Map<String, Object> getProfileData(int usernum){
 		//반환 할 Map 선언

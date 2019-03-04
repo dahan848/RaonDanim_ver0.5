@@ -61,146 +61,147 @@
         </div>
     </section> <!-- 중단 : 각 도시 별 친구 END -->
     
-    <section id="section-members"> <!-- 하단 : 현재 가입된 회원 목록 -->
+    <!-- 하단 : 현재 가입된 회원 목록 -->
+    <section id="section-members">
         <div class="container">
             <h3 class="h3-title text-center">
-					라온다님 회원을 만나보세요!
+                <img class="section-header-icon" src="${contextPath}/img/accounts_Chart.png" alt=""> 라온다님 회원을 만나보세요!
             </h3>
             <div class="row mt-50 mb-30">
                 <div class="col-sm-6">
                     <h3 class="h3-sub-title text-center">
-                        	현지친구
+                        <img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt=""> 현지친구
                     </h3>
                     <a href="/accounts/profiles/" class="badge badge-gray">+더보기</a>
                     <div class="row row-p5 mb-20">
-                        
+                        	<!-- 12개의 유저 목록을 반복문으로 그려줌 (랜덤하게) -->
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/1.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/2.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/3.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/4.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/5.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/6.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/7.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/8.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/9.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/10.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/11.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny.jpg">
+                                        /static/potluck/img/pages/landing/locals/12.jpg">
                             </div>
                         
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <h3 class="h3-sub-title text-center">
-                        	 여행자
+                        <img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt=""> 여행자
                     </h3>
                     <a href="/accounts/profiles/" class="badge badge-gray">+더보기</a>
                     <div class="row row-p5 mb-20">
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/1.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/2.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/3.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/4.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/5.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/6.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/7.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/8.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/9.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/10.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/11.jpg">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
                                 <img class="img-circle" src="
-                                        ../img/duny002.jpg">
+                                        /static/potluck/img/pages/landing/traveler/12.jpg">
                             </div>
                         
                     </div>

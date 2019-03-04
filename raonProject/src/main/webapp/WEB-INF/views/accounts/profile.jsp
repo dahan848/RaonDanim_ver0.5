@@ -70,7 +70,7 @@
 						<a href="#" class="img-profile-container">
 							<!-- 유저 프로필 사진 -->
     		              	<c:choose>
-		              			<c:when test="${profile eq 'n'}">
+		              			<c:when test="${user.profile eq 'n'}">
 		              				<img src="${contextPath}/img/home_profile_2.jpg" class="img-circle img-avatar">
 		              			</c:when>
 		              			<c:otherwise>

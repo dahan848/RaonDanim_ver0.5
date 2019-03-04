@@ -3,6 +3,19 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.raon.raondanim.dao.AccountsUserDAO">
+	<insert id="setDnmmyData" parameterType="User">
+	INSERT INTO USER_TB
+			   (USER_NUM, USER_ID, USER_PW, USER_FNM, USER_LNM, USER_EMAIL_VERIFY , USER_REG_DATE)
+		VALUES (
+				USER_TB001_SEQ.nextval,
+				#{user_id},
+				#{user_pw},
+				#{user_fnm},
+				#{user_lnm},
+				1,
+				sysdate
+				)
+	</insert>
 	<insert id="joinUser" parameterType="User">
 		INSERT INTO USER_TB
 			   (USER_NUM, USER_ID, USER_PW, USER_FNM, USER_LNM, USER_VERIFY_CODE, USER_REG_DATE)
@@ -69,5 +82,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 where NATIONALITY_NUM = (select USER_NATIONALITY
                            			from user_tb
                           		   where user_num = #{usernum})
+	</select>
+	<select id="getHomeUserList" resultType="map">
+		select user_num, user_profile_pic, user_lnm, user_fnm
+  		  from user_tb
 	</select>
 </mapper>
