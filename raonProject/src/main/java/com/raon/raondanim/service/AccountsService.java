@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -33,22 +35,37 @@ public class AccountsService {
 	public Map<String, Object> getProfileData(int usernum){
 		//반환 할 Map 선언
 		Map<String, Object> result = new HashMap<String, Object>();
-		//인자로 받은 int 타입 usernum 형 변환 
+		//인자로 받은 int 타입 usernum String으로 형 변환 
 		String userNum = Integer.toString(usernum);
 		//Dao를 이용 한 해당 유저 선택 
 		user = dao.selectByUserNum(userNum);
+		
 		//name 만들기 
 		String user_name = user.getUser_lnm() + user.getUser_fnm(); 
+		//마지막 로그인 시간 구하기 및 변수에 참조 
+		Long lastLogin = getUserLastLoginTime(user.getUser_last_login_time());
+		//나이 구하기 (if문으로 간단 예외처리)
+		int age;
+		if(user.getUser_birth_date() != null) {
+			age = getAgeFromBirthday(user.getUser_birth_date());
+		}else {
+			age = 0;
+		}
+		//관심사(좋아 하는 것)
+		Map<String, Object> interest = dao.getUserInterest(userNum);
+		//사용가능 언어 
+		Map<String, Object> language = dao.getUserLanguage(userNum);
+		
 		//반환 할 Map에 필요한 데이터 입력 
 		result.put("name", user_name); 			 						//이름
 		//작성X															//거주지역 : 패스
 		result.put("gender", user.getUser_gender()); 					//성별
-		//result.put("last_login_time", user.getUser_last_login_time());//마지막 로그인 시간 : 따로 메서드로 구해야 됨.
+		result.put("last_login_time", lastLogin);						//마지막 로그인 시간
 		result.put("with_avg", user.getUser_with_avg());				//후기 평점
 		result.put("motel_avg", user.getUser_motel_avg());				//숙소 평점
-		//result.put("age", value)										//나이 : 따로 메서드로 구해야 됨.
-		//작성X															//좋아하는 것 : 테이블 조인 해서 얻어와야 함
-		//작성X															//사용가능 언어 : 테이블 조인 해서 얻어와야 함
+		result.put("age", age);											//나이 : 따로 메서드로 구해야 됨.
+		result.put("interest", interest);								//좋아하는 것 : 테이블 조인 해서 얻어와야 함
+		result.put("language", language);								//사용가능 언어 : 테이블 조인 해서 얻어와야 함
 		result.put("nationality", user.getUser_nationality());			//국적
 		//나와의 거리 														//노답...
 		result.put("accom_st", user.getUser_accom_st());				//숙박가능 여부 : 불가0, 가능1, 무료2, 유료3
@@ -71,7 +88,7 @@ public class AccountsService {
 			user_birth_day =transFormat.format(birthDay);			
 		}else {
 			//생일 칼럼에 값이 담겨져 있으면 해당 날짜를 문자열로 변환 후 전송 
-			birthDay = user.getUser_birth_date(); //오늘 날짜로 Date 객체 초기화 
+			birthDay = user.getUser_birth_date(); //생일로 Date 객체 초기화 
 			SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd");
 			user_birth_day =transFormat.format(birthDay);			
 		}
@@ -184,6 +201,54 @@ public class AccountsService {
 			return false;
 		}
 	}
+	
+	//////////////////////////////////기타 메서드 
+	//마지막 로그인 시간 구하는 () 
+	private Long getUserLastLoginTime(Date param) {
+		//현재 시간을 담을 변수 선언 
+		Date toDay = new Date();
+		//Date 객체 포맷 형식 
+		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYYMMddHHmm");
+		//데이터를 담을 변수 선언 
+		long lastLogin; //마지막 로그인 시간 
+		long toDayTime; //현재 시간
+		long minute = 0; //시간차이를 담을 변수 (0으로 초기화)
+		
+		try {
+			//인자로 받은 Date 객체 포멧 후 time 얻기  
+			param = dateFormat.parse(dateFormat.format(param));
+			lastLogin = param.getTime();
+			//현재 시간 Date 객체 포맷 후 time 얻기 
+			toDay = dateFormat.parse(dateFormat.format(toDay));
+			toDayTime = toDay.getTime();
+			//시간 차이를 변수에 초기화 
+			minute = (toDayTime - lastLogin) / 60000;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		//결과 값 반환
+		return minute;
+	}
+	
+	//나이를 구하는 ()
+	private int getAgeFromBirthday (Date birthday) {
+		//Calendar 객체 선언 
+	    Calendar birth = new GregorianCalendar(); //인자로 받을 유저의 생일
+	    Calendar today = new GregorianCalendar(); //오늘 날짜
+
+	    birth.setTime(birthday);
+	    today.setTime(new Date());
+
+	    int factor = 0;
+	    if (today.get(Calendar.DAY_OF_YEAR) < birth.get(Calendar.DAY_OF_YEAR)) {
+	        factor = -1;
+	    }
+	    
+	    return today.get(Calendar.YEAR) - birth.get(Calendar.YEAR) + factor;
+	}
+	
+	
 	
 	///////////////////////////////회원 인증 및 이메일 관련 () 
 	//회원가입시 전송 될 인증KEY

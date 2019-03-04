@@ -49,4 +49,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   	   
 		 WHERE user_num 	= #{user_num}
 	</update>
+	<select id="getUserInterest" parameterType="string" resultType="map">
+		select *
+		  from INTEREST_DTB
+		 where INTEREST_NUM in (select INTEREST_NUM
+                         		  from INTEREST_TB
+                        		 where USER_NUM = #{usernum});
+	</select>
+	<select id="getUserLanguage" parameterType="string" resultType="map">
+		select *
+		  from LANGUAGE_DTB
+ 		 where LANGUAGE_NUM in (select LANGUAGE_NUM
+                         		  from LANGUAGE_TB
+                       			 where USER_NUM = #{usernum});
+	</select>
 </mapper>
