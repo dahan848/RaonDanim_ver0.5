@@ -26,11 +26,11 @@
 		<div class="container">
 			<!-- 상단 프로필 타이틀 -->
 			<h3 class="section-title">
-				<img class="section-header-icon" src="../img/Profile.png" alt="">
+				<img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt="">
             		 나의 프로필
             	<!-- 자신의 페이지 일 때만 [프로필 수정]버튼 보임 -->
 				<c:if test="${userNum eq user_num}">
-                	<a href="#" class="btn btn-potluck pull-right">프로필 수정</a>
+                	<a href="${contextPath}/accounts/update1Form" class="btn btn-potluck pull-right">프로필 수정</a>
                 </c:if>
 			</h3>
 			<section id="section-user-detail"> <!-- 프로필 section -->
@@ -69,11 +69,18 @@
 					<div class="user-profile"> <!-- 유저 기본 정보 영역 -->
 						<a href="#" class="img-profile-container">
 							<!-- 유저 프로필 사진 -->
-					        <img src="../img/profile_2.jpg" class="img-circle img-avatar">
+    		              	<c:choose>
+		              			<c:when test="${profile eq 'n'}">
+		              				<img src="${contextPath}/img/home_profile_2.jpg" class="img-circle img-avatar">
+		              			</c:when>
+		              			<c:otherwise>
+		              				<img src="${contextPath}/img/home_Message.png">
+		              			</c:otherwise>
+		              		</c:choose>  
 				   		</a>
 				   		<!-- 이름  -->
 				        <h4>${user.name}</h4>
-				        <!-- 도시, 국가 -->
+				        <!-- 도시, 국가 : 거주도시 -->
 					    <p class="mb-0">Seoul, South Korea</p>
 				   		<!-- 성별 : c:if-->
 				     	<c:if test="${user.gender eq 0 }"><p>기타</p></c:if>

@@ -57,8 +57,8 @@ public class AccountsService {
 		//사용가능 언어 
 		List<Map<String, Object>> language = dao.getUserLanguage(userNum);
 
-		
 		//반환 할 Map에 필요한 데이터 입력 
+		result.put("profile", user.getUser_profile_pic());				//프로필 사진 : 디폴트n
 		result.put("name", user_name); 			 						//이름
 		//작성X															//거주지역 : 패스
 		result.put("gender", user.getUser_gender()); 					//성별
