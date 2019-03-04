@@ -54,13 +54,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  from INTEREST_DTB
 		 where INTEREST_NUM in (select INTEREST_NUM
                          		  from INTEREST_TB
-                        		 where USER_NUM = #{usernum});
+                        		 where USER_NUM = #{usernum})
 	</select>
 	<select id="getUserLanguage" parameterType="string" resultType="map">
 		select *
-		  from LANGUAGE_DTB
+ 		  from LANGUAGE_DTB
  		 where LANGUAGE_NUM in (select LANGUAGE_NUM
                          		  from LANGUAGE_TB
-                       			 where USER_NUM = #{usernum});
+                       			 where USER_NUM = #{usernum})
+	</select>
+	<select id="getUserNationality" parameterType="string" resultType="string">
+		select NATIONALITY_NAME
+		  from NATIONALITY_DTB
+		 where NATIONALITY_NUM = (select USER_NATIONALITY
+                           			from user_tb
+                          		   where user_num = #{usernum})
 	</select>
 </mapper>

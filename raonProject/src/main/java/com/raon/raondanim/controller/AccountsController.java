@@ -86,8 +86,10 @@ public class AccountsController {
 	//프로필 화면 요청 
 	@RequestMapping("/profile")
 	public String profile(Model model, @RequestParam(value="user") int userNum) {
-		service.getProfileData(userNum);
-		
+		Map<String, Object> userData = service.getProfileData(userNum);
+		System.out.println("==============프로필 데이터==============");
+		System.out.println(userData);
+		model.addAttribute("user", userData);
 		model.addAttribute("userNum", userNum);
 		return "accounts/profile";
 	}

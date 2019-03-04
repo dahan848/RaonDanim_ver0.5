@@ -29,8 +29,8 @@
 				<img class="section-header-icon" src="../img/Profile.png" alt="">
             		 나의 프로필
             	<!-- 자신의 페이지 일 때만 [프로필 수정]버튼 보임 -->
-				<c:if test="${user }">
-                <a href="#" class="btn btn-potluck pull-right">프로필 수정</a>
+				<c:if test="${userNum eq user_num}">
+                	<a href="#" class="btn btn-potluck pull-right">프로필 수정</a>
                 </c:if>
 			</h3>
 			<section id="section-user-detail"> <!-- 프로필 section -->
@@ -71,21 +71,27 @@
 							<!-- 유저 프로필 사진 -->
 					        <img src="../img/profile_2.jpg" class="img-circle img-avatar">
 				   		</a>
-				        <h4>dahan han (manzza)</h4>	<!-- 이름  -->
-					    <p class="mb-0">Seoul, South Korea</p> <!-- 도시, 국가 -->
-				   		<p>
-				     	  기타
-				  		</p>
-				  		<p><small>Last login few minutes ago</small></p> <!-- 마지막 로그인 정보 -->
+				   		<!-- 이름  -->
+				        <h4>${user.name}</h4>
+				        <!-- 도시, 국가 -->
+					    <p class="mb-0">Seoul, South Korea</p>
+				   		<!-- 성별 : c:if-->
+				     	<c:if test="${user.gender eq 0 }"><p>기타</p></c:if>
+				     	<c:if test="${user.gender eq 1 }"><p><i class="fa fa-mars-stroke-v fa-lg"></i></p></c:if>
+				     	<c:if test="${user.gender eq 2 }"><p><i class="fa fa-venus fa-lg"></i></p></c:if> 
+						<!-- 마지막 로그인 정보 -->
+				  		<p><small>Last login ${user.lastLogin} minutes ago</small></p> 
                    		<hr>
                    		<div class="row">
                         	<div class="col-xs-6">
-                            	<div class="friends-count"><i class="ion ion-ios-heart"></i> 0</div>
-                            	<small>숙박평점</small> <!-- 숙박평점 -->
+                            	<div class="friends-count"><i class="ion ion-ios-heart"></i> ${user.motel_avg}</div>
+                            		<!-- 숙박평점 -->
+                            		<small>숙박평점</small> 
                        		</div>
                         	<div class="col-xs-6">
-                            	<div class="friends-count"><i class="ion ion-android-person"></i> 0</div>
-                            		<small>후기평점</small>	<!-- 후기평점 -->
+                            	<div class="friends-count"><i class="ion ion-android-person"></i> ${user.with_avg}</div>
+                            		<!-- 후기평점 -->
+                            		<small>후기평점</small>	
                         	</div>
                     	</div>
 					</div> <!-- 유저기본 정보 영역 END -->
@@ -95,48 +101,46 @@
 	          		<div class="row">
 	              		<label class="col-sm-3 control-label text-right">나의소개</label>
 	              			<div class="col-sm-9">
-	                  			<p>프로필 화면 테스트 더미 데이터</p>	<!-- 데이터 받아와야 됨 -->
+	              				<!-- 자기소개 : 값 없으면 [미작성] -->
+	                  			<c:if test="${user.intro eq null}">
+	                  				<span class="label label-pink label-lg">미작성</span>
+	                  			</c:if>
+	                  			<p>${user.intro}</p>	
 	              			</div>
 	          		</div>
                		<div class="row">
                     	<label class="col-sm-3 control-label text-right">나이</label>
-                    <div class="col-sm-9">
-                    	<p>프로필 화면 테스트 더미 데이터</p> <!-- 데이터 받아와야 됨 -->
-                    </div>
-                	</div>
-               		<div class="row">
-                    	<label class="col-sm-3 control-label text-right">직업</label>
-                    		<div class="col-sm-9">
-                            	<span class="label label-default label-lg">프로필 화면 테스트 더미 데이터</span>
+	                    <div class="col-sm-9">
+	                    	<!-- 나이 -->
+	                    	<p>${user.age}</p> 
 	                    </div>
-	                </div>
+                	</div>
                 <div class="row">
                     <label class="col-sm-3 control-label text-right">좋아하는 것</label>
                     	<div class="col-sm-9">
-                            <span class="label label-default label-lg">프로필 화면 테스트 더미 데이터</span>
-                    </div>
+                    		<!-- 좋아하는 것(관심사) 반복문으로 출력 -->
+                    		<c:forEach items="${user.interest}" var="interest">
+                    			<span class="label label-default label-lg">${interest.INTEREST_NAME}</span>	
+                    		</c:forEach>
+                    	</div>
                 </div>
                 <div class="row">
                     <label class="col-sm-3 control-label text-right">사용가능언어</label>
                     	<div class="col-sm-9">
-                            <span class="label label-default label-lg">프로필 화면 테스트 더미 데이터</span>
+                    		<!-- 사용가능언어 : 반복문 -->
+                           	<c:forEach items="${user.language}" var="language">
+                    			<span class="label label-default label-lg">${language.LANGUAGE_NAME}</span>	
+                    		</c:forEach>
                    		</div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-3 control-label text-right">Facebook계정</label>
-                   		<div class="col-sm-9">
-                            <span class="label label-standby label-lg">프로필 화면 테스트 더미 데이터</span>
-                    	</div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-3 control-label text-right">인증상태</label>
-                    	<div class="col-sm-9">
-                    </div>
                 </div>
                 <div class="row">
                     <label class="col-sm-3 control-label text-right">국적</label>
                     <div class="col-sm-9">
-                        <p>프로필 화면 테스트 더미 데이터</p>
+                    	<!-- 국적 : 값 없으면 [미작성] -->
+	                  		<c:if test="${user.nationality eq null}">
+	                  			<span class="label label-pink label-lg">미작성</span>
+	                  		</c:if>
+                        <p>${user.nationality}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -161,14 +165,10 @@
                 <div class="row">
                     <label class="col-sm-3 control-label text-right">숙박 제공 가능 여부</label>
                     	<div class="col-sm-9">
-                    		<span class="label label-pink label-lg">불가능</span>
-					</div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-3 control-label text-right">지역소개</label>
-                    <div class="col-sm-9">
-                        <p>프로필 화면 테스트 더미 데이터</p>
-                    </div>
+                    		<c:if test="${user.accom_st eq 0 }"><span class="label label-gray label-lg">불가능</span></c:if>
+                    		<c:if test="${user.accom_st eq 2 }"><span class="label label-skyblue label-lg">가능(무료)</span></c:if>
+                    		<c:if test="${user.accom_st eq 3 }"><span class="label label-pink label-lg">가능(유료)</span></c:if>
+						</div>
                 </div>
 				</div> <!-- 유저 상세 정보 출력 부  END-->
 			</section> <!-- 프로필 section END-->

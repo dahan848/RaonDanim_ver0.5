@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -52,21 +53,23 @@ public class AccountsService {
 			age = 0;
 		}
 		//관심사(좋아 하는 것)
-		Map<String, Object> interest = dao.getUserInterest(userNum);
+		List<Map<String, Object>> interest = dao.getUserInterest(userNum);
 		//사용가능 언어 
-		Map<String, Object> language = dao.getUserLanguage(userNum);
+		List<Map<String, Object>> language = dao.getUserLanguage(userNum);
+
 		
 		//반환 할 Map에 필요한 데이터 입력 
 		result.put("name", user_name); 			 						//이름
 		//작성X															//거주지역 : 패스
 		result.put("gender", user.getUser_gender()); 					//성별
-		result.put("last_login_time", lastLogin);						//마지막 로그인 시간
+		result.put("lastLogin", lastLogin);								//마지막 로그인 시간
 		result.put("with_avg", user.getUser_with_avg());				//후기 평점
 		result.put("motel_avg", user.getUser_motel_avg());				//숙소 평점
+		result.put("intro", user.getUser_intro());						//자기소개
 		result.put("age", age);											//나이 : 따로 메서드로 구해야 됨.
 		result.put("interest", interest);								//좋아하는 것 : 테이블 조인 해서 얻어와야 함
 		result.put("language", language);								//사용가능 언어 : 테이블 조인 해서 얻어와야 함
-		result.put("nationality", user.getUser_nationality());			//국적
+		result.put("nationality", dao.getUserNationality(userNum));		//국적
 		//나와의 거리 														//노답...
 		result.put("accom_st", user.getUser_accom_st());				//숙박가능 여부 : 불가0, 가능1, 무료2, 유료3
 		return result;
