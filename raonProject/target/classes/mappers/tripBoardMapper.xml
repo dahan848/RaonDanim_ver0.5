@@ -177,26 +177,13 @@ values(	#{trip_City_Key},
 
 </insert>
 
-<select id="selectOneByCity" parameterType="map" resultType="tripCity">
-select *
-from TRIP_CITY_TB
-where 1=0
-<if test="key!=null">
-or TRIP_CITY_KEY = ('${key}')
-</if>
-<if test="town!=null">
-or TRIP_CITY_TOWN = ('${town}')
-</if>
-<if test="lat!=null">
-or TRIP_CITY_LAT = ('${lat}')
-</if>
-<if test="lng!=null">
-or TRIP_CITY_LNG = ('${lng}')
-</if>
-<if test="pid!=null">
-or TRIP_CITY_PID = ('${pid}')
-</if>
+<select id="selectRelKeyAndCityKey" parameterType="int" resultType="map">
 
+select r.REL_KEY,
+	   r.TRIP_CITY_KEY
+from trip_rel_tb r join trip_city_tb c
+on r.TRIP_CITY_KEY = c.TRIP_CITY_KEY
+where r.TRIP_BOARD_KEY = #{num}
 
 </select>
 
@@ -217,6 +204,7 @@ values(TRIP_REL_TB_SEQ.nextval,#{trip_Board_Key},#{trip_City_Key},#{user_Num})
 </insert>
 
 
+<!--위도경도만 뽑는 메소드  -->
 <select id="getListlatlng" resultType="map">
 select trip_city_lat,trip_city_lng
 from trip_city_tb
@@ -276,7 +264,7 @@ where TRIP_CITY_KEY = #{num}
 <update id="deleteRel" parameterType="int">
 update TRIP_REL_TB
 SET REL_ST = 1
-where TRIP_BOARD_KEY = #{num}
+where REL_KEY = #{num}
 
 
 </update>

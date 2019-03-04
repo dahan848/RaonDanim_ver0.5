@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.raon.raondanim.model.TripBoard;
@@ -73,11 +75,10 @@ public class TripController {
 		
 		model.addAttribute("boardInfo", tripService.getTripBoardOneInfo(boardKey));
 		model.addAttribute("cityInfo", tripService.getTripBoardCityOneInfo(boardKey));
-		model.addAttribute("cityTable", tripService.getTripBoardCityTableList(boardKey));
-		System.out.println("뷰 요청 테스트 게시판 정보: "+tripService.getTripBoardOneInfo(boardKey));
-		System.out.println("뷰 요청 테스트 도시 정보: "+tripService.getTripBoardCityOneInfo(boardKey));
-		System.out.println("뷰 요청 테스트 도시테이블 그리기 용 정보: "+tripService.getTripBoardCityTableList(boardKey));
-		
+	
+//		System.out.println("뷰 요청 테스트 게시판 정보: "+tripService.getTripBoardOneInfo(boardKey));
+//		System.out.println("뷰 요청 테스트 도시 정보: "+tripService.getTripBoardCityOneInfo(boardKey));
+
 		return "trip/TripBoardView";
 	}
 
@@ -114,8 +115,41 @@ public class TripController {
 			  System.out.println("실패");
 			  return "redirect:list";
 		  }
-		 
-
+	
+	}
+	
+	@RequestMapping("/boardDelete")
+	public String boardDelete(int boardKey, Model model,RedirectAttributes ra) {
+		System.out.println("삭제요청 받음 ");
+		System.out.println(boardKey);
+		if(tripService.totalDelete(boardKey)) {
+			ra.addAttribute("msg", "성공하였습니다.");
+			return "redirect:list";
+		}else {
+			ra.addAttribute("msg", "실패하였습니다 다시 시도해주세요.");
+			ra.addAttribute("boardKey", boardKey);
+			return "redirect:view";
+		}
+		
 		
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/checkPw")
+	public boolean checkPw(String user_pwCheck, int boardKey) {
+		System.out.println("비밀번호 확인 요청 받음");
+		
+		return tripService.pwCheck(user_pwCheck, boardKey);
+		
+	}
+	
+	@RequestMapping("/modifyboardForm")
+	public String modifyForm() {
+		
+		return null;
+		
+	}
+	
+	
+	
 }

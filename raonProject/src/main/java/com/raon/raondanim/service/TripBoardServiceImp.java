@@ -19,6 +19,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.raon.raondanim.dao.AccountsUserDAO;
 import com.raon.raondanim.dao.TripBoardDao;
 import com.raon.raondanim.model.TripBoard;
 import com.raon.raondanim.model.TripCity;
@@ -31,6 +32,9 @@ public class TripBoardServiceImp implements TripBoardService {
 
 	@Autowired
 	TripBoardDao tripDao;
+	
+	@Autowired
+	AccountsUserDAO userDao;
 
 	public static final int PER_PAGE = 10;
 	public static final int NAVI_PAGE = 10;
@@ -97,7 +101,7 @@ public class TripBoardServiceImp implements TripBoardService {
 		} else if (type == 4) {
 			params.put("userNick", keyword);
 		} 
-		System.out.println("서비스 파라메터 확인  params :"+params);
+		//System.out.println("서비스 파라메터 확인  params :"+params);
 		
 		List<Map<String, Object>> tripBoardList = tripDao.getTenBoardPage(params);
 		//System.out.println("서비스 게시글리스트확인 :"+tripBoardList);
@@ -152,11 +156,7 @@ public class TripBoardServiceImp implements TripBoardService {
 		return false;
 	}
 
-	@Override
-	public TripCity selectOneByCity(Map<String, Object> params) {
 
-		return tripDao.selectOneByCity(params);
-	}
 
 	@Override
 	public List<TripCity> selectAllByCity() {
@@ -303,6 +303,57 @@ public class TripBoardServiceImp implements TripBoardService {
 	public List<Map<String, Object>> getTripBoardCityTableList(int boardKey) {
 		
 		return tripDao.getTripBoardCityOneInfo(boardKey);
+	}
+
+	//게시글 삭제를 위해 update 3개한번에할 메소드 boolean 값을 리턴  
+	@Transactional
+	@Override
+	public boolean totalDelete(int boardKey) {
+		//트랜잭션에서 문제있을수있음
+		//고치긴했지만 오류 있을때 트랜잭션 제대로 작동 안했음 
+		List<Map<String, Object>> params = null;
+		
+		try {
+			//게시판 상태값 1로
+			tripDao.deleteBoard(boardKey);
+			
+			params = tripDao.selectRelKeyAndCityKey(boardKey);
+			System.out.println(params);
+			for(Map<String, Object> a :params) {
+				//키 테이블 상태값 1로
+				String relKey =  String.valueOf(a.get("REL_KEY"));
+				tripDao.deleteRel(Integer.parseInt(relKey));
+				
+				//도시테이블 상태값 1로
+				String cityKey = String.valueOf(a.get("TRIP_CITY_KEY"));
+				tripDao.deleteCity(Integer.parseInt(cityKey));
+			}
+			
+			return true;
+			
+		} catch (Exception e) {
+			System.out.println("delete 트랜잭션중 실패");
+			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return false;
+		}
+			
+	}
+
+	@Override
+	public boolean pwCheck(String user_pwCheck, int boardKey) {
+		String userNum = tripDao.selectOneByBoardKey(boardKey).getUser_Num()+"";
+		//System.out.println("서비스  유저 넘 int->String : "+userNum);
+		String userPw = userDao.selectByUserNum(userNum).getUser_pw();
+		if(userPw.equals(user_pwCheck)) {
+			//비번 일치
+			return true;
+		}else {
+			//비번 불일치
+			return false;
+		}
+		
+		
 	}
 
 

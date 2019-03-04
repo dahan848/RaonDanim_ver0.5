@@ -76,6 +76,17 @@
 		
 		initMap();
 		
+		//수정 삭제 성공시 alert로 사용자에게 알림
+		var msg = "${msg}";
+		if(msg !=null && msg != ""){
+			swal({
+				icon:"success",
+				text:msg,
+			});
+		}
+		
+		
+		
 	}
 </script>
 </head>

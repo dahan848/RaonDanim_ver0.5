@@ -24,7 +24,6 @@ public interface TripBoardService {
 	
 	//도시관련 메소드
 	public boolean insertCity(String tripCity);
-	public TripCity selectOneByCity(Map<String, Object> params);
 	public List<TripCity> selectAllByCity();
 	public List<Map<String, Object>> getListlatlng();
 	
@@ -41,5 +40,11 @@ public interface TripBoardService {
 	public String getTripBoardCityOneInfo(int boardKey);
 	public List<Map<String, Object>> getTripBoardCityTableList(int boardKey);
 	
+	//게시글 삭제를 위해 update 3개한번에할 메소드 boolean 값을 리턴  
+	public boolean totalDelete(int boardKey);
+	
+	
+	//게시판 수정 삭제용 비번체크
+	public boolean pwCheck(String user_pwCheck, int boardKey);
 	
 }

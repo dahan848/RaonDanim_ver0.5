@@ -127,15 +127,97 @@ function moveToMakerLocation(i) {
 }
 
 
+
+
 window.onload = function() {
 	
 	
 	initMap();
 	drawCityTable();
 	
+	//수정 삭제 실패시 alert로 사용자에게 알림
+	var msg = "${msg}";
+	if(msg !=null && msg != ""){
+		swal({
+			icon:"warning",
+			text:msg,
+		});
+	}
+	
+	$("#deleteForm").on("submit", function() {
+		//게시글 삭제 펑션
+		
+		var deleteSerialize = $(this).serialize();
+		//alert(deleteSerialize);
+		var result = false;
+		var deletePw = $("#deletePw");
+		$.ajax({
+			url:"checkPw",
+			type:"post",
+			data:deleteSerialize,
+			dataType:"json",
+			async:false,
+			success:function(data){
+				if(data){
+				 	/*  swal({
+						icon:"success",
+						text:"비밀번호 일치",
+					});  */ 
+					
+					result =true;
+				}else{
+					  swal({
+						icon:"warning",
+						text:"비밀번호 불일치 다시 시도해 주세요.",
+					});  
+					  deletePw.val("");
+					
+				}	
+			}
+		});
+		if(!result){
+			return false;
+		}
+		
+	})//게시글 삭제펑션 끝
+
+	$("#modifyForm").on("submit", function() {
+		modifySerialize = $(this).serialize();
+		var result = false;
+		var modifyPw = $("#modifyPw");
+		$.ajax({
+			url:"checkPw",
+			type:"post",
+			data:modifySerialize,
+			dataType:"json",
+			async:false,
+			success:function(data){
+				if(data){
+				 	/*  swal({
+						icon:"success",
+						text:"비밀번호 일치",
+					});  */ 
+					
+					result =true;
+				}else{
+					  swal({
+						icon:"warning",
+						text:"비밀번호 불일치 다시 시도해 주세요.",
+					});  
+					  modifyPw.val("");
+					
+				}	
+			}
+		});
+		if(!result){
+			return false;
+		}
+		
+	})
 	
 	
-}
+	
+}//onload 끝
 
 
 
@@ -408,7 +490,6 @@ th{
 <div class="container">
   
 
-  <!-- Modal -->
   <div class="modal fade" id="declarationModal" role="dialog">
     <div class="modal-dialog">
     
@@ -434,8 +515,6 @@ th{
 	<!--수정창 모달  -->
 <div class="container">
   
-
-  <!-- Modal -->
   <div class="modal fade" id="modifyModal" role="dialog">
     <div class="modal-dialog">
     
@@ -443,22 +522,22 @@ th{
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">비밀번호 확인</h4>
         </div>
-        <form action="#" method="post">
+        <form action="modifyboardForm" method="post" id="modifyForm">
         <div class="modal-body" id="deleteModalBody">
            
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			    <div class="form-group">
 			      <label for="pwd">비밀번호:</label>
-			      <input type="password" class="form-control" id="USER_PWCHECK" placeholder="비밀번호를 입력해주세요." name="USER_PWCHECK">
+			      <input type="password" class="form-control" id="modifyPw" placeholder="비밀번호를 입력해주세요." name="USER_PWCHECK">
 			    </div>
 			
 			 
         </div>
         <div class="modal-footer">
           <input type="submit" class="btn btn-danger" value="확인">
-          <button type="button" class="btn btn-info" data-dismiss="modal">닫기</button>
+          <input type="button" class="btn btn-info" data-dismiss="modal" value="닫기">
         </div>
            
 	 </form>
@@ -472,8 +551,6 @@ th{
 <!--삭제창 모달  -->
 <div class="container">
   
-
-  <!-- Modal -->
   <div class="modal fade" id="deleteModal" role="dialog">
     <div class="modal-dialog">
     
@@ -483,20 +560,21 @@ th{
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">비밀번호 확인</h4>
         </div>
-        <form action="#" method="post">
+        <form action="boardDelete" method="post" id="deleteForm">
         <div class="modal-body" id="deleteModalBody">
            
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			    <div class="form-group">
+			      <input type="hidden" value="${boardInfo.TRIP_BOARD_KEY}" name="boardKey">
 			      <label for="pwd">비밀번호:</label>
-			      <input type="password" class="form-control" id="USER_PWCHECK" placeholder="비밀번호를 입력해주세요." name="USER_PWCHECK">
+			      <input type="password" class="form-control" id="deletePw" placeholder="비밀번호를 입력해주세요." name=user_pwCheck>
 			    </div>
 			
 			 
         </div>
         <div class="modal-footer">
           <input type="submit" class="btn btn-danger" value="확인">
-          <button type="button" class="btn btn-info" data-dismiss="modal">닫기</button>
+          <input type="button" class="btn btn-info" data-dismiss="modal" value="닫기">
         </div>
            
 	 </form>

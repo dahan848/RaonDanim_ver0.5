@@ -21,6 +21,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM USER_TB
 		 WHERE user_id = #{userid}
 	</select>
+	<select id="selectByUserNum" resultType="User" parameterType="string">
+      SELECT *
+        FROM user_tb
+       WHERE user_num = #{usernum}
+   </select>
 	<update id="email_verify" parameterType="User">
 		UPDATE USER_TB
 		   SET user_email_verify = 1
