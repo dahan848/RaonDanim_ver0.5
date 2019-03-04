@@ -212,7 +212,7 @@ public class TripBoardServiceImp implements TripBoardService {
 		JsonArray jsonArray = (JsonArray) parser.parse(tripCity);
 		//System.out.println("서비스 jsonarr확인 :" + jsonArray);
 
-		System.out.println("트랜잭션 시티 확인:"+tripCity);
+		//System.out.println("트랜잭션 시티 확인:"+tripCity);
 		
 		/*
 		 * for (int i = 0; i < jsonArray.size(); i++) { JsonObject object = (JsonObject)

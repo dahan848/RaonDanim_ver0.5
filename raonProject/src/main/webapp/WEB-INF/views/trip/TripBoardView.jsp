@@ -182,6 +182,7 @@ window.onload = function() {
 	})//게시글 삭제펑션 끝
 
 	$("#modifyForm").on("submit", function() {
+		//게시글 수정 펑션
 		modifySerialize = $(this).serialize();
 		var result = false;
 		var modifyPw = $("#modifyPw");
@@ -524,13 +525,14 @@ th{
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">비밀번호 확인</h4>
         </div>
-        <form action="modifyboardForm" method="post" id="modifyForm">
+        <form action="modify1" method="post" id="modifyForm">
         <div class="modal-body" id="deleteModalBody">
            
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			     <input type="hidden" value="${boardInfo.TRIP_BOARD_KEY}" name="boardKey">
 			    <div class="form-group">
 			      <label for="pwd">비밀번호:</label>
-			      <input type="password" class="form-control" id="modifyPw" placeholder="비밀번호를 입력해주세요." name="USER_PWCHECK">
+			      <input type="password" class="form-control" id="modifyPw" placeholder="비밀번호를 입력해주세요." name="user_pwCheck">
 			    </div>
 			
 			 

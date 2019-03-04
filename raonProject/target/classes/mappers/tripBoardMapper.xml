@@ -244,10 +244,27 @@ WHERE R.TRIP_BOARD_KEY = #{num}
 </select>
 
 
-<update id="updateBoard"></update>
-<update id="updateCity"></update>
+<update id="updateBoard" parameterType="tripBoard">
+update trip_board_tb
+set  	TRIP_BOARD_TITLE = #{trip_Board_Title},
+		TRIP_BOARD_COUNTENT = #{trip_Board_Content},
+		TRIP_BOARD_START = #{trip_Board_Start},
+		TRIP_BOARD_END = #{trip_Board_End},
+		TRIP_BOARD_TOGETHER = #{trip_Board_Together}
+where  TRIP_BOARD_KEY = #{trip_Board_Key}
+</update>
 
-<!--놋북이랑 디비가 좀달라서 일단 쿼리만 짜놓음  -->
+<!-- 보류
+<update id="updateCity" parameterType="tripCity">
+update trip_city_tb
+set TRIP_CITY_TOWN = #{trip_City_Town},
+	TRIP_CITY_LAT = #{trip_City_Lat},
+	TRIP_CITY_LNG = #{trip_City_Lng},
+	TRIP_CITY_PID = #{trip_City_Pid}
+where TRIP_CITY_KEY = #{trip_City_Key}
+</update> -->
+
+<!--놋북이랑 디비가 좀달라서 일단 쿼리만 짜놓음  테스트 0 -->
 <update id="deleteBoard" parameterType="int">
 UPDATE TRIP_BOARD_TB
 SET TRIP_BOARD_ST = 1
@@ -265,8 +282,6 @@ where TRIP_CITY_KEY = #{num}
 update TRIP_REL_TB
 SET REL_ST = 1
 where REL_KEY = #{num}
-
-
 </update>
 
 

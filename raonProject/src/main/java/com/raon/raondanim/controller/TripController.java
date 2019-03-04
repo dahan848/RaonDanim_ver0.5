@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.raon.raondanim.model.TripBoard;
+import com.raon.raondanim.model.TripCity;
 import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.AccountsService;
 import com.raon.raondanim.service.TripBoardService;
@@ -98,7 +99,7 @@ public class TripController {
 	@RequestMapping("/write2")
 	public String boardWrite2(TripBoard tripBoard, Model model) {
 		System.out.println("write2요청받음");
-		//System.out.println(tripBoard);
+		System.out.println(tripBoard);
 		model.addAttribute("tripBoard", tripBoard);
 		return "trip/TripBoardWriteForm2";
 	}
@@ -143,8 +144,31 @@ public class TripController {
 		
 	}
 	
-	@RequestMapping("/modifyboardForm")
-	public String modifyForm() {
+	@RequestMapping("/modify1")
+	public String modifyForm(int boardKey,Model model) {
+		System.out.println("수정화면1요청 받음");
+		//수정화면 1로 가는 메소드 기존 정보 가지고 이동 
+		model.addAttribute("boardInfo", tripService.getTripBoardOneInfo(boardKey));
+		model.addAttribute("cityNames", tripService.getTripBoardCityOneInfo(boardKey));
+		return "trip/TripBoardModifyForm1";
+		
+	}
+
+	@RequestMapping("/modify2")
+	public String modifyForm2(TripBoard tripBoard,Model model) {
+		System.out.println("수정화면2요청 받음");
+		System.out.println(tripBoard);
+		
+		model.addAttribute("tripBoard", tripBoard);
+		return "trip/TripBoardModifyForm2";
+		
+	}
+	
+	@RequestMapping("/modify3")
+	public String modifyBoard(TripBoard tripBoard, String tripCity) {
+		System.out.println("수정3요청 받음");
+		System.out.println(tripBoard);
+		System.out.println(tripCity);
 		
 		return null;
 		

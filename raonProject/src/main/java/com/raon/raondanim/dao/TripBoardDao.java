@@ -31,8 +31,8 @@ public interface TripBoardDao {
 	
 	//도시테이블 입력
 	public int insertCity(TripCity tripCity);
-	//도시 수정
-	public int updateCity(TripCity tripCity);
+/*	//도시 수정 -보류
+	public int updateCity(TripCity tripCity);*/
 	//도시 삭제
 	public int deleteCity(int CityKey);
 	
