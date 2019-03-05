@@ -6,34 +6,81 @@
 <head>
 <meta charset="UTF-8">
 <title>라온다님</title>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc&libraries=places"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+    
+        <script defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc&callback=initMap&libraries=places">
+    </script>
+
 <script type="text/javascript">
-	//도시 불러오는 스크립트
-	function initialize() {
-          var input = document.getElementById('searchTextField');
-          //애가 요소 찝어서 자동완성하게 해주는거
-          var autocomplete = new google.maps.places.Autocomplete(input);
-            google.maps.event.addListener(autocomplete, 'place_changed', function () {
-                var place = autocomplete.getPlace();
-                document.getElementById('city2').value = place.name;
+	//주소입력 후 지도에 표시 
+       function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 1,
+          center: {lat: -34.397, lng: 150.644}
+        });
+        var searchMap = new google.maps.Map(document.getElementById('searchMap'), {
+            zoom: 14,
+            center: {lat: -34.397, lng: 150.644}
+          });
+        
+        var geocoder = new google.maps.Geocoder();
 
+        document.getElementById('submit').addEventListener('click', function() {
+          geocodeAddress(geocoder, searchMap);
+          $("#map").hide();
+          $("#searchMap").show();
+        });
+      }
 
+      function geocodeAddress(geocoder, resultsMap) {
+         
+        var address = document.getElementById('address').value;
+        geocoder.geocode({'address': address}, function(results, status) {
+           debugger;
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location
             });
-        }
-        //윈도우 onload시 실행
-        google.maps.event.addDomListener(window, 'load', initialize);
-        
-
-
-          
-          function captureReturnKey(e) {
-              if(e.keyCode==13 && e.srcElement.type != 'textarea')
-              return false;
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
           }
-        
+        });
+      }
+      
+		//국가입력 스크립트
+	$(document).ready(function() {
+		
+		$(".national").click(function() {
+			$(this).next().show();
+			$(this).next().hide();
+		});
+
+	});
+		
+	$(document).ready(function() {
+		
+		$(".city").click(function() {
+			$(this).next().show();
+			$(this).next().hide();
+		});
+
+	});
+	
+      //국가 도시 검색 후 엔터키 쳤을 때 페이지 넘어가는것 막는 코드
+	 function captureReturnKey(e) {
+         if(e.keyCode==13 && e.srcElement.type != 'textarea')
+         return false;
+     }
+
+// 주소로 지도에 찍는 함수
 </script>	
 <style type="text/css">
 .btn_next {
@@ -62,9 +109,69 @@
 	margin-top: 10px;
 	float: left;
 }
+.registor_main {
+	padding-top : 9%;
+	background-repeat: no-reapt;
+	height: 800px;
+	width: 100%;
+	background-image: url("${contextPath}/img/motel/motel_registor.jpg");
+	background-position: center;
+	background-size: cover;
+}
+.registor_contain {
+	margin : auto;
+/*  	margin-top : 15%;  */
+	background-position: center;
+	width: 60%;
+	height: 80%;
+	background-color: white;
+	width: 60%;
+	border: 1px solid #444444;
+	background-position: center;
+	padding: 3%;
+	float: center;
+	
+}
+
+/* 지도관련 css */
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 250px;
+        width: 500px;
+        margin-top: 65px;
+        
+      }
+      #searchMap{
+         display:none;
+         height: 250px;
+         width: 500px;
+        margin-top: 65px;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #floating-panel {
+        position: absolute;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+
+
+
 </style>
 </head>
 <body>
+<%-- 	확이 : ${city}.length<br> --%>
 	motel_bath : ${motel_bath }
 	<br> motel_type : ${motel_type }
 	<br> motel_category : ${motel_category }
@@ -80,10 +187,11 @@
 
 
 	<!-- 본문 -->
-	<div class="main-container">
+	<div class="main-container" style="padding-top: 0; padding-bottom: 0;">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
 				<div class="registor_main">
+					<div class="registor_contain" style="width: 70%;">
 					<form action="registor_photo" method="post" id = "register_form" onkeydown="return captureReturnKey(event)">
 						<input type="hidden" value="${_csrf.token}"
 							name="${_csrf.parameterName}">
@@ -94,14 +202,14 @@
 						<input type="hidden" value="${motel_room }" name="motel_room"> 
 						<input type="hidden" value="${motel_people }" name="motel_people">
 
-<%-- 						<c:if test="${!empty testList}"> --%>
+<%-- 						<c:if test="${!empty national}"> --%>
 
 <!-- 							<select name="selectBox" id="selectBox" style="width: 80px;" -->
 <!-- 								class="select_02"> -->
 
-<%-- 								<c:forEach var="testList" items="${testList}" varStatus="i"> --%>
+<%-- 								<c:forEach var="national" items="${national}" varStatus="i"> --%>
 
-<%-- 									<option value="${testList.name}">${testList.name}</option> --%>
+<%-- 									<option value="${national.NATIONALITY_KOR_NAME}">${national.NATIONALITY_NAME}${national.NATIONALITY_KOR_NAME}</option> --%>
 
 <%-- 								</c:forEach> --%>
 
@@ -109,29 +217,77 @@
 
 <%-- 						</c:if> --%>
 
-						<h4>숙소의 국가를 선택하여 주세요.</h4>
-						<select name="motel_city">
-							<option value="1">도시1</option>
-							<option value="2">도시2</option>
-							<option value="3">도시3</option>
-							<option value="4">도시4</option>
-						</select>
+<!-- 						<br> -->
+
+<!-- 						<input list="brow"> -->
+<!-- 						<datalist id="brow"> -->
+<!-- 							<option value="Internet Explorer"> -->
+							
+<!-- 							<option value="Firefox"> -->
+  
+<!-- 							<option value="Chrome"> -->
+  
+<!-- 							<option value="Opera"> -->
+  
+<!-- 							<option value="Safari"> -->
+							
+<!-- 							<option value="한국"> -->
+							
+<!-- 							<option value="일본"> -->
+							
+<!-- 							<option value="중국"> -->
+							
+<!-- 							<option value="미국"> -->
+
+<!-- 						</datalist> -->
+<!-- 						<br> -->
+
+						<h4>숙소의 국가를 선택하여 주세요.</h4> 
+						<c:if test="${!empty national}">
+							<input list="brow" class="national" style="width: 300px;">
+							<datalist id="brow">
+
+								<c:forEach var="national" items="${national}" varStatus="i">
+
+									<option
+										value="${national.NATIONALITY_KOR_NAME}${national.NATIONALITY_NAME}" ></option>
+
+								</c:forEach>
+
+							</datalist>
+						</c:if>
+						<br>
 						
 						<h4>숙소의 도시를 선택하여 주세요.</h4>
-						<input id="searchTextField" type="text" size="50"
-							placeholder="도시를 입력하세요" autocomplete="on" runat="server" /> 
-							<input type="text" id="city2" name="city2" />
-							<jsp:include page="/WEB-INF/views/motel/11.jsp">
-<%--  								<jsp:param name="city3" value="<%=city3%>"/>  --%>
-							</jsp:include>
+						<c:if test="${!empty city}">
+							<input list="brow1" class="city" style="width: 300px;">
+							<datalist id="brow1">
+
+								<c:forEach var="city" items="${city}" varStatus="i">
+
+									<option
+										value="${city.CITY}||${city.KO_CITY}" ></option>
+
+								</c:forEach>
+
+							</datalist>
+						</c:if>
+						<br>
+
 							
-						<h4>상세주소를 입려하여주세요.</h4>
-						<input type="text" name="motel_address">
-						<h4>지도에서 위치를 확인하여주세요.</h4>
-						<input type="submit" value="" class="btn_next"> <input
-							type="button" value="" class="btn_back"
-							onclick="history.back(-1);">
+						<h4>상세주소를 입려하여주세요.(지도에서 위치를 확인하여주세요.)</h4>
+							<div id="floating-panel">
+								<input id="address" type="textbox" placeholder="주소를 입력하세요">
+								<input id="submit" type="button" value="검색">
+							</div>
+							<div id="map"></div>
+							<div id="searchMap"></div>
+
+							<input type="submit" value="" class="btn_next">
+						 <input	type="button" value="" class="btn_back"
+									onclick="history.back(-1);">
 					</form>
+					</div>
 				</div>
 			</div>
 		</section>

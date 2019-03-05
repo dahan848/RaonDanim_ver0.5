@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +13,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.raon.raondanim.service.MotelService;
+
 @Controller
 @RequestMapping("/motel")
 public class MotelController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	@Autowired
+	private MotelService service;
+	
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(){
@@ -37,8 +44,13 @@ public class MotelController {
 	
 	@RequestMapping(value = "/registor_city_address", method = RequestMethod.POST)
 	public String registor_step2(@RequestParam Map<String, Object> param, Model model) throws Exception {
+		
 		System.out.println("step2 진입");
-		System.out.println(param);
+		//System.out.println(param);
+		//System.out.println(service.getAllNational());
+		System.out.println("도시 : " + service.getAllCity());
+		model.addAttribute("city", service.getAllCity());
+		model.addAttribute("national", service.getAllNational());
 		model.addAttribute("motel_type", param.get("motel_type"));
 		model.addAttribute("motel_category", param.get("motel_category"));
 		model.addAttribute("motel_people", param.get("motel_people"));

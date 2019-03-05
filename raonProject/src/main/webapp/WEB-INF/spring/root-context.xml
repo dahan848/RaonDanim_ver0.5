@@ -19,8 +19,8 @@
 			name="driverClassName" />
 		<property
 			value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
-		<property value="manzza" name="username" />
-		<property value="1099" name="password" />
+		<property value="dlansgud5611" name="username" />
+		<property value="qwe123!!" name="password" />
 	</bean>
 
 	<!-- 마이바티스 연동 -->
@@ -80,6 +80,12 @@
 		class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface"
 			value="com.raon.raondanim.dao.AccountsUserDAO"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="motelDAO"
+		class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.raon.raondanim.dao.MotelDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
 

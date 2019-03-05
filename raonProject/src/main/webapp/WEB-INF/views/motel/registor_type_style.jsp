@@ -127,9 +127,8 @@
 /*  	margin-top : 15%;  */
 	background-position: center;
 	width: 60%;
-	height: 80%;
+	height: 90%;
 	background-color: white;
-	width: 60%;
 	border: 1px solid #444444;
 	background-position: center;
 	padding: 5%;
@@ -173,28 +172,28 @@
 					<div class="registor_contain">
 						<form action="registor_city_address" method="post" class="registor_form" onsubmit="return form_Check();">
 							<input type="hidden" value="${_csrf.token}" name="${_csrf.parameterName}">
-							<h5>숙소의 종류를 선택해 주세요.</h5>
+							<h4>숙소의 종류를 선택해 주세요.</h4>
 							<select name="motel_type" id="motel_type">
 								<option value="0">숙소 종류</option>
 								<option value="1">아파트</option>
 								<option value="2">주택</option>
 								<option value="3">빌라</option>
 							</select><br>
-							<h5>게스트에게 제공 될 숙박의 유형를 선택해 주세요.</h5>
+							<h4>게스트에게 제공 될 숙박의 유형를 선택해 주세요.</h4>
 							<select name="motel_category" id="motel_category">
 								<option value="0">숙박 유형</option>
 								<option value="1">집 전체</option>
 								<option value="2">개인실</option>
 							</select><br>
-							<h5>숙소의 최대 숙박 인원을 선택해 주세요.(최대 15명)</h5>
+							<h4>숙소의 최대 숙박 인원을 선택해 주세요.(최대 15명)</h4>
 							<a id="plus_minus" href='#' onclick='javascript_:people_change(1);'><i class="fa fa-plus-circle" id="tt"></i></a> <input
 								type='text' name='motel_people' id="motel_people" value='1' size='3' readonly> <a id="plus_minus"
 								href='#' onclick='javascript_:personnel_change(-1);'><i class="fa fa-minus-circle" id="tt"></i></a>
-							<h5>게스트가 사용할 수 있는 방의 개수를 선택해 주세요.(최대 5개)</h5>
+							<h4>게스트가 사용할 수 있는 방의 개수를 선택해 주세요.(최대 5개)</h4>
 							<a id="plus_minus" href='#' onclick='javascript_:room_change(1);'><i class="fa fa-plus-circle"></i></a> <input
 								type='text' name='motel_room' id="motel_room" value='1' size='3' readonly> <a id="plus_minus"
 								href='#' onclick='javascript_:room_change(-1);'><i class="fa fa-minus-circle" id="tt"></i></a>
-							<h5>게스트가 사용할 수 있는 욕실의 개수를 선택해 주세요.(최대 5개)</h5>
+							<h4>게스트가 사용할 수 있는 욕실의 개수를 선택해 주세요.(최대 5개)</h4>
 							<a id="plus_minus" href='#' onclick='javascript_:bathroom_change(1);'><i class="fa fa-plus-circle"></i></a> <input
 								type='text' name='motel_bathroom' id="motel_bathroom" value='1' size='3' readonly> <a id="plus_minus"
 								href='#' onclick='javascript_:bath_change(-1);'><i class="fa fa-minus-circle" id="tt"></i></a><br>
