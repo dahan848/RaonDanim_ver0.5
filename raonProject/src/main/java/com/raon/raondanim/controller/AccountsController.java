@@ -87,8 +87,8 @@ public class AccountsController {
 	@RequestMapping("/profile")
 	public String profile(Model model, @RequestParam(value="user") int userNum) {
 		Map<String, Object> userData = service.getProfileData(userNum);
-		System.out.println("==============프로필 데이터==============");
-		System.out.println(userData);
+		//System.out.println("==============프로필 데이터==============");
+		//System.out.println(userData);
 		model.addAttribute("user", userData);
 		model.addAttribute("userNum", userNum);
 		return "accounts/profile";

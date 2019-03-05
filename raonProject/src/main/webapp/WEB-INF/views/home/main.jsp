@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,71 +71,34 @@
             <div class="row mt-50 mb-30">
                 <div class="col-sm-6">
                     <h3 class="h3-sub-title text-center">
-                        <img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt=""> 현지친구
+                        <img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt=""> 라온친구
                     </h3>
                     <a href="/accounts/profiles/" class="badge badge-gray">+더보기</a>
                     <div class="row row-p5 mb-20">
-                        	<!-- 12개의 유저 목록을 반복문으로 그려줌 (랜덤하게) -->
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/1.jpg">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/2.jpg">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/3.jpg">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/4.jpg">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/5.jpg">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/6.jpg">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/7.jpg">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/8.jpg">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/9.jpg">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/10.jpg">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/11.jpg">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/locals/12.jpg">
-                            </div>
-                        
+	                   	<!-- 12개의 유저 목록을 반복문으로 그려줌 (랜덤하게) -->
+	                   	<c:forEach items="${userList}" var="user" varStatus="status">
+	                   		<div class="col-xs-2 col-sm-3 col-md-2">
+		                     	<c:choose>
+			             			<c:when test="${user.USER_PROFILE_PIC eq 'n'}">
+			             				<a href="#" rel="popover" data-placement="bottom" data-trigger="focus" data-popover-content="#userInfo${status.index}">
+			             					<img class="img-circle" src="${contextPath}/img/home_profile_2.jpg">
+			             				</a>
+			             			</c:when>
+			             			<c:otherwise>
+				              			<a href="#" rel="popover" data-placement="bottom" data-popover-content="#userInfo${status.index}">
+				              				<img class="img-circle" src="
+				                                	   		 ${contextPath}/image?fileName=${user.USER_PROFILE_PIC}">
+				                        </a>
+			             			</c:otherwise>
+		             			</c:choose>
+	             				<!-- POPOVER DIV -->
+		           		        <div id="userInfo${status.index}" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
+									${user.USER_LNM} ${user.USER_FNM} <br>
+									<a href="${contextPath}/accounts/profile?user=${user.USER_NUM}">프로필보기</a><br>
+									<a href="#">대화하기</a>
+								</div>   	
+	                       	</div>
+	                   	</c:forEach>
                     </div>
                 </div>
                 <div class="col-sm-6">

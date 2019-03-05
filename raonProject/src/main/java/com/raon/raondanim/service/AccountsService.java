@@ -44,6 +44,7 @@ public class AccountsService {
 		}
 	}
 	
+	
 	//프로필 화면에 넘길 데이터 (Map) 반환하는 서비스
 	public Map<String, Object> getProfileData(int usernum){
 		//반환 할 Map 선언
@@ -55,8 +56,14 @@ public class AccountsService {
 		
 		//name 만들기 
 		String user_name = user.getUser_lnm() + user.getUser_fnm(); 
-		//마지막 로그인 시간 구하기 및 변수에 참조 
-		Long lastLogin = getUserLastLoginTime(user.getUser_last_login_time());
+		//마지막 로그인 시간 구하기 및 변수에 참조 : 로그인 기록이 없으면 null 포인트 뜸 = 조건문으로 예외처리 
+		Long lastLogin;
+		if(user.getUser_last_try_login_time() != null) {
+			lastLogin = getUserLastLoginTime(user.getUser_last_login_time());
+		}else {
+			lastLogin = (long) 666;
+		}
+
 		//나이 구하기 (if문으로 간단 예외처리)
 		int age;
 		if(user.getUser_birth_date() != null) {

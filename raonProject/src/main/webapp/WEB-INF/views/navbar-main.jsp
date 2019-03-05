@@ -94,8 +94,8 @@
 					<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 O -->
 						<c:if test="${verify eq 1}"> <!-- 이메일 인증 사용자가 아니면 탭 안나오게 -->
 							<li><span class="vertical-separator"></span>
-							<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
-									<i class="fa fa-envelope fa-lg"></i>
+								<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
+										<i class="fa fa-envelope fa-lg"></i>
 								</a>
 							</li>
 							<li><span class="vertical-separator"></span><a href="${contextPath}/inquiry"><i class="fa fa-info-circle fa-lg"></i></a></li>

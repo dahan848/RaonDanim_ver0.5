@@ -67,7 +67,7 @@
 					</div><!-- 유저 이미지 영역 END -->
 
 					<div class="user-profile"> <!-- 유저 기본 정보 영역 -->
-						<a href="#" class="img-profile-container">
+						<a href="#" class="img-profile-container" rel="popover" data-placement="right" data-trigger="focus" data-popover-content="#userInfo">
 							<!-- 유저 프로필 사진 -->
     		              	<c:choose>
 		              			<c:when test="${user.profile eq 'n'}">
@@ -76,7 +76,7 @@
 		              			<c:otherwise>
 		              				<img src="${contextPath}/img/home_Message.png">
 		              			</c:otherwise>
-		              		</c:choose>  
+		              		</c:choose>
 				   		</a>
 				   		<!-- 이름  -->
 				        <h4>${user.name}</h4>
@@ -87,7 +87,8 @@
 				     	<c:if test="${user.gender eq 1 }"><p><i class="fa fa-mars-stroke-v fa-lg"></i></p></c:if>
 				     	<c:if test="${user.gender eq 2 }"><p><i class="fa fa-venus fa-lg"></i></p></c:if> 
 						<!-- 마지막 로그인 정보 -->
-				  		<p><small>Last login ${user.lastLogin} minutes ago</small></p> 
+						<c:if test="${user.lastLogin eq 666 }"> <p><small>로그인 정보가 없습니다.</small></p></c:if>
+				  		<c:if test="${user.lastLogin ne 666 }"><p><small>Last login ${user.lastLogin} minutes ago</small></p></c:if> 
                    		<hr>
                    		<div class="row">
                         	<div class="col-xs-6">
@@ -181,6 +182,17 @@
 			</section> <!-- 프로필 section END-->
 		</div>
 	</div>
+	<!-- POPOVER DIV -->
+	<div id="userInfo" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
+	   <c:choose>
+		<c:when test="${userNum eq user_num}">
+        	<a href="#">프로필 사진 변경</a><br>
+        		</c:when>
+        	<c:otherwise>
+        		<a href="#">대화하기</a>
+        	</c:otherwise>
+        </c:choose>
+	</div>   
 	
 <!-- 인클루드-푸터 -->
 <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
