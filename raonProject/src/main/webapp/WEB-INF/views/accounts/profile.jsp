@@ -22,6 +22,34 @@
 <jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
 <!-- 인클루드 심플 헤더 END -->
 
+<script type="text/javascript">
+$(document).ready(function() { 
+	alert("로딩 완료33"); 
+	
+	//버튼 눌리면 파일 선택 창 열리게 .trigger 사용 
+	$("#btn-image-upload").click(function () {
+	    $("#imgInp").trigger("click");
+	});
+	
+    $(function() {
+        $("#imgInp").on('change', function(){
+            readURL(this);
+        });
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+            }
+          reader.readAsDataURL(input.files[0]);
+        }
+    }
+});
+       
+</script>
+
 	<div class="main-container">
 		<div class="container">
 			<!-- 상단 프로필 타이틀 -->
@@ -186,13 +214,45 @@
 	<div id="userInfo" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
 	   <c:choose>
 		<c:when test="${userNum eq user_num}">
-        	<a href="#">프로필 사진 변경</a><br>
+	
+        	<a  href="#" data-toggle="modal" data-target="#modal-profile-image">프로필 사진 변경</a><br>
         		</c:when>
         	<c:otherwise>
         		<a href="#">대화하기</a>
         	</c:otherwise>
         </c:choose>
 	</div>   
+	<!-- 프로필 이미지 변경 모달 창 -->
+	 <div id="modal-profile-image" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    	자를 영역을 선택해주세요.
+                    <button id="btn-image-upload" class="btn btn-potluck btn-sm pull-right">파일찾기</button>
+                </div>
+                
+                <div class="modal-body">
+                	<div class="crop-container">
+					    <form id="form1">
+					        <input type='file' id="imgInp" class="hidden" />
+					        <img id="blah" src="#" alt="your image" />
+					    </form>
+				    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button class="btn btn-default btn-block" data-dismiss="modal">취소</button>
+                        </div>
+                        <div class="col-xs-6">
+                            <button id="btn-crop-confirm" class="btn btn-potluck btn-block">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 	
 <!-- 인클루드-푸터 -->
 <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
