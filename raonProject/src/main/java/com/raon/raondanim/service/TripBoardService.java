@@ -47,4 +47,8 @@ public interface TripBoardService {
 	//게시판 수정 삭제용 비번체크
 	public boolean pwCheck(String user_pwCheck, int boardKey);
 	
+	//게시판 테이블 update rel city 상태값 0으로 바꾼후 인설트
+	public boolean totalUpdate(TripBoard tripBoard, String tripCity);
+	
+	
 }

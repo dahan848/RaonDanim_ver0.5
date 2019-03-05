@@ -150,6 +150,7 @@ public class TripController {
 		//수정화면 1로 가는 메소드 기존 정보 가지고 이동 
 		model.addAttribute("boardInfo", tripService.getTripBoardOneInfo(boardKey));
 		model.addAttribute("cityNames", tripService.getTripBoardCityOneInfo(boardKey));
+		//System.out.println("수정1 :"+tripService.getTripBoardOneInfo(boardKey));
 		return "trip/TripBoardModifyForm1";
 		
 	}
@@ -167,8 +168,8 @@ public class TripController {
 	@RequestMapping("/modify3")
 	public String modifyBoard(TripBoard tripBoard, String tripCity) {
 		System.out.println("수정3요청 받음");
-		System.out.println(tripBoard);
-		System.out.println(tripCity);
+		System.out.println("수정요청3: "+tripBoard);
+		System.out.println("수정요청3: "+tripCity);
 		
 		return null;
 		

@@ -241,6 +241,8 @@ SELECT  C.TRIP_CITY_KEY,
 FROM TRIP_REL_TB R JOIN TRIP_CITY_TB C
 ON R.TRIP_CITY_KEY =C.TRIP_CITY_KEY
 WHERE R.TRIP_BOARD_KEY = #{num}
+and TRIP_CITY_ST = 0
+<!--상태값 0은 정상 1은 삭제 데이터라 0으로 일단 밖아놈   -->
 </select>
 
 

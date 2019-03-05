@@ -412,6 +412,7 @@ html, body {
 								
 								<form action="modify3" id="sendWrite">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+									<input type="hidden" name="trip_Board_Key" value="${tripBoard.trip_Board_Key}">
 									<input type="hidden" id="user_Num" value="${tripBoard.user_Num}" name="user_Num">
 									<input type="hidden" id="trip_Board_Title" value="${tripBoard.trip_Board_Title}" name="trip_Board_Title">
 									<input type="hidden" id="trip_Board_Start" value="${tripBoard.trip_Board_Start}" name="trip_Board_Start">

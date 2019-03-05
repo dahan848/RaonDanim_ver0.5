@@ -355,6 +355,83 @@ public class TripBoardServiceImp implements TripBoardService {
 		
 		
 	}
+	//@Transactional(rollbackFor=Exception.class)//예외발생시 강제 롤백
+	@Transactional
+	@Override
+	public boolean totalUpdate(TripBoard tripBoard, String tripCity) {
+		// 게시글 업데이트 메소드
+			
+		//해야할일
+		//보드키 뽑아서 연관된 테이블의 키 뽑기
+		int boardKey = tripBoard.getTrip_Board_Key();
+		int userNum = tripBoard.getUser_Num();
+		List<Map<String, Object>> params = null;
+		
+		JsonParser parser = new JsonParser();
+		JsonArray jsonArray = (JsonArray) parser.parse(tripCity);
+		
+		
+		try {
+			
+			
+			
+			
+			params = tripDao.selectRelKeyAndCityKey(boardKey);
+			//연관된 테이블 row의 상태값 1로 
+			for(Map<String, Object> a :params) {
+				
+				//키 테이블 상태값 1로
+				String relKey =  String.valueOf(a.get("REL_KEY"));
+				tripDao.deleteRel(Integer.parseInt(relKey));
+				
+				//도시테이블 상태값 1로
+				String cityKey = String.valueOf(a.get("TRIP_CITY_KEY"));
+				tripDao.deleteCity(Integer.parseInt(cityKey));
+			}
+			
+			//board 테이블 update
+			tripDao.updateBoard(tripBoard);
+			
+			
+			
+			//   rel city 테이블 입력
+			
+			for(int i = 0;i<jsonArray.size();i++) {
+				TripCity city= new TripCity();
+				TripRel rel= new TripRel();
+				JsonElement element = jsonArray.get(i);
+				
+				city.setTrip_City_Town(element.getAsJsonObject().get("cityName").getAsString());
+				city.setTrip_City_Lat(element.getAsJsonObject().get("lat").getAsString());
+				city.setTrip_City_Lng(element.getAsJsonObject().get("lng").getAsString());
+				city.setTrip_City_Pid(element.getAsJsonObject().get("placeId").getAsString());
+				tripDao.insertCity(city);
+				
+				int tripCityKey = city.getTrip_City_Key();
+				rel.setTrip_Board_Key(boardKey);
+				rel.setTrip_City_Key(tripCityKey);
+				rel.setUser_Num(userNum);
+				tripDao.insertRel(rel);
+				
+			}
+			
+			//정상적으로 다 진행됬을시 true반환
+			return true;
+			
+		} catch (Exception e) {
+			System.out.println("update 중 트랜잭션 실패");
+			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return false;
+			
+		}
+		
+	
+		
+		
+		
+		
+	}
 
 
 
