@@ -17,9 +17,11 @@ public interface TripBoardDao {
 	public int deleteBoard(int boardKey);
 	
 	
-	//검색 메소드
+	//보드키로 게시판 정보 검색
 	public TripBoard selectOneByBoardKey(int TripKey);
+	//유저넘으로 게시판 정보 검색
 	public TripBoard selectOneByUserNum(int userNum);
+	//게시판 정보 전부검색
 	public List<TripBoard> selectAll();	
 	
 	//페이징관련 메소드
@@ -29,13 +31,13 @@ public interface TripBoardDao {
 	
 	//도시테이블 입력
 	public int insertCity(TripCity tripCity);
-	//도시 수정
-	public int updateCity(TripCity tripCity);
+/*	//도시 수정 -보류
+	public int updateCity(TripCity tripCity);*/
 	//도시 삭제
 	public int deleteCity(int CityKey);
 	
-	//이거 안씀
-	public TripCity selectOneByCity(Map<String, Object> params);
+	//도시정보 뽑는 select메소드
+	public List<Map<String, Object>> selectRelKeyAndCityKey(int boardKey);
 	public List<TripCity> selectAllByCity();
 	
 	//게시판 리스트 띄울때 맵에 마커찍을  위도경도가지는 메소드

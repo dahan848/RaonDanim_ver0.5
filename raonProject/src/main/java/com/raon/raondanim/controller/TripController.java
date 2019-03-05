@@ -12,9 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.raon.raondanim.model.TripBoard;
+import com.raon.raondanim.model.TripCity;
 import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.AccountsService;
 import com.raon.raondanim.service.TripBoardService;
@@ -73,11 +76,10 @@ public class TripController {
 		
 		model.addAttribute("boardInfo", tripService.getTripBoardOneInfo(boardKey));
 		model.addAttribute("cityInfo", tripService.getTripBoardCityOneInfo(boardKey));
-		model.addAttribute("cityTable", tripService.getTripBoardCityTableList(boardKey));
-		System.out.println("뷰 요청 테스트 게시판 정보: "+tripService.getTripBoardOneInfo(boardKey));
-		System.out.println("뷰 요청 테스트 도시 정보: "+tripService.getTripBoardCityOneInfo(boardKey));
-		System.out.println("뷰 요청 테스트 도시테이블 그리기 용 정보: "+tripService.getTripBoardCityTableList(boardKey));
-		
+	
+//		System.out.println("뷰 요청 테스트 게시판 정보: "+tripService.getTripBoardOneInfo(boardKey));
+//		System.out.println("뷰 요청 테스트 도시 정보: "+tripService.getTripBoardCityOneInfo(boardKey));
+
 		return "trip/TripBoardView";
 	}
 
@@ -97,7 +99,7 @@ public class TripController {
 	@RequestMapping("/write2")
 	public String boardWrite2(TripBoard tripBoard, Model model) {
 		System.out.println("write2요청받음");
-		//System.out.println(tripBoard);
+		System.out.println(tripBoard);
 		model.addAttribute("tripBoard", tripBoard);
 		return "trip/TripBoardWriteForm2";
 	}
@@ -114,8 +116,64 @@ public class TripController {
 			  System.out.println("실패");
 			  return "redirect:list";
 		  }
-		 
-
+	
+	}
+	
+	@RequestMapping("/boardDelete")
+	public String boardDelete(int boardKey, Model model,RedirectAttributes ra) {
+		System.out.println("삭제요청 받음 ");
+		System.out.println(boardKey);
+		if(tripService.totalDelete(boardKey)) {
+			ra.addAttribute("msg", "성공하였습니다.");
+			return "redirect:list";
+		}else {
+			ra.addAttribute("msg", "실패하였습니다 다시 시도해주세요.");
+			ra.addAttribute("boardKey", boardKey);
+			return "redirect:view";
+		}
+		
 		
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/checkPw")
+	public boolean checkPw(String user_pwCheck, int boardKey) {
+		System.out.println("비밀번호 확인 요청 받음");
+		
+		return tripService.pwCheck(user_pwCheck, boardKey);
+		
+	}
+	
+	@RequestMapping("/modify1")
+	public String modifyForm(int boardKey,Model model) {
+		System.out.println("수정화면1요청 받음");
+		//수정화면 1로 가는 메소드 기존 정보 가지고 이동 
+		model.addAttribute("boardInfo", tripService.getTripBoardOneInfo(boardKey));
+		model.addAttribute("cityNames", tripService.getTripBoardCityOneInfo(boardKey));
+		return "trip/TripBoardModifyForm1";
+		
+	}
+
+	@RequestMapping("/modify2")
+	public String modifyForm2(TripBoard tripBoard,Model model) {
+		System.out.println("수정화면2요청 받음");
+		System.out.println(tripBoard);
+		
+		model.addAttribute("tripBoard", tripBoard);
+		return "trip/TripBoardModifyForm2";
+		
+	}
+	
+	@RequestMapping("/modify3")
+	public String modifyBoard(TripBoard tripBoard, String tripCity) {
+		System.out.println("수정3요청 받음");
+		System.out.println(tripBoard);
+		System.out.println(tripCity);
+		
+		return null;
+		
+	}
+	
+	
+	
 }

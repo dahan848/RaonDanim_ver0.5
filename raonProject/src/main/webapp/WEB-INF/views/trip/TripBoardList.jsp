@@ -76,6 +76,17 @@
 		
 		initMap();
 		
+		//수정 삭제 성공시 alert로 사용자에게 알림
+		var msg = "${msg}";
+		if(msg !=null && msg != ""){
+			swal({
+				icon:"success",
+				text:msg,
+			});
+		}
+		
+		
+		
 	}
 </script>
 </head>
@@ -152,7 +163,7 @@
 								<b>여행스타일</b>
 							</h5></th>
 						<th><h5>
-								<b>동행하는인수</b>
+								<b>동행가능</b>
 							</h5></th>
 						<th><h5>
 								<b>조회수</b>

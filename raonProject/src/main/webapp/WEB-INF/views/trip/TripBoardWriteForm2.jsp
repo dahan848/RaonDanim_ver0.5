@@ -91,7 +91,7 @@ html, body {
 }
 </style>
 <script type="text/javascript"
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc&libraries=places"></script>
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc&libraries=places&language=en"></script>
 <script
 	src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
 	
@@ -417,6 +417,7 @@ html, body {
 									<input type="hidden" id="trip_Board_Start" value="${tripBoard.trip_Board_Start}" name="trip_Board_Start">
 									<input type="hidden" id="trip_Board_End" value="${tripBoard.trip_Board_End}" name="trip_Board_End">
 									<input type="hidden" id="trip_Board_Content" value="${tripBoard.trip_Board_Content}" name="trip_Board_Content">
+									<input type="hidden" id="trip_Board_Together" value="${tripBoard.trip_Board_Together}" name="trip_Board_Together">
 									<input type="hidden" id="boardWrite2" value="" name="tripCity">
 									<input type="submit" value="작성완료" class="btn btn-primary btn-sm">
 								</form>
