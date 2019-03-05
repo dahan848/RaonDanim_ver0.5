@@ -10,25 +10,28 @@
 	<sec:authentication property="principal.user_num" var="user_num"/>
 </sec:authorize>
 <!DOCTYPE html>
+
 <html>
 <head>
-  <title>라온다님</title>
-<!-- CSS -->
-
-</head>
-<body>
-<!-- 인클루드 심플 헤더 -->
 <jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
-<!-- 인클루드 심플 헤더 END -->
-
+<!-- 프로필 페이지 CSS -->
+<link rel="stylesheet" href="${contextPath}/css/jquery.Jcrop.min.css" type="text/css"> 
+<!-- 프로필 페이지 JS -->
+<script src="${contextPath}/js/jquery.color.js" ></script>
+<script src="${contextPath}/js/jquery.Jcrop.js" ></script>
 <script type="text/javascript">
 $(document).ready(function() { 
-	alert("로딩 완료33"); 
+	alert("로딩 완료42"); 
 	
 	//버튼 눌리면 파일 선택 창 열리게 .trigger 사용 
 	$("#btn-image-upload").click(function () {
 	    $("#imgInp").trigger("click");
+	});
+	
+	//확인 버튼 인풋 써밋 trigger 하기 
+	$("#btn-crop-confirm").click(function () {
+	    $("#sub-btn").trigger("click");
 	});
 	
     $(function() {
@@ -39,17 +42,46 @@ $(document).ready(function() {
 
     function readURL(input) {
         if (input.files && input.files[0]) {
+        	
         var reader = new FileReader();
+         
         reader.onload = function (e) {
                 $('#blah').attr('src', e.target.result);
+                alert("짜잔!" + $('#blah').attr('src'));
             }
           reader.readAsDataURL(input.files[0]);
-        }
-    }
-});
-       
+        };
+    };
+    /////////////////////////////////////////
+	$("#blah").on("load",function(){
+	    $(function(){
+	    	$('#blah').Jcrop({
+	    		aspectRatio: 1,
+	    		onSelect: updateCoords
+	    	});
+	    });
+
+	    function updateCoords(c)
+	    {
+	    	$('#x').val(c.x);
+	    	$('#y').val(c.y);
+	    	$('#w').val(c.w);
+	    	$('#h').val(c.h);
+	    };
+
+	    function checkCoords()
+	    {
+	    	if (parseInt(jQuery('#w').val())>0) return true;
+	    	alert('자를 영역을 선택 한 다음 확인 버튼을 눌러주세요.');
+	    	return false;
+	    };
+	});
+});//onload END
 </script>
 
+<title>라온다님</title>
+</head>
+<body>
 	<div class="main-container">
 		<div class="container">
 			<!-- 상단 프로필 타이틀 -->
@@ -73,13 +105,13 @@ $(document).ready(function() {
 						<!-- 갤러리 이미지 불러와야 할 부분 -->
 						  <div class="carousel-inner">
 						    <div class="item active">
-						      <img src="../img/la.jpg" alt="Los Angeles">
+						      <img src="" alt="Los Angeles">
 						    </div>
 						    <div class="item">
-						      <img src="../img/chicago.jpg" alt="Chicago">
+						      <img src="" alt="Chicago">
 						    </div>
 						    <div class="item">
-						      <img src="../img/ny.jpg" alt="New York">
+						      <img src="" alt="New York">
 						    </div>
 						  </div>
 						  <!-- Left and right controls -->
@@ -231,11 +263,17 @@ $(document).ready(function() {
                     <button id="btn-image-upload" class="btn btn-potluck btn-sm pull-right">파일찾기</button>
                 </div>
                 
+                <!-- 프로필 이미지 미리보기가 출력되는 DIV -->
                 <div class="modal-body">
-                	<div class="crop-container">
-					    <form id="form1">
+                	<div class="imgContainer"> <!-- 이 놈이 모달창 속 사진의 크기를 강제로 묶음 -->
+					    <form action="#" method="post" onsubmit="return checkCoords();">
 					        <input type='file' id="imgInp" class="hidden" />
-					        <img id="blah" src="#" alt="your image" />
+					        <img id="blah" style="max-width: 570px;" src="#" />
+							<input type="hidden" id="x" name="x" />
+							<input type="hidden" id="y" name="y" />
+							<input type="hidden" id="w" name="w" />
+							<input type="hidden" id="h" name="h" />
+							<input type="submit" style="display: none;" id="sub-btn"/>
 					    </form>
 				    </div>
                 </div>

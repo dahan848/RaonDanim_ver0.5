@@ -498,8 +498,8 @@ MOBILE
   width: 100%;
 }
 #modal-profile-image .crop-container img {
-  width: 100%;
-  max-width: 100%;
+  /*width: 598px;*/
+  /*max-width: 100%;*/
 }
 #modal-profile-image .loading-mask {
   position: absolute;
