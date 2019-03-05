@@ -22,7 +22,7 @@
 <script src="${contextPath}/js/jquery.Jcrop.js" ></script>
 <script type="text/javascript">
 $(document).ready(function() { 
-	alert("로딩 완료42"); 
+	//alert("로딩 완료42"); 
 	
 	//버튼 눌리면 파일 선택 창 열리게 .trigger 사용 
 	$("#btn-image-upload").click(function () {
@@ -30,16 +30,18 @@ $(document).ready(function() {
 	});
 	
 	//확인 버튼 인풋 써밋 trigger 하기 
+	/*
 	$("#btn-crop-confirm").click(function () {
 	    $("#sub-btn").trigger("click");
 	});
+	*/
 	
+	//파일 미리보기 로직
     $(function() {
         $("#imgInp").on('change', function(){
             readURL(this);
         });
     });
-
     function readURL(input) {
         if (input.files && input.files[0]) {
         	
@@ -47,12 +49,12 @@ $(document).ready(function() {
          
         reader.onload = function (e) {
                 $('#blah').attr('src', e.target.result);
-                alert("짜잔!" + $('#blah').attr('src'));
             }
           reader.readAsDataURL(input.files[0]);
         };
     };
-    /////////////////////////////////////////
+    
+    //프로필 Crop 로직
 	$("#blah").on("load",function(){
 	    $(function(){
 	    	$('#blah').Jcrop({
@@ -77,6 +79,48 @@ $(document).ready(function() {
 	    };
 	});
 });//onload END
+
+//파일 업로드 ajax
+function fileSubmit() {
+    var formData = new FormData($("#fileForm")[0]); //사진 파일 
+    var profileData = $("#fileForm").serialize(); //Form 요소 값 직렬화 : user_num, 사진 자르는데 사용되는 xy...
+    var contextPath = '<c:out value="${contextPath}"/>';
+    
+    //formData.append('data', JSON.stringify (profileData));
+    
+    //파일을 전송하는 ajax
+    $.ajax({
+        type : 'post',
+        url : contextPath + '/fileUpload',
+        data : formData,
+        processData : false,
+        contentType : false,
+        success : function(result) {
+            if(result){
+            	alert("파일 업로드하였습니다.");	
+            }else{
+            	alert("빡!");
+            }
+        },
+        error : function(error) {
+            alert("파일 업로드에 실패하였습니다.");
+            console.log(error);
+            console.log(error.status);
+        }
+    });
+    
+    //Form에 적힌 요소를 보내는 ajax...
+    $.ajax({
+   		type : 'post',
+        url : contextPath + '/fileUploadInfo',
+        data : profileData,
+        error : function(error) {
+            console.log(error);
+            console.log(error.status);
+        }
+    });
+    return false; //폼 서밋 이벤트 멈추기
+}
 </script>
 
 <title>라온다님</title>
@@ -134,7 +178,7 @@ $(document).ready(function() {
 		              				<img src="${contextPath}/img/home_profile_2.jpg" class="img-circle img-avatar">
 		              			</c:when>
 		              			<c:otherwise>
-		              				<img src="${contextPath}/img/home_Message.png">
+		              				<img class="img-circle img-avatar" src="${contextPath}/image?fileName=${user.profile}">
 		              			</c:otherwise>
 		              		</c:choose>
 				   		</a>
@@ -266,8 +310,9 @@ $(document).ready(function() {
                 <!-- 프로필 이미지 미리보기가 출력되는 DIV -->
                 <div class="modal-body">
                 	<div class="imgContainer"> <!-- 이 놈이 모달창 속 사진의 크기를 강제로 묶음 -->
-					    <form action="#" method="post" onsubmit="return checkCoords();">
-					        <input type='file' id="imgInp" class="hidden" />
+					    <form id="fileForm" action="#" method="post" enctype="multipart/form-data">
+					        <input type='file' id="imgInp" name ="file" class="hidden" />
+					        <input type="hidden" name="user_num" value="${user_num}">
 					        <img id="blah" style="max-width: 570px;" src="#" />
 							<input type="hidden" id="x" name="x" />
 							<input type="hidden" id="y" name="y" />
@@ -284,7 +329,7 @@ $(document).ready(function() {
                             <button class="btn btn-default btn-block" data-dismiss="modal">취소</button>
                         </div>
                         <div class="col-xs-6">
-                            <button id="btn-crop-confirm" class="btn btn-potluck btn-block">확인</button>
+                            <button id="btn-crop-confirm" class="btn btn-potluck btn-block" onclick="fileSubmit();">확인</button>
                         </div>
                     </div>
                 </div>

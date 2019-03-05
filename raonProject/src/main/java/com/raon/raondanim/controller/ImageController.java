@@ -1,0 +1,43 @@
+package com.raon.raondanim.controller;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+
+@Controller
+public class ImageController {
+	private static final String FILE_PATH = "C:\\Users\\bitcamp\\Desktop\\reaondanim ver.5\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\raonProject\\resources/upload/";
+
+	@ResponseBody
+	@RequestMapping("/image")
+	public byte[] getImage(String fileName) {
+		System.out.println("/image 요청 : " + fileName);
+		//해당 이미지를 byte[]형태로 반환
+		File file = new File(FILE_PATH+fileName);
+		InputStream in = null;
+		
+		try {
+			in = new FileInputStream(file);
+		
+			return IOUtils.toByteArray(in);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return null;
+	}
+}

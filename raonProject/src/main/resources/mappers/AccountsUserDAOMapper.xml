@@ -87,4 +87,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select user_num, user_profile_pic, user_lnm, user_fnm
   		  from user_tb
 	</select>
+	<update id="setProfilePic" parameterType="map">
+		UPDATE user_tb
+		   SET USER_PROFILE_PIC	= #{filename}
+		 WHERE user_num 		= #{user_num}
+	</update>
 </mapper>

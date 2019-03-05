@@ -32,6 +32,13 @@
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<!-- 파일업로드를 위한 설정 -->
+		<multipart-config>
+			<location>c:\temp</location>
+			<max-file-size>-1</max-file-size>
+			<max-request-size>-1</max-request-size>
+			<file-size-threshold>1024</file-size-threshold> <!-- 한 번에 처리 할 파일 사이즈 -->
+		</multipart-config>
 	</servlet>
 
 	<!-- servlet-context가 가로 챌 요청 설정 -->

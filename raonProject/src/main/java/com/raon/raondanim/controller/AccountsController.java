@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.raon.raondanim.model.User;
 import com.raon.raondanim.model.customUserDetails;
@@ -174,6 +175,13 @@ public class AccountsController {
 		//2 : 비밀번호 변경 실패 
 		return service.passwordChange(param);
 	}
+	
+	//프로필 사진 업로드 요청  => 따로 파일 업로드 관련 컨트롤러로 처리
+//	@RequestMapping(value ="/uploadprofile", method = RequestMethod.POST)
+//	public String uploadProfilePic(MultipartFile file) {
+//		System.out.println("프로필 픽 업로드 : " + file);
+//		return "";
+//	}
 	
 	///////더미 데이터(유저) 생성 요청
 	@RequestMapping("/dnmmyData")

@@ -27,7 +27,7 @@ public class HomeController {
 		logger.info("");
 		//home 요청이 들어오면, 메인화면에 뿌려줄 랜덤한 12명의 회원정보(Map)을 담은 List를 반환
 		List<Map<String, Object>> result = service.getHomeUserList(); 
-		System.out.println("홈으로 넘어가는 LIST : " + result);
+		//System.out.println("홈으로 넘어가는 LIST : " + result);
 		model.addAttribute("userList", result);
 		return "home/main";
 	}

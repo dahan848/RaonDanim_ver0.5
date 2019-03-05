@@ -44,6 +44,15 @@ public class AccountsService {
 		}
 	}
 	
+	//프로필 사진 등록 ()
+	public boolean setProfilePic(Map<String, Object> param) {
+		System.out.println("서비스 전달 받은 맵 확인 : " + param);
+		if(dao.setProfilePic(param) > 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
 	//프로필 화면에 넘길 데이터 (Map) 반환하는 서비스
 	public Map<String, Object> getProfileData(int usernum){

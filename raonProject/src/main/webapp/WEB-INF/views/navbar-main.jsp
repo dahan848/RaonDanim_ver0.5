@@ -68,7 +68,7 @@
 		              				<img src="${contextPath}/img/home_profile_2.jpg">
 		              			</c:when>
 		              			<c:otherwise>
-		              				<img src="${contextPath}/img/home_Message.png">
+		              				<img src="${contextPath}/image?fileName=${pic}">
 		              			</c:otherwise>
 		              		</c:choose>   	
 		                 		 	<sec:authentication property="principal.username"/>
