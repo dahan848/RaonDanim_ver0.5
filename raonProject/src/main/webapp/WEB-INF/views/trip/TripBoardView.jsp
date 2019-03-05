@@ -23,8 +23,8 @@ function initMap() {
 	var labels = '123456789';
 
 	var uluru = {
-		lat : 37.566535,
-		lng : 126.97796919999996
+		lat : locations[0].lat,
+		lng : locations[0].lng
 	};
 	// The map, centered at Uluru
 	var map = new google.maps.Map(document.getElementById('map'), {
@@ -250,7 +250,7 @@ window.onload = function() {
 	max-height: 200px;
 	height:20%;
 	width: 100%;
-	border: 1px solid blue;
+	border-right:1px solid purple;
 	margin:0px;
 	overflow: hidden;
 }
@@ -274,7 +274,7 @@ window.onload = function() {
 	max-height: 1000px;
 	height:100%;
 	width: 50%;
-	border: 1px solid green;
+	border: 1px solid purple;
 	padding: 0px;
 	overflow: auto;
 	display: none;
@@ -320,14 +320,14 @@ th{
 	min-height: 500px;
 }
 
-#tripsogae{
-	max-width: 100px;
-	width: 50px;
-	font-size: 13pt;
+#sogaeTable{
+	max-width: 300px;
+	width: 300px;
+	overflow: scroll;
 }
-#tripsogae-1{
-	max-width: 100px;
-	width: 50px;
+
+#tripsogae{
+
 	font-size: 13pt;
 }
 
@@ -394,7 +394,7 @@ th{
 				<!--중앙 div 콜렙스 될부분  -->
 				<div class="col-lg-6" id="leftDiv-2">
 				 	<div class="container" id="leftDiv-2-1">
-				 		<table class="table">
+				 		<table class="table" id="sogaeTable">
 				 			<tr>
 				 				<th>
 				 					<h2><b><small><mark>관심사</mark></small></b></h2>
@@ -427,10 +427,11 @@ th{
 				 				</th>
 				 			</tr>
 				 			<tr>
-				 				<td id="tripsogae" style="width: 50px;">
-				 					<div style="width: 300px; height: 100%;">
+				 				<td id="tripsogae">
+				 					<div>
 				 						${boardInfo.TRIP_BOARD_COUNTENT}
-				 					</div>			
+				 					</div>	 		
+				 					
 				 				</td>
 				 			</tr>
 				 		</table>
