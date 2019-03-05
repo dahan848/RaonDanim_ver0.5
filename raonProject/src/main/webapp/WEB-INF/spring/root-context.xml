@@ -18,7 +18,10 @@
 	<!-- trip파트 트랜잭션 필요해서 aop tx namespace추가 -->
 	<tx:annotation-driven
 		transaction-manager="transactionManager" />
-
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 
 	<!-- 오라클 접속 -->
 	<bean
@@ -93,7 +96,7 @@
 	</bean>
 
 	<!--tripDao -->
-	<bean id="TripBoardDao"
+	<bean id="tripBoardDao"
 		class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface"
 			value="com.raon.raondanim.dao.TripBoardDao"></property>
@@ -101,12 +104,10 @@
 			ref="sqlSessionFactory"></property>
 	</bean>
 
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"></property>
+	<bean id="tripReplyDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.raon.raondanim.dao.TripReplyDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
-
-
 
 
 </beans>

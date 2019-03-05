@@ -393,7 +393,7 @@ th{
 				
 				<!--중앙 div 콜렙스 될부분  -->
 				<div class="col-lg-6" id="leftDiv-2">
-				 	<div class="container" id="leftDiv-2-1">
+				 	
 				 		<table class="table" id="sogaeTable">
 				 			<tr>
 				 				<th>
@@ -436,7 +436,7 @@ th{
 				 			</tr>
 				 		</table>
 	 		
-				 	</div>
+				 	
 				</div>
 				
 			</div>
