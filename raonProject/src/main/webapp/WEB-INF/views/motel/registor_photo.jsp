@@ -231,11 +231,12 @@ img {
 						<input type="hidden" value="${motel_bathroom }" name="motel_bathroom"> 
 						<input type="hidden" value="${motel_room }" name="motel_room"> 
 						<input type="hidden" value="${motel_people }" name="motel_people">
-						<input type="hidden" value="${motel_nation }" name="motel_nation">
 						<input type="hidden" value="${motel_address }" name="motel_address">
-						<input type="hidden" value="${motel_city }" name="motel_city">
-					
-							
+						<input type="hidden" value="${motel_city_en }" name="motel_city_en">
+						<input type="hidden" value="${motel_city_ko }" name="motel_city_ko">
+						<input type="hidden" value="${motel_nation_en }" name="motel_nation_en">
+						<input type="hidden" value="${motel_nation_ko }" name="motel_nation_ko">
+
 					<div class="photo_all">
 						<div class="filebox_big">
 							<label for="cma_file4" id="cma_image4" class="filebox_big_laber">사진

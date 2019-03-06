@@ -2,6 +2,7 @@ package com.raon.raondanim.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,13 +63,53 @@ public class MotelController {
 	public String registor_step3(@RequestParam Map<String, Object> param, Model model) {
 		System.out.println("setp3  진입");
 		System.out.println(param);
+		
+		//파라미터에 있는 nation, city 의 값을 영어/한글 값으로 나누어서 저장(테이블에 영문/한글 따로 컬럼에 저장됨)
+		
+		String nation = (String) param.get("motel_nation");
+		
+		StringTokenizer nation_div = new StringTokenizer(nation, ",");
+		String nation_en = "";
+		String nation_ko = "";
+		while(nation_div.hasMoreTokens()) {
+			//System.out.println("nation : " + nation_div.nextToken());
+			nation_en =  nation_div.nextToken();
+			nation_ko =  nation_div.nextToken();
+		}
+		// nation_ko 값에 첫글자에 공백이 들어가므로 공백을 버려준다.
+		nation_ko = nation_ko.trim();
+		param.put("motel_nation_en", nation_en);
+		param.put("motel_nation_ko", nation_ko);
+		
+		//System.out.println("motel_nation_en : " + param.get("motel_nation_en"));
+		//System.out.println("motel_nation_ko : " + param.get("motel_nation_ko"));
+		String city = (String) param.get("motel_city");
+		
+		StringTokenizer city_div = new StringTokenizer(city, ",");
+		
+		
+		String city_en = "";
+		String city_ko = "";
+		while(city_div.hasMoreTokens()) {
+			city_en = city_div.nextToken();
+			city_ko = city_div.nextToken();	
+		}
+		// city_ko 값 첫글자에 공백이 들어가므로 공백을 버려준다.
+		city_ko = city_ko.trim();
+		//System.out.println(city_ko);
+		param.put("motel_city_en", city_en);
+		param.put("motel_city_ko", city_ko);
+		
+		model.addAttribute("motel_city_en", param.get("motel_city_en"));
+		model.addAttribute("motel_city_ko", param.get("motel_city_ko"));
+		model.addAttribute("motel_nation_en", param.get("motel_nation_en"));
+		model.addAttribute("motel_nation_ko", param.get("motel_nation_ko"));
+		
 		model.addAttribute("motel_type", param.get("motel_type"));
 		model.addAttribute("motel_category", param.get("motel_category"));
 		model.addAttribute("motel_people", param.get("motel_people"));
 		model.addAttribute("motel_room", param.get("motel_room"));
 		model.addAttribute("motel_bathroom", param.get("motel_bathroom"));
-		model.addAttribute("motel_nation", param.get("motel_nation"));
-		model.addAttribute("motel_city", param.get("motel_city"));
 		model.addAttribute("motel_address", param.get("motel_address"));
 		model.addAttribute("registor", param);
 		return "motel/registor_photo";
@@ -80,13 +121,16 @@ public class MotelController {
 		System.out.println("step4 진입");
 		System.out.println(param);
 		
+		model.addAttribute("motel_city_en", param.get("motel_city_en"));
+		model.addAttribute("motel_city_ko", param.get("motel_city_ko"));
+		model.addAttribute("motel_nation_en", param.get("motel_nation_en"));
+		model.addAttribute("motel_nation_ko", param.get("motel_nation_ko"));
+		
 		model.addAttribute("motel_type", param.get("motel_type"));
 		model.addAttribute("motel_category", param.get("motel_category"));
 		model.addAttribute("motel_people", param.get("motel_people"));
 		model.addAttribute("motel_room", param.get("motel_room"));
 		model.addAttribute("motel_bathroom", param.get("motel_bathroom"));
-		model.addAttribute("motel_nation", param.get("motel_nation"));
-		model.addAttribute("motel_city", param.get("motel_city"));
 		model.addAttribute("motel_address", param.get("motel_address"));
 		
 		

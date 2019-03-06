@@ -290,7 +290,7 @@
 								<c:forEach var="national" items="${national}" varStatus="i">
 
 									<option
-										value="${national.NATIONALITY_KOR_NAME}${national.NATIONALITY_NAME}" onkeypress='chkCode(this,event.keyCode)'></option>
+										value="${national.NATIONALITY_NAME}, ${national.NATIONALITY_KOR_NAME}" onkeypress='chkCode(this,event.keyCode)'></option>
 
 								</c:forEach>
 
@@ -306,7 +306,7 @@
 								<c:forEach var="city" items="${city}" varStatus="i">
 
 									<option
-										value="${city.CITY}||${city.KO_CITY}" ></option>
+										value="${city.CITY}, ${city.KO_CITY}" ></option>
 
 								</c:forEach>
 

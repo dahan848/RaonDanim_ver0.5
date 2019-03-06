@@ -39,7 +39,7 @@ function initialize() {
    geocodeAddress(geocoder, searchMap);
    function geocodeAddress(geocoder, resultsMap) {
         
-        var address = "${MOTEL_COUNTRY} ${MOTEL_CITY} ${MOTEL_ADRESS}";
+        var address = "${MOTEL_NATION_EN} ${MOTEL_CITY_EN} ${MOTEL_ADRESS}";
         geocoder.geocode({'address': address}, function(results, status) {
            
           if (status === 'OK') {
@@ -240,10 +240,34 @@ function replyList(){
    
    })
 }
+
+function star(){
+   var queryString = $("form[name=ajaxForm]").serialize();
+   $.ajax({
+      url:"${contextPath}/motel/write_star",
+      data: queryString,
+        beforeSend : function(xhr)
+        {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
+      type : "post",
+      dataType : "json",
+      error : function() {
+         alert("실패");
+      },
+      success:function(data){
+         alert("성공");
+      }
+   })
+}
+
+
+
    $(function(){
       
       
       replyList();
+      star();
       $("#btnMore").on("click",function(){
          replyList();
       })
@@ -387,22 +411,20 @@ function replyList(){
         <!-- 숙박유형, 주소, 인원, 침실, 욕실, 프로필사진  -->
         <div style="width: 700px;">
            <div>
-              <div style="display: inline-block; height: 100px; width: 70%;">
-              
+              <div style="display: inline-block; height: 100px; width: 70%; margin-top:0px;">
                  <i><b style="font-size: 40px;">${MOTEL_TITLE}</b></i>
               </div>
-              <div style="border-radius: 50%; width: 100px; height: 100px; display: inline-block;  margin-left: 100px; background-image: url('${contextPath}/img/duny.jpg'); background-size:cover;">
-                 
+                 <div style="border-radius: 50%; margin-top:15px; width: 100px; height: 100px; display: inline-block;  margin-left: 100px; background-image: url('${contextPath}/img/duny.jpg'); background-size:cover;">
               </div>
-              <div>
-                    <p style="margin-left: 630px;">${USER_FNM} ${USER_LNM }</p>
-                 </div>
+              <div style="margin-top:-50px;">
+                 <p style="margin-left: 620px;"><b>${USER_FNM} ${USER_LNM }</b></p>              
+              </div>
            </div>
            
         
            <div style="float: left; padding-right: 15px; padding-top: 30px;" >
               <b style="font-size: 30px;">${MOTEL_CATEGORY}</b><br>
-              <p style="font-size:x-small;">${MOTEL_COUNTRY} ${MOTEL_CITY}</p>
+              <p style="font-size:x-small;">${MOTEL_NATION_EN} ${MOTEL_CITY_EN}</p>
            </div>
            <div style="float: left; padding-right: 15px; padding-top: 30px;">
               <i class="fa fa-users fa-lg"></i>
@@ -443,7 +465,7 @@ function replyList(){
               <%-- <img alt="" src="${contextPath}/img/star.png" style="width: 100px; height: 100px;"> --%>
               <div id="2" style="float:left; background-image: url('${contextPath}/img/star.png'); background-size:cover; width:100px; height:100px; display:inline-block;">
                  <div style="margin-top: 38px; margin-left: 40px;">
-                    <b style="font-size: 20px;">${MOTEL_AVG }</b>
+                    <b style="font-size: 20px;">${MOTEL_AVG}</b>
                  </div>
               </div>
         </div>
@@ -451,7 +473,7 @@ function replyList(){
         <!-- 댓글, 평점달기 -->
         
         <div>
-           <form action="write_reply" method="post">
+           <form name="ajaxForm" action="write_reply" method="post">
            <span class="star-input">
   <span class="input">
     <!-- <input type="radio" name="star-input" id="p0" value="0"><label for="p0">0</label> -->
@@ -475,7 +497,7 @@ function replyList(){
               <textarea rows="5" cols="" class="form-control" id="content" placeholder="내용" name="content"></textarea>
              </div>
              <div style="margin-left: 650px; margin-top: 0">
-                <button type="submit" id="btnReply" onclick="write_reply();" class="btn btn-default">저장</button>
+                <button type="submit" id="btnReply" onclick="star();" class="btn btn-default">저장</button>
              </div>
            </form>
         </div>
