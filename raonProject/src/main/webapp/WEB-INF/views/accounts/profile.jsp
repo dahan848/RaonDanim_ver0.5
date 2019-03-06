@@ -16,13 +16,16 @@
 <jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
 <!-- 프로필 페이지 CSS -->
-<link rel="stylesheet" href="${contextPath}/css/jquery.Jcrop.min.css" type="text/css"> 
+<link rel="stylesheet" href="${contextPath}/css/jquery.Jcrop.min.css" type="text/css">
+<!--  <link rel="stylesheet" href="${contextPath}/css/gallery-image.css" type="text/css"> -->
 <!-- 프로필 페이지 JS -->
 <script src="${contextPath}/js/jquery.color.js" ></script>
 <script src="${contextPath}/js/jquery.Jcrop.js" ></script>
+<script src="${contextPath}/js/gallery-image.js" ></script>
+
 <script type="text/javascript">
 $(document).ready(function() { 
-	//alert("로딩 완료42"); 
+	alert("로딩 완료45"); 
 	
 	//버튼 눌리면 파일 선택 창 열리게 .trigger 사용 
 	$("#btn-image-upload").click(function () {
@@ -36,7 +39,7 @@ $(document).ready(function() {
 	});
 	*/
 	
-	//파일 미리보기 로직
+	//파일 미리보기 로직 : 프로필 사진 
     $(function() {
         $("#imgInp").on('change', function(){
             readURL(this);
@@ -78,10 +81,12 @@ $(document).ready(function() {
 	    	return false;
 	    };
 	});
+    
+
 });//onload END
 
-//파일 업로드 ajax
-function fileSubmit() {
+//프로필 업로드 ajax
+function profilepicSubmit() {
     var formData = new FormData($("#fileForm")[0]); //사진 파일 
     var profileData = $("#fileForm").serialize(); //Form 요소 값 직렬화 : user_num, 사진 자르는데 사용되는 xy...
     var contextPath = '<c:out value="${contextPath}"/>';
@@ -91,7 +96,7 @@ function fileSubmit() {
     //파일을 전송하는 ajax
     $.ajax({
         type : 'post',
-        url : contextPath + '/fileUpload',
+        url : contextPath + '/profilePicUpload',
         data : formData,
         processData : false,
         contentType : false,
@@ -112,7 +117,7 @@ function fileSubmit() {
     //Form에 적힌 요소를 보내는 ajax...
     $.ajax({
    		type : 'post',
-        url : contextPath + '/fileUploadInfo',
+        url : contextPath + '/picInfo',
         data : profileData,
         error : function(error) {
             console.log(error);
@@ -120,16 +125,90 @@ function fileSubmit() {
         }
     });
     return false; //폼 서밋 이벤트 멈추기
-}
-</script>
+}//프로필 사진 업로드 END
 
+//갤러리 업로드 submit 이벤트 
+function gallerypicSubmit() {
+	var formData = new FormData($("#galleryForm")[0]); //사진 파일
+	var galleryInfo = $("#galleryForm").serialize(); 
+	var contextPath = '<c:out value="${contextPath}"/>';
+	alert("갤러리 짠!");
+	 $.ajax({
+	        type : 'post',
+	        url : contextPath + '/galleryPicUpload',
+	        data : formData,
+	        processData : false,
+	        contentType : false,
+	        success : function(result) {
+	            if(result){
+	            	alert("파일 업로드하였습니다.");	
+	            }else{
+	            	alert("빡!");
+	            }
+	        },
+	        error : function(error) {
+	            alert("파일 업로드에 실패하였습니다.");
+	            console.log(error);
+	            console.log(error.status);
+	        }
+	    });
+	 
+	    //Form에 적힌 요소를 보내는 ajax...
+	    $.ajax({
+	   		type : 'post',
+	        url : contextPath + '/picInfo',
+	        data : galleryInfo,
+	        error : function(error) {
+	            console.log(error);
+	            console.log(error.status);
+	        }
+	    });
+	    return false; //폼 서밋 이벤트 멈추기
+	
+	
+}//갤러리 업로드 END
+</script>
+<style type="text/css">
+.head{
+  text-align:left;
+  padding-left:25px;
+  margin-bottom:0px;
+}
+.uploadpreview{
+  width:150px;
+  height:150px;
+  display:block;
+  border:1px solid #ccc;
+  border-radius:10px;
+  margin-left:23px;
+  margin:0 auto 15px;
+  background-size:100% auto;
+  background-repeat:no-repeat;
+  background-position:center;
+}
+
+.upload-wrap{
+  float:left;
+  width:200px;
+}
+
+
+input[type="file"] {
+    color: transparent;
+    width: 120px;
+    margin: 0 auto;
+    margin-left: 60px;
+    display: block;
+}
+
+</style>
 <title>라온다님</title>
 </head>
 <body>
 	<div class="main-container">
 		<div class="container">
 			<!-- 상단 프로필 타이틀 -->
-			<h3 class="section-title">
+			<h3 class="section-title" >
 				<img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt="">
             		 나의 프로필
             	<!-- 자신의 페이지 일 때만 [프로필 수정]버튼 보임 -->
@@ -142,21 +221,11 @@ function fileSubmit() {
 					<div class="user-images"><!-- 유저 이미지 영역 -->
 						<div id="carousel-user-images" class="carousel slide" data-ride="carousel">
 						  <ol class="carousel-indicators">
-						    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-						    <li data-target="#myCarousel" data-slide-to="1"></li>
-						    <li data-target="#myCarousel" data-slide-to="2"></li>
+								<!-- ajax 처리 -->
 						  </ol>
 						<!-- 갤러리 이미지 불러와야 할 부분 -->
 						  <div class="carousel-inner">
-						    <div class="item active">
-						      <img src="" alt="Los Angeles">
-						    </div>
-						    <div class="item">
-						      <img src="" alt="Chicago">
-						    </div>
-						    <div class="item">
-						      <img src="" alt="New York">
-						    </div>
+								<!-- ajax 처리 -->
 						  </div>
 						  <!-- Left and right controls -->
 						  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
@@ -289,10 +358,10 @@ function fileSubmit() {
 	<!-- POPOVER DIV -->
 	<div id="userInfo" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
 	   <c:choose>
-		<c:when test="${userNum eq user_num}">
-	
-        	<a  href="#" data-toggle="modal" data-target="#modal-profile-image">프로필 사진 변경</a><br>
-        		</c:when>
+			<c:when test="${userNum eq user_num}">
+	        	<a href="#" data-toggle="modal" data-target="#modal-profile-image">프로필 사진</a><br>
+	        	<a href="#" data-toggle="modal" data-target="#modal-gallery-image">갤러리 사진</a>
+	   		</c:when>
         	<c:otherwise>
         		<a href="#">대화하기</a>
         	</c:otherwise>
@@ -306,7 +375,6 @@ function fileSubmit() {
                     	자를 영역을 선택해주세요.
                     <button id="btn-image-upload" class="btn btn-potluck btn-sm pull-right">파일찾기</button>
                 </div>
-                
                 <!-- 프로필 이미지 미리보기가 출력되는 DIV -->
                 <div class="modal-body">
                 	<div class="imgContainer"> <!-- 이 놈이 모달창 속 사진의 크기를 강제로 묶음 -->
@@ -329,13 +397,60 @@ function fileSubmit() {
                             <button class="btn btn-default btn-block" data-dismiss="modal">취소</button>
                         </div>
                         <div class="col-xs-6">
-                            <button id="btn-crop-confirm" class="btn btn-potluck btn-block" onclick="fileSubmit();">확인</button>
+                            <button id="btn-crop-confirm" class="btn btn-potluck btn-block" onclick="profilepicSubmit();">확인</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- 갤러리 사진 등록 모달창 -->
+	 <div id="modal-gallery-image" class="modal fade" tabindex="-1" role="dialog">
+	    <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+               <div class="modal-header">
+                    	파일을 선택해주세요.
+                </div>
+	            <div class="modal-body">
+	                <div class="imgContainer"> <!-- 이 놈이 모달창 속 사진의 크기를 강제로 묶음 -->
+	                    <div class="container"> 
+	                        <br> 
+	                        <div class="col-sm-7" style="width: auto; padding: 0px; margin-left: -30px;"> 
+	                            <form id="galleryForm" role="form"> 
+	                            	<input type="hidden" name="user_num" value="${user_num}">
+									<div class="upload-wrap"><p class="head">
+									  <div class="uploadpreview 01"></div>
+									  <input name ="fileUp1" id="01" type="file" accept="image/*">
+									</div>
+									
+									<div class="upload-wrap"><p class="head">
+									  <div class="uploadpreview 02"></div>
+									  <input name ="fileUp2" id="02" type="file" accept="image/*">
+									</div>
+									
+									<div class="upload-wrap"><p class="head">
+									  <div class="uploadpreview 03"></div>
+									  <input name ="fileUp3" id="03" type="file" accept="image/*">
+									</div>
+	                            </form> 
+	                        </div> 
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="modal-footer">
+	                <div class="row">
+	                    <div class="col-xs-6">
+	                        <button class="btn btn-default btn-block" data-dismiss="modal">취소</button>
+	                    </div>
+	                    <div class="col-xs-6">
+	                        <button id="btn-crop-confirm" class="btn btn-potluck btn-block" onclick="gallerypicSubmit();">확인</button>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 	
 <!-- 인클루드-푸터 -->
 <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>

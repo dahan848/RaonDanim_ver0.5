@@ -92,4 +92,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   SET USER_PROFILE_PIC	= #{filename}
 		 WHERE user_num 		= #{user_num}
 	</update>
+	<insert id="setGalleryPic" parameterType="map">
+		INSERT INTO GALLERY_TB
+			   (USER_NUM, GALLERY_FILE_NUM, GALLERY_FILE_NAME, GALLERY_PIC_REG_DATE)
+		VALUES (
+				#{user_num},
+				GALLERY_TB_SEQ.nextval,
+				#{filename},
+				sysdate
+				)
+	</insert>
 </mapper>

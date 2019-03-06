@@ -46,8 +46,42 @@ public class AccountsService {
 	
 	//프로필 사진 등록 ()
 	public boolean setProfilePic(Map<String, Object> param) {
-		System.out.println("서비스 전달 받은 맵 확인 : " + param);
+		//System.out.println("서비스 전달 받은 맵 확인 : " + param);
 		if(dao.setProfilePic(param) > 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	//갤러리 사진 등록()
+	public boolean setGalleryPic(List<Map<String, Object>> param) {
+		//System.out.println("서비스 전달 받은 맵 확인 : " + param);
+		//System.out.println("전달 받은 맵의 사이즈 : " + param.size());
+		//여러개의 파일을 넣어야 하기 때문에 반복문을 돌면서 dao에 값을 insert 해야 한다.
+		
+		int dataAmount = param.size();
+		
+		//반복문 종료 후 insert 된 로우의 개수를 담을 count
+		int count = 0;
+		for(int i=0 ; i < dataAmount ; i++) {
+			//System.out.println("반복문 진입 : " + i);
+			//반복문을 돌면서 dao에 넘겨줄 새로운 Map을 생성한다. (매 바퀴마다 초기화)
+			Map<String, Object> result = new HashMap<>();
+			
+			//해당 Map에 인자로 받은 List의 i 번째 Map을 넣어준다.
+			result = param.get(i);
+			
+			//dao가 올바르게 작동하면 count를 ++ 하여, 최종적으로 입력 된 로우의 개수를 얻는다.
+			if(dao.setGalleryPic(result) > 0) {
+				count ++;
+			}
+			
+			//System.out.println(i +"번 째 count : " + count);
+		}
+		
+		if(count == param.size()) {
+			//count가 인자로 받은 List의 데이터 개수와 같다면 모든 데이터 들어간 것 
 			return true;
 		}else {
 			return false;
