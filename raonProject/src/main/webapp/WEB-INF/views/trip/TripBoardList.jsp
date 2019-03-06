@@ -131,7 +131,7 @@
 							<option value="4">여행자</option>
 						</select>
 
-						<div class="form-group" st>
+						<div class="form-group">
 							<input type="text" class="form-control" id="keyword"
 								placeholder="검색어를 입력하세요" name="keyword" style="width: 700px;">
 						</div>

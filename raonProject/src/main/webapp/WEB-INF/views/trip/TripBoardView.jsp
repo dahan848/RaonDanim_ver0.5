@@ -127,6 +127,65 @@ function moveToMakerLocation(i) {
 }
 
 
+function createReplyTable() {
+	var boardKey = "${boardInfo.TRIP_BOARD_KEY}";
+	var replyTable = $("#replyTable");
+	replyTable.html("");
+	
+	$.ajax({
+		url:"${contextPath}/tripReply/replyList",
+		type:"get",
+		data:{"boardKey":boardKey},
+		dataType:"json",
+		success:function(list){
+	
+			for(var i in list){
+				<!--   <div class="row"> -->
+				<!--     <div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> -->
+				<!--      <div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> -->
+				<!--   <div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> -->
+				<!--  </div> -->
+				var row = $(" <div class='row'>");
+				var colName = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
+				var colContent = $("<div class='col-lg-8' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
+				var colDate = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
+				var colBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
+				colName.text(list[i].USER_LNM+list[i].USER_FNM).appendTo(row);
+				colContent.text(list[i].TRIP_REPLY_CONTENT).html(colBtn).appendTo(row);
+				colDate.text(list[i].TRIP_REPLY_WRITEDATE).appendTo(row);
+				row.appendTo(replyTable);
+// 				<div class="row" id="reReRow"> 
+//          		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> 
+//           		<div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> 
+//           		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> 
+//          		</div> 
+				var reReRow = $("<div class='row' id='reReRow"+i+"' style='display: none;'>");
+				var recolName = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
+				var recolContent = $("<div class='col-lg-2' style='border: 1px solid #cccccc;  min-height: 40px; max-height: 40px; overflow: hidden;'>");
+				var recolDate = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
+				var recolBtn = $("<input type='button' class='btn btn-primary' id='recolBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
+				recolName.appendTo(reReRow);
+				recolContent.html("<input type='text' class='form-control' id='reReContent' name=''>").appendTo(reReRow);
+				recolDate.html(recolBtn).appendTo(reReRow);
+				reReRow.appendTo(replyTable);
+				
+			}
+			
+			
+		}
+		
+	});
+	
+}
+
+function togglerereply(i) {
+	var reReRow = $("#reReRow"+i);
+	
+	reReRow.toggle();
+	
+	
+	
+}
 
 
 window.onload = function() {
@@ -134,6 +193,7 @@ window.onload = function() {
 	
 	initMap();
 	drawCityTable();
+	createReplyTable();
 	
 	//수정 삭제 실패시 alert로 사용자에게 알림
 	var msg = "${msg}";
@@ -216,6 +276,36 @@ window.onload = function() {
 		
 	})
 	
+	$("#replyForm").on("submit", function() {
+		var reply = $(this).serialize();
+		
+		$.ajax({
+			url:"${contextPath}/tripReply/writeReply",
+			type:"post",
+			data:reply,
+			dataType:"json",
+			success:function(result){
+				
+				if(result){
+					swal({
+						icon:"success",
+					});
+					createReplyTable();
+				}else{
+					swal({
+						icon:"warning",
+						text:"댓글 입력실패 다시 시도해주세요.",
+					});
+				}
+			}
+			
+		});
+		return false;
+		
+	})
+	
+	
+	
 	
 	
 }//onload 끝
@@ -232,7 +322,6 @@ window.onload = function() {
 	min-height: 1000px;
 	max-height: 1000px;
 	overflow: auto;
-	border-right: 1px dotted;
 	padding: 0px;
 	background-color: #eeeeee;
 }
@@ -316,6 +405,7 @@ th{
 #boardContent-1{
 	font-size: 12pt;
 }
+
 #replyModalBody{
 	min-height: 500px;
 }
@@ -342,6 +432,7 @@ th{
 </style>
 </head>
 <body>
+
 	<!-- 인클루드 심플 헤더 -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
@@ -374,11 +465,12 @@ th{
 				 				</th>
 				 			</tr>
 				 			<tr>
-				 				<td><input type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#replyModal" value="동행신청">
+				 				<td><input type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#replyModal" value="동행">
 				 				<input type="button" onclick="toggleDisplay()" class="btn btn-primary btn-xs" value="소개">
 				 				<input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#declarationModal" value="신고">
 				 				<input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modifyModal"value="수정">
 				 				<input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deleteModal" value="삭제">
+<!--  				 				<input type="button" class="btn btn-primary" value="답글" id="" onclick="" style="height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;" >  -->
 				 				</td>
 				 			</tr>
 				 		</table>
@@ -469,7 +561,7 @@ th{
     <div class="modal-dialog">
     
       <!-- Modal content-->
-      <div class="modal-content">
+      <div class="modal-content" id="replyModal">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">
@@ -477,21 +569,36 @@ th{
           </h4>
         </div>
         <div class="modal-body" id="replyModalBody">
-         	<form action="#" method="post">
-         		  <textarea class="form-control" rows="2" id="comment" name=""></textarea>
+         	<form action="#" method="post" id="replyForm">
+         		  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+         		  <textarea class="form-control" rows="2" id="replyContent" name="trip_reply_Content" ></textarea>
+         		  <input type="hidden" id="replyBoardKey" name="trip_Board_Key" value="${boardInfo.TRIP_BOARD_KEY}">
+         		  <input type="hidden" id="replyUserNum" name="user_Num" value="${userNum}">
+         		  <input type="hidden" id="replyGid" name="trip_Reply_Gid" value="0">
+         		  <input type="hidden" id="replyDepth" name="trip_Reply_Depth" value="0">
+         		  <input type="hidden" id="replySorts" name="trip_Reply_Sorts" value="0">
          		  <input type="submit" value="입력" class="btn btn-info">
          	</form>
          	<!--댓글리스트 출력 부분  -->
          	<br>
          	<br>
-         	<table id="replyTable" class="table">
-         		<tr>
-         			<th>작성자이름</th>
-         			<td>내용</td>
-         			<td>작성일</td>
-         		</tr>
+         	<div id="replyTable" class="container-fluid">
          		
-         	</table>
+<!--          		<div class="row">  -->
+<!--          			<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
+<!--           			<div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
+<!--           			<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
+<!--          		</div>  -->
+<!--          	<div class="row" id="rereply" style="display: none;">   -->
+<!--          		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
+<!--           		<div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
+<!--           		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
+<!--         	</div>  -->
+
+         		
+         		
+         		
+         	</div>
          
         </div>
         <div class="modal-footer">

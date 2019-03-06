@@ -20,7 +20,7 @@ TRIP_REPLY_SORTS,
 TRIP_REPLY_CONTENT)
 values(	#{trip_Reply_Key},
 		#{trip_Board_Key},
-		#{User_Num},
+		#{user_Num},
 		#{trip_Reply_Key},
 		#{trip_Reply_Depth},
 		#{trip_Reply_Sorts},
@@ -39,6 +39,7 @@ SELECT  r.TRIP_REPLY_KEY,
         r.TRIP_REPLY_DEPTH,
         r.TRIP_REPLY_SORTS,
         r.TRIP_REPLY_CONTENT,
+        to_char(r.TRIP_REPLY_WRITEDATE,'yy-MM-dd') as TRIP_REPLY_WRITEDATE,
         r.TRIP_REPLY_ST 
 FROM trip_reply_tb r join user_tb u
 on r.USER_NUM = u.USER_NUM

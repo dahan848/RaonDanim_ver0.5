@@ -71,10 +71,13 @@ public class TripController {
 	}
 
 	@RequestMapping("/view")
-	public String boardView(@RequestParam(required=false) int boardKey, Model model) {
+	public String boardView(@RequestParam(required=false) int boardKey, Model model,Authentication authentication) {
 		System.out.println(" view 요청받음");
-
 		
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		int user_Num = user.getUser_num();
+		
+		model.addAttribute("userNum", user_Num);
 		model.addAttribute("boardInfo", tripService.getTripBoardOneInfo(boardKey));
 		model.addAttribute("cityInfo", tripService.getTripBoardCityOneInfo(boardKey));
 	

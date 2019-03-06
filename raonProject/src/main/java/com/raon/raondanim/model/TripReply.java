@@ -4,7 +4,7 @@ public class TripReply {
 
 	int trip_Reply_Key;
 	int trip_Board_Key;
-	int User_Num;
+	int user_Num;
 	int trip_Reply_Gid;
 	int trip_Reply_Depth;
 	int trip_Reply_Sorts;
@@ -25,10 +25,10 @@ public class TripReply {
 		this.trip_Board_Key = trip_Board_Key;
 	}
 	public int getUser_Num() {
-		return User_Num;
+		return user_Num;
 	}
 	public void setUser_Num(int user_Num) {
-		User_Num = user_Num;
+		this.user_Num = user_Num;
 	}
 	public int getTrip_Reply_Gid() {
 		return trip_Reply_Gid;
@@ -69,8 +69,8 @@ public class TripReply {
 	
 	@Override
 	public String toString() {
-		return "TripReply [trip_Reply_Key=" + trip_Reply_Key + ", trip_Board_Key=" + trip_Board_Key + ", User_Num="
-				+ User_Num + ", trip_Reply_Gid=" + trip_Reply_Gid + ", trip_Reply_Depth=" + trip_Reply_Depth
+		return "TripReply [trip_Reply_Key=" + trip_Reply_Key + ", trip_Board_Key=" + trip_Board_Key + ", user_Num="
+				+ user_Num + ", trip_Reply_Gid=" + trip_Reply_Gid + ", trip_Reply_Depth=" + trip_Reply_Depth
 				+ ", trip_Reply_Sorts=" + trip_Reply_Sorts + ", trip_reply_Content=" + trip_reply_Content
 				+ ", trip_trply_WriteDate=" + trip_trply_WriteDate + ", trip_Reply_St=" + trip_Reply_St + "]";
 	}
