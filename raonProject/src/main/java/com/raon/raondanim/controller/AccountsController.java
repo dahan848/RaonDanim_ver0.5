@@ -210,6 +210,4 @@ public class AccountsController {
 		System.out.println("=============더미데이터 생성완료============");
 		return "";
 	}
-	
-
 }

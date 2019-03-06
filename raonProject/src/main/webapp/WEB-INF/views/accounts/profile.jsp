@@ -198,9 +198,11 @@ function createGallery() {
 		success : function(data){
 			for(var i in data){
 				var path = "${contextPath}/image?fileName=" + data[i].GALLERY_FILE_NAME;
+				var fileNum = data[i].GALLERY_FILE_NUM;
 				 //기본 뼈대 그리기 
 				 $(".carousel-indicators").append("<li data-target='#myCarousel' data-slide-to=\""+i+"\"></li>");
 				 $(".carousel-inner").append("<div class='item'><img src='"+path+"' alt='"+i+"' style='width: 100%'></div>");
+				 $(".carousel-inner").append("<a class='item'><img src='"+path+"' alt='"+i+"' style='width: 100%'></a>");
 				 //클래스 속성 부여하기
 		         $(".carousel-indicators li:first").addClass("active");
 		         $(".carousel-inner .item:first").addClass("active");
@@ -260,28 +262,25 @@ input[type="file"] {
 			</h3>
 			<section id="section-user-detail"> <!-- 프로필 section -->
 				<div class="user-info"> <!-- 상단 사진, 기본정보 출력 되는 부분 -->
-					<div id="myCarousel" class="user-images carousel slide" data-ride="carousel"><!-- 유저 이미지 영역 -->
-
-							<div id="carousel-user-images" class="carousel slide" data-ride="carousel">
-							  <ol class="carousel-indicators">
+					<div id="myCarousel" class="user-images carousel slide" data-ride="carousel">
+						<div id="carousel-user-images" class="carousel slide" data-ride="carousel">
+							<ol class="carousel-indicators">
 									<!-- ajax 처리 -->
-							  </ol>
-							  <div class="carousel-inner">
+							</ol>
+							<div class="carousel-inner">
 									<!-- ajax 처리 -->
-							  </div>
+							</div>
 							  <!-- Left and right controls -->
-							  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-							    <span class="glyphicon glyphicon-chevron-left"></span>
+							<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+								<span class="glyphicon glyphicon-chevron-left"></span>
 							    <span class="sr-only">Previous</span>
-							  </a>
-							  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+							</a>
+							<a class="right carousel-control" href="#myCarousel" data-slide="next">
 							    <span class="glyphicon glyphicon-chevron-right"></span>
 							    <span class="sr-only">Next</span>
-							  </a>
-							</div>
-			
-					</div><!-- 유저 이미지 영역 END -->
-
+							</a>
+						</div>
+					</div>
 					<div class="user-profile"> <!-- 유저 기본 정보 영역 -->
 						<a href="#" class="img-profile-container" rel="popover" data-placement="right" data-trigger="focus" data-popover-content="#userInfo">
 							<!-- 유저 프로필 사진 -->
