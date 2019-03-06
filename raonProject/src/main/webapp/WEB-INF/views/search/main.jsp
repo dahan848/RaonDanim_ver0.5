@@ -92,7 +92,7 @@
 											<div class="form-group">
 												<label class="col-sm-3 control-label" for="id_city">거주 도시</label>
 												<div class="col-sm-9">
-													<input class="form-control" id="select-city" type="text" data-url="${contextPath}/json/city.json" data-load-once="true" name="city"/>
+													<input class="form-control" id="select-city" type="text" data-load-once="true" name="city"/>
 													<script>
 														$('#select-city').fastselect();
 													</script>
@@ -226,7 +226,7 @@
 							
 							<!-- 희망 여행도시 -->
 							<div class="cover-tags cover-tags-certification">
-								<span class="label label-violet label-orange label-gray label-mint label-skyblue label-pink">${user.HOPECITY }</span>
+								<span class="label">${user.HOPECITY }</span>
 							</div>
 						</div>
 					</div>
@@ -236,24 +236,46 @@
 				
 				<!-- 페이징 처리 -->
 				<div class="text-center">
-							<c:if test="${startPage != 1}">
-								<a href="userList?page=1">[처음]</a>
-								<a href="userList?page=${startPage-1}">[이전]</a>
-							</c:if>
-							<c:forEach var="pageNum" begin="${startPage}" end="${endPage < totalPage ? endPage : totalPage }">
-								<c:choose>
-									<c:when test="${pageNum == page}">
-										<b>[${pageNum}]</b>
-									</c:when>
-									<c:otherwise>
-										<a href="userList?page=${pageNum}">[${pageNum}]</a>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-							<c:if test="${totalPage > endPage}">
-								<a href="userList?page=${endPage+1}">[다음]</a>
-								<a href="userList?page=${totalPage}">[마지막]</a>
-							</c:if>
+					<ul class="pagination">
+						<c:choose>
+							<c:when test="${page == 1}">
+								<li class="prev disabled">
+									<a>&laquo;</a>
+								</li>
+							</c:when>
+							<c:otherwise>
+								<li>
+									<a href="home?page=1">&laquo;</a>
+								</li>
+							</c:otherwise>
+						</c:choose>
+						<c:forEach var="pageNum" begin="${startPage}" end="${endPage < totalPage ? endPage : totalPage}">
+							<c:choose>
+								<c:when test="${pageNum == page}">
+									<li class="active">
+										<a>${pageNum}</a>
+									</li>
+								</c:when>
+								<c:otherwise>
+									<li>
+										<a href="home?page=${pageNum}">${pageNum}</a>
+									</li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:choose>
+							<c:when test="${page == totalPage}">
+								<li class="prev disabled">
+									<a>&raquo;</a>
+								</li>
+							</c:when>
+							<c:otherwise>
+								<li>
+									<a href="home?page=${totalPage}">&raquo;</a>
+								</li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
 				</div>
 			</div>
 		</section>

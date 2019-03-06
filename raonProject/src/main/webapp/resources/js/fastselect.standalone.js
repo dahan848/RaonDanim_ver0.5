@@ -610,7 +610,8 @@
             this.setupEvents();
 
         },
-
+        
+        //멀티플셀렉트인지 싱글셀렉트인지
         setupDomElements: function() {
 
             this.$el = $('<div>').addClass(this.options.elementClass);
@@ -628,12 +629,15 @@
 
         setupSingleElement: function(onDone) {
 
+        	// processInitailOptions() : 데이터
             var initialOptions = this.processInitialOptions(),
                 toggleBtnText = initialOptions && initialOptions.length ? initialOptions[0].text : this.options.placeholder;
 
             this.$el.addClass(this.options.singleModeClass);
             this.$controls = $('<div>').addClass(this.options.controlsClass);
             this.$toggleBtn = $('<div>').addClass(this.options.toggleButtonClass).text(toggleBtnText).appendTo(this.$el);
+
+            // Search options
             this.$queryInput = $('<input>').attr('placeholder', this.options.searchPlaceholder).addClass(this.options.queryInputClass).appendTo(this.$controls);
 
             onDone.call(this);

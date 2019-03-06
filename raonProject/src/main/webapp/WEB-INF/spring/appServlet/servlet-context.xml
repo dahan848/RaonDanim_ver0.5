@@ -17,6 +17,7 @@
 	<resources mapping="/json/**" location="/resources/json/" />
 	<resources mapping="/fonts/**" location="/resources/fonts/" /> 
 	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/i18n/**" location="/i18n/" />
 
 	<!-- .jsp 파일 경로설정 : ViewResolver -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

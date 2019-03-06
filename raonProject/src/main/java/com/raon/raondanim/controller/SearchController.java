@@ -34,4 +34,9 @@ public class SearchController {
 		logger.info("search : 화면 요청받음");
 		return "search/main";
 	}
+	
+	@RequestMapping("/test")
+	public String test() {
+		return "search/test";
+	}
 }
