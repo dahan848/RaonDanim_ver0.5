@@ -27,6 +27,8 @@
 $(document).ready(function() { 
 	alert("로딩 완료45"); 
 	
+	createGallery(); //갤러리 그려주는 ()
+	
 	//버튼 눌리면 파일 선택 창 열리게 .trigger 사용 
 	$("#btn-image-upload").click(function () {
 	    $("#imgInp").trigger("click");
@@ -85,14 +87,12 @@ $(document).ready(function() {
 
 });//onload END
 
-//프로필 업로드 ajax
+//프로필 업로드 submit 이벤트 
 function profilepicSubmit() {
     var formData = new FormData($("#fileForm")[0]); //사진 파일 
     var profileData = $("#fileForm").serialize(); //Form 요소 값 직렬화 : user_num, 사진 자르는데 사용되는 xy...
     var contextPath = '<c:out value="${contextPath}"/>';
-    
-    //formData.append('data', JSON.stringify (profileData));
-    
+        
     //파일을 전송하는 ajax
     $.ajax({
         type : 'post',
@@ -102,18 +102,29 @@ function profilepicSubmit() {
         contentType : false,
         success : function(result) {
             if(result){
-            	alert("파일 업로드하였습니다.");	
+            	swal({
+					  text: "프로필 사진 등록에 성공했습니다.",
+					  button: "확인",
+					}).then(function() {
+  						location.reload(); //프로필 사진 등록에 성공하면 화면 새로고침 
+  					});	
             }else{
-            	alert("빡!");
+            	swal({
+					  text: "프로필 사진 등록에 실패했습니다.",
+					  button: "확인",
+					});
             }
         },
         error : function(error) {
-            alert("파일 업로드에 실패하였습니다.");
+        	swal({
+				  text: "프로필 사진 등록에 실패했습니다.",
+				  button: "확인",
+				});
             console.log(error);
             console.log(error.status);
         }
     });
-    
+	
     //Form에 적힌 요소를 보내는 ajax...
     $.ajax({
    		type : 'post',
@@ -132,7 +143,6 @@ function gallerypicSubmit() {
 	var formData = new FormData($("#galleryForm")[0]); //사진 파일
 	var galleryInfo = $("#galleryForm").serialize(); 
 	var contextPath = '<c:out value="${contextPath}"/>';
-	alert("갤러리 짠!");
 	 $.ajax({
 	        type : 'post',
 	        url : contextPath + '/galleryPicUpload',
@@ -141,13 +151,21 @@ function gallerypicSubmit() {
 	        contentType : false,
 	        success : function(result) {
 	            if(result){
-	            	alert("파일 업로드하였습니다.");	
+	            	swal({
+						  text: "갤러리 사진 등록에 성공했습니다.",
+						  button: "확인",
+						}).then(function() {
+	  						location.reload(); //프로필 사진 등록에 성공하면 화면 새로고침 
+	  					});	
 	            }else{
-	            	alert("빡!");
+	            	swal({
+						  text: "갤러리 사진 등록에 실패했습니다.",
+						  button: "확인",
+						});
 	            }
 	        },
 	        error : function(error) {
-	            alert("파일 업로드에 실패하였습니다.");
+            	swal({text: "갤러리 사진 등록에 실패했습니다.", button: "확인",});
 	            console.log(error);
 	            console.log(error.status);
 	        }
@@ -164,9 +182,30 @@ function gallerypicSubmit() {
 	        }
 	    });
 	    return false; //폼 서밋 이벤트 멈추기
-	
-	
 }//갤러리 업로드 END
+
+//갤러리 사진 그려주는 함수 
+function createGallery() {
+	alert("createGallery");
+	var contextPath = '<c:out value="${contextPath}"/>';
+	$.ajax({
+		url: contextPath + "/accounts/gallery/${userNum}",
+		type: "get",
+		dateType : "json",
+		success : function(data){
+			for(var i in data){
+				var path = "${contextPath}/image?fileName=" + data[i].GALLERY_FILE_NAME;
+				 //기본 뼈대 그리기 
+				 $(".carousel-indicators").append("<li data-target='#myCarousel' data-slide-to=\""+i+"\"></li>");
+				 $(".carousel-inner").append("<div class='item'><img src='"+path+"' alt='"+i+"' style='width: 100%'></div>");
+				 //클래스 속성 부여하기
+		         $(".carousel-indicators li:first").addClass("active");
+		         $(".carousel-inner .item:first").addClass("active");
+		         $('.carousel').carousel();
+			}//반복문 종료 
+		}
+	});
+};
 </script>
 <style type="text/css">
 .head{
@@ -209,7 +248,7 @@ input[type="file"] {
 		<div class="container">
 			<!-- 상단 프로필 타이틀 -->
 			<h3 class="section-title" >
-				<img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt="">
+				<img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt="" >
             		 나의 프로필
             	<!-- 자신의 페이지 일 때만 [프로필 수정]버튼 보임 -->
 				<c:if test="${userNum eq user_num}">
@@ -218,25 +257,27 @@ input[type="file"] {
 			</h3>
 			<section id="section-user-detail"> <!-- 프로필 section -->
 				<div class="user-info"> <!-- 상단 사진, 기본정보 출력 되는 부분 -->
-					<div class="user-images"><!-- 유저 이미지 영역 -->
-						<div id="carousel-user-images" class="carousel slide" data-ride="carousel">
-						  <ol class="carousel-indicators">
-								<!-- ajax 처리 -->
-						  </ol>
-						<!-- 갤러리 이미지 불러와야 할 부분 -->
-						  <div class="carousel-inner">
-								<!-- ajax 처리 -->
-						  </div>
-						  <!-- Left and right controls -->
-						  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-						    <span class="glyphicon glyphicon-chevron-left"></span>
-						    <span class="sr-only">Previous</span>
-						  </a>
-						  <a class="right carousel-control" href="#myCarousel" data-slide="next">
-						    <span class="glyphicon glyphicon-chevron-right"></span>
-						    <span class="sr-only">Next</span>
-						  </a>
-						</div>
+					<div id="myCarousel" class="user-images carousel slide" data-ride="carousel"><!-- 유저 이미지 영역 -->
+
+							<div id="carousel-user-images" class="carousel slide" data-ride="carousel">
+							  <ol class="carousel-indicators">
+									<!-- ajax 처리 -->
+							  </ol>
+							<!-- 갤러리 이미지 불러와야 할 부분 -->
+							  <div class="carousel-inner">
+									<!-- ajax 처리 -->
+							  </div>
+							  <!-- Left and right controls -->
+							  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+							    <span class="glyphicon glyphicon-chevron-left"></span>
+							    <span class="sr-only">Previous</span>
+							  </a>
+							  <a class="right carousel-control" href="#myCarousel" data-slide="next">
+							    <span class="glyphicon glyphicon-chevron-right"></span>
+							    <span class="sr-only">Next</span>
+							  </a>
+							</div>
+			
 					</div><!-- 유저 이미지 영역 END -->
 
 					<div class="user-profile"> <!-- 유저 기본 정보 영역 -->

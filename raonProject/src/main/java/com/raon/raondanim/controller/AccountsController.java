@@ -3,10 +3,13 @@ package com.raon.raondanim.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +22,7 @@ import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.AccountsService;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -93,6 +97,22 @@ public class AccountsController {
 		model.addAttribute("user", userData);
 		model.addAttribute("userNum", userNum);
 		return "accounts/profile";
+	}
+	
+	//프로필 화면 갤러리 정보 요청 
+	@ResponseBody
+	@RequestMapping(value="/gallery/{usernum}",method=RequestMethod.GET)
+	public ResponseEntity<List<Map<String, Object>>> gallery(@PathVariable("usernum") String usernum){
+		System.out.println("gallery : " + usernum);
+		ResponseEntity<List<Map<String, Object>>> entity = null;
+		try{
+			List<Map<String, Object>> replyList
+			= service.getGallery(usernum);
+			entity = new ResponseEntity<List<Map<String,Object>>>(replyList, HttpStatus.OK);
+		}catch (Exception e) {
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
 	}
 	
 	//프로필 수정 화면 1

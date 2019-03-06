@@ -19,7 +19,9 @@ public class ImageController {
 	@ResponseBody
 	@RequestMapping("/image")
 	public byte[] getImage(String fileName) {
-		//System.out.println("/image 요청 : " + fileName);
+		System.out.println("==================/image 요청==================");
+		System.out.println(fileName);
+		System.out.println("==============================================");
 		//해당 이미지를 byte[]형태로 반환
 		File file = new File(FILE_PATH+fileName);
 		InputStream in = null;
