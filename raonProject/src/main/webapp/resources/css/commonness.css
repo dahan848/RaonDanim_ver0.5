@@ -259,9 +259,13 @@
   }
 }
 #section-members .img-circle {
+  /* 원본
   width: 100%;
   margin-bottom: 20px;
   max-width: 65px;
+  */
+  	width: 65px; 
+	height: 65px;
 }
 #section-members .col-sm-6 {
   position: relative;

@@ -266,7 +266,6 @@ input[type="file"] {
 							  <ol class="carousel-indicators">
 									<!-- ajax 처리 -->
 							  </ol>
-							<!-- 갤러리 이미지 불러와야 할 부분 -->
 							  <div class="carousel-inner">
 									<!-- ajax 처리 -->
 							  </div>
@@ -400,6 +399,7 @@ input[type="file"] {
 		</div>
 	</div>
 	<!-- POPOVER DIV -->
+	
 	<div id="userInfo" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
 	   <c:choose>
 			<c:when test="${userNum eq user_num}">
@@ -407,10 +407,16 @@ input[type="file"] {
 	        	<a href="#" data-toggle="modal" data-target="#modal-gallery-image">갤러리 사진</a>
 	   		</c:when>
         	<c:otherwise>
+				<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->    	    		
         		<a href="#">대화하기</a>
+				</sec:authorize>
+				<sec:authorize access="isAnonymous()"> <!-- 로그인 상태 X -->
+				<a href="#">로그인 이후 사용 가능합니다.</a>
+				</sec:authorize>    	    		
         	</c:otherwise>
         </c:choose>
 	</div>   
+	
 	<!-- 프로필 이미지 변경 모달 창 -->
 	 <div id="modal-profile-image" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

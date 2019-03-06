@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -86,7 +89,7 @@
 			             			</c:when>
 			             			<c:otherwise>
 				              			<a href="#" rel="popover" data-placement="bottom" data-popover-content="#userInfo${status.index}">
-				              				<img class="img-circle" src="
+				              				<img class="img-circle"  src="
 				                                	   		 ${contextPath}/image?fileName=${user.USER_PROFILE_PIC}">
 				                        </a>
 			             			</c:otherwise>
@@ -95,7 +98,10 @@
 		           		        <div id="userInfo${status.index}" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
 									${user.USER_LNM} ${user.USER_FNM} <br>
 									<a href="${contextPath}/accounts/profile?user=${user.USER_NUM}">프로필보기</a><br>
+									<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->
 									<a href="#">대화하기</a>
+									</sec:authorize>
+										   
 								</div>   	
 	                       	</div>
 	                   	</c:forEach>
@@ -109,63 +115,51 @@
                     <div class="row row-p5 mb-20">
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/1.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/2.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/3.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/4.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/5.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/6.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/7.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/8.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/9.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/10.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/11.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                             <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="
-                                        /static/potluck/img/pages/landing/traveler/12.jpg">
+                                <img class="img-circle" src="#">
                             </div>
                         
                     </div>
