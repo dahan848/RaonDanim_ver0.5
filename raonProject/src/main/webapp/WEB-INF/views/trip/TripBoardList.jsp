@@ -77,13 +77,13 @@
 		initMap();
 		
 		//수정 삭제 성공시 alert로 사용자에게 알림 -주소창에 보이는 못가져옴 예외가 없어보임 지도관련 예외 있음
-// 		var msg = "${msg}";
-// 		if(msg !=null && msg != ""){
-// 			swal({
-// 				icon:"success",
-// 				text:msg,
-// 			});
-// 		}
+ 		var msg = "${msg}";
+ 		if(msg !=null && msg != ""){
+ 			swal({
+ 				icon:"success",
+ 				text:msg,
+ 			});
+ 		}
 	
 		
 		

@@ -5,5 +5,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.raon.raondanim.dao.TripReplyDao">
 
+<insert id="insertBasicReply" parameterType="tripReply">
+
+<selectKey order="BEFORE" keyProperty="trip_Reply_Key" resultType="int">
+select TRIP_REPLY_TB_SEQ.nextval from dual
+</selectKey>
+insert into TRIP_REPLY_TB
+(TRIP_REPLY_KEY,
+TRIP_BOARD_KEY,
+USER_NUM,
+TRIP_REPLY_GID,
+TRIP_REPLY_DEPTH,
+TRIP_REPLY_SORTS,
+TRIP_REPLY_CONTENT)
+values(	#{trip_Reply_Key},
+		#{trip_Board_Key},
+		#{User_Num},
+		#{trip_Reply_Key},
+		#{trip_Reply_Depth},
+		#{trip_Reply_Sorts},
+		#{trip_reply_Content})
+
+</insert>
+
+<select id="getReplyList" parameterType="int" resultType="map">
+
+SELECT  r.TRIP_REPLY_KEY,
+        r.TRIP_BOARD_KEY,
+        r.USER_NUM,
+        u.USER_FNM,
+        u.USER_LNM,
+        r.TRIP_REPLY_GID,
+        r.TRIP_REPLY_DEPTH,
+        r.TRIP_REPLY_SORTS,
+        r.TRIP_REPLY_CONTENT,
+        r.TRIP_REPLY_ST 
+FROM trip_reply_tb r join user_tb u
+on r.USER_NUM = u.USER_NUM
+where r.TRIP_BOARD_KEY = #{num}
+ORDER BY r.TRIP_REPLY_GID DESC,
+		 r.TRIP_REPLY_SORTS ASC
+
+</select>
+
 
 </mapper>

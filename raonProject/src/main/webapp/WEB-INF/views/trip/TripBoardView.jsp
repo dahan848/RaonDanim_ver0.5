@@ -464,8 +464,6 @@ th{
 	
 	<!--댓글창 모달  -->
 <div class="container">
-  
-
   <!-- Modal -->
   <div class="modal fade" id="replyModal" role="dialog">
     <div class="modal-dialog">
@@ -474,20 +472,37 @@ th{
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">
+          	<img alt="" src="${contextPath}/img/trip_withimg1.jpg" style="width: 20%; height: 50%;">
+          </h4>
         </div>
         <div class="modal-body" id="replyModalBody">
-          <p>댓글입력 리스트 띄워야 할 부분</p>
+         	<form action="#" method="post">
+         		  <textarea class="form-control" rows="2" id="comment" name=""></textarea>
+         		  <input type="submit" value="입력" class="btn btn-info">
+         	</form>
+         	<!--댓글리스트 출력 부분  -->
+         	<br>
+         	<br>
+         	<table id="replyTable" class="table">
+         		<tr>
+         			<th>작성자이름</th>
+         			<td>내용</td>
+         			<td>작성일</td>
+         		</tr>
+         		
+         	</table>
+         
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
         </div>
       </div>
-      
     </div>
   </div>
-  
 </div>
+
+
 	<!--신고창 모달  -->
 <div class="container">
   

@@ -125,10 +125,10 @@ public class TripController {
 		System.out.println("삭제요청 받음 ");
 		System.out.println(boardKey);
 		if(tripService.totalDelete(boardKey)) {
-			ra.addAttribute("msg", "게시글 삭제 성공하였습니다.");
+			ra.addFlashAttribute("msg", "게시글 삭제 성공하였습니다.");
 			return "redirect:list";
 		}else {
-			ra.addAttribute("msg", "게시글 삭제 실패 하였습니다 다시 시도해주세요.");
+			ra.addFlashAttribute("msg", "게시글 삭제 실패 하였습니다 다시 시도해주세요.");
 			ra.addAttribute("boardKey", boardKey);
 			return "redirect:view";
 		}
@@ -173,10 +173,11 @@ public class TripController {
 		//System.out.println("수정요청3: "+tripCity);
 		
 		if(tripService.totalUpdate(tripBoard, tripCity)) {
-			ra.addAttribute("msg", "게시글 수정 성공하였습니다.");
+			ra.addFlashAttribute("msg", "게시글 수정 성공하였습니다.");
+
 			return "redirect:list";
 		}else {
-			ra.addAttribute("msg", "게시글 수정 실패하였습니다.");
+			ra.addFlashAttribute("msg", "게시글 수정 실패하였습니다.");
 			return "redirect:list";
 		}
 		
