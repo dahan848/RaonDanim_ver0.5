@@ -1,12 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%
 	request.setAttribute("contextPath", request.getContextPath());
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>2222</title>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script
@@ -17,23 +18,23 @@
 		var category = $('#motel_category').val(); 
 		if(type == 0){
 			swal({
-	               text:"¼÷¼Ò Á¾·ù¸¦ ¼±ÅÃÇØ ÁÖ¼¼¿ä.",
+	               text:"ìˆ™ì†Œ ì¢…ë¥˜ë¥¼ ì„ íƒí•´ ì£¼ì„¸ìš”.",
 	               icon:"warning",
-	               buttons:[false,"È®ÀÎ"]
+	               buttons:[false,"í™•ì¸"]
 	            })
 			return false;
 		}else if(category == 0){
 			swal({
-	               text:"¼÷¹Ú À¯ÇüÀ» ¼±ÅÃÇØ ÁÖ¼¼¿ä.",
+	               text:"ìˆ™ë°• ìœ í˜•ì„ ì„ íƒí•´ ì£¼ì„¸ìš”.",
 	               icon:"warning",
-	               buttons:[false,"È®ÀÎ"]
+	               buttons:[false,"í™•ì¸"]
 	            })
 			return false;
 		}
 	}
 		
 		
-//¼÷¹Ú ÀÎ¿ø ¹æ °³¼ö ¿å½Ç °³¼ö Á¦ÇÑ ½ºÅ©¸³Æ®
+//ìˆ™ë°• ì¸ì› ë°© ê°œìˆ˜ ìš•ì‹¤ ê°œìˆ˜ ì œí•œ ìŠ¤í¬ë¦½íŠ¸
 	function people_change(num) {
 		var x = $('#motel_people').val();
 		var y = Number(x) + num;
@@ -41,9 +42,9 @@
 		if (y < 1){
 			y = 1;
 			swal({
-	               text:"¼÷¹Ú ÀÎ¿øÀ» 1¸í ÀÌ»ó ¼³Á¤ÇØ ÁÖ¼¼¿ä",
+	               text:"ìˆ™ë°• ì¸ì›ì„ 1ëª… ì´ìƒ ì„¤ì •í•´ ì£¼ì„¸ìš”",
 	               icon:"warning",
-	               buttons:[false,"È®ÀÎ"]
+	               buttons:[false,"í™•ì¸"]
 	            })
 			
 			return false;
@@ -51,9 +52,9 @@
 		if(y > 15){
 			y=15;
 			swal({
-	               text:"¼÷¹Ú ÀÎ¿øÀ» 15¸í ÀÌ»óÀ¸·Î ¼³Á¤ÇÒ ¼ö ¾ø½À´Ï´Ù.",
+	               text:"ìˆ™ë°• ì¸ì›ì„ 15ëª… ì´ìƒìœ¼ë¡œ ì„¤ì •í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.",
 	               icon:"warning",
-	               buttons:[false,"È®ÀÎ"]
+	               buttons:[false,"í™•ì¸"]
 	            })
 			return false;
 		}
@@ -66,9 +67,9 @@
 		if (y < 1){
 			y = 1;
 			swal({
-	               text:"»ç¿ë°¡´ÉÇÑ ¹æ°³¼ö¸¦ 1°³ ÀÌ»ó ¼³Á¤ÇØ ÁÖ¼¼¿ä",
+	               text:"ì‚¬ìš©ê°€ëŠ¥í•œ ë°©ê°œìˆ˜ë¥¼ 1ê°œ ì´ìƒ ì„¤ì •í•´ ì£¼ì„¸ìš”",
 	               icon:"warning",
-	               buttons:[false,"È®ÀÎ"]
+	               buttons:[false,"í™•ì¸"]
 	            })
 			
 			return false;
@@ -76,9 +77,9 @@
 		if(y > 5){
 			y=15;
 			swal({
-	               text:"»ç¿ë°¡´ÉÇÑ ¹æ°³¼ö¸¦  5°³ ÀÌ»óÀ¸·Î ¼³Á¤ ÇÒ ¼ö ¾ø½À´Ï´Ù.",
+	               text:"ì‚¬ìš©ê°€ëŠ¥í•œ ë°©ê°œìˆ˜ë¥¼  5ê°œ ì´ìƒìœ¼ë¡œ ì„¤ì • í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.",
 	               icon:"warning",
-	               buttons:[false,"È®ÀÎ"]
+	               buttons:[false,"í™•ì¸"]
 	            })
 			return false;
 		}
@@ -91,9 +92,9 @@
 		if (y < 1){
 			y = 1;
 			swal({
-	               text:"»ç¿ë°¡´ÉÇÑ ¿å½Ç°³¼ö¸¦ 1°³ ÀÌ»ó ¼³Á¤ÇØ ÁÖ¼¼¿ä",
+	               text:"ì‚¬ìš©ê°€ëŠ¥í•œ ìš•ì‹¤ê°œìˆ˜ë¥¼ 1ê°œ ì´ìƒ ì„¤ì •í•´ ì£¼ì„¸ìš”",
 	               icon:"warning",
-	               buttons:[false,"È®ÀÎ"]
+	               buttons:[false,"í™•ì¸"]
 	            })
 			
 			return false;
@@ -101,9 +102,9 @@
 		if(y > 5){
 			y=15;
 			swal({
-	               text:"»ç¿ë°¡´ÉÇÑ ¿å½Ç°³¼ö¸¦  5°³ ÀÌ»óÀ¸·Î ¼³Á¤ ÇÒ ¼ö ¾ø½À´Ï´Ù.",
+	               text:"ì‚¬ìš©ê°€ëŠ¥í•œ ìš•ì‹¤ê°œìˆ˜ë¥¼  5ê°œ ì´ìƒìœ¼ë¡œ ì„¤ì • í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.",
 	               icon:"warning",
-	               buttons:[false,"È®ÀÎ"]
+	               buttons:[false,"í™•ì¸"]
 	            })
 			return false;
 		}
@@ -155,48 +156,48 @@
 
 </head>
 <body>
-	<!-- ÀÎÅ¬·çµå ½ÉÇÃ Çì´õ -->
+	<!-- ì¸í´ë£¨ë“œ ì‹¬í”Œ í—¤ë” -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/motel/motel-navbar.jsp"></jsp:include>
-	<!-- ÀÎÅ¬·çµå ½ÉÇÃ Çì´õ END -->
+	<!-- ì¸í´ë£¨ë“œ ì‹¬í”Œ í—¤ë” END -->
 
 
 
-	<!-- º»¹® -->
+	<!-- ë³¸ë¬¸ -->
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container"
 				style="width: 100%; padding-left: 18%; padding-right: 18%;">
-				<!-- ÀÌ ºÎºÐ¿¡ ÀÚ½ÅÀÇ ÆäÀÌÁö ³Ö±â -->	
+				<!-- ì´ ë¶€ë¶„ì— ìžì‹ ì˜ íŽ˜ì´ì§€ ë„£ê¸° -->	
 				<div class="registor_main">
 					<div class="registor_contain">
 						<form action="registor_city_address" method="post" class="registor_form" onsubmit="return form_Check();">
 							<input type="hidden" value="${_csrf.token}" name="${_csrf.parameterName}">
-							<h4>¼÷¼ÒÀÇ Á¾·ù¸¦ ¼±ÅÃÇØ ÁÖ¼¼¿ä.</h4>
+							<h4>ìˆ™ì†Œì˜ ì¢…ë¥˜ë¥¼ ì„ íƒí•´ ì£¼ì„¸ìš”.</h4>
 							<select name="motel_type" id="motel_type">
-								<option value="0">¼÷¼Ò Á¾·ù</option>
-								<option value="1">¾ÆÆÄÆ®</option>
-								<option value="2">ÁÖÅÃ</option>
-								<option value="3">ºô¶ó</option>
+								<option value="0">ìˆ™ì†Œ ì¢…ë¥˜</option>
+								<option value="1">ì•„íŒŒíŠ¸</option>
+								<option value="2">ì£¼íƒ</option>
+								<option value="3">ë¹Œë¼</option>
 							</select><br>
-							<h4>°Ô½ºÆ®¿¡°Ô Á¦°ø µÉ ¼÷¹ÚÀÇ À¯Çü¸¦ ¼±ÅÃÇØ ÁÖ¼¼¿ä.</h4>
+							<h4>ê²ŒìŠ¤íŠ¸ì—ê²Œ ì œê³µ ë  ìˆ™ë°•ì˜ ìœ í˜•ë¥¼ ì„ íƒí•´ ì£¼ì„¸ìš”.</h4>
 							<select name="motel_category" id="motel_category">
-								<option value="0">¼÷¹Ú À¯Çü</option>
-								<option value="1">Áý ÀüÃ¼</option>
-								<option value="2">°³ÀÎ½Ç</option>
+								<option value="0">ìˆ™ë°• ìœ í˜•</option>
+								<option value="1">ì§‘ ì „ì²´</option>
+								<option value="2">ê°œì¸ì‹¤</option>
 							</select><br>
-							<h4>¼÷¼ÒÀÇ ÃÖ´ë ¼÷¹Ú ÀÎ¿øÀ» ¼±ÅÃÇØ ÁÖ¼¼¿ä.(ÃÖ´ë 15¸í)</h4>
+							<h4>ìˆ™ì†Œì˜ ìµœëŒ€ ìˆ™ë°• ì¸ì›ì„ ì„ íƒí•´ ì£¼ì„¸ìš”.(ìµœëŒ€ 15ëª…)</h4>
 							<a id="plus_minus" href='#' onclick='javascript_:people_change(1);'><i class="fa fa-plus-circle" id="tt"></i></a> <input
 								type='text' name='motel_people' id="motel_people" value='1' size='3' readonly> <a id="plus_minus"
 								href='#' onclick='javascript_:personnel_change(-1);'><i class="fa fa-minus-circle" id="tt"></i></a>
-							<h4>°Ô½ºÆ®°¡ »ç¿ëÇÒ ¼ö ÀÖ´Â ¹æÀÇ °³¼ö¸¦ ¼±ÅÃÇØ ÁÖ¼¼¿ä.(ÃÖ´ë 5°³)</h4>
+							<h4>ê²ŒìŠ¤íŠ¸ê°€ ì‚¬ìš©í•  ìˆ˜ ìžˆëŠ” ë°©ì˜ ê°œìˆ˜ë¥¼ ì„ íƒí•´ ì£¼ì„¸ìš”.(ìµœëŒ€ 5ê°œ)</h4>
 							<a id="plus_minus" href='#' onclick='javascript_:room_change(1);'><i class="fa fa-plus-circle"></i></a> <input
 								type='text' name='motel_room' id="motel_room" value='1' size='3' readonly> <a id="plus_minus"
 								href='#' onclick='javascript_:room_change(-1);'><i class="fa fa-minus-circle" id="tt"></i></a>
-							<h4>°Ô½ºÆ®°¡ »ç¿ëÇÒ ¼ö ÀÖ´Â ¿å½ÇÀÇ °³¼ö¸¦ ¼±ÅÃÇØ ÁÖ¼¼¿ä.(ÃÖ´ë 5°³)</h4>
+							<h4>ê²ŒìŠ¤íŠ¸ê°€ ì‚¬ìš©í•  ìˆ˜ ìžˆëŠ” ìš•ì‹¤ì˜ ê°œìˆ˜ë¥¼ ì„ íƒí•´ ì£¼ì„¸ìš”.(ìµœëŒ€ 5ê°œ)</h4>
 							<a id="plus_minus" href='#' onclick='javascript_:bathroom_change(1);'><i class="fa fa-plus-circle"></i></a> <input
 								type='text' name='motel_bathroom' id="motel_bathroom" value='1' size='3' readonly> <a id="plus_minus"
-								href='#' onclick='javascript_:bath_change(-1);'><i class="fa fa-minus-circle" id="tt"></i></a><br>
+								href='#' onclick='javascript_:bathroom_change(-1);'><i class="fa fa-minus-circle" id="tt"></i></a><br>
 							<input type="submit" value="" class="btn_next">
 						</form>
 					</div>
@@ -204,10 +205,10 @@
 			</div>
 		</section>
 
-	<!-- º»¹® END-->
+	<!-- ë³¸ë¬¸ END-->
 
-	<!-- ÀÎÅ¬·çµå-ÇªÅÍ -->
+	<!-- ì¸í´ë£¨ë“œ-í‘¸í„° -->
 	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
-	<!-- ÀÎÅ¬·çµå-ÇªÅÍ END -->
+	<!-- ì¸í´ë£¨ë“œ-í‘¸í„° END -->
 </body>
 </html>

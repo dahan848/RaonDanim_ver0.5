@@ -18,6 +18,20 @@
     </script>
 
 <script type="text/javascript">
+	$(function(){
+		//국가입력 스크립트
+		$(".national").click(function() {
+			$(this).next().show();
+			$(this).next().hide();
+		});
+		//도시입력 스크립트
+		$(".city").click(function() {
+			$(this).next().show();
+			$(this).next().hide();
+		});
+	});
+
+
 	//주소입력 후 지도에 표시 
        function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -42,35 +56,25 @@
          
         var address = document.getElementById('address').value;
         geocoder.geocode({'address': address}, function(results, status) {
-           debugger;
+        	
+           
           if (status === 'OK') {
             resultsMap.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
               map: resultsMap,
               position: results[0].geometry.location
             });
+            debugger;
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
         });
       }
       
-		//국가입력 스크립트
-	$(document).ready(function() {
-		
-		$(".national").click(function() {
-			$(this).next().show();
-			$(this).next().hide();
-		});
-
-	});
 		
 	$(document).ready(function() {
 		
-		$(".city").click(function() {
-			$(this).next().show();
-			$(this).next().hide();
-		});
+		
 
 	});
 	
@@ -81,6 +85,42 @@
      }
 
 // 주소로 지도에 찍는 함수
+
+
+////////////////////////////////
+// var re;
+// function chkCode(obj,evn){
+// evn=String.fromCharCode(evn).toUpperCase().charCodeAt(0)
+
+//     switch(evn){
+//         case 82:re=/[가-낗]/;break; //ㄱ
+//         case 83:re=/[나-닣]/;break; //ㄴ
+//         case 69:re=/[다-띻]/;break; //ㄷ
+//         case 70:re=/[라-맇]/;break; //ㄹ
+//         case 65:re=/[마-밓]/;break; //ㅁ
+//         case 81:re=/[바-삫]/;break; //ㅂ
+//         case 84:re=/[사-앃]/;break; //ㅅ
+//         case 68:re=/[아-잏]/;break; //ㅇ
+//         case 87:re=/[자-찧]/;break; //ㅈ
+//         case 67:re=/[차-칳]/;break; //ㅊ
+//         case 90:re=/[카-킿]/;break; //ㅋ
+//         case 88:re=/[타-팋]/;break; //ㅌ
+//         case 86:re=/[파-핗]/;break; //ㅍ
+//         case 71:re=/[하-힣]/;break; //ㅎ
+//     }
+//     dataCode(obj,re)
+// }
+// var cnt2=0;
+// function dataCode(obj,re){
+// var tmpdata=new Array();
+// var cnt=-1;
+//     for(i=0;i<=obj.length-1;i++){
+//             if(re.test(obj.options[i].text.substr(0,1))) {cnt++;tmpdata[cnt]=i;}
+//     }
+// tmpdata.length-1<=cnt2 ? cnt2=0:cnt2++;
+// obj.selectedIndex=tmpdata[cnt2]
+// }
+
 </script>	
 <style type="text/css">
 .btn_next {
@@ -172,7 +212,7 @@
 </head>
 <body>
 <%-- 	확이 : ${city}.length<br> --%>
-	motel_bath : ${motel_bath }
+	motel_bath : ${motel_bathroom }
 	<br> motel_type : ${motel_type }
 	<br> motel_category : ${motel_category }
 	<br> motel_people : ${motel_people }
@@ -198,7 +238,7 @@
 						<!-- 						기존에 받았던 데이터 -->
 						<input type="hidden" value="${motel_type }" name="motel_type">
 						<input type="hidden" value="${motel_category }"name="motel_category"> 
-						<input type="hidden" value="${motel_bath }" name="motel_bath"> 
+						<input type="hidden" value="${motel_bathroom }" name="motel_bathroom"> 
 						<input type="hidden" value="${motel_room }" name="motel_room"> 
 						<input type="hidden" value="${motel_people }" name="motel_people">
 
@@ -244,13 +284,13 @@
 
 						<h4>숙소의 국가를 선택하여 주세요.</h4> 
 						<c:if test="${!empty national}">
-							<input list="brow" class="national" style="width: 300px;">
+							<input list="brow" class="national" name="motel_nation" style="width: 300px;">
 							<datalist id="brow">
 
 								<c:forEach var="national" items="${national}" varStatus="i">
 
 									<option
-										value="${national.NATIONALITY_KOR_NAME}${national.NATIONALITY_NAME}" ></option>
+										value="${national.NATIONALITY_KOR_NAME}${national.NATIONALITY_NAME}" onkeypress='chkCode(this,event.keyCode)'></option>
 
 								</c:forEach>
 
@@ -260,7 +300,7 @@
 						
 						<h4>숙소의 도시를 선택하여 주세요.</h4>
 						<c:if test="${!empty city}">
-							<input list="brow1" class="city" style="width: 300px;">
+							<input list="brow1" class="city" name="motel_city" style="width: 300px;">
 							<datalist id="brow1">
 
 								<c:forEach var="city" items="${city}" varStatus="i">
@@ -277,7 +317,7 @@
 							
 						<h4>상세주소를 입려하여주세요.(지도에서 위치를 확인하여주세요.)</h4>
 							<div id="floating-panel">
-								<input id="address" type="textbox" placeholder="주소를 입력하세요">
+								<input id="address" type="textbox" placeholder="주소를 입력하세요" name="motel_address">
 								<input id="submit" type="button" value="검색">
 							</div>
 							<div id="map"></div>

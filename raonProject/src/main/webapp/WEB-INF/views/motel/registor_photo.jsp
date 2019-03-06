@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 
 <%-- <meta name="_csrf" content="${_csrf.token}"/> --%>
 <%-- <meta name="_csrf_header" content="${_csrf.headerName}"/> --%>
@@ -12,14 +12,14 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-	//»çÁø µî·Ï ÇÔ¼ö 
+	//ì‚¬ì§„ ë“±ë¡ í•¨ìˆ˜ 
 	function getThumbnailPrivew(html, $target) {
 		if (html.files && html.files[0]) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
 				//$target.css('display', '');
 				//$('.filebox').css('background-image', 'url(\"' + e.target.result + '\")');
-// 				$target.css('background-image', 'url(\"' + e.target.result + '\")'); // ¹è°æÀ¸·Î ÁöÁ¤½Ã
+// 				$target.css('background-image', 'url(\"' + e.target.result + '\")'); // ë°°ê²½ìœ¼ë¡œ ì§€ì •ì‹œ
 						
 //  				$target.css('background-repeat',"no-repeat");
 //  				$target.css('background-size',"contain");
@@ -127,7 +127,7 @@
 
 }
 
-.filebox input[type="file"] { /* ÆÄÀÏ ÇÊµå ¼û±â±â */
+.filebox input[type="file"] { /* íŒŒì¼ í•„ë“œ ìˆ¨ê¸°ê¸° */
 	position: absolute;
 	width: 1px;
 	height: 1px;
@@ -203,52 +203,63 @@ img {
 </style>
 </head>
 <body>registor : ${registor}
-	<!-- ÀÎÅ¬·çµå ½ÉÇÃ Çì´õ -->
+	<!-- ì¸í´ë£¨ë“œ ì‹¬í”Œ í—¤ë” -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/motel/motel-navbar.jsp"></jsp:include>
-	<!-- ÀÎÅ¬·çµå ½ÉÇÃ Çì´õ END -->
+	<!-- ì¸í´ë£¨ë“œ ì‹¬í”Œ í—¤ë” END -->
 
 
 
-	<!-- º»¹® -->
+	<!-- ë³¸ë¬¸ -->
 	<div class="main-container" style="padding-top: 0; padding-bottom: 0;">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container" style="width: 100%; padding-left: 10%; padding-right: 10%;" >
 				<div class="registor_main">
 					<div class="registor_contain">
-				<!-- ÀÌ ºÎºĞ¿¡ ÀÚ½ÅÀÇ ÆäÀÌÁö ³Ö±â -->
-				<h3 style="text-align: center">°Ô½ºÆ®¿¡°Ô º¸¿©ÁÙ ¼÷¼ÒÀÇ »çÁøÀ» µî·ÏÇÏ¼¼¿ä.(»çÁøµî·Ï 5°³
-					ÇÊ¼ö!!)</h3>
+				<!-- ì´ ë¶€ë¶„ì— ìì‹ ì˜ í˜ì´ì§€ ë„£ê¸° -->
+				<h3 style="text-align: center">ê²ŒìŠ¤íŠ¸ì—ê²Œ ë³´ì—¬ì¤„ ìˆ™ì†Œì˜ ì‚¬ì§„ì„ ë“±ë¡í•˜ì„¸ìš”.(ì‚¬ì§„ë“±ë¡ 5ê°œ
+					í•„ìˆ˜!!)</h3>
 					<form name="form" id="form" action="registor_intro" method="post" class="photo_form"
 						enctype="multipart/form-data" autocomplete="off">
 						<input type="hidden" value="${_csrf.token}"
-							name="${_csrf.parameterName}"> <input type="hidden"
-							value="${registor}" name="motel_info">
+							name="${_csrf.parameterName}"> 
+							
+							<!-- ê¸°ì¡´ì— ë°›ì€ ë°ì´í„° -->
+						<input type="hidden" value="${motel_type }" name="motel_type">
+						<input type="hidden" value="${motel_category }"name="motel_category"> 
+						<input type="hidden" value="${motel_bathroom }" name="motel_bathroom"> 
+						<input type="hidden" value="${motel_room }" name="motel_room"> 
+						<input type="hidden" value="${motel_people }" name="motel_people">
+						<input type="hidden" value="${motel_nation }" name="motel_nation">
+						<input type="hidden" value="${motel_address }" name="motel_address">
+						<input type="hidden" value="${motel_city }" name="motel_city">
+					
+							
 					<div class="photo_all">
 						<div class="filebox_big">
-							<label for="cma_file4" id="cma_image4" class="filebox_big_laber">»çÁø
-								ÀÎÁõ¼¦ ¾÷·Îµå</label> <input type="file" name="cma_file4" id="cma_file4"
+							<label for="cma_file4" id="cma_image4" class="filebox_big_laber">ì‚¬ì§„
+								ì¸ì¦ìƒ· ì—…ë¡œë“œ</label> <input type="file" name="cma_file4" id="cma_file4"
 								accept="image/*" capture="camera" id="filebox_big"
 								onchange="getThumbnailPrivew4(this,$('#cma_image4'))" /> <br />
 						</div>
 						<div class="filebox">
-							<label for="cma_file" id="cma_image">»çÁø ÀÎÁõ¼¦ ¾÷·Îµå</label> <input
+							<label for="cma_file" id="cma_image">ì‚¬ì§„ ì¸ì¦ìƒ· ì—…ë¡œë“œ</label> <input
 								type="file" name="cma_file" id="cma_file" accept="image/*"
 								capture="camera"
 								onchange="getThumbnailPrivew(this,$('#cma_image'))" /> <label
-								for="cma_file1" id="cma_image1">»çÁø ÀÎÁõ¼¦ ¾÷·Îµå</label> <input
+								for="cma_file1" id="cma_image1">ì‚¬ì§„ ì¸ì¦ìƒ· ì—…ë¡œë“œ</label> <input
 								type="file" name="cma_file1" id="cma_file1" accept="image/*"
 								capture="camera"
 								onchange="getThumbnailPrivew1(this,$('#cma_image1'))" /> <br />
 						</div>
 						<div class="filebox">
-							<label for="cma_file2" id="cma_image2">»çÁø ÀÎÁõ¼¦ ¾÷·Îµå</label> <input
+							<label for="cma_file2" id="cma_image2">ì‚¬ì§„ ì¸ì¦ìƒ· ì—…ë¡œë“œ</label> <input
 								type="file" name="cma_file2" id="cma_file2" accept="image/*"
 								capture="camera"
 								onchange="getThumbnailPrivew2(this,$('#cma_image2'))" /> <label
-								for="cma_file3" id="cma_image3">»çÁø ÀÎÁõ¼¦ ¾÷·Îµå</label> <input
-								type="file" name="cma_file2" id="cma_file3" accept="image/*"
+								for="cma_file3" id="cma_image3">ì‚¬ì§„ ì¸ì¦ìƒ· ì—…ë¡œë“œ</label> <input
+								type="file" name="cma_file3" id="cma_file3" accept="image/*"
 								capture="camera"
 								onchange="getThumbnailPrivew3(this,$('#cma_image3'))" /> <br />
 						</div>
@@ -266,10 +277,10 @@ img {
 				</div>
 		</section>
 	</div>
-	<!-- º»¹® END-->
+	<!-- ë³¸ë¬¸ END-->
 
-	<!-- ÀÎÅ¬·çµå-ÇªÅÍ -->
+	<!-- ì¸í´ë£¨ë“œ-í‘¸í„° -->
 	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
-	<!-- ÀÎÅ¬·çµå-ÇªÅÍ END -->
+	<!-- ì¸í´ë£¨ë“œ-í‘¸í„° END -->
 </body>
 </html>

@@ -48,31 +48,54 @@ public class MotelController {
 		System.out.println("step2 진입");
 		//System.out.println(param);
 		//System.out.println(service.getAllNational());
-		System.out.println("도시 : " + service.getAllCity());
+		//System.out.println("도시 : " + service.getAllCity());
 		model.addAttribute("city", service.getAllCity());
 		model.addAttribute("national", service.getAllNational());
 		model.addAttribute("motel_type", param.get("motel_type"));
 		model.addAttribute("motel_category", param.get("motel_category"));
 		model.addAttribute("motel_people", param.get("motel_people"));
 		model.addAttribute("motel_room", param.get("motel_room"));
-		model.addAttribute("motel_bath", param.get("motel_bathroom"));
+		model.addAttribute("motel_bathroom", param.get("motel_bathroom"));
 		return "motel/registor_city_address";
 	}
 	@RequestMapping(value="/registor_photo", method = RequestMethod.POST)
 	public String registor_step3(@RequestParam Map<String, Object> param, Model model) {
 		System.out.println("setp3  진입");
 		System.out.println(param);
+		model.addAttribute("motel_type", param.get("motel_type"));
+		model.addAttribute("motel_category", param.get("motel_category"));
+		model.addAttribute("motel_people", param.get("motel_people"));
+		model.addAttribute("motel_room", param.get("motel_room"));
+		model.addAttribute("motel_bathroom", param.get("motel_bathroom"));
+		model.addAttribute("motel_nation", param.get("motel_nation"));
+		model.addAttribute("motel_city", param.get("motel_city"));
+		model.addAttribute("motel_address", param.get("motel_address"));
 		model.addAttribute("registor", param);
 		return "motel/registor_photo";
 	}
 	
 	@RequestMapping(value="/registor_intro", method = RequestMethod.POST)
-	public String registor_step4(@RequestParam Map<String, Object> param, Model model, MultipartFile cma_file,MultipartFile cma_file1) {
+	public String registor_step4(@RequestParam Map<String, Object> param, Model model, 
+			MultipartFile cma_file,MultipartFile cma_file1,MultipartFile cma_file2,MultipartFile cma_file3,MultipartFile cma_file4) {
 		System.out.println("step4 진입");
 		System.out.println(param);
+		
+		model.addAttribute("motel_type", param.get("motel_type"));
+		model.addAttribute("motel_category", param.get("motel_category"));
+		model.addAttribute("motel_people", param.get("motel_people"));
+		model.addAttribute("motel_room", param.get("motel_room"));
+		model.addAttribute("motel_bathroom", param.get("motel_bathroom"));
+		model.addAttribute("motel_nation", param.get("motel_nation"));
+		model.addAttribute("motel_city", param.get("motel_city"));
+		model.addAttribute("motel_address", param.get("motel_address"));
+		
+		
 		model.addAttribute("registor", param);
 		System.out.println("cma_file : " + cma_file);
 		System.out.println("cma_file1 : " + cma_file1);
+		System.out.println("cma_file2 : " + cma_file2);
+		System.out.println("cma_file3 : " + cma_file3);
+		System.out.println("cma_file4 : " + cma_file4);
 		
 		return "motel/registor_intro";
 	}
@@ -80,7 +103,16 @@ public class MotelController {
 	@RequestMapping(value="/registor_complete", method = RequestMethod.POST)
 	public String registor_complete(@RequestParam Map<String, Object> param, Model model) {
 		System.out.println("registor_complete 진입");
-		System.out.println(param);
-		return "motel/test";
+		System.out.println("complete : " + param);
+		if(service.write_Motel(param)) {
+			//숙박 글 정상 등록
+			System.out.println("숙박글 등록 성공");
+		}else {
+			//숙박 글 등록 실패
+			System.out.println("숙박글 등록 실패");
+			
+		}
+		
+		return "motel/motel_result";
 	}
 }

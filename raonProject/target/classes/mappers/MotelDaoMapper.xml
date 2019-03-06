@@ -3,6 +3,37 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.raon.raondanim.dao.MotelDAO">
+	<insert id="motel_insert" parameterType="map">
+		insert into
+			MOTEL_TB (MOTEL_NUM,
+						MOTEL_TYPE,
+						MOTEL_CATEGORY,
+						MOTEL_PEOPLE,
+						MOTEL_ROOM,
+						MOTEL_BATHROOM,
+						MOTEL_NATION,
+						MOTEL_CITY,
+						MOTEL_ADDRESS,
+						MOTEL_INTRO,
+						MOTEL_TITLE,
+						MOTEL_PRICE
+						)
+			values (MOTEL_TB_SEQ.nextval,
+						#{motel_type},
+						#{motel_category},
+						#{motel_people},
+						#{motel_room},
+						#{motel_bathroom},
+						#{motel_nation},
+						#{motel_city},
+						#{motel_address},
+						#{motel_intro},
+						#{motel_title},
+						#{motel_price})
+	
+	</insert>
+
+
 	<select id="National_selectAll" resultType="map">
 		select * from nationality_dtb
 	</select>

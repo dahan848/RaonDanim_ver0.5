@@ -26,4 +26,13 @@ public class MotelServiceImp implements MotelService{
 		return dao.City_selectAll();
 	}
 
+	@Override
+	public boolean write_Motel(Map<String, Object> param) {
+		if(dao.motel_insert(param) > 0) {
+			return true;
+		}else {
+			return false;			
+		}
+	}
+
 }
