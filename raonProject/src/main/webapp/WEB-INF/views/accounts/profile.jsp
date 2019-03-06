@@ -25,7 +25,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() { 
-	alert("로딩 완료45"); 
+	//alert("로딩 완료45"); 
 	
 	createGallery(); //갤러리 그려주는 ()
 	
@@ -98,6 +98,10 @@ function profilepicSubmit() {
         type : 'post',
         url : contextPath + '/profilePicUpload',
         data : formData,
+        beforeSend : function(xhr)
+        {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
         processData : false,
         contentType : false,
         success : function(result) {
@@ -186,7 +190,6 @@ function gallerypicSubmit() {
 
 //갤러리 사진 그려주는 함수 
 function createGallery() {
-	alert("createGallery");
 	var contextPath = '<c:out value="${contextPath}"/>';
 	$.ajax({
 		url: contextPath + "/accounts/gallery/${userNum}",

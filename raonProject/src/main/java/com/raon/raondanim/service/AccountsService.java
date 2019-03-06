@@ -52,6 +52,7 @@ public class AccountsService {
 	//프로필 사진 등록 ()
 	public boolean setProfilePic(Map<String, Object> param) {
 		//System.out.println("서비스 전달 받은 맵 확인 : " + param);
+		
 		if(dao.setProfilePic(param) > 0) {
 			return true;
 		}else {
@@ -106,7 +107,7 @@ public class AccountsService {
 		String user_name = user.getUser_lnm() + user.getUser_fnm(); 
 		//마지막 로그인 시간 구하기 및 변수에 참조 : 로그인 기록이 없으면 null 포인트 뜸 = 조건문으로 예외처리 
 		Long lastLogin;
-		if(user.getUser_last_try_login_time() != null) {
+		if(user.getUser_last_login_time() != null) {
 			lastLogin = getUserLastLoginTime(user.getUser_last_login_time());
 		}else {
 			lastLogin = (long) 666;

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -103,7 +104,7 @@ public class AccountsController {
 	@ResponseBody
 	@RequestMapping(value="/gallery/{usernum}",method=RequestMethod.GET)
 	public ResponseEntity<List<Map<String, Object>>> gallery(@PathVariable("usernum") String usernum){
-		System.out.println("gallery : " + usernum);
+		//System.out.println("gallery : " + usernum);
 		ResponseEntity<List<Map<String, Object>>> entity = null;
 		try{
 			List<Map<String, Object>> replyList
@@ -117,8 +118,7 @@ public class AccountsController {
 	
 	//프로필 수정 화면 1
 	@RequestMapping(value = "/update1Form")
-	public String update1Form(Authentication authentication, Model model) {
-
+	public String update1Form(Authentication authentication, HttpServletRequest request, Model model,Principal principal) {
 		//나의 정보를 클릭하면, 추가 프로필 등록 1단계 화면이 나옴.
 		//사용자의 정보를 추가 프로필 1단계 화면으로 넘겨주어야 한다.
 		//1. 수정(입력)된 정보 발생

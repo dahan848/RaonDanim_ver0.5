@@ -1,6 +1,7 @@
 package com.raon.raondanim.controller;
 
 import java.io.File;
+import java.security.Principal;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.AccountsService;
 
 @Controller
@@ -42,8 +47,8 @@ public class FileUploadController {
 	@ResponseBody
 	@RequestMapping(value = "/picInfo")
 	public void data(@RequestParam Map<String, Object> param) {
-		//System.out.println("파일 업로드 데이터 요청받음");
-		//System.out.println(param);
+		System.out.println("파일 업로드 정보 전달 받음");
+		System.out.println(param);
 		setParam(param);
 	}
 	
@@ -94,16 +99,26 @@ public class FileUploadController {
         }
         //System.out.println("변경 된 파일 이름 : " + newFileName); //이상하게 여기서는 usernum 붙은거로 안 나옴
         
+        
+        // 중요! 서비스 그리고 UserPrincipal에 넘길 데이터 (파일이름) 문자열 변수 선언 및 초기화
+        String filename = usernum+newFileName;
+        
+        ////////////////시큐리티 세션에 저장되어 있는 정보를 바꾸는 작업
+        //시큐리티 세션에 저장되어 있는 UserPrincipa의 프로필 관련 정보를 바꾸어 주기 위해서 필요한 변수를 선언해준다.
+      	Principal auth = multi.getUserPrincipal();
+      	customUserDetails userDetails = (customUserDetails) ((Authentication) auth).getPrincipal ();
+
+      	//여기서 인자로 넘겨주는 String 문자열은 앞선 작업으로 생성된 파일의 이름이다. 
+      	userDetails.setUser_profile_pic(filename);
+        
         ////////////////DB에 넣는 작업
         //1. 서비스로 넘길 Map 선언 
         Map<String, Object> pic = new HashMap<String, Object>();
-        //2. 서비스로 넘길 Map에 필요한 데이터 생성
-        String filename = usernum+newFileName;
-        //3 Map에 데이터 put
+        //2 Map에 데이터 put
         pic.put("user_num", (String) getParam().get("user_num"));
         pic.put("filename", filename);
-       //4 서비스에 인자 넘기기 및 서비스를 활용 return 값 설정
-       //System.out.println("인자 확인 : " + pic);
+        //3 서비스에 인자 넘기기 및 서비스를 활용 return 값 설정
+        //System.out.println("인자 확인 : " + pic);
         return service.setProfilePic(pic);
     }
 	
