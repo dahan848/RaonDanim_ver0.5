@@ -140,37 +140,19 @@ function createReplyTable() {
 		success:function(list){
 	
 			for(var i in list){
-				<!--   <div class="row"> -->
-				<!--     <div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> -->
-				<!--      <div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> -->
-				<!--   <div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> -->
-				<!--  </div> -->
-				var row = $(" <div class='row'>");
+
+				var row = $(" <div class='row' id='row"+i+"' style='border=1px solid red;'>");
 				var colName = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
 				var colContent = $("<div class='col-lg-8' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
 				var colDate = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-				var colBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
+				var colBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' data-toggle='collapse' data-target='#reRow"+i+"' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
 				colName.text(list[i].USER_LNM+list[i].USER_FNM).appendTo(row);
-				colContent.text(list[i].TRIP_REPLY_CONTENT).html(colBtn).appendTo(row);
+				colContent.text(list[i].TRIP_REPLY_CONTENT).append("<br>").append(colBtn).appendTo(row);
 				colDate.text(list[i].TRIP_REPLY_WRITEDATE).appendTo(row);
 				row.appendTo(replyTable);
-// 				<div class="row" id="reReRow"> 
-//          		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> 
-//           		<div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> 
-//           		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div> 
-//          		</div> 
-				var reReRow = $("<div class='row' id='reReRow"+i+"' style='display: none;'>");
-				var recolName = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-				var recolContent = $("<div class='col-lg-2' style='border: 1px solid #cccccc;  min-height: 40px; max-height: 40px; overflow: hidden;'>");
-				var recolDate = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-				var recolBtn = $("<input type='button' class='btn btn-primary' id='recolBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
-				recolName.appendTo(reReRow);
-				recolContent.html("<input type='text' class='form-control' id='reReContent' name=''>").appendTo(reReRow);
-				recolDate.html(recolBtn).appendTo(reReRow);
-				reReRow.appendTo(replyTable);
-				
-			}
+
 			
+			}
 			
 		}
 		
@@ -179,9 +161,19 @@ function createReplyTable() {
 }
 
 function togglerereply(i) {
-	var reReRow = $("#reReRow"+i);
+
+
 	
-	reReRow.toggle();
+	var reRow = $("<div class='row collapse' id='reRow"+i+"' style='border=1px solid red;'>");
+	var reName = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
+	var reContent = $("<div class='col-lg-8' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
+	var reDate = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
+	var row = $("#row"+i);
+	reName.html("&nbsp;<small><b>ㄴ</b></small>").appendTo(reRow);
+	reContent.html("<input type='text' style='margin-top: 5px;' class='form-control' id='reReContent"+i+"' name=''>").appendTo(reRow);
+	reDate.html("<a style='margin-top: 5px;'>입력</a>").appendTo(reRow);
+	reRow.appendTo(row);
+	
 	
 	
 	
@@ -465,7 +457,7 @@ th{
 				 				</th>
 				 			</tr>
 				 			<tr>
-				 				<td><input type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#replyModal" value="동행">
+				 				<td><input  type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#replyModal" value="동행">
 				 				<input type="button" onclick="toggleDisplay()" class="btn btn-primary btn-xs" value="소개">
 				 				<input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#declarationModal" value="신고">
 				 				<input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modifyModal"value="수정">
@@ -521,7 +513,7 @@ th{
 				 			<tr>
 				 				<td id="tripsogae">
 				 					<div>
-				 						${boardInfo.TRIP_BOARD_COUNTENT}
+				 						<pre>${boardInfo.TRIP_BOARD_COUNTENT}</pre>
 				 					</div>	 		
 				 					
 				 				</td>
@@ -558,7 +550,7 @@ th{
 <div class="container">
   <!-- Modal -->
   <div class="modal fade" id="replyModal" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
     
       <!-- Modal content-->
       <div class="modal-content" id="replyModal">
@@ -584,18 +576,18 @@ th{
          	<br>
          	<div id="replyTable" class="container-fluid">
          		
-<!--          		<div class="row">  -->
-<!--          			<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
-<!--           			<div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
-<!--           			<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
-<!--          		</div>  -->
-<!--          	<div class="row" id="rereply" style="display: none;">   -->
-<!--          		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
-<!--           		<div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
-<!--           		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;"></div>  -->
+<!--          	<div class="row">  -->
+<!--          		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;">이름</div>  -->
+<!--           		<div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;">내용<a data-toggle="collapse" data-target="#rereply">시붕</a></div>  -->
+<!--           		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;">날짜</div>  -->
+<!--          	</div>  -->
+<!--          	<div class="row collapse" id="rereply">   -->
+<!--          		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;">이름</div>  -->
+<!--           		<div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;">내용</div>  -->
+<!--           		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;">입력</div>  -->
 <!--         	</div>  -->
-
-         		
+        	
+         	
          		
          		
          	</div>

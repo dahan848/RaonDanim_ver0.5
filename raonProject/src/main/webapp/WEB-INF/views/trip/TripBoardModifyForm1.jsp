@@ -11,6 +11,9 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
@@ -35,6 +38,19 @@ th {
 .hasDatepicker{cursor: pointer;}
 
 </style>
+<script type="text/javascript">
+$(function() {
+	
+// 	$("#writeForm").on("submit", function() {
+// 		$('#boardContent').val().replace(/\n/g, "<br>");
+
+		
+// 	})
+	
+	
+})
+
+</script>
 </head>
 <body>
 	<!-- 인클루드 심플 헤더 -->
@@ -62,13 +78,14 @@ th {
 			여행상품, 패키지 상품 등 기타 상업적인 목적의 이용은 금지사항 입니다
 		</p>
 		<br>
-		<form action="modify2" method="post">
+		<form action="modify2" method="post" id="writeForm">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 <%-- 			<input type="text" value="${user_Num}" name="user_Num"> --%>
 			<input type="hidden" value="${boardInfo.TRIP_BOARD_KEY}" name="trip_Board_Key">
 			<input type="hidden" value="${boardInfo.USER_NUM}" name="user_Num">
+			<input type="hidden" value="스타일 스펠링 확인용" style='margin-top: 10px;'>
 			<table class="table" id="ta">
-
+				
 				<tr>
 					<th style="padding: 20px;" class="success">제목</th>
 					<td style="padding: 20px;">
@@ -115,7 +132,7 @@ th {
 				<tr>
 					<th style="padding: 20px;" class="info">여행 소개</th>
 					<td style="padding: 20px;">
-						<textarea rows="5" style="width: 500px;" name="trip_Board_Content">${boardInfo.TRIP_BOARD_COUNTENT}</textarea>
+						<textarea rows="5" style="width: 500px;" id="boardContent" name="trip_Board_Content">${boardInfo.TRIP_BOARD_COUNTENT}</textarea>
 					</td>
 				</tr>
 				<tr>

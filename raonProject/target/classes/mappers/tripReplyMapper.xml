@@ -44,7 +44,7 @@ SELECT  r.TRIP_REPLY_KEY,
 FROM trip_reply_tb r join user_tb u
 on r.USER_NUM = u.USER_NUM
 where r.TRIP_BOARD_KEY = #{num}
-ORDER BY r.TRIP_REPLY_GID DESC,
+ORDER BY r.TRIP_REPLY_GID ASC,
 		 r.TRIP_REPLY_SORTS ASC
 
 </select>

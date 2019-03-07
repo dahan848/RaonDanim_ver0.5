@@ -69,7 +69,7 @@ th {
 				<tr>
 					<th style="padding: 20px;" class="success">제목</th>
 					<td style="padding: 20px;">
-						<input type="text" id="trip_Board_Title" name="trip_Board_Title" class="form-control" style=" width: 300px;">
+						<input type="text" id="trip_Board_Title" name="trip_Board_Title" class="form-control" style=" width: 300px;" required="required">
 					</td>
 				</tr>
 				<tr>
@@ -112,7 +112,7 @@ th {
 				<tr>
 					<th style="padding: 20px;" class="info">여행 소개</th>
 					<td style="padding: 20px;">
-						<textarea rows="3" style="width: 500px;" name="trip_Board_Content"></textarea>
+						<textarea rows="3" style="width: 500px;" name="trip_Board_Content" required="required"></textarea>
 					</td>
 				</tr>
 				<tr>
