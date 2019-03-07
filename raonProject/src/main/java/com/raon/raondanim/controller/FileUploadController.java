@@ -91,7 +91,7 @@ public class FileUploadController {
             newFileName = System.currentTimeMillis()+randomName+"."
                     +fileName.substring(fileName.lastIndexOf(".")+1);
             try {
-                mFile.transferTo(new File(path+(usernum+newFileName)));
+            		mFile.transferTo(new File(path+(usernum+newFileName)));
                 //result = true;
             } catch (Exception e) {
             	e.printStackTrace();
@@ -127,6 +127,7 @@ public class FileUploadController {
     @RequestMapping(value = "/galleryPicUpload")
     public Boolean galleryfileUp(MultipartHttpServletRequest multi) {
 		System.out.println("galleryPicUpload 요청 받음");
+		System.out.println(multi);
 		
         // 저장 경로 설정
         String root = multi.getSession().getServletContext().getRealPath("/");
@@ -173,19 +174,31 @@ public class FileUploadController {
             //반복문을 돌면서 새로운 Map을 만들어 준다.
             Map<String, Object> picData = new HashMap<String, Object>();
             try {
-                mFile.transferTo(new File(path+(usernum+newFileName)));
-                String filename = usernum+newFileName; //실제 저장되는 파일 이름
-                picData.put("filename", filename); //파일네임 put
-                picData.put("user_num", user_num); //유저넘 put
+            	//존재하지 않는 (input에 추가 안된) 파일을 거르기 위한 작업 
+            	//파일 이름에서 .을 기준으로 뒤에 오는 문자열 개수를 체크 
+            	int idx = newFileName.indexOf(".");
+            	//문자열 변수에 '.'을 기준으로 뒤에 오는 문자열을 참조한다.
+            	String check = newFileName.substring(idx+1);
+            	if(!check.isEmpty()) {
+            		//만약 check 문자열의 값이 Null 이라면 = 확장자명이 없는 파일이라면 = 파일이 선택 안된 input의 더미
+            		//즉, check의 값이 Null이 아닐 때만 파일 업로드 로직을 실행한다.
+            		mFile.transferTo(new File(path+(usernum+newFileName)));
+            		String filename = usernum+newFileName; //실제 저장되는 파일 이름
+            		picData.put("filename", filename); //파일네임 put
+            		picData.put("user_num", user_num); //유저넘 put
+            		
+                    //while문이 끝나기 전에 List에 Map을 담는다.
+            		//조건문 내에서 파일이 있을 때만 파일명을 생성하기 때문에 add 역시 조건문 안에서 해준다.
+                    pic.add(picData);
+            	}
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            //while문이 끝나기 전에 List에 Map을 담는다.
-            pic.add(picData);
+
             //System.out.println(count+"번 째 생성 된 파일 : " + picData);
             count ++;
         }
-		//System.out.println("넘겨줄 데이터 확인 : " + pic);
+		System.out.println("넘겨줄 데이터 확인 : " + pic);
 		return service.setGalleryPic(pic);
 	}
 	

@@ -402,7 +402,8 @@ input[type="file"] {
 	   <c:choose>
 			<c:when test="${userNum eq user_num}">
 	        	<a href="#" data-toggle="modal" data-target="#modal-profile-image">프로필 사진</a><br>
-	        	<a href="#" data-toggle="modal" data-target="#modal-gallery-image">갤러리 사진</a>
+	        	<a href="#" data-toggle="modal" data-target="#modal-gallery-image">갤러리 사진</a><br>
+	        	<a href="${contextPath}/accounts/gallerySettings">갤러리 관리</a>
 	   		</c:when>
         	<c:otherwise>
 				<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->    	    		

@@ -62,7 +62,7 @@ public class AccountsService {
 	
 	//갤러리 사진 등록()
 	public boolean setGalleryPic(List<Map<String, Object>> param) {
-		//System.out.println("서비스 전달 받은 맵 확인 : " + param);
+		System.out.println("서비스 전달 받은 맵 확인 : " + param);
 		//System.out.println("전달 받은 맵의 사이즈 : " + param.size());
 		//여러개의 파일을 넣어야 하기 때문에 반복문을 돌면서 dao에 값을 insert 해야 한다.
 		
