@@ -398,7 +398,6 @@ input[type="file"] {
 		</div>
 	</div>
 	<!-- POPOVER DIV -->
-	
 	<div id="userInfo" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
 	   <c:choose>
 			<c:when test="${userNum eq user_num}">

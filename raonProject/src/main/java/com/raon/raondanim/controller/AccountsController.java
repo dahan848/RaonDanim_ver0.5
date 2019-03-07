@@ -118,7 +118,7 @@ public class AccountsController {
 	
 	//프로필 수정 화면 1
 	@RequestMapping(value = "/update1Form")
-	public String update1Form(Authentication authentication, HttpServletRequest request, Model model,Principal principal) {
+	public String update1Form() {
 		//나의 정보를 클릭하면, 추가 프로필 등록 1단계 화면이 나옴.
 		//사용자의 정보를 추가 프로필 1단계 화면으로 넘겨주어야 한다.
 		//1. 수정(입력)된 정보 발생
@@ -135,7 +135,15 @@ public class AccountsController {
 	
 	//프로필 수정 화면 3
 	@RequestMapping(value = "/gallerySettings")
-	public String gallerySettings() {
+	public String gallerySettings(Authentication authentication, Model model) {
+		//현재 로그인 한 유저 (시큐리티 세션 이용)의 유저넘을 가지고 온다.
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		String usernum = Integer.toString(user.getUser_num());
+		//서비스를 이용 해당 유저의 갤러리 목록 얻어온다.
+		List<Map<String, Object>> userGallery = service.getGallery(usernum);
+		//Modle을 이용해서 화면으로 쏴준다
+		model.addAttribute("userPic", userGallery);
+		//해당 화면에 보내주어야 하는 것 : 프로필 사진, 갤러리 사진
 		return "accounts/gallerySettings";
 	}
 

@@ -574,7 +574,8 @@ MOBILE
   border-radius: 0;
 }
 #section-profile-update ul.thumbnails.image_picker_selector li .thumbnail img {
-  width: 100%;
+  width: 129.75px;
+  height: 129.75px;
 }
 #section-profile-update ul.thumbnails.image_picker_selector li .thumbnail.selected {
   border-color: #F7606C;
