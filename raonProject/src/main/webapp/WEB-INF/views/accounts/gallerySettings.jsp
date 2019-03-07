@@ -20,14 +20,8 @@
 			<div class="container">
 				<h3 class="section-title">
 					<img class="section-header-icon"
-						src="/static/potluck/img/icon/Profile.png" alt=""> 3단계: 사진
-					추가하기
+						src="${contextPath}/img/accounts_Profile.png"> 갤러리 관리
 				</h3>
-				<div class="progress">
-					<div class="progress-bar" role="progressbar"
-						aria-valuenow="57.1428571429" aria-valuemin="0"
-						aria-valuemax="100" style="width: 100%;"></div>
-				</div>
 				<form id="form-profile-update" method="post" class="hidden"
 					data-user-id="1705" enctype="multipart/form-data" novalidate>
 					<input type='hidden' name='csrfmiddlewaretoken'

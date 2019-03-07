@@ -202,7 +202,7 @@ function createGallery() {
 				 //기본 뼈대 그리기 
 				 $(".carousel-indicators").append("<li data-target='#myCarousel' data-slide-to=\""+i+"\"></li>");
 				 $(".carousel-inner").append("<div class='item'><img src='"+path+"' alt='"+i+"' style='width: 100%'></div>");
-				 $(".carousel-inner").append("<a class='item'><img src='"+path+"' alt='"+i+"' style='width: 100%'></a>");
+
 				 //클래스 속성 부여하기
 		         $(".carousel-indicators li:first").addClass("active");
 		         $(".carousel-inner .item:first").addClass("active");

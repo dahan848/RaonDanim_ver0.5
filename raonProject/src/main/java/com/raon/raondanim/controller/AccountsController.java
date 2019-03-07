@@ -134,9 +134,9 @@ public class AccountsController {
 	}
 	
 	//프로필 수정 화면 3
-	@RequestMapping(value = "/update3Form")
-	public String update3Form() {
-		return "accounts/profile-update3";
+	@RequestMapping(value = "/gallerySettings")
+	public String gallerySettings() {
+		return "accounts/gallerySettings";
 	}
 
 	//개인정보 화면 요청
