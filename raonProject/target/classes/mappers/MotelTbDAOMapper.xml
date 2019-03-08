@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.raon.raondanim.dao.MotelTbDAO">
+	<select id="selectAll" resultType="Map">
+		select * from motel_tb
+	</select>
+	
+	<!-- <select id="motelList" resultType="Map" parameterType="Map">
+		select * from(
+			select rownum as rnum, MOTEL_NUM,USER_NUM,MOTEL_TYPE,MOTEL_CATEGORY,MOTEL_PEOPLE,MOTEL_BED,MOTEL_BATHROOM,MOTEL_COUNTRY,MOTEL_CITY,MOTEL_ADRESS,MOTEL_INTRODUCE,MOTEL_TITLE,MOTEL_PRICE,Motel_WriteDate,Motel_ReadCount,MOTEL_ST,MOTEL_AVG  
+			from(
+				select *
+				from motel_tb
+				order by motel_num desc
+				)
+			)
+		where rnum between #{firstRow} and #{endRow}
+	</select> -->
+	<select id="selectTotalCount" resultType="int" parameterType="map">
+		select count(*) from motel_tb
+	</select>	
+	
+	<select id="motelList" resultType="Map" parameterType="Map">
+		select *
+		from(
+			select rownum as rnum, USER_NUM, USER_ID, USER_FNM, USER_LNM, MOTEL_NUM, MOTEL_TYPE, MOTEL_CATEGORY, MOTEL_PEOPLE, MOTEL_ROOM, MOTEL_BATHROOM, MOTEL_NATION_EN, MOTEL_NATION_KO, MOTEL_CITY_EN, MOTEL_CITY_KO, MOTEL_ADDRESS, MOTEL_INTRO, MOTEL_TITLE, MOTEL_PRICE, Motel_WriteDate, Motel_ReadCount, MOTEL_AVG
+			from(
+				select user1.USER_NUM, user1.USER_ID, user1.USER_FNM, user1.USER_LNM, motel.MOTEL_NUM, motel.MOTEL_TYPE, motel.MOTEL_CATEGORY, motel.MOTEL_PEOPLE, motel.MOTEL_ROOM, motel.MOTEL_BATHROOM, motel.MOTEL_NATION_EN, motel.MOTEL_NATION_KO, motel.MOTEL_CITY_EN, motel.MOTEL_CITY_KO, motel.MOTEL_ADDRESS, motel.MOTEL_INTRO, motel.MOTEL_TITLE, motel.MOTEL_PRICE, motel.Motel_WriteDate, motel.Motel_ReadCount, motel.MOTEL_AVG
+				from motel_tb motel, user_tb user1
+				where user1.user_num = motel.user_num
+				order by motel_num desc
+				)
+			)
+		where rnum between #{firstRow} and #{endRow}
+	</select>
+	
+	<!-- <select id="motelList" resultType="Map" parameterType="Map">
+    select *
+    from(
+		select rownum rnum, motel_num, motel_user_num, motel_people, motel_room, motel_bathroom, motel_title, c, user_fnm, user_lnm
+		from(
+			select m.motel_num, m.motel_user_num, m.motel_people, m.motel_room, m.motel_bathroom, m.motel_title, m.c, user_tb.user_fnm, user_tb.user_lnm
+			from(
+				select motel.MOTEL_NUM, motel.USER_NUM as motel_user_num, motel.MOTEL_PEOPLE, motel.MOTEL_ROOM, motel.MOTEL_BATHROOM, motel.MOTEL_TITLE, count(*) as c
+				from motel_tb motel, motel_date_tb date_tb
+				where date_tb.motel_ready = 'Y'
+				and motel.motel_num = date_tb.motel_num
+				
+				<if test="startDate != null">
+				and date_tb.motel_date between '19/03/20' and '19/03/22'
+				</if>
+				
+				<if test="city != null">
+				and (motel.motel_city_ko = '%${city}%' OR motel.motel_city_en = '%${city}%')	
+				</if>
+				
+				<if test="motel_people != 0">
+				and motel.motel_people >= #{motel_people}
+				</if>
+				
+				<if test="motel_type != 0">
+				and motel.MOTEL_TYPE= #{motel_type}
+				</if>
+				
+				<if test="motel_category != 0">
+				and motel.motel_category = #{motel_category}
+				</if>
+				
+				<if test="motel_price1 != 0">
+				and motel_price between #{motel_price1} and {motel_price2}
+				</if>
+				
+				having count(*) = to_Date('%${startDate}%','RR/MM/dd') - to_Date('%${endDate}%','RR/MM/dd') + 1
+				group by motel.MOTEL_NUM, motel.USER_NUM, motel.MOTEL_PEOPLE, motel.MOTEL_ROOM, motel.MOTEL_BATHROOM, motel.MOTEL_TITLE
+				order by motel.motel_num
+			)m ,user_tb
+			where m.motel_user_num = user_tb.user_num
+			order by m.motel_num desc
+		)
+        order by rnum
+        )
+		where rnum between #{firstRow} and #{endRow}
+	</select> -->
+	
+	
+	<select id="viewSelect" resultType="Map" parameterType="int">
+		select motel.MOTEL_NUM, motel.MOTEL_TYPE, motel.MOTEL_CATEGORY, motel.MOTEL_PEOPLE, motel.MOTEL_ROOM, motel.MOTEL_BATHROOM, motel.MOTEL_NATION_EN, motel.MOTEL_NATION_KO, motel.MOTEL_CITY_EN, motel.MOTEL_CITY_KO, motel.MOTEL_ADDRESS, motel.MOTEL_INTRO, motel.MOTEL_TITLE, motel.MOTEL_PRICE, motel.MOTEL_AVG, user1.USER_FNM, user1.USER_LNM, user1.user_num
+		from motel_tb motel, user_tb user1
+		where motel.motel_num = #{num} and user1.user_num=#{host}
+	</select>
+	
+	<select id="test">
+		{
+			call trip_date(
+				#{start_number, mode=IN},
+				#{end_number, mode=IN},
+				#{insert_motel_number, mode=IN},
+				#{start_date, mode=IN}
+			)
+		}
+	</select>
+	
+	<!-- <select id="viewReply" parameterType="Map" resultType="Map">
+		select *
+			from(
+				select rownum as rnum, MOTEL_NUM, USER_NUM, CONTENT
+				from(
+					select *
+					from motel_reply
+					order by MOTEL_REPLY_SQ desc
+					)
+				where motel_num = #{num}
+				)
+		where rnum between #{firstRow} and #{endRow}
+	</select> -->
+	<select id="viewReply" parameterType="Map" resultType="Map">
+		select *
+		from(
+			select rownum as rnum, MOTEL_NUM, USER_NUM, CONTENT, user_id, motel_reply_date, user_fnm, user_lnm
+			from(
+				select reply.motel_num, reply.user_num, reply.content, user_tb.user_id, reply.motel_reply_date, user_tb.user_fnm, user_tb.user_lnm
+				from motel_reply reply, user_tb user_tb
+				where user_tb.user_num = reply.user_num
+				order by MOTEL_REPLY_SQ desc
+			)
+			where motel_num = #{num}
+			)
+		where rnum between #{firstRow} and #{endRow}
+	</select>
+		
+	<insert id="write_reply" parameterType="Map">
+		insert into motel_reply
+		(motel_num, user_num, motel_reply_sq, content)
+		values(#{motel_num},#{user_num},mote_reply_seq.nextval,#{content})
+	</insert>
+	
+	<insert id="starAvg" parameterType="Map">
+		insert into motel_avg_tb
+		(motel_num, user_key, avg)
+		values(#{motel_num},#{user_num},#{star-input})
+	</insert>
+	
+	
+	
+	<!-- 모텔 병합중 -->
+	<insert id="motel_insert" parameterType="map">
+      <selectKey order="BEFORE" keyProperty="MOTEL_NUM" resultType="int">
+         select MOTEL_TB_SEQ.nextval from dual
+      </selectKey>
+      insert into
+         MOTEL_TB (MOTEL_NUM,
+         		   USER_NUM,
+                  MOTEL_TYPE,
+                  MOTEL_CATEGORY,
+                  MOTEL_PEOPLE,
+                  MOTEL_ROOM,
+                  MOTEL_BATHROOM,
+                  MOTEL_NATION_EN,
+                  MOTEL_NATION_KO,
+                  MOTEL_CITY_EN,
+                  MOTEL_CITY_KO,
+                  MOTEL_ADDRESS,
+                  MOTEL_INTRO,
+                  MOTEL_TITLE,
+                  MOTEL_PRICE
+                  )
+         values (#{MOTEL_NUM},
+         		#{user_num},
+                  #{motel_type},
+                  #{motel_category},
+                  #{motel_people},
+                  #{motel_room},
+                  #{motel_bathroom},
+                  #{motel_nation_en},
+                  #{motel_nation_ko},
+                  #{motel_city_en},
+                  #{motel_city_ko},
+                  #{motel_address},
+                  #{motel_intro},
+                  #{motel_title},
+                  #{motel_price})
+   
+   </insert>
+
+
+   <select id="National_selectAll" resultType="map">
+      select * from nationality_dtb
+   </select>
+   
+   <select id="City_selectAll" resultType="map">
+      select * from CITY_COUNTRY_DTB
+   </select>
+	
+	
+</mapper>

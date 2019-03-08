@@ -17,8 +17,8 @@
 		id="dataSource">
 		<property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" name="driverClassName" />
 		<property value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
-		<property value="manzza" name="username" />
-		<property value="1099" name="password" />
+		<property value="hyeonGom" name="username" />
+		<property value="891024" name="password" />
 	</bean>
 
 	<!-- 마이바티스 연동 -->
@@ -34,7 +34,8 @@
 		<constructor-arg name="sqlSessionFactory"
 			ref="sqlSessionFactory"></constructor-arg>
 	</bean>
-
+	
+	<!-- 시큐리티 -->
 	<!-- messageSource 설정 -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
@@ -59,11 +60,13 @@
 		<property name="messageSourceAccessor"
 			ref="messageSourceAccessor" />
 	</bean>
+	
 	<!-- Default Location 설정 -->
 	<bean id="localeResolver"
 		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 		<property name="defaultLocale" value="ko"></property>
 	</bean>
+	<!-- 시큐리티 END -->
 	
 	<!-- DAO 목록 -->
 	<bean id="userAuthDAO"
@@ -76,5 +79,14 @@
 		<property name="mapperInterface" value="com.raon.raondanim.dao.AccountsUserDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
+	<!-- 모텔DAO -->
+	<bean id="motelTbDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.raon.raondanim.dao.MotelTbDAO"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<!-- <bean id="motelAvgDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.raon.raondanim.dao.MotelAvgDAO"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean> -->
 
 </beans>
