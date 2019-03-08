@@ -121,9 +121,9 @@ input[type="file"] {
 											<button class="btn btn-potluck-o btn-image-add" href="#" data-toggle="modal" data-target="#modal-gallery-image">업로드</button>
 										</div>
 										<p class="images-status"></p>
-										<form class="form-media-delete" method="post"
-											action="사진삭제요청">
-											<select id="deletePic" name="medias" class="image-picker" multiple="multiple">
+										<form id="galleryPic" class="form-media-delete" method="post" action="#">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+											<select id="deletePic" name="pic[]" class="image-picker" multiple="multiple">
 												<!-- forEach로 사진 목록 옵션 그리기 -->
 												<c:forEach items="${userPic}" var="pic">
 												<option
@@ -133,8 +133,9 @@ input[type="file"] {
 												</option>
 												</c:forEach>
 											</select>
+											<input type="submit" id="galleryPic-submit" style="display: none;">
 										</form>
-										<button class="btn btn-warning btn-image-delete" style="display: none;">
+										<button id="btn-delete-pic" class="btn btn-warning btn-image-delete" style="display: none;">
 											<i class="fa fa-trash-o"></i> 선택한 사진 삭제
 										</button>
 									</div>
@@ -235,13 +236,50 @@ input[type="file"] {
 	<!-- 인클루드-푸터 END -->
 </body>
 <script type="text/javascript">
-	
+	$("#btn-delete-pic").click(function () {
+		var contextPath = '<c:out value="${contextPath}"/>';
+		
+		//select의 option 참조
+		var cont = $("#deletePic > option");
+		//전체 사진(옵션)의 개수 
+		var len = cont.length;
+		//전송 할 떄 사용 할 배열 선언 
+		var data = new Array();
+		
+		//전체 사진(옵션) 만큼 반복문
+	    for(var i=0 ; i<len ; i++){
+	    	//선택 된 사진의 경우에만 배열에 담아줌
+	    	if(cont[i].selected == true){
+	    		data.push(cont[i].value);
+	    	}
+	    };
+	    //alert("선택 된 사진" + data + "타입은? : " + typeof(data) );
+	     
+	    $.ajaxSettings.traditional = true;
+	    $.ajax({
+            type : "post",
+            url : contextPath + "/accounts/deletePic",
+            data : {"data":data},
+            dataType : "json",
+            beforeSend : function(xhr){
+            	xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+            },
+            success : function(result) {
+            	alert(result);
+            },
+            error : function(error) {
+                console.log(error);
+                console.log(error.status);
+            }
+	      });
+	});
+
+
 	//이미지 피커 기본 설정 
 	var $image_picker = $(".image-picker");
 	$image_picker.imagepicker();
 	//이미지 클릭하면 삭제 버튼 나오게 
 	$image_picker.change(function(){
-		
 		var selectedCount = ($(this).children(":selected").length);
 		//alert(selectedCount);
 	    var images = $(this).val();
@@ -249,11 +287,10 @@ input[type="file"] {
 	    if (images){
 	        btn_delete_image.show();
 	    }
+	    //선택된 사진이 없을 때는 버튼 숨기기
 	   	if(selectedCount == 0){
 	   		btn_delete_image.hide();
 	   	}
-	        
-	    
 	});
 	//모달 창 내 업로드 버튼 누르면, 히든 인풋 트리거 	
 	$("#btn-image-upload").click(function () {

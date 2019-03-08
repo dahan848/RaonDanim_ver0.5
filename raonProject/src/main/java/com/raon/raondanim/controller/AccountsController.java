@@ -116,6 +116,19 @@ public class AccountsController {
 		return entity;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/deletePic")
+	public String deleteGalleryPic(@RequestParam String data) {
+		//String [] data = request.getParameterValues("data[]");
+		System.out.println(data);
+		
+		if(data == null) {
+			System.out.println("널이다!");
+			return "0";
+		}
+		return "1";
+	}
+	
 	//프로필 수정 화면 1
 	@RequestMapping(value = "/update1Form")
 	public String update1Form() {
