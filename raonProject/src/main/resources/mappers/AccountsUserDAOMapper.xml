@@ -107,4 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				sysdate
 				)
 	</insert>
+	<delete id="deleteGalleryPic" parameterType="string">
+		delete 
+	</delete>
 </mapper>

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +32,15 @@ public class AccountsService {
 	@Autowired
 	private AccountsUserDAO dao;
 	private User user;
+	
+	//갤러리 사진 삭제 ()
+	public boolean deleteGalleryPic(String param) {
+		StringTokenizer tokens = new StringTokenizer(param, ",");
+		while(tokens.hasMoreElements()) {
+			
+		}
+		return false;
+	}
 	
 	//갤러리 정보를 반환하는 ()
 	public List<Map<String, Object>> getGallery(String usernum){

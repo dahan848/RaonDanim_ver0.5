@@ -20,5 +20,6 @@ public interface AccountsUserDAO {
 	public List<Map<String, Object>> getHomeUserList (); //메인(홈) 화면 하단에 출력 될 유저리스트 (유저넘, 프로필픽, 유저 이름(lnm, fnm))
 	public int setProfilePic(Map<String, Object> param); //프로필 사진 등록하는 ()
 	public int setGalleryPic(Map<String, Object> param); //갤러리 사진 등록하는 ()
+	public int deleteGalleryPic(String picnum);
 	
 }
