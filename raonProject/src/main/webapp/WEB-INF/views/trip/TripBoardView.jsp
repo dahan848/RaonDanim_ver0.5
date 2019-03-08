@@ -134,17 +134,7 @@ function createReplyTable() {
 	
 			for(var i in list){
 
-//  				var row = $(" <div class='row' id='row"+i+"' style='border:1px solid blue;'>");
-//  				var colName = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  				var colContent = $("<div class='col-lg-8' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  				var colDate = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  				var colBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' data-toggle='collapse' data-target='#reRow"+i+"' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
-//  				colName.text(list[i].USER_LNM+list[i].USER_FNM).appendTo(row);
-//  				colContent.text(list[i].TRIP_REPLY_CONTENT).append("<br>").append(colBtn).appendTo(row);
-//  				colDate.text(list[i].TRIP_REPLY_WRITEDATE).appendTo(row);
-//  				row.appendTo(replyTable);
- 				
- 				var tr = $("<tr id='row"+i+"' style=''>");
+ 				var tr = $("<tr id='row"+i+"'>");
  				var reBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
  				$("<th>").html("<p>"+list[i].USER_LNM+list[i].USER_FNM+"</p>").appendTo(tr);
  				$("<th>").html(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
@@ -163,20 +153,7 @@ function createReplyTable() {
 function togglerereply(i) {
 
 
-// div 로 추가하는 부분 - css맞추기 힘들어서 아웃	
-//  	var reRow = $("<div class='row collapse' id='reRow"+i+"' style=' width:80%; margin-left:20px;'>");
-//  	var reName = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  	var reContent = $("<div class='col-lg-8' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  	var reDate = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  	var row = $("#row"+i);
-//  	reName.html("&nbsp;<small><b>ㄴ</b></small>").appendTo(reRow);
-//  	reContent.html("<input type='text' style='margin-top: 5px;' class='form-control' id='reReContent"+i+"' name=''>").appendTo(reRow);
-//  	reDate.html("<a style='margin-top: 5px;'>입력</a>").appendTo(reRow);
-//  	reRow.appendTo(row);
-	
-
-
- 	var reRowTr = $("<tr class='collapse in' id='reRow"+i+"'>");
+ 	var reRowTr = $("<tr id='reRow"+i+"'>");
  	var tr = $("#row"+i);
  	
 	var str = "<form id='rereForm'>"
@@ -314,6 +291,7 @@ window.onload = function() {
                   icon:"success",
                });
                createReplyTable();
+               $("#replyContent").val("");
             }else{
                swal({
                   icon:"warning",
@@ -467,12 +445,12 @@ th{
 <script
    src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">   
 </script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-   crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" -->
+<!--    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" -->
+<!--    crossorigin="anonymous"></script> -->
  
  
- <!--  -->  
+
    
    <div class="container-fluid" id="con1">
       <div class="row" id="mainRow">
@@ -628,10 +606,14 @@ th{
 <!--            </div>  -->
          
 <!--             </div> -->
-         <table class="table" id="replyTable">
-
-  
-         </table>
+  <div class="table-responsive">   
+  	 <table class="table" id="replyTable"></table>
+  </div>
+        
+        
+ 
+         
+         
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
