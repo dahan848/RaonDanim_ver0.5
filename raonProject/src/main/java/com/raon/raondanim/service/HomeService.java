@@ -33,9 +33,13 @@ public class HomeService {
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		
 		//반복문을 통한 12개의 회원 데이터 이전 list > result
-		for(int i=0; i < 12; i++) {
-			result.add(i, list.get(i)); 
+		if(list.size()!=0) {
+			for(int i=0; i < 12; i++) {
+				result.add(i, list.get(i)); 
+			}
 		}
+		
+		
 		//System.out.println(result + "리스트 길이 : " + result.size());
 		
 		return result;

@@ -7,14 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-<script type="text/javascript"
-   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc&libraries=places"></script>
-<script
-   src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">   
-</script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-   crossorigin="anonymous"></script>
+
 <script type="text/javascript">
 var locations = ${cityInfo};
 
@@ -455,8 +448,18 @@ th{
    <jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
    <jsp:include page="/WEB-INF/views/trip/trip-navbar.jsp"></jsp:include>
    <!-- 인클루드 심플 헤더 END -->
-   
-   
+   <!--  -->
+ <script type="text/javascript"
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc&libraries=places"></script>
+<script
+   src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">   
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+   crossorigin="anonymous"></script>
+ 
+ 
+ <!--  -->  
    
    <div class="container-fluid" id="con1">
       <div class="row" id="mainRow">
