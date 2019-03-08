@@ -121,80 +121,93 @@ function moveToMakerLocation(i) {
 
 
 function createReplyTable() {
-   var boardKey = "${boardInfo.TRIP_BOARD_KEY}";
-   var replyTable = $("#replyTable");
-   replyTable.html("");
-   
-   $.ajax({
-      url:"${contextPath}/tripReply/replyList",
-      type:"get",
-      data:{"boardKey":boardKey},
-      dataType:"json",
-      success:function(list){
-   
-         for(var i in list){
+	var boardKey = "${boardInfo.TRIP_BOARD_KEY}";
+	var replyTable = $("#replyTable");
+	replyTable.html("");
+	
+	$.ajax({
+		url:"${contextPath}/tripReply/replyList",
+		type:"get",
+		data:{"boardKey":boardKey},
+		dataType:"json",
+		success:function(list){
+	
+			for(var i in list){
 
-//              var row = $(" <div class='row' id='row"+i+"' style='border:1px solid blue;'>");
-//              var colName = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//              var colContent = $("<div class='col-lg-8' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//              var colDate = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//              var colBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' data-toggle='collapse' data-target='#reRow"+i+"' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
-//              colName.text(list[i].USER_LNM+list[i].USER_FNM).appendTo(row);
-//              colContent.text(list[i].TRIP_REPLY_CONTENT).append("<br>").append(colBtn).appendTo(row);
-//              colDate.text(list[i].TRIP_REPLY_WRITEDATE).appendTo(row);
-//              row.appendTo(replyTable);
-             
-             var tr = $("<tr id='row"+i+"' style='z-index:1;'>");
-             var reBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
-             $("<th>").html("<p>"+list[i].USER_LNM+list[i].USER_FNM+"</p>").appendTo(tr);
-             $("<th>").html(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
-             $("<th>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").appendTo(tr);
-             tr.appendTo(replyTable);
-         
-
-         }
-         
-      }
-      
-   });
-   
+//  				var row = $(" <div class='row' id='row"+i+"' style='border:1px solid blue;'>");
+//  				var colName = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  				var colContent = $("<div class='col-lg-8' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  				var colDate = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  				var colBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' data-toggle='collapse' data-target='#reRow"+i+"' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
+//  				colName.text(list[i].USER_LNM+list[i].USER_FNM).appendTo(row);
+//  				colContent.text(list[i].TRIP_REPLY_CONTENT).append("<br>").append(colBtn).appendTo(row);
+//  				colDate.text(list[i].TRIP_REPLY_WRITEDATE).appendTo(row);
+//  				row.appendTo(replyTable);
+ 				
+ 				var tr = $("<tr id='row"+i+"' style=''>");
+ 				var reBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
+ 				$("<th>").html("<p>"+list[i].USER_LNM+list[i].USER_FNM+"</p>").appendTo(tr);
+ 				$("<th>").html(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
+ 				$("<th>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").appendTo(tr);
+ 				tr.appendTo(replyTable);
+			
+				
+			}
+			
+		}
+		
+	});
+	
 }
 
 function togglerereply(i) {
 
 
-// div 로 추가하는 부분 - css맞추기 힘들어서 아웃   
-//     var reRow = $("<div class='row collapse' id='reRow"+i+"' style=' width:80%; margin-left:20px;'>");
-//     var reName = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//     var reContent = $("<div class='col-lg-8' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//     var reDate = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//     var row = $("#row"+i);
-//     reName.html("&nbsp;<small><b>ㄴ</b></small>").appendTo(reRow);
-//     reContent.html("<input type='text' style='margin-top: 5px;' class='form-control' id='reReContent"+i+"' name=''>").appendTo(reRow);
-//     reDate.html("<a style='margin-top: 5px;'>입력</a>").appendTo(reRow);
-//     reRow.appendTo(row);
-   
+// div 로 추가하는 부분 - css맞추기 힘들어서 아웃	
+//  	var reRow = $("<div class='row collapse' id='reRow"+i+"' style=' width:80%; margin-left:20px;'>");
+//  	var reName = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  	var reContent = $("<div class='col-lg-8' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  	var reDate = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  	var row = $("#row"+i);
+//  	reName.html("&nbsp;<small><b>ㄴ</b></small>").appendTo(reRow);
+//  	reContent.html("<input type='text' style='margin-top: 5px;' class='form-control' id='reReContent"+i+"' name=''>").appendTo(reRow);
+//  	reDate.html("<a style='margin-top: 5px;'>입력</a>").appendTo(reRow);
+//  	reRow.appendTo(row);
+	
 
 
-    var reRowTr = $("<tr class='collapse in' id='reRow"+i+"'>");
-    var tr = $("#row"+i);
-    $("<td>").html("<img src='${contextPath}/img/trip_arrowImg.jpg'>").appendTo(reRowTr);
-    $("<td>").html("<input type='text' class='form-control' name='1' id='1' style='border: 1px solid purple;'>").appendTo(reRowTr);
-    $("<td>").html("<input type='button' class='btn btn-info' value='작성' id='12' name=''>").appendTo(reRowTr);
-    tr.after(reRowTr);
-   
-//콜렙스가 아니라 tr을 추가하는 방식으로 진행해보기   - 요소  추가는 되지만 눈에 안보임 - 폐기
-   
-//     var reRowTr = ("<tr id='reRow"+i+"' style='z-index:99; border:5px solid blue; '>");
-//     var tr = $("#row"+i);
-//     $("<td>").html("<img src='${contextPath}/img/trip_arrowImg.jpg'>").appendTo(reRowTr);
-//     $("<td>").html("<input type='text' class='form-control' name='1' id='1' style='border: 1px solid purple;'>").appendTo(reRowTr);
-//     $("<td>").html("<input type='button' class='btn btn-info' value='작성' id='12' name=''>").appendTo(reRowTr);
-//     tr.after(reRowTr);
-   
-   
-   
-   
+ 	var reRowTr = $("<tr class='collapse in' id='reRow"+i+"'>");
+ 	var tr = $("#row"+i);
+ 	
+	var str = "<form id='rereForm'>"
+		+ " <input type='text' class='form-control' name='trip_Reply_Content' id='rereContent' style='border: 1px solid #8eb7f9;'>"
+		+ " <input type='hidden' id='rereBoardKey' name='trip_Board_Key' value=''>" + 
+		"   <input type='hidden' id='rereUserNum' name='user_Num' value=''>" + 
+		"   <input type='hidden' id='rereGid' name='trip_Reply_Gid' value=''>" + 
+		"   <input type='hidden' id='rereDepth' name='trip_Reply_Depth' value=''>" + 
+		"   <input type='hidden' id='rereSorts' name='trip_Reply_Sorts' value=''>"
+		+ "</form>";
+ 	
+ 	
+ 	$("<td>").html("<img src='${contextPath}/img/trip_arrowimg2.jpg' style='height:30px; width:30px;'>").appendTo(reRowTr);
+ 	$("<td>").append(str).appendTo(reRowTr);
+ 	$("<td>").html("<input type='button' class='btn btn-info' value='작성' id='rereBtn"+i+"' name=''>").appendTo(reRowTr);
+ 	tr.after(reRowTr);
+	
+ 	
+ 	
+//콜렙스가 아니라 tr을 추가하는 방식으로 진행해보기	- 요소  추가는 되지만 눈에 안보임 - 폐기
+	
+//  	var reRowTr = ("<tr id='reRow"+i+"' style='z-index:99; border:5px solid blue; '>");
+//  	var tr = $("#row"+i);
+//  	$("<td>").html("<img src='${contextPath}/img/trip_arrowImg.jpg'>").appendTo(reRowTr);
+//  	$("<td>").html("<input type='text' class='form-control' name='1' id='1' style='border: 1px solid purple;'>").appendTo(reRowTr);
+//  	$("<td>").html("<input type='button' class='btn btn-info' value='작성' id='12' name=''>").appendTo(reRowTr);
+//  	tr.after(reRowTr);
+	
+	
+	
+	
 }
 
 
