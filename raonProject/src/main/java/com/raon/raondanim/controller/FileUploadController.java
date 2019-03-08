@@ -47,8 +47,8 @@ public class FileUploadController {
 	@ResponseBody
 	@RequestMapping(value = "/picInfo")
 	public void data(@RequestParam Map<String, Object> param) {
-		System.out.println("파일 업로드 정보 전달 받음");
-		System.out.println(param);
+		//System.out.println("파일 업로드 정보 전달 받음");
+		//System.out.println(param);
 		setParam(param);
 	}
 	
@@ -57,7 +57,7 @@ public class FileUploadController {
 	@ResponseBody
     @RequestMapping(value = "/profilePicUpload")
     public Boolean fileUp(MultipartHttpServletRequest multi) {
-    	System.out.println("profilePicUpload 요청 받음");
+    	//System.out.println("profilePicUpload 요청 받음");
     	//System.out.println(multi);
     	
     	//ajax로 반환 할 boolean 변수
@@ -127,8 +127,8 @@ public class FileUploadController {
 	@ResponseBody
     @RequestMapping(value = "/galleryPicUpload")
     public Boolean galleryfileUp(MultipartHttpServletRequest multi) {
-		System.out.println("galleryPicUpload 요청 받음");
-		System.out.println(multi);
+		//System.out.println("galleryPicUpload 요청 받음");
+		//System.out.println(multi);
 		
         // 저장 경로 설정
         String root = multi.getSession().getServletContext().getRealPath("/");
@@ -199,7 +199,7 @@ public class FileUploadController {
             //System.out.println(count+"번 째 생성 된 파일 : " + picData);
             count ++;
         }
-		System.out.println("넘겨줄 데이터 확인 : " + pic);
+		//System.out.println("넘겨줄 데이터 확인 : " + pic);
 		return service.setGalleryPic(pic);
 	}
 	

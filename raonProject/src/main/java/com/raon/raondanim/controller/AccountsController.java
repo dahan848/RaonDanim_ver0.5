@@ -118,15 +118,14 @@ public class AccountsController {
 	
 	@ResponseBody
 	@RequestMapping(value="/deletePic")
-	public String deleteGalleryPic(@RequestParam String data) {
+	public boolean deleteGalleryPic(@RequestParam String data) {
 		//String [] data = request.getParameterValues("data[]");
-		System.out.println(data);
-		
+		//System.out.println(data);
 		if(data == null) {
 			System.out.println("널이다!");
-			return "0";
+			return false;
 		}
-		return "1";
+		return service.deleteGalleryPic(data);
 	}
 	
 	//프로필 수정 화면 1

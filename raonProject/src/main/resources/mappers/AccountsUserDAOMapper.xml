@@ -108,6 +108,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 	</insert>
 	<delete id="deleteGalleryPic" parameterType="string">
-		delete 
+		DELETE
+		  FROM gallery_tb
+		 WHERE GALLERY_FILE_NUM = #{num} 
 	</delete>
 </mapper>

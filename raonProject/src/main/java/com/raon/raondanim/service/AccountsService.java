@@ -35,11 +35,22 @@ public class AccountsService {
 	
 	//갤러리 사진 삭제 ()
 	public boolean deleteGalleryPic(String param) {
+		System.out.println(param);
 		StringTokenizer tokens = new StringTokenizer(param, ",");
-		while(tokens.hasMoreElements()) {
-			
+		boolean result = false;
+		try {
+			while(tokens.hasMoreElements()) {
+				//System.out.println(tokens.nextToken());
+				dao.deleteGalleryPic(tokens.nextToken());
+				//System.out.println("예외발생");
+			}
+			//System.out.println("삭제성공");
+			result = true;
+		} catch (Exception e) {
+			//System.out.println("삭제실패");
+			e.getMessage();
 		}
-		return false;
+		return result;
 	}
 	
 	//갤러리 정보를 반환하는 ()
