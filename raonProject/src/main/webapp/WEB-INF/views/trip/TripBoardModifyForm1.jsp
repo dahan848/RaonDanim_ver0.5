@@ -84,6 +84,7 @@ $(function() {
 			<input type="hidden" value="${boardInfo.TRIP_BOARD_KEY}" name="trip_Board_Key">
 			<input type="hidden" value="${boardInfo.USER_NUM}" name="user_Num">
 			<input type="hidden" value="스타일 스펠링 확인용" style='margin-top: 10px;'>
+			
 			<table class="table" id="ta">
 				
 				<tr>

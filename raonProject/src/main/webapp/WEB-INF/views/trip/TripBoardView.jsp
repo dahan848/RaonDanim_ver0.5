@@ -141,17 +141,24 @@ function createReplyTable() {
 	
 			for(var i in list){
 
-				var row = $(" <div class='row' id='row"+i+"' style='border=1px solid red;'>");
-				var colName = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-				var colContent = $("<div class='col-lg-8' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-				var colDate = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-				var colBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' data-toggle='collapse' data-target='#reRow"+i+"' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
-				colName.text(list[i].USER_LNM+list[i].USER_FNM).appendTo(row);
-				colContent.text(list[i].TRIP_REPLY_CONTENT).append("<br>").append(colBtn).appendTo(row);
-				colDate.text(list[i].TRIP_REPLY_WRITEDATE).appendTo(row);
-				row.appendTo(replyTable);
-
+//  				var row = $(" <div class='row' id='row"+i+"' style='border:1px solid blue;'>");
+//  				var colName = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  				var colContent = $("<div class='col-lg-8' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  				var colDate = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  				var colBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' data-toggle='collapse' data-target='#reRow"+i+"' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
+//  				colName.text(list[i].USER_LNM+list[i].USER_FNM).appendTo(row);
+//  				colContent.text(list[i].TRIP_REPLY_CONTENT).append("<br>").append(colBtn).appendTo(row);
+//  				colDate.text(list[i].TRIP_REPLY_WRITEDATE).appendTo(row);
+//  				row.appendTo(replyTable);
+ 				
+ 				var tr = $("<tr id='row"+i+"' style='z-index:1;'>");
+ 				var reBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
+ 				$("<th>").html("<p>"+list[i].USER_LNM+list[i].USER_FNM+"</p>").appendTo(tr);
+ 				$("<th>").html(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
+ 				$("<th>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").appendTo(tr);
+ 				tr.appendTo(replyTable);
 			
+
 			}
 			
 		}
@@ -164,15 +171,32 @@ function togglerereply(i) {
 
 
 	
-	var reRow = $("<div class='row collapse' id='reRow"+i+"' style='border=1px solid red;'>");
-	var reName = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-	var reContent = $("<div class='col-lg-8' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-	var reDate = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-	var row = $("#row"+i);
-	reName.html("&nbsp;<small><b>ㄴ</b></small>").appendTo(reRow);
-	reContent.html("<input type='text' style='margin-top: 5px;' class='form-control' id='reReContent"+i+"' name=''>").appendTo(reRow);
-	reDate.html("<a style='margin-top: 5px;'>입력</a>").appendTo(reRow);
-	reRow.appendTo(row);
+//  	var reRow = $("<div class='row collapse' id='reRow"+i+"' style=' width:80%; margin-left:20px;'>");
+//  	var reName = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  	var reContent = $("<div class='col-lg-8' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  	var reDate = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
+//  	var row = $("#row"+i);
+//  	reName.html("&nbsp;<small><b>ㄴ</b></small>").appendTo(reRow);
+//  	reContent.html("<input type='text' style='margin-top: 5px;' class='form-control' id='reReContent"+i+"' name=''>").appendTo(reRow);
+//  	reDate.html("<a style='margin-top: 5px;'>입력</a>").appendTo(reRow);
+//  	reRow.appendTo(row);
+	
+//테이블로 콜렙스 시도 - appendTO 쪽에 예외 떠있음 왜?
+ 	var reRowTr = $("<tr class='collapse in' id='reRow"+i+"'>");
+ 	var tr = $("#row"+i);
+ 	$("<td>").html("<img src='${contextPath}/img/trip_arrowImg.jpg'>").appendTo(reRowTr);
+ 	$("<td>").html("<input type='text' class='form-control' name='1' id='1' style='border: 1px solid purple;'>").appendTo(reRowTr);
+ 	$("<td>").html("<input type='button' class='btn btn-info' value='작성' id='12' name=''>").appendTo(reRowTr);
+ 	tr.after(reRowTr);
+	
+//콜렙스가 아니라 tr을 추가하는 방식으로 진행해보기	- 요소  추가는 되지만 눈에 안보임
+	
+//  	var reRowTr = ("<tr id='reRow"+i+"' style='z-index:99; border:5px solid blue; '>");
+//  	var tr = $("#row"+i);
+//  	$("<td>").html("<img src='${contextPath}/img/trip_arrowImg.jpg'>").appendTo(reRowTr);
+//  	$("<td>").html("<input type='text' class='form-control' name='1' id='1' style='border: 1px solid purple;'>").appendTo(reRowTr);
+//  	$("<td>").html("<input type='button' class='btn btn-info' value='작성' id='12' name=''>").appendTo(reRowTr);
+//  	tr.after(reRowTr);
 	
 	
 	
@@ -574,8 +598,7 @@ th{
          	<!--댓글리스트 출력 부분  -->
          	<br>
          	<br>
-         	<div id="replyTable" class="container-fluid">
-         		
+<!--          	<div id="replyTable" class="container-fluid"> 		 -->
 <!--          	<div class="row">  -->
 <!--          		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;">이름</div>  -->
 <!--           		<div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;">내용<a data-toggle="collapse" data-target="#rereply">시붕</a></div>  -->
@@ -586,12 +609,12 @@ th{
 <!--           		<div class="col-lg-8" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;">내용</div>  -->
 <!--           		<div class="col-lg-2" style="border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;">입력</div>  -->
 <!--         	</div>  -->
-        	
-         	
-         		
-         		
-         	</div>
-         
+   		
+<!--          	</div> -->
+         <table class="table" id="replyTable">
+
+  
+         </table>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
