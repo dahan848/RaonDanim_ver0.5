@@ -16,7 +16,7 @@
 	         <li><a href="${contextPath}/accounts/update1Form">나의 정보</a></li>
         </sec:authorize>
 	         <li><a href="${contextPath}/search/test">회원 검색</a></li>
-	         <li><a href="${contextPath}/trip/test">여행</a></li>
+	         <li><a href="${contextPath}/trip/list">여행</a></li>
 	         <li><a href="${contextPath}/motel/test">숙박</a></li>
 	         <li><a href="${contextPath}/review/test">후기</a></li>
         </ul>

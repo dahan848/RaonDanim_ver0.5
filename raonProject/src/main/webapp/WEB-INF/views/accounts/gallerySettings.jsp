@@ -91,10 +91,18 @@ input[type="file"] {
 								<div class="row">
 									<div class="col-sm-4">
 										<div class="profile-image">
-											<div class="profile-avatar"
-												style="background-image: url(${contextPath}/image?fileName=${profile_pic})">
-												<div id="crop-preview"></div>
-											</div>
+					              		<c:choose>
+		              						<c:when test="${profile_pic eq 'n'}">
+		              							<div class="profile-avatar"	style="background-image: url(#)">
+		              								<div id="crop-preview"></div>
+												</div>
+		              						</c:when>
+		              							<c:otherwise>
+		              								<div class="profile-avatar"	style="background-image: url(${contextPath}/image?fileName=${profile_pic})">
+		              									<div id="crop-preview"></div>
+													</div>
+		              							</c:otherwise>
+	              							</c:choose>
 										</div>
 									</div>
 									<div class="col-sm-8">

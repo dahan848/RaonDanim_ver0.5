@@ -6,6 +6,7 @@ import java.util.Map;
 import com.raon.raondanim.model.User;
 
 public interface AccountsUserDAO {
+
 	public int setDnmmyData (User user);
 	public int joinUser (User user); //회원가입
 	public User selectByUserId (String UserId); //아이디로 유저 선택
@@ -22,4 +23,5 @@ public interface AccountsUserDAO {
 	public int setGalleryPic(Map<String, Object> param); //갤러리 사진 등록하는 ()
 	public int deleteGalleryPic(String picnum);
 	
+
 }
