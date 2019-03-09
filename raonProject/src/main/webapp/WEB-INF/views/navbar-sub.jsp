@@ -18,7 +18,7 @@
 	         <li><a href="${contextPath}/search/test">회원 검색</a></li>
 	         <li><a href="${contextPath}/trip/list">여행</a></li>
 	         <li><a href="${contextPath}/motel/search">숙박</a></li>
-	         <li><a href="${contextPath}/review/test">후기</a></li>
+	         <li><a href="${contextPath}/review/reviewMain">후기</a></li>
         </ul>
     </div>
 </div>

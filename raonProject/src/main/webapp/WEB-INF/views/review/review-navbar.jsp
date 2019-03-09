@@ -10,9 +10,8 @@
 		class="navbar navbar-inverse navbar-sub navbar-sub-light hidden-xs">
 		<div class="container" style="margin-left: 36%">
 			<ul class="nav navbar-nav navbar-core">
-				<li><a href="#">임시목록</a></li>
-				<li><a href="#">임시목록</a></li>
-				<li><a href="#">임시목록</a></li>
+				<li><a href="${contextPath}/review/reviewMain">여행 후기</a></li>
+				<li><a href="#">동행 후기</a></li>
 			</ul>
 		</div>
 	</div>
