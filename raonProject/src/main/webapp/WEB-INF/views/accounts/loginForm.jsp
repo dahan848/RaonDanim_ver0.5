@@ -16,7 +16,7 @@
 	<section id="section-authentication">
         <div class="container">
             <div class="form-block">
-                <img src="${contextPath}/img/logo-raon.png" alt="">
+                <img src="${contextPath}/img/home_logo-raon.png" alt="">
                 <form action="login" method="post"> <!-- 로그인 폼  -->
                 	<!-- 시큐리티 사용하기 위한 파라미터 (토큰) -->
                 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
@@ -42,7 +42,7 @@
                     <hr>
                     <div class="form-link">
                         <a class="text-gray" href="#">비밀번호 찾기</a>
-                        <a class="text-gray" href="join.jsp">회원가입</a>
+                        <a class="text-gray" href="${contextPath}/accounts/signupForm">회원가입</a>
                     </div>
                 </form>
             </div>

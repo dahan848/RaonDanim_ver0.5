@@ -26,6 +26,11 @@
 	<!-- 컨틑롤로 패키지 스캔 -->
 	<context:component-scan base-package="com.raon.raondanim" />
 	
+	<!-- 파일 업로드를 위한 bean 추가 : multipartResolver -->
+	<beans:bean id ="multipartResolver" 
+	class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	</beans:bean>
+	
 	
 	
 </beans:beans>
