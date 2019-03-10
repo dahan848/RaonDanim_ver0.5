@@ -37,8 +37,23 @@ public class TripReplyController {
 		
 		System.out.println("댓글 리스트 : "+replyService.getReplyList(boardKey));
 		
+
 		return replyService.getReplyList(boardKey);
 		
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/writeReReply", method=RequestMethod.POST)
+	public boolean insertReReply(TripReply reply) {
+		System.out.println("대댓글 입력 요청받음");
+		
+		System.out.println("대댓글 : "+reply);
+		
+		return false;
+		
+	}
+	
+	
+	
 	
 }

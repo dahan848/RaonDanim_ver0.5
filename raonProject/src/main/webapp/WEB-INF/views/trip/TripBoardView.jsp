@@ -134,11 +134,17 @@ function createReplyTable() {
 	
 			for(var i in list){
 
- 				var tr = $("<tr id='row"+i+"'>");
+				var parentReply = "   <input type='hidden' id='replyBoardKey"+i+"' name='trip_Board_Key' value='"+list[i].TRIP_BOARD_KEY+"'>" + 
+				"                 <input type='hidden' id='replyUserNum"+i+"' name='user_Num' value='"+list[i].USER_NUM+"'>" + 
+				"                 <input type='hidden' id='replyGid"+i+"' name='trip_Reply_Gid' value='"+list[i].TRIP_REPLY_GID+"'>" + 
+				"                 <input type='hidden' id='replyDepth"+i+"' name='trip_Reply_Depth' value='"+list[i].TRIP_REPLY_DEPTH+"'>" + 
+				"                 <input type='hidden' id='replySorts"+i+"' name='trip_Reply_Sorts' value='"+list[i].TRIP_REPLY_SORTS+"'>";
+
+ 				var tr = $("<tr id='row"+i+"' style='border:1px dotted #7bcbfc;'>");
  				var reBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
  				$("<th>").html("<p>"+list[i].USER_LNM+list[i].USER_FNM+"</p>").appendTo(tr);
  				$("<th>").html(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
- 				$("<th>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").appendTo(tr);
+ 				$("<th>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").append(parentReply).appendTo(tr);
  				tr.appendTo(replyTable);
 			
 				
@@ -153,22 +159,29 @@ function createReplyTable() {
 function togglerereply(i) {
 
 
- 	var reRowTr = $("<tr id='reRow"+i+"'>");
+ 	var reRowTr = $("<tr id='reRow"+i+"' style='border:1px dotted #7bcbfc;'>");
  	var tr = $("#row"+i);
  	
-	var str = "<form id='rereForm'>"
-		+ " <input type='text' class='form-control' name='trip_Reply_Content' id='rereContent' style='border: 1px solid #8eb7f9;'>"
-		+ " <input type='hidden' id='rereBoardKey' name='trip_Board_Key' value=''>" + 
-		"   <input type='hidden' id='rereUserNum' name='user_Num' value=''>" + 
-		"   <input type='hidden' id='rereGid' name='trip_Reply_Gid' value=''>" + 
-		"   <input type='hidden' id='rereDepth' name='trip_Reply_Depth' value=''>" + 
-		"   <input type='hidden' id='rereSorts' name='trip_Reply_Sorts' value=''>"
+ 	var rereBoardKey = $("#replyBoardKey"+i).val();
+ 	var rereGid= $("#replyGid"+i).val();
+ 	var rereDepth= $("#replyDepth"+i).val();
+ 	var rerSorts= $("#replySorts"+i).val();
+ 	
+ 	
+	var str = "<form id='rereForm"+i+"'>"
+		+ " <input type='text' class='form-control' name='trip_Reply_Content' id='rereContent"+i+"' style='border: 1px solid #8eb7f9;'>"
+		+ " <input type='hidden' id='rereBoardKey"+i+"' name='trip_Board_Key' value='"+rereBoardKey+"'>" + 
+		"   <input type='hidden' id='rereUserNum"+i+"' name='user_Num' value='${userNum}'>" + 
+		"   <input type='hidden' id='rereGid"+i+"' name='trip_Reply_Gid' value='"+rereGid+"'>" + 
+		"   <input type='hidden' id='rereDepth"+i+"' name='trip_Reply_Depth' value='"+rereDepth+"'>" + 
+		"   <input type='hidden' id='rereSorts"+i+"' name='trip_Reply_Sorts' value='"+rerSorts+"'>"
+		+"<input type='hidden' name='${_csrf.parameterName}' value='${_csrf.token}'>"
 		+ "</form>";
  	
  	
  	$("<td>").html("<img src='${contextPath}/img/trip_arrowimg2.jpg' style='height:30px; width:30px;'>").appendTo(reRowTr);
  	$("<td>").append(str).appendTo(reRowTr);
- 	$("<td>").html("<input type='button' class='btn btn-info' value='작성' id='rereBtn"+i+"' name=''>").appendTo(reRowTr);
+ 	$("<td>").html("<input type='button' class='btn btn-info' value='작성' onclick='reReplyWrite("+i+")' id='rereBtn"+i+"' name=''>").appendTo(reRowTr);
  	tr.after(reRowTr);
 	
  	
@@ -184,6 +197,35 @@ function togglerereply(i) {
 	
 	
 	
+	
+}
+
+
+function reReplyWrite(i) {
+	var rere = $("#rereForm"+i).serialize();
+	alert(rere);
+	
+	$.ajax({
+		url:"${contextPath}/tripReply/writeReReply",
+		type:"post",
+		data:rere,
+		dataType:"json",
+		success:function(result){
+			
+			if(result){
+				
+				alert("성공");
+			}else{
+				alert("실패");
+			}
+
+			
+			
+		}
+
+		
+		
+	});
 	
 }
 

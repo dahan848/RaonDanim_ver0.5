@@ -9,4 +9,5 @@ public interface TripReplyService {
 
 	public boolean insertBasicReply(TripReply reply);
 	public List<Map<String, Object>> getReplyList(int boardKey);
+	public boolean insertReReply(TripReply reply);
 }
