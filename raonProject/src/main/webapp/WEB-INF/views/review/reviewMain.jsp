@@ -70,7 +70,7 @@
 				<br><br>			
 				
 				<!------------ 회원 프로필 화면 시작 ------------>
-<%-- 				<c:forEach items="${review}" var="review" varStatus="status"> --%>
+				<c:forEach items="${review}" var="review" varStatus="status">
 					<div class="box" id="box">
 						<div id="backimg"></div>
 	  					<div id="userimg"></div>  
@@ -82,7 +82,7 @@
 							<a href="reviewView?num=${review.NUM}" style="text-align: center;">${review.TITLE}</a>
 						</div>
 					</div>		
-<%-- 				</c:forEach> --%>
+				</c:forEach>
 				<!------------ 회원 프로필 화면 끝 ------------>
 			
 				<!------------ 화면 맨 위로 시작 ------------>

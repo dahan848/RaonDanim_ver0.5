@@ -27,15 +27,8 @@
 	<bean
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		id="dataSource">
-<<<<<<< HEAD
 		<property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" name="driverClassName" />
 		<property value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
-=======
-		<property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
-			name="driverClassName" />
-		<property
-			value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
->>>>>>> 3f3e447bf47d94138f211a9ab2798599a25200aa
 		<property value="dnrwls1993" name="username" />
 		<property value="123456789" name="password" />
 	</bean>
@@ -124,6 +117,11 @@
 		<property name="mapperInterface" value="com.raon.raondanim.dao.MotelAvgDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean> -->
-
+	
+	<!-- 후기 DAO -->
+	<bean id="ReviewBoardDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.raon.raondanim.dao.ReviewBoardDAO"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
 
 </beans>
