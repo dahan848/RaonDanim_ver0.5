@@ -9,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.raon.raondanim.service.AccountsService;
+import com.raon.raondanim.service.SearchService;
 
 @Controller
 @RequestMapping("/search")
@@ -20,7 +19,7 @@ public class SearchController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
-	private AccountsService service;
+	private SearchService service;
 	
 	@RequestMapping("/home")
 	public String search(Model model, @RequestParam(value= "page", defaultValue = "1") int page) {
