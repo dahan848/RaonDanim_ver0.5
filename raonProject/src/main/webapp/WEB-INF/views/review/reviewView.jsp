@@ -91,7 +91,7 @@
 				<br>
 				<a>${review.USER_ID}</a>
 				<br><br>
-				<a>여행지 : <b>${review.REV_DESTINATION}</b></a>
+				<span>여행지 : <b>${review.REV_DESTINATION}</b></span>
 				<br><br>
 				<i class="fas fa-home">
 					<br>

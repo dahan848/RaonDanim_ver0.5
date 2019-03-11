@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <% request.setAttribute("contextPath", request.getContextPath()); %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +28,6 @@
 <%-- 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include> --%>
 <%-- 	<jsp:include page="/WEB-INF/views/review/review-navbar.jsp"></jsp:include> --%>
 	<!-- 인클루드 심플 헤더 END -->
-	
 	
 	<form action="write" method="post" id="write">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
@@ -69,7 +69,7 @@
 		</section>
 		</div>
 	</form>
-	
+	<br><br><br>
 	<!-- 인클루드-푸터 -->
 <%-- 	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include> --%>
 	<!-- 인클루드-푸터 END -->

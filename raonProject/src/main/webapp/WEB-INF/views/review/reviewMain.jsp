@@ -8,6 +8,11 @@
 <meta charset="UTF-8">
 <title>라온다님 여행후기 메인</title>
 
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
 <style type="text/css">
 	#upload {
 		float: right;
@@ -21,7 +26,7 @@
 		height: 350px;
 	}
 	#backimg { 
-   		background-image: url("${contextPath}/img/backimg.png");   
+   		background-image: url("${contextPath}/img/search-back.jpg");   
  		background-repeat: no-repeat; 
  		background-position: left; 
  		background-size: cover; 
@@ -32,7 +37,7 @@
  		margin: auto; 
  	} 
  	#userimg { 
-    	background-image: url("${contextPath}/img/img02.jpg");     
+    	background-image: url("${contextPath}/img/user.jpg");     
   		background-repeat: no-repeat;  
   		background-position: bottom;  
  		background-size: cover; 
@@ -75,11 +80,11 @@
 						<div id="backimg"></div>
 	  					<div id="userimg"></div>  
 						<div id="profile">
-							<a style="text-align: center; display: inline-block;">${review.USER_ID}</a>
+							<span style="text-align: center; display: inline-block;">${review.USER_LNM}${review.USER_FNM}</span>
 							<br>
-							<a style="text-align: center; display: inline-block;">여행지 : <b>${review.REV_DESTINATION}</b></a>
+							<span style="text-align: center; display: inline-block; text-decoration: none;">여행지 : <b>${review.REV_DESTINATION}</b></span>
 							<br>
-							<a href="reviewView?num=${review.NUM}" style="text-align: center;">${review.REV_TITLE}</a>
+							<a href="reviewView?num=${review.USER_NUM}" style="text-align: center;">${review.REV_TITLE}</a>
 						</div>
 					</div>		
 				</c:forEach>

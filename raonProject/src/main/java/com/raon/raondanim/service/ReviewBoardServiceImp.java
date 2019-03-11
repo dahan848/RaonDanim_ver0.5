@@ -53,6 +53,8 @@ public class ReviewBoardServiceImp implements ReviewBoardService{
 
 	@Override
 	public Map<String, Object> selectOne(int num) {
+		System.out.println("안녕!");
+		System.out.println("asd : " + dao.selectOne(num));
 		return dao.selectOne(num);
 	}
 
@@ -65,6 +67,11 @@ public class ReviewBoardServiceImp implements ReviewBoardService{
 	public Map<String, Object> plusReadCount(int num) {
 		dao.plusReadCount(num);
 		return dao.selectOne(num);
+	}
+
+	@Override
+	public List<Map<String, Object>> getReviewBoard(int USER_NUM) {
+		return dao.selectByUserNum(USER_NUM);
 	}
 
 //	@Override

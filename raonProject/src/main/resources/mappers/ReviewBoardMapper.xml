@@ -7,9 +7,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	
-	<select id="selectAll">
-		SELECT * 
-		  FROM REVIEW_BOARD_TB
+	<select id="selectAll" resultType="map">
+		SELECT 	r.REVIEW_NUM,
+				r.USER_NUM,
+				r.REV_TITLE,
+				r.REV_DESTINATION,
+				r.RE_CONTENT,
+				r.RE_ST,
+				r.RE_COUNT,
+				r.RE_REG_DATE,
+				u.USER_NUM,
+				u.USER_ID,
+				u.USER_FNM,
+				u.USER_LNM,
+				u.USER_NATIONALITY,
+				u.USER_NATION,
+				u.USER_CITY,
+				u.USER_GENDER,
+				u.USER_PROFILE_PIC,
+				u.USER_WITH_AVG,
+				u.USER_MOTEL_AVG,
+				u.USER_ID,
+				u.USER_PW
+		  FROM 	REVIEW_BOARD_TB r left outer join USER_TB u
+		    ON  r.USER_NUM = u.USER_NUM
 	</select>
 	
 	
@@ -20,7 +41,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</selectKey>
 		INSERT
 		  INTO REVIEW_BOARD_TB
-			  (REVIEW_NUM, USER_NUM, REV_TITLE, REV_DESTINATION, RE_CONTENT, RE_ST, RE_COUNT, RE_REG_DATE)
+			  (	REVIEW_NUM, 
+			  	USER_NUM, 
+			  	REV_TITLE, 
+			  	REV_DESTINATION, 
+			  	RE_CONTENT, 
+			  	RE_ST, 
+			  	RE_COUNT, 
+			  	RE_REG_DATE)
 		VALUES (#{NUM}, #{USER_NUM}, #{REV_TITLE}, #{REV_DESTINATION}, #{RE_CONTENT}, #{RE_ST}, #{RE_COUNT}, SYSDATE)
 	</insert>
 	
@@ -68,7 +96,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_PW
 		  FROM 	REVIEW_BOARD_TB r left outer join USER_TB u
 		    ON  r.USER_NUM = u.USER_NUM
-		 WHERE  REVIEW_NUM = #{NUM}
+		 WHERE  r.USER_NUM = #{NUM}
 	</select>
 	<resultMap type="HashMap" id="reviewMap">
 		<result property="RE_CONTENT" column="RE_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
@@ -81,6 +109,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   SET 		RE_COUNT = RE_COUNT + 1
 		 WHERE 		REVIEW_NUM = #{NUM}
 	</update>
+	
+	
+	
+	<select id="selectByUserNum" parameterType="int" resultType="map">
+		SELECT *
+		  FROM REVIEW_BOARD_TB
+		 WHERE USER_NUM = #{USER_NUM}
+	</select>
 	
 	
 	

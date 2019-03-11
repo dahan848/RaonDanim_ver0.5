@@ -3,16 +3,21 @@ package com.raon.raondanim.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.ReviewBoardService;
 
 @Controller
@@ -26,27 +31,28 @@ public class ReviewController {
 	//여행 후기 메인화면  
 	@RequestMapping(value = "/reviewMain", method = RequestMethod.GET)
 	public String reviewMain(
-			Model model,
-			int num){
-		System.out.println("여행후기 메인입니다");
-		model.addAttribute("review", reService.selectOne(num));
+			Model model){
+		System.out.println("여행후기 메인");
+		model.addAttribute("review", reService.selectAll());
 		logger.info("");
 		return "review/reviewMain";
 	}
 	
 	//여행후기 작성 FORM
 	@RequestMapping("/writeForm")
-	public String writeForm() {
+	public String writeForm(Model model) {
 		System.out.println("여행후기작성");
 		return "review/reviewWrite";
 	}
 	
 	//여행후기 작성
 	@RequestMapping("/write")
-	public String writeReview(
+	public String writeReview(Model model,
 			@RequestParam(value="REV_TITLE") String REV_TITLE,
 			@RequestParam(value="REV_DESTINATION") String REV_DESTINATION,
 			@RequestParam(value="RE_CONTENT") String RE_CONTENT,
+//			@PathVariable("USER_NUM") int USER_NUM,
+//			@RequestParam(value="USER_NUM") int USER_NUM,
 			RedirectAttributes ra
 			) {
 		System.out.println("여행 후기 작성 중...");
@@ -58,7 +64,7 @@ public class ReviewController {
 		
 		if(reService.insertReview(review)) {
 			System.out.println("작성 성공");
-			ra.addAttribute("REVIEW_NUM", review.get("NUM"));
+			ra.addAttribute("num", review.get("NUM"));
 		} else {
 			System.out.println("작성 실패");
 		}
@@ -69,11 +75,20 @@ public class ReviewController {
 	@RequestMapping("/reviewView")
 		public String reviewView(
 				Model model,
-				int num
+//				@RequestParam(value="num") int num,
+//				int num,
+				HttpServletRequest request,
+				Authentication authentication
 				) {
 			System.out.println("여행 후기 상세 보기");
-			Map<String, Object> rev = reService.selectOne(num);
+			String num = request.getParameter("num");
+			int intNum = Integer.parseInt(num);
+			System.out.println(num);
+			customUserDetails user = (customUserDetails) authentication.getPrincipal();
+			Map<String, Object> rev = reService.selectOne(intNum);
+			
 			System.out.println(rev);
+			
 			model.addAttribute("review", rev);
 			return "review/reviewView"; 
 		}
