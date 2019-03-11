@@ -259,9 +259,13 @@
   }
 }
 #section-members .img-circle {
+  /* 원본
   width: 100%;
   margin-bottom: 20px;
   max-width: 65px;
+  */
+  	width: 65px; 
+	height: 65px;
 }
 #section-members .col-sm-6 {
   position: relative;
@@ -498,8 +502,8 @@ MOBILE
   width: 100%;
 }
 #modal-profile-image .crop-container img {
-  width: 100%;
-  max-width: 100%;
+  /*width: 598px;*/
+  /*max-width: 100%;*/
 }
 #modal-profile-image .loading-mask {
   position: absolute;
@@ -570,7 +574,8 @@ MOBILE
   border-radius: 0;
 }
 #section-profile-update ul.thumbnails.image_picker_selector li .thumbnail img {
-  width: 100%;
+  width: 129.75px;
+  height: 129.75px;
 }
 #section-profile-update ul.thumbnails.image_picker_selector li .thumbnail.selected {
   border-color: #F7606C;

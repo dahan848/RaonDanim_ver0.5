@@ -13,13 +13,37 @@
 	<jsp:include page="/WEB-INF/views/motel/motel-navbar.jsp"></jsp:include>
 	<!-- 인클루드 심플 헤더 END -->
 
-
+	
 
 	<!-- 본문 -->
 	<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
-			<a>임시화면</a> <!-- 이 부분에 자신의 페이지 넣기 -->
+			<!-- 팟럭트립 박스 테스트 -->
+			<div class="row">
+                  <div class="col-md-4 col-sm-6">
+                     <div class="item-cover item-cover-sm">
+                        <div class="cover-background" style="background-image: url(${contextPath}/img/default/profile_cover_1.jpg)"></div>
+                        <div class="cover-profile-image">
+                           <a href="#" class="img-circle img-avatar">
+                              <img src="${contextPath}/img/profile/profile_1.jpg" class="img-profile">
+                           </a>
+                        </div>
+                        <h4 class="profile-name">Serebee</h4>
+                        <p class="profile-city">거주도시:Seoul,Korea</p>
+                        <hr>
+                        <div class="cover-tags cover-tags-properties">
+                           <span class="label label-default">축구</span>
+                           <span class="label label-default">농구</span>
+                           <span class="label label-default">자전거</span>
+                        </div>
+                        <div class="cover-tags cover-tags-certification">
+                           <span class="label label-pink label-mint label-orange label-gray label-skyblue label-violet">Seoul</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- 팟럭트립 박스 테스트 END -->
 			</div>
 		</section>
 	</div>

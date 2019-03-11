@@ -4,12 +4,24 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	<!-- 서비스 패키지 스캔 -->
-	<context:component-scan base-package="com.raon.raondanim.service"/>
+	<context:component-scan
+		base-package="com.raon.raondanim.service" />
+	<!-- trip파트 트랜잭션 필요해서 aop tx namespace추가 -->
+	<tx:annotation-driven
+		transaction-manager="transactionManager" />
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 
 	<!-- 오라클 접속 -->
 	<bean
@@ -17,16 +29,18 @@
 		id="dataSource">
 		<property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" name="driverClassName" />
 		<property value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
-		<property value="manzza" name="username" />
-		<property value="1099" name="password" />
+		<property value="dnrwls1993" name="username" />
+		<property value="123456789" name="password" />
 	</bean>
 
 	<!-- 마이바티스 연동 -->
 	<bean id="sqlSessionFactory"
 		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
-		<property name="typeAliasesPackage" value="com.raon.raondanim.model"></property>
-		<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml" />
+		<property name="typeAliasesPackage"
+			value="com.raon.raondanim.model"></property>
+		<property name="mapperLocations"
+			value="classpath:mappers/**/*Mapper.xml" />
 	</bean>
 	<bean id="sqlSession"
 		class="org.mybatis.spring.SqlSessionTemplate"
@@ -34,7 +48,8 @@
 		<constructor-arg name="sqlSessionFactory"
 			ref="sqlSessionFactory"></constructor-arg>
 	</bean>
-
+	
+	<!-- 시큐리티 -->
 	<!-- messageSource 설정 -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
@@ -59,21 +74,53 @@
 		<property name="messageSourceAccessor"
 			ref="messageSourceAccessor" />
 	</bean>
+	
 	<!-- Default Location 설정 -->
 	<bean id="localeResolver"
 		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 		<property name="defaultLocale" value="ko"></property>
 	</bean>
-	
+
 	<!-- DAO 목록 -->
 	<bean id="userAuthDAO"
 		class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.raon.raondanim.dao.UserAuthDAO"></property>
+		<property name="mapperInterface"
+			value="com.raon.raondanim.dao.UserAuthDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
 	<bean id="accountsUserDAO"
 		class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.raon.raondanim.dao.AccountsUserDAO"></property>
+		<property name="mapperInterface"
+			value="com.raon.raondanim.dao.AccountsUserDAO"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+
+	<!--tripDao -->
+	<bean id="tripBoardDao"
+		class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.raon.raondanim.dao.TripBoardDao"></property>
+		<property name="sqlSessionFactory"
+			ref="sqlSessionFactory"></property>
+	</bean>
+
+	<bean id="tripReplyDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.raon.raondanim.dao.TripReplyDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<!-- 모텔DAO -->
+	<bean id="motelTbDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.raon.raondanim.dao.MotelTbDAO"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<!-- <bean id="motelAvgDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.raon.raondanim.dao.MotelAvgDAO"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean> -->
+	
+	<!-- 후기 DAO -->
+	<bean id="ReviewBoardDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.raon.raondanim.dao.ReviewBoardDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
 
