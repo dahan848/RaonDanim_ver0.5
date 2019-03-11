@@ -119,8 +119,9 @@
 	</bean> -->
 	
 	<!-- 후기 DAO -->
-	<bean id="ReviewBoardDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.raon.raondanim.dao.ReviewBoardDAO"></property>
+	<bean id="reviewBoardDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.raon.raondanim.dao.ReviewBoardDao"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
 
