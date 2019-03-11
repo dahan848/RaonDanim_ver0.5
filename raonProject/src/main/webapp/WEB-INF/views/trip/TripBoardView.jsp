@@ -149,24 +149,31 @@ function createReplyTable(pageNum) {
 				"                 <input type='hidden' id='replyUserNum"+i+"' name='user_Num' value='"+list[i].USER_NUM+"'>" + 
 				"                 <input type='hidden' id='replyGid"+i+"' name='trip_Reply_Gid' value='"+list[i].TRIP_REPLY_GID+"'>" + 
 				"                 <input type='hidden' id='replyDepth"+i+"' name='trip_Reply_Depth' value='"+list[i].TRIP_REPLY_DEPTH+"'>" + 
-				"                 <input type='hidden' id='replySorts"+i+"' name='trip_Reply_Sorts' value='"+list[i].TRIP_REPLY_SORTS+"'>";
+				"                 <input type='hidden' id='replySorts"+i+"' name='trip_Reply_Sorts' value='"+list[i].TRIP_REPLY_SORTS+"'>"+
+				" 				  <input type='hidden' id='replyKey"+i+"' name='Trip_Reply_Key' value='"+list[i].TRIP_REPLY_KEY+"'>";
 
  				var tr = $("<tr id='row"+i+"' style='border:1px dotted #cccccc;'>");
  				var reBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
- 				$("<th>").html("<p>"+list[i].USER_LNM+list[i].USER_FNM+"</p>").appendTo(tr);
+ 				
+ 				$("<th class='tableft'>").html("<p>"+list[i].USER_LNM+list[i].USER_FNM+"</p>").appendTo(tr);
  				if(list[i].TRIP_REPLY_DEPTH==0){
  					$("<th>").html(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
  				}else{
  					$("<th>").html("<img src='${contextPath}/img/trip_arrowimg2.jpg' style='height:20px; width:20px;'>").append(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
  				}
- 			
- 				$("<th>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").append(parentReply).appendTo(tr);
+
+ 				$("<th class='tabright'>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").append(parentReply).appendTo(tr);
+ 				$("<th class='tabright'>").html("<img onclick='deleteReply("+i+")'  src='${contextPath}/img/trip_x_Img.jpg' style='height:20px; width:20px;'>").appendTo(tr);
  				tr.appendTo(replyTable);
 			
  				if(list[i].TRIP_REPLY_DEPTH>0){
+ 					//대댓글 용 css 밑에 밑으로 내려갈수록 padding으로 구분
  					var padding = 20*list[i].TRIP_REPLY_DEPTH;
  					$("#row"+i+"> th").css("padding-left",padding+"px");
+ 					//$(".tab").css("padding-left",padding+"px");
  				}
+ 				$(".tableft").css("padding-left","0px;");
+ 				$(".tabright").css("text-align","right");
  				
 
 			}// 댓글 리스트 그리는 반복문 끝
@@ -198,24 +205,72 @@ function replyPager(start) {
 	var boardKey = "${boardInfo.TRIP_BOARD_KEY}";
 	// 클릭시 페이지 넘 받아서 createReplyTable 에 파라메터 집어넣고 실행
 	createReplyTable(pageNum);
-/* 
- * 
- 굳이 서버를 왔다 갔다할 이유가 없을듯 success에서 다시 그리는 코드가 들어갈거 아닌이상
- $.ajax({
-		url:"${contextPath}/tripReply/writeReReply",
-		type:"post",
-		data:{"pageNum":pageNum,"boardKey":boardKey},
-		dataType:"json",
-		success:function(result){
-			// ajax로 선택 페이지에 대한 데이터를 
-			createReplyTable(pageNum);
-			
-			
-		} 
-		
-	}); */
-	
+
 }
+
+function deleteReply(i) {
+	//댓글 삭제 펑션
+	var replyKey = $("#replyKey"+i).val();
+
+
+	swal( {
+		  title: "비밀번호 체크",
+		  content: {
+			    element: "input",
+			    attributes: {
+			      placeholder: "비밀번호를 입력해주세요.",
+			      type: "password",
+			    },
+			  },
+		  buttons: true,
+		  buttons: ["취소", "확인"],
+		  closeOnClickOutside: false,
+		})
+		.then((value) => {
+			
+			if(!value){
+				//value== null 이나 value =="" 안먹음 
+				swal({
+					text:"비밀번호를 입력해주세요",
+					icon:"warning",
+				});
+				return false;
+			}
+			
+		 	$.ajax({
+		 		url:"${contextPath}/tripReply/checkPw",
+		 		type:"post",
+		 		data:{"replyKey":replyKey,"checkReplyPw":value,"_csrf.parameterName":'${_csrf.token}'},
+		 		dataType:"json",
+		 		success:function(result){
+		 			// 이걸로 비번체크를 해서 갔다온담에 if로 걸러서 true 일때 다른 펑션을 실행해서 삭제한다 
+		 			if(result){
+		 				swal({
+		 					icon:"success",
+		 					text:"비밀번호 일치",
+		 				});
+		 			}else{
+		 				swal({
+		 					icon:"warning",
+		 					text:"비밀번호 불일치 다시 시도해 주세요",
+		 				});
+		 			}
+		 			
+		 			
+		 		}
+		 		
+		 		
+		 		
+		 	});
+			
+			
+			
+		});
+	
+	
+
+}
+
 
 
 function togglerereply(i) {
@@ -842,6 +897,42 @@ th{
   </div>
   
 </div>      
+   <!--댓글 삭제 모달  -->
+   <div class="container">
+  
+  <div class="modal fade" id="deleteReplyModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">비밀번호 확인</h4>
+        </div>
+        <form action="#" method="post" id="deleteReplyForm">
+        <div class="modal-body" id="deleteReplyModalBody">
+           
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+              <input type="hidden" value="" name="userNum">
+             <div class="form-group">
+               <label for="pwd">비밀번호:</label>
+               <input type="password" class="form-control" id="deleteReplyPw" placeholder="비밀번호를 입력해주세요." name="user_pwCheck">
+             </div>
+         
+          
+        </div>
+        <div class="modal-footer">
+          <input type="submit" class="btn btn-danger" value="확인">
+          <input type="button" class="btn btn-info" data-dismiss="modal" value="닫기">
+        </div>
+           
+    </form>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>   
    
    <!-- 인클루드-푸터 -->
    <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>

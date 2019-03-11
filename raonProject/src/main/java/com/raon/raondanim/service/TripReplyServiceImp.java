@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.raon.raondanim.dao.AccountsUserDAO;
 import com.raon.raondanim.dao.TripReplyDao;
 import com.raon.raondanim.model.TripReply;
 
@@ -15,6 +16,9 @@ public class TripReplyServiceImp implements TripReplyService {
 
 	@Autowired
 	TripReplyDao replyDao;
+	
+	@Autowired
+	AccountsUserDAO userDao;
 	
 	public static final int PER_PAGE = 10;
 	public static final int NAVI_PAGE = 10;
@@ -170,6 +174,42 @@ public class TripReplyServiceImp implements TripReplyService {
 		totalPage = (replyCount - 1) / PER_PAGE + 1;
 		
 		return totalPage;
+	}
+
+	@Override
+	public boolean deleteReply(int replyKey) {
+		
+		if(replyDao.deleteReply(replyKey)>0) {
+			//삭제(상태값 1로 업데이트)성공
+			return true;
+			
+		}else {
+			//실패
+			return false;
+		}
+		
+	}
+
+	@Override
+	public Map<String, Object> selectOneByreplyKey(int replyKey) {
+		
+		return replyDao.selectOneByreplyKey(replyKey);
+	}
+
+	@Override
+	public boolean checkPw(String userNum, String checkPw) {
+		
+		String userPw = userDao.selectByUserNum(userNum).getUser_pw();
+		if(userPw.equals(checkPw)) {
+			//비번같음
+			return true;
+		}else {
+			//비번틀림
+			return false;
+		}
+		
+		
+		
 	}
 
 }

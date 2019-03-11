@@ -15,5 +15,8 @@ public interface TripReplyService {
 	public int getStartPage(int pageNum);
 	public int getEndPage(int pageNum);
 	public int getTotalPage(int boardKey);
+	public boolean deleteReply(int replyKey);
+	public Map<String, Object> selectOneByreplyKey(int replyKey);
+	public boolean checkPw(String userNum, String checkPw);
 	
 }

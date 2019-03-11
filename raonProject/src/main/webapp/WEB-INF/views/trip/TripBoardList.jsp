@@ -27,6 +27,7 @@
 	width: 100%;
 	margin-bottom: 30px;
 	padding: 0;
+	
 }
 
 #con2 {

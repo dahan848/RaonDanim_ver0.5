@@ -21,6 +21,8 @@ public class TripReplyController {
 	@Autowired
 	TripReplyService replyService;
 	
+	
+	
 	@ResponseBody
 	@RequestMapping(value="/writeReply", method=RequestMethod.POST)
 	public boolean insertBasicReply(TripReply reply) {
@@ -64,8 +66,27 @@ public class TripReplyController {
 		return replyService.insertReReply(reply);
 		
 	}
+	@ResponseBody
+	@RequestMapping("/deleteReply")
+	public boolean deleteReply(int replyKey) {
+		System.out.println("댓글 삭제 요청 받음");
+		System.out.println("댓글 컨틀롤러 /삭제/"+replyKey);
+		
+		return replyService.deleteReply(replyKey);
+		
+	}
 	
-	
-	
+	@ResponseBody
+	@RequestMapping(value="/checkPw", method=RequestMethod.POST)
+	public boolean checkPw(int replyKey,String checkReplyPw) {
+		System.out.println("댓글 수정/삭제 비밀번호 요청 받음");
+		Map<String, Object> user =replyService.selectOneByreplyKey(replyKey);
+		String userNum = (String) user.get("USER_NUM");
+		
+
+		return replyService.checkPw(userNum, checkReplyPw);
+		
+		
+	}
 	
 }

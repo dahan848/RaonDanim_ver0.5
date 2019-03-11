@@ -177,6 +177,27 @@ values(	TRIP_REPLY_TB_SEQ.NEXTVAL,
 
 </insert>
 
+<update id="deleteReply" parameterType="int">
+ update trip_reply_tb
+ set TRIP_REPLY_ST = 1
+ where TRIP_REPLY_KEY = #{replyKey}
+</update>
+
+<select id="selectOneByreplyKey" parameterType="int" resultType="map">
+select  TRIP_REPLY_KEY,
+		TRIP_BOARD_KEY,
+		USER_NUM,
+		TRIP_REPLY_GID,
+		TRIP_REPLY_DEPTH,
+		TRIP_REPLY_SORTS,
+		TRIP_REPLY_CONTENT,
+		TRIP_REPLY_WRITEDATE,
+		TRIP_REPLY_ST
+from 	trip_reply_tb	
+where TRIP_REPLY_KEY = #{replyKey}
+
+
+</select>
 
 
 </mapper>
