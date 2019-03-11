@@ -10,4 +10,10 @@ public interface TripReplyService {
 	public boolean insertBasicReply(TripReply reply);
 	public List<Map<String, Object>> getReplyList(int boardKey);
 	public boolean insertReReply(TripReply reply);
+	
+	public Map<String, Object> getReplyListByTen(Map<String, Object> params);
+	public int getStartPage(int pageNum);
+	public int getEndPage(int pageNum);
+	public int getTotalPage(int boardKey);
+	
 }

@@ -20,4 +20,9 @@ public interface TripReplyDao {
 	public int insertReReply(Map<String, Object> params);
 	public int insertReReply2(TripReply reply);
 	
+	//댓글 페이징 
+	public List<Map<String, Object>> getReplyListByTen(Map<String, Object> params);
+	public int getReplyTotalCount(int boardKey);
+	
+	
 }

@@ -120,8 +120,16 @@ function moveToMakerLocation(i) {
 }
 
 
-function createReplyTable() {
+function createReplyTable(pageNum) {
 	//댓글 리스트 그리는 펑션
+	if(pageNum){
+		//pageNum 이 undefined면 false 있으면 true 로 계속 진행하면 된다
+	}else{
+		//undefined시 페이지 번호를 1로 설정
+		pageNum = 1;
+	}
+	
+	
 	var boardKey = "${boardInfo.TRIP_BOARD_KEY}";
 	var replyTable = $("#replyTable");
 	replyTable.html("");
@@ -129,10 +137,12 @@ function createReplyTable() {
 	$.ajax({
 		url:"${contextPath}/tripReply/replyList",
 		type:"get",
-		data:{"boardKey":boardKey},
+		data:{"boardKey":boardKey,"pageNum":pageNum},
 		dataType:"json",
-		success:function(list){
+		success:function(result){
 	
+			var list = result.replyList;
+			
 			for(var i in list){
 	
 				var parentReply = "   <input type='hidden' id='replyBoardKey"+i+"' name='trip_Board_Key' value='"+list[i].TRIP_BOARD_KEY+"'>" + 
@@ -141,10 +151,15 @@ function createReplyTable() {
 				"                 <input type='hidden' id='replyDepth"+i+"' name='trip_Reply_Depth' value='"+list[i].TRIP_REPLY_DEPTH+"'>" + 
 				"                 <input type='hidden' id='replySorts"+i+"' name='trip_Reply_Sorts' value='"+list[i].TRIP_REPLY_SORTS+"'>";
 
- 				var tr = $("<tr id='row"+i+"' style='border:1px dotted #7bcbfc;'>");
+ 				var tr = $("<tr id='row"+i+"' style='border:1px dotted #cccccc;'>");
  				var reBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
  				$("<th>").html("<p>"+list[i].USER_LNM+list[i].USER_FNM+"</p>").appendTo(tr);
- 				$("<th>").html(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
+ 				if(list[i].TRIP_REPLY_DEPTH==0){
+ 					$("<th>").html(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
+ 				}else{
+ 					$("<th>").html("<img src='${contextPath}/img/trip_arrowimg2.jpg' style='height:20px; width:20px;'>").append(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
+ 				}
+ 			
  				$("<th>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").append(parentReply).appendTo(tr);
  				tr.appendTo(replyTable);
 			
@@ -153,10 +168,22 @@ function createReplyTable() {
  					$("#row"+i+"> th").css("padding-left",padding+"px");
  				}
  				
- 				
- 				
- 				
-			}
+
+			}// 댓글 리스트 그리는 반복문 끝
+			
+			//페이저 부분
+				var start = result.start;
+				var end =result.end;
+				var total = result.total;
+				var currentPage = result.page;
+				
+				
+				//var replyModalFooter = $("#replyModalFooter");
+				var replyModalBody = $("#replyModalBody");
+				for(start;start<end;start++){
+					$("<a onclick='replyPager("+start+")'>"+start+"</a>").append("&nbsp;&nbsp;").appendTo(replyModalBody);
+				}
+				
 			
 		}
 		
@@ -164,10 +191,33 @@ function createReplyTable() {
 	
 }
 
+function replyPager(start) {
+	// 페이지 버튼 클릭시 펑션
+	var pageNum = start;
+	var boardKey = "${boardInfo.TRIP_BOARD_KEY}";
+	// 클릭시 페이지 넘 받아서 createReplyTable 에 파라메터 집어넣고 실행
+	createReplyTable(pageNum);
+/* 	$.ajax({
+		url:"${contextPath}/tripReply/writeReReply",
+		type:"post",
+		data:{"pageNum":pageNum,"boardKey":boardKey},
+		dataType:"json",
+		success:function(result){
+			// ajax로 선택 페이지에 대한 데이터를 
+			createReplyTable(pageNum);
+			
+			
+		} */
+		
+	});
+	
+}
+
+
 function togglerereply(i) {
 //대댓글 입력 펑션 댓글에 달린 답글 클릭시 요소를 새로 생성해 추가한다 
 
- 	var reRowTr = $("<tr id='reRow"+i+"' style='border:1px dotted #7bcbfc;'>");
+ 	var reRowTr = $("<tr id='reRow"+i+"' style='border:1px dotted #cccccc;'>");
  	var tr = $("#row"+i);
  	
  	var rereBoardKey = $("#replyBoardKey"+i).val();
@@ -210,8 +260,9 @@ function togglerereply(i) {
 
 
 function reReplyWrite(i) {
+	//대댓글 입력 펑션
 	var rere = $("#rereForm"+i).serialize();
-	alert(rere);
+	
 	
 	$.ajax({
 		url:"${contextPath}/tripReply/writeReReply",
@@ -663,7 +714,7 @@ th{
   <div class="table-responsive">   
   		<table class="table">
   			<tr>
-  				<th><mark>동행을 원하시는 이유를 적어주세요</mark></th>
+  				<th><mark>동행신청</mark></th>
   				
   			</tr>
   		</table>
@@ -676,8 +727,9 @@ th{
          
          
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+        <div class="modal-footer" >
+        
+<!--           <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button> -->
         </div>
       </div>
     </div>

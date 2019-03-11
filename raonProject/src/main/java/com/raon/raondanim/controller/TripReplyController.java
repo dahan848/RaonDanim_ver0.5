@@ -1,5 +1,6 @@
 package com.raon.raondanim.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.raon.raondanim.model.TripReply;
@@ -31,14 +33,20 @@ public class TripReplyController {
 	
 	@ResponseBody
 	@RequestMapping("/replyList")
-	public List<Map<String, Object>> getReplyList(int boardKey){
+	public Map<String, Object> getReplyList(int boardKey,
+			@RequestParam(defaultValue="1") int pageNum){
 		System.out.println("댓글 리스트 요청받음");
 		System.out.println("댓글리스트 보드키 :"+boardKey);
 		
-		System.out.println("댓글 리스트 : "+replyService.getReplyList(boardKey));
+		//System.out.println("댓글 리스트 : "+replyService.getReplyList(boardKey));
+		Map<String, Object> params = new HashMap<>();
+		params.put("boardKey", boardKey);
+		params.put("pageNum", pageNum);
 		
+		// 전체댓글 리스트만 뽑아오는 메소드 리스트<맵> 구조
+		// return replyService.getReplyList(boardKey);
 
-		return replyService.getReplyList(boardKey);
+		return replyService.getReplyListByTen(params);
 		
 	}
 	

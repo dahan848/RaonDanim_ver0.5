@@ -27,7 +27,7 @@ values(	#{trip_Reply_Key},
 		#{trip_Reply_Content})
 
 </insert>
-
+<!--댓글 전체 가져오는 쿼리  -->
 <select id="getReplyList" parameterType="int" resultType="map">
 
 SELECT  r.TRIP_REPLY_KEY,
@@ -48,6 +48,62 @@ ORDER BY r.TRIP_REPLY_GID ASC,
 		 r.TRIP_REPLY_SORTS ASC
 
 </select>
+
+<!--페이징된 댓글 가져오는 쿼리  -->
+<select id="getReplyListByTen" parameterType="map" resultType="map">
+select r,
+       TRIP_REPLY_KEY,
+       TRIP_BOARD_KEY,
+       USER_NUM,
+       USER_FNM,
+       USER_LNM,
+       TRIP_REPLY_GID,
+       TRIP_REPLY_DEPTH,
+       TRIP_REPLY_SORTS,
+       TRIP_REPLY_CONTENT,
+       TRIP_REPLY_WRITEDATE,
+       TRIP_REPLY_ST
+from (select    rownum as r,
+                TRIP_REPLY_KEY,
+                TRIP_BOARD_KEY,
+                USER_NUM,
+                USER_FNM,
+                USER_LNM,
+                TRIP_REPLY_GID,
+                TRIP_REPLY_DEPTH,
+                TRIP_REPLY_SORTS,
+                TRIP_REPLY_CONTENT,
+                TRIP_REPLY_WRITEDATE,
+                TRIP_REPLY_ST
+from(SELECT  r.TRIP_REPLY_KEY,
+        r.TRIP_BOARD_KEY,
+        r.USER_NUM,
+        u.USER_FNM,
+        u.USER_LNM,
+        r.TRIP_REPLY_GID,
+        r.TRIP_REPLY_DEPTH,
+        r.TRIP_REPLY_SORTS,
+        r.TRIP_REPLY_CONTENT,
+        to_char(r.TRIP_REPLY_WRITEDATE,'yy-MM-dd') as TRIP_REPLY_WRITEDATE,
+        r.TRIP_REPLY_ST 
+    FROM trip_reply_tb r join user_tb u
+    on r.USER_NUM = u.USER_NUM
+    where r.TRIP_BOARD_KEY = #{boardKey}
+    ORDER BY r.TRIP_REPLY_GID ASC,
+             r.TRIP_REPLY_SORTS ASC))
+ where r between #{start} and #{end}
+ and TRIP_REPLY_ST = 0
+</select>
+
+<!--게시글의 총 댓글이 몇개인지 가져오는 쿼리  -->
+<select id="getReplyTotalCount" parameterType="int" resultType="int">
+ select count(*) 
+ from trip_reply_tb
+ where TRIP_BOARD_KEY = #{boardKey}
+ and TRIP_REPLY_ST = 0
+</select>
+
+
 
 <!--원본글에 댓글  -->
 <select id="insertReply" parameterType="int" resultType="int">

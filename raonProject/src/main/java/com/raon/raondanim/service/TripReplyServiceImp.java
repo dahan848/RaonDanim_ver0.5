@@ -16,6 +16,8 @@ public class TripReplyServiceImp implements TripReplyService {
 	@Autowired
 	TripReplyDao replyDao;
 	
+	public static final int PER_PAGE = 10;
+	public static final int NAVI_PAGE = 10;
 	
 	@Override
 	public boolean insertBasicReply(TripReply reply) {
@@ -114,11 +116,54 @@ public class TripReplyServiceImp implements TripReplyService {
 			e.printStackTrace();
 			return false;
 		}
+	
+	}
+
+	
+	@Override
+	public Map<String, Object> getReplyListByTen(Map<String, Object> params) {
+		//페이징된 댓글 리스트 뽑는 메소드
+		
+		int pageNum = (int) params.get("pageNum");
+		int boardKey = (int) params.get("boardKey");
+		
+		int startRow = PER_PAGE * (pageNum - 1) + 1;
+		int endRow = PER_PAGE * pageNum;
+		
+		params.put("start", startRow);
+		params.put("end", endRow);
+		
+		Map<String, Object> replyData = new HashMap<>();
+		
+		replyData.put("replyList", replyDao.getReplyListByTen(params));
+		replyData.put("start", getStartPage(pageNum));
+		replyData.put("end", getEndPage(pageNum));
+		replyData.put("total", getTotalPage(boardKey));
+		replyData.put("page", pageNum);
 		
 		
 		
+		return replyData;
+	}
+
+	@Override
+	public int getStartPage(int pageNum) {
 		
+		return ((pageNum - 1) / NAVI_PAGE) * NAVI_PAGE + 1;
+	}
+
+	@Override
+	public int getEndPage(int pageNum) {
 		
+		return getStartPage(pageNum) + (NAVI_PAGE - 1);
+	}
+
+	@Override
+	public int getTotalPage(int boardKey) {
+		int totalPage = 0;
+		int replyCount = replyDao.getReplyTotalCount(boardKey);
+		
+		return replyCount;
 	}
 
 }
