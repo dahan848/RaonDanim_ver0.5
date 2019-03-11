@@ -24,7 +24,7 @@ values(	#{trip_Reply_Key},
 		#{trip_Reply_Key},
 		#{trip_Reply_Depth},
 		#{trip_Reply_Sorts},
-		#{trip_reply_Content})
+		#{trip_Reply_Content})
 
 </insert>
 
@@ -66,13 +66,13 @@ TRIP_REPLY_GID,
 TRIP_REPLY_DEPTH,
 TRIP_REPLY_SORTS,
 TRIP_REPLY_CONTENT)
-values(	#{trip_Reply_Key},
+values(	TRIP_REPLY_TB_SEQ.NEXTVAL,
 		#{trip_Board_Key},
 		#{user_Num},
 		#{trip_Reply_Gid},
 		#{trip_Reply_Depth}+1,
 		#{trip_Reply_Sorts},
-		#{trip_reply_Content})
+		#{trip_Reply_Content})
 		
 
 </insert>
@@ -110,13 +110,13 @@ TRIP_REPLY_GID,
 TRIP_REPLY_DEPTH,
 TRIP_REPLY_SORTS,
 TRIP_REPLY_CONTENT)
-values(	#{trip_Reply_Key},
+values(	TRIP_REPLY_TB_SEQ.NEXTVAL,
 		#{trip_Board_Key},
 		#{user_Num},
 		#{trip_Reply_Gid},
 		#{trip_Reply_Depth}+1,
 		#{trip_Reply_Sorts},
-		#{trip_reply_Content})
+		#{trip_Reply_Content})
 
 
 </insert>

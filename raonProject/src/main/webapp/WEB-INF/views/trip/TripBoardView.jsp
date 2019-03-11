@@ -73,7 +73,7 @@ function toggleDisplay() {
 
 
 function drawCityTable() {
-   //일단 이 펑션 보류
+  // 동기로 도시 리스트 그리는 부분 화면 좌하단
    var cityNames = ${cityInfo};
    var leftDiv12 = $("#leftDiv-1-2");
    var j = 1;
@@ -121,6 +121,7 @@ function moveToMakerLocation(i) {
 
 
 function createReplyTable() {
+	//댓글 리스트 그리는 펑션
 	var boardKey = "${boardInfo.TRIP_BOARD_KEY}";
 	var replyTable = $("#replyTable");
 	replyTable.html("");
@@ -133,7 +134,7 @@ function createReplyTable() {
 		success:function(list){
 	
 			for(var i in list){
-
+	
 				var parentReply = "   <input type='hidden' id='replyBoardKey"+i+"' name='trip_Board_Key' value='"+list[i].TRIP_BOARD_KEY+"'>" + 
 				"                 <input type='hidden' id='replyUserNum"+i+"' name='user_Num' value='"+list[i].USER_NUM+"'>" + 
 				"                 <input type='hidden' id='replyGid"+i+"' name='trip_Reply_Gid' value='"+list[i].TRIP_REPLY_GID+"'>" + 
@@ -147,7 +148,14 @@ function createReplyTable() {
  				$("<th>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").append(parentReply).appendTo(tr);
  				tr.appendTo(replyTable);
 			
-				
+ 				if(list[i].TRIP_REPLY_DEPTH>0){
+ 					var padding = 20*list[i].TRIP_REPLY_DEPTH;
+ 					$("#row"+i+"> th").css("padding-left",padding+"px");
+ 				}
+ 				
+ 				
+ 				
+ 				
 			}
 			
 		}
@@ -157,7 +165,7 @@ function createReplyTable() {
 }
 
 function togglerereply(i) {
-
+//대댓글 입력 펑션 댓글에 달린 답글 클릭시 요소를 새로 생성해 추가한다 
 
  	var reRowTr = $("<tr id='reRow"+i+"' style='border:1px dotted #7bcbfc;'>");
  	var tr = $("#row"+i);
@@ -214,9 +222,13 @@ function reReplyWrite(i) {
 			
 			if(result){
 				
-				alert("성공");
+				createReplyTable();
+				
 			}else{
-				alert("실패");
+				swal({
+	                  icon:"warning",
+	                  text:"댓글 입력실패 다시 시도해주세요.",
+	               });
 			}
 
 			
@@ -624,7 +636,7 @@ th{
         <div class="modal-body" id="replyModalBody">
             <form action="#" method="post" id="replyForm">
                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                 <textarea class="form-control" rows="2" id="replyContent" name="trip_reply_Content" ></textarea>
+                 <textarea class="form-control" rows="2" id="replyContent" name="trip_Reply_Content" ></textarea>
                  <input type="hidden" id="replyBoardKey" name="trip_Board_Key" value="${boardInfo.TRIP_BOARD_KEY}">
                  <input type="hidden" id="replyUserNum" name="user_Num" value="${userNum}">
                  <input type="hidden" id="replyGid" name="trip_Reply_Gid" value="0">
@@ -649,6 +661,13 @@ th{
          
 <!--             </div> -->
   <div class="table-responsive">   
+  		<table class="table">
+  			<tr>
+  				<th><mark>동행을 원하시는 이유를 적어주세요</mark></th>
+  				
+  			</tr>
+  		</table>
+  
   	 <table class="table" id="replyTable"></table>
   </div>
         

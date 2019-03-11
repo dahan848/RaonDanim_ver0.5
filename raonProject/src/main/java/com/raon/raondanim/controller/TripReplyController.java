@@ -47,9 +47,13 @@ public class TripReplyController {
 	public boolean insertReReply(TripReply reply) {
 		System.out.println("대댓글 입력 요청받음");
 		
-		System.out.println("대댓글 : "+reply);
+		System.out.println("컨트롤러 대댓글 값 확인 : "+reply);
 		
-		return false;
+		
+		
+		
+		
+		return replyService.insertReReply(reply);
 		
 	}
 	

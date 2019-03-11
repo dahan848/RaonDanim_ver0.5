@@ -101,6 +101,7 @@ public class TripReplyServiceImp implements TripReplyService {
 				//빈자리에 댓글 넣기
 				reply.setTrip_Reply_Sorts(replyCondition);
 				replyDao.insertReReply2(reply);
+				System.out.println("분기 대댓글 여기까지 옴");
 				
 			}
 			
