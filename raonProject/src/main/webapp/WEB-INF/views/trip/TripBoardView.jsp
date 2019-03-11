@@ -179,9 +179,10 @@ function createReplyTable(pageNum) {
 				
 				
 				//var replyModalFooter = $("#replyModalFooter");
-				var replyModalBody = $("#replyModalBody");
-				for(start;start<end;start++){
-					$("<a onclick='replyPager("+start+")'>"+start+"</a>").append("&nbsp;&nbsp;").appendTo(replyModalBody);
+				var replyPager = $("#replyPager");
+				replyPager.html("");
+				for(start;start<=total;start++){
+					$("<a onclick='replyPager("+start+")'>"+start+"</a>").append("&nbsp;&nbsp;").appendTo(replyPager);
 				}
 				
 			
@@ -197,7 +198,10 @@ function replyPager(start) {
 	var boardKey = "${boardInfo.TRIP_BOARD_KEY}";
 	// 클릭시 페이지 넘 받아서 createReplyTable 에 파라메터 집어넣고 실행
 	createReplyTable(pageNum);
-/* 	$.ajax({
+/* 
+ * 
+ 굳이 서버를 왔다 갔다할 이유가 없을듯 success에서 다시 그리는 코드가 들어갈거 아닌이상
+ $.ajax({
 		url:"${contextPath}/tripReply/writeReReply",
 		type:"post",
 		data:{"pageNum":pageNum,"boardKey":boardKey},
@@ -207,9 +211,9 @@ function replyPager(start) {
 			createReplyTable(pageNum);
 			
 			
-		} */
+		} 
 		
-	});
+	}); */
 	
 }
 
@@ -722,7 +726,9 @@ th{
   	 <table class="table" id="replyTable"></table>
   </div>
         
+        <div id="replyPager">
         
+        </div>
  
          
          

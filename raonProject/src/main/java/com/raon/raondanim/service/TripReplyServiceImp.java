@@ -142,6 +142,10 @@ public class TripReplyServiceImp implements TripReplyService {
 		replyData.put("page", pageNum);
 		
 		
+//		System.out.println("서비스/ start댓글데이터 확인 : "+getStartPage(pageNum));
+//		System.out.println("서비스/ end댓글데이터 확인 : "+ getEndPage(pageNum));
+//		System.out.println("서비스/ total댓글데이터 확인 : "+getTotalPage(boardKey));
+//		System.out.println("서비스/ page댓글데이터 확인 : "+pageNum);
 		
 		return replyData;
 	}
@@ -163,7 +167,9 @@ public class TripReplyServiceImp implements TripReplyService {
 		int totalPage = 0;
 		int replyCount = replyDao.getReplyTotalCount(boardKey);
 		
-		return replyCount;
+		totalPage = (replyCount - 1) / PER_PAGE + 1;
+		
+		return totalPage;
 	}
 
 }
