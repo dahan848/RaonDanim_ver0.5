@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>라온다님</title>
+<title>라온다님 여행후기 메인</title>
 
 <style type="text/css">
 	#upload {
@@ -75,11 +75,11 @@
 						<div id="backimg"></div>
 	  					<div id="userimg"></div>  
 						<div id="profile">
-							<a style="text-align: center; display: inline-block;">${review.NUM}</a>
+							<a style="text-align: center; display: inline-block;">${review.USER_ID}</a>
 							<br>
-							<a style="text-align: center; display: inline-block;">여행지 : <b>${review.TRAVLE}</b></a>
+							<a style="text-align: center; display: inline-block;">여행지 : <b>${review.REV_DESTINATION}</b></a>
 							<br>
-							<a href="reviewView?num=${review.NUM}" style="text-align: center;">${review.TITLE}</a>
+							<a href="reviewView?num=${review.NUM}" style="text-align: center;">${review.REV_TITLE}</a>
 						</div>
 					</div>		
 				</c:forEach>
@@ -87,19 +87,15 @@
 			
 				<!------------ 화면 맨 위로 시작 ------------>
 				<div style="position: fixed; bottom: 30px; right: 300px;">
-					<a href="#smenu1" style="font-size: 50px;"><i class="fas fa-arrow-alt-circle-up" style="color: #cccccc;"></i></a>
+					<a href=".container" style="font-size: 50px;">
+						<i class="fas fa-arrow-alt-circle-up" style="color: #cccccc;"></i>
+					</a>
 				</div>
 				<!------------ 화면 맨 위로 끝 ------------>
 			</div>
 		</section>
 	</div>
 	<!-- 본문 END-->
-
-	
-
-
-
-
 
 	<!-- 인클루드-푸터 -->
 	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>

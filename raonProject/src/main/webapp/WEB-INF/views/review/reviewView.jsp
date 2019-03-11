@@ -89,9 +89,9 @@
 			<div class="box" id="box">
 				<div id="userimg"></div>
 				<br>
-				<a>${review.NUM}</a>
+				<a>${review.USER_ID}</a>
 				<br><br>
-				<a>여행지 : <b>${review.TRAVLE}</b></a>
+				<a>여행지 : <b>${review.REV_DESTINATION}</b></a>
 				<br><br>
 				<i class="fas fa-home">
 					<br>
@@ -110,7 +110,7 @@
 			
 			<h3>
 				<i class="fas fa-cloud" style="font-size:38px;color:aqua;"></i>
-				${review.NUM}님의 여행후기입니다
+				${review.USER_ID}님의 여행후기입니다
 			</h3>
 			
 			<button type="button" class="btn btn-primary" id="btnList" onclick="location.href='reviewMain'">후기 목록</button>
@@ -118,18 +118,18 @@
 			<!------------ 등록한 정보 출력 시작 ------------>
 				<div class="form-group" id="form-group">
 					<label for="inputlg">제목</label> 
-					<input class="form-control input-lg" id="inputlg" type="text" readonly="readonly" value="${review.TITLE}">
+					<input class="form-control input-lg" id="inputlg" type="text" readonly="readonly" value="${review.REV_TITLE}">
 				</div>
 			
 				<div class="form-group" id="form-group">
 					<label for="inputlg">여행지</label> 
-					<input class="form-control input-lg" id="inputlg" type="text" readonly="readonly" value="${review.TRAVLE}">
+					<input class="form-control input-lg" id="inputlg" type="text" readonly="readonly" value="${review.REV_DESTINATION}">
 				</div>
 			
 				<div class="form-group" id="form-group">
 					<label for="inputlg">후기</label> 
 					<div class="form-control input-lg" id="contentView">
-						${review.content}
+						${review.RE_CONTENT}
 					</div>
 				</div>
 			<!------------ 등록한 정보 출력 끝 ------------>

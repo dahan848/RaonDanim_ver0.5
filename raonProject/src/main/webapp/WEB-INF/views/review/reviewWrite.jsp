@@ -35,20 +35,23 @@
 			<section id="section-profile-update" class="bg-gray">
 			<div class="container">
 			
-			<h1><i class="fas fa-cloud" style="font-size:38px;color:aqua;"></i>후기 작성</h1>
+			<h1>
+				<i class="fas fa-cloud" style="font-size:38px;color:aqua;"></i>
+				후기 작성
+			</h1>
 			
 			<div class="form-group">
 				<label for="inputlg">제목</label> 
-				<input class="form-control input-lg" name="title" id="inputlg" type="text">
+				<input class="form-control input-lg" name="REV_TITLE" id="inputlg" type="text">
 			</div>
 			
 			<div class="form-group">
 				<label for="inputlg">여행지</label> 
-				<input class="form-control input-lg" name="travle" id="inputlg" type="text">
+				<input class="form-control input-lg" name="REV_DESTINATION" id="inputlg" type="text">
 			</div>
 		
 			<!-- Summernote -->
-			<textarea rows="10" id="summernote" name="content"></textarea>
+			<textarea rows="10" id="summernote" name="RE_CONTENT"></textarea>
 			<script type="text/javascript">
 				$(document).ready(function() {
 					$('#summernote').summernote();

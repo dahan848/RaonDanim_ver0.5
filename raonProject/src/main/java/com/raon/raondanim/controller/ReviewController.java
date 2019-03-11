@@ -44,37 +44,37 @@ public class ReviewController {
 	//여행후기 작성
 	@RequestMapping("/write")
 	public String writeReview(
-//			@RequestParam(value="title") String title,
-//			@RequestParam(value="travle") String travle,
-//			@RequestParam(value="content") String content,
-//			RedirectAttributes ra
+			@RequestParam(value="REV_TITLE") String REV_TITLE,
+			@RequestParam(value="REV_DESTINATION") String REV_DESTINATION,
+			@RequestParam(value="RE_CONTENT") String RE_CONTENT,
+			RedirectAttributes ra
 			) {
 		System.out.println("여행 후기 작성 중...");
 		
-//		Map<String, Object> review = new HashMap<>();
-//		review.put("title", title);
-//		review.put("travle", travle);	
-//		review.put("content", content);
+		Map<String, Object> review = new HashMap<>();
+		review.put("REV_TITLE", REV_TITLE);
+		review.put("REV_DESTINATION", REV_DESTINATION);	
+		review.put("RE_CONTENT", RE_CONTENT);
 		
-//		if(service.insertReview(review)) {
-//			System.out.println("작성 성공");
-//			ra.addAttribute("num", review.get("NUM"));
-//		} else {
-//			System.out.println("작성 실패");
-//		}
+		if(reService.insertReview(review)) {
+			System.out.println("작성 성공");
+			ra.addAttribute("REVIEW_NUM", review.get("NUM"));
+		} else {
+			System.out.println("작성 실패");
+		}
 		return "redirect:reviewView";
 	}
 	
 	//여행 후기 상세 페이지
 	@RequestMapping("/reviewView")
 		public String reviewView(
-//				Model model,
-//				int num
+				Model model,
+				int num
 				) {
-			System.out.println("리뷰보기");
-//			Map<String, Object> rev = service.selectOne(num);
-//			System.out.println(rev);
-//			model.addAttribute("review", rev);
+			System.out.println("여행 후기 상세 보기");
+			Map<String, Object> rev = reService.selectOne(num);
+			System.out.println(rev);
+			model.addAttribute("review", rev);
 			return "review/reviewView"; 
 		}
 	

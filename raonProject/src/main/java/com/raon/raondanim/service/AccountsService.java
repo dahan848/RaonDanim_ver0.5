@@ -31,6 +31,7 @@ public class AccountsService {
 	
 	@Autowired
 	private AccountsUserDAO dao;
+	@Autowired
 	private User user;
 	
 	//갤러리 사진 삭제 ()
