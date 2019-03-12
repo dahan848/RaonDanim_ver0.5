@@ -143,6 +143,7 @@ function createReplyTable(pageNum) {
 	
 			var list = result.replyList;
 			
+			
 			for(var i in list){
 	
 				var parentReply = "   <input type='hidden' id='replyBoardKey"+i+"' name='trip_Board_Key' value='"+list[i].TRIP_BOARD_KEY+"'>" + 
@@ -163,7 +164,7 @@ function createReplyTable(pageNum) {
  				}
 
  				$("<th class='tabright'>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").append(parentReply).appendTo(tr);
- 				$("<th class='tabright'>").html("<img onclick='deleteReply("+i+")'  src='${contextPath}/img/trip_x_Img.jpg' style='height:20px; width:20px;'>").appendTo(tr);
+ 				$("<th class='tabright'>").html("<img onclick='checkReply("+i+")'  src='${contextPath}/img/trip_x_Img.jpg' style='height:20px; width:20px;'>").appendTo(tr);
  				tr.appendTo(replyTable);
 			
  				if(list[i].TRIP_REPLY_DEPTH>0){
@@ -208,13 +209,14 @@ function replyPager(start) {
 
 }
 
-function deleteReply(i) {
+function checkReply(i) {
 	//댓글 삭제 펑션
 	var replyKey = $("#replyKey"+i).val();
 
-
+	//취소 alert
 	swal( {
 		  title: "비밀번호 체크",
+		  text:"원글 삭제시 댓글도 같이 삭제되니 유의해주세요.",
 		  content: {
 			    element: "input",
 			    attributes: {
@@ -226,8 +228,8 @@ function deleteReply(i) {
 		  buttons: ["취소", "확인"],
 		  closeOnClickOutside: false,
 		})
-		.then((value) => {
-			
+		.then((value) =>  {
+			 
 			if(!value){
 				//value== null 이나 value =="" 안먹음 
 				swal({
@@ -240,35 +242,61 @@ function deleteReply(i) {
 		 	$.ajax({
 		 		url:"${contextPath}/tripReply/checkPw",
 		 		type:"post",
-		 		data:{"replyKey":replyKey,"checkReplyPw":value,"_csrf.parameterName":'${_csrf.token}'},
+		 		data:{"replyKey":replyKey,"checkReplyPw":value,"${_csrf.parameterName}":'${_csrf.token}'},
 		 		dataType:"json",
 		 		success:function(result){
 		 			// 이걸로 비번체크를 해서 갔다온담에 if로 걸러서 true 일때 다른 펑션을 실행해서 삭제한다 
+		 			// 403에러 ajax 는 동작하는듯?
+		 			// 원인은 토큰의 문제? 
 		 			if(result){
 		 				swal({
 		 					icon:"success",
 		 					text:"비밀번호 일치",
-		 				});
+		 				});		
+		 				deleteReply(replyKey);
+				
 		 			}else{
 		 				swal({
 		 					icon:"warning",
 		 					text:"비밀번호 불일치 다시 시도해 주세요",
 		 				});
-		 			}
-		 			
-		 			
-		 		}
-		 		
-		 		
-		 		
-		 	});
-			
-			
-			
+		 			} 			
+		 		}	 		
+		 	});		
 		});
 	
 	
 
+}
+
+function deleteReply(replyKey) {
+	//alert(replyKey);
+	
+	$.ajax({
+		url:"${contextPath}/tripReply/deleteReply",
+		type:"get",
+		data:{"replyKey":replyKey},
+		dataType:"json",
+		success:function(result){
+			if(result){
+				swal({
+ 					icon:"success",
+ 					text:"삭제 성공하였습니다.",
+ 				});
+				createReplyTable();
+			}else{
+				swal({
+ 					icon:"warning",
+ 					text:"삭제 실패하였습니다. 다시시도해 주세요",
+ 				});
+			}
+		}
+		
+	});
+	
+	
+	
+	
 }
 
 
@@ -592,7 +620,16 @@ th{
 
 }
 
-
+.swal-text {
+  background-color: #FEFAE3;
+  padding: 17px;
+  border: 1px solid #F0E1A1;
+  display: block;
+  margin: 22px;
+  text-align: center;
+  color: #f94563;
+  font-size: 12pt;
+}
 
 </style>
 </head>
@@ -609,12 +646,6 @@ th{
 <script
    src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">   
 </script>
-<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" -->
-<!--    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" -->
-<!--    crossorigin="anonymous"></script> -->
- 
- 
-
    
    <div class="container-fluid" id="con1">
       <div class="row" id="mainRow">
@@ -778,7 +809,7 @@ th{
   			</tr>
   		</table>
   
-  	 <table class="table" id="replyTable"></table>
+  	 <table class="table" id="replyTable" ></table>
   </div>
         
         <div id="replyPager">

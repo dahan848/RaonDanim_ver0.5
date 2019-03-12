@@ -176,7 +176,9 @@
 					<c:forEach items="${tripData.tripBoardList}" var="list">
 						<tr>
 							<td><c:if test="${list.USER_PROFILE_PIC=='n'}">
-									<img alt="프로필이미지" src="${contextPath}/img/trip_Profile.png">
+									<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
+										<img alt="프로필이미지" src="${contextPath}/img/trip_Profile.png">
+									</a>
 								</c:if></td>
 							<td>${list.USER_LNM}${list.USER_FNM}</td>
 							<td>
@@ -221,8 +223,17 @@
 
 
 	</div>
+<!--팝오버  -->
+<div id="chatList" class="hide">
+	This is a popover list:
+	<ul>
+		<li>List item 1</li>
+		<li>List item 2</li>
+		<li>List item 3</li>
+	</ul>
+</div>
 
-
+<!--팝오버 끝  -->
 	<!--바디끝  -->
 
 	<!-- 인클루드-푸터 -->

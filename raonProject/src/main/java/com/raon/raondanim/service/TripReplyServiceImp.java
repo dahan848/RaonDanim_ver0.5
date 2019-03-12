@@ -178,15 +178,48 @@ public class TripReplyServiceImp implements TripReplyService {
 
 	@Override
 	public boolean deleteReply(int replyKey) {
+		//댓글 삭제
+		Map<String, Object> reply = replyDao.selectOneByreplyKey(replyKey);
+		String gId = String.valueOf(reply.get("TRIP_REPLY_GID")) ;
 		
-		if(replyDao.deleteReply(replyKey)>0) {
-			//삭제(상태값 1로 업데이트)성공
-			return true;
+		//맵에서 값 꺼낼때 클래스 캐스트 예외 발생시 이렇게 하면됨 문자열로 바꿀때는 String.valueOf /숫자로 바꿀때는
+		//Integer.parseInt(String.valueOf(오브젝트))
+		int depth = Integer.parseInt(String.valueOf(reply.get("TRIP_REPLY_DEPTH")));
+		
+		
+		Map<String, Object> delete = new HashMap<>();
+		delete.put("replyKey", replyKey);
+		delete.put("gId", gId);
+		System.out.println("서비스/삭제/그룹아이디 확인 :"+gId);
+		
+		if(depth ==0) {
+			//원글 삭제
+			if(replyDao.deleteReply(delete)>0) {
+				//삭제(상태값 1로 업데이트)성공
+				return true;
+				
+			}else {
+				//실패
+				return false;
+			}
+			
 			
 		}else {
-			//실패
-			return false;
+			//대글 대댓글 단독 삭제
+			
+			if(replyDao.deleteReply2(delete)>0) {
+				//삭제(상태값 1로 업데이트)성공
+				return true;
+				
+			}else {
+				//실패
+				return false;
+			}
+			
 		}
+		
+		
+		
 		
 	}
 
@@ -200,6 +233,7 @@ public class TripReplyServiceImp implements TripReplyService {
 	public boolean checkPw(String userNum, String checkPw) {
 		
 		String userPw = userDao.selectByUserNum(userNum).getUser_pw();
+		
 		if(userPw.equals(checkPw)) {
 			//비번같음
 			return true;

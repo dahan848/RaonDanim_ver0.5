@@ -25,7 +25,8 @@ public interface TripReplyDao {
 	public int getReplyTotalCount(int boardKey);
 	
 	//댓글 삭제
-	public int deleteReply(int replyKey);
+	public int deleteReply(Map<String, Object> params);
+	public int deleteReply2(Map<String, Object> params);
 	//댓글 정보 하나 뽑아오기
 	public Map<String, Object> selectOneByreplyKey(int replyKey);
 	

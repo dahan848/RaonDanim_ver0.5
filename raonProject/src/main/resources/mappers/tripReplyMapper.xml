@@ -89,10 +89,11 @@ from(SELECT  r.TRIP_REPLY_KEY,
     FROM trip_reply_tb r join user_tb u
     on r.USER_NUM = u.USER_NUM
     where r.TRIP_BOARD_KEY = #{boardKey}
+    and TRIP_REPLY_ST = 0
     ORDER BY r.TRIP_REPLY_GID ASC,
              r.TRIP_REPLY_SORTS ASC))
  where r between #{start} and #{end}
- and TRIP_REPLY_ST = 0
+ 
 </select>
 
 <!--게시글의 총 댓글이 몇개인지 가져오는 쿼리  -->
@@ -177,11 +178,20 @@ values(	TRIP_REPLY_TB_SEQ.NEXTVAL,
 
 </insert>
 
-<update id="deleteReply" parameterType="int">
+<!-- 원글 삭제 -->
+<update id="deleteReply" parameterType="map">
+ update trip_reply_tb
+ set TRIP_REPLY_ST = 1
+ where TRIP_REPLY_GID = #{gId}
+</update>
+
+<!-- 댓글 대댓글 단독 삭제 -->
+<update id="deleteReply2" parameterType="map">
  update trip_reply_tb
  set TRIP_REPLY_ST = 1
  where TRIP_REPLY_KEY = #{replyKey}
 </update>
+
 
 <select id="selectOneByreplyKey" parameterType="int" resultType="map">
 select  TRIP_REPLY_KEY,

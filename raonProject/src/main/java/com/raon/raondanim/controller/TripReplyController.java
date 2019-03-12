@@ -81,7 +81,7 @@ public class TripReplyController {
 	public boolean checkPw(int replyKey,String checkReplyPw) {
 		System.out.println("댓글 수정/삭제 비밀번호 요청 받음");
 		Map<String, Object> user =replyService.selectOneByreplyKey(replyKey);
-		String userNum = (String) user.get("USER_NUM");
+		String userNum = String.valueOf(user.get("USER_NUM"));
 		
 
 		return replyService.checkPw(userNum, checkReplyPw);
