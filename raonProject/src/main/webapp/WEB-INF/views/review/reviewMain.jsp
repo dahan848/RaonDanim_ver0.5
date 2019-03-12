@@ -8,6 +8,9 @@
 <meta charset="UTF-8">
 <title>라온다님 여행후기 메인</title>
 
+<link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
 <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -27,7 +30,7 @@
 <style type="text/css">
 	#upload {
 		float: right;
-		margin-right: 15px;
+		margin-right: 40px;
 		background-color: #eeeeee;
 		color: green;
 		border: 1px solid #cccccc;
@@ -51,7 +54,7 @@
  		margin: auto; 
  	} 
  	#userimg { 
-    	background-image: url("${contextPath}/img/user.jpg");     
+     	background-image: url("${contextPath}/img/user.jpg");      
   		background-repeat: no-repeat;  
   		background-position: bottom;  
  		background-size: cover; 
@@ -83,8 +86,8 @@
 	<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
-				<h3>여행후기</h3>
-				<h5>다른 회원들에게 여행지 정보를 공유해주세요</h5>
+				<h3 id="h3" style="font-family: 'Nanum Pen Script', cursive; font-size: 50px;"><b>여행후기</b></h3>
+				<h5 style="font-family: 'Nanum Pen Script', cursive;  font-size: 30px;">다른 회원들에게 여행지 정보를 공유해주세요</h5>
 				<input type="button" onclick="location.href='writeForm'" class="btn btn-primary" id="upload" value="후기 올리기">
 				<br><br>			
 				
@@ -107,8 +110,8 @@
 				</div>
 			
 				<!------------ 화면 맨 위로 시작 ------------>
-				<div style="position: fixed; bottom: 30px; right: 300px;">
-					<a href=".container" style="font-size: 50px;">
+				<div style="position: fixed; bottom: 20px; right: 150px;">
+					<a href="#h3" style="font-size: 50px;">
 						<i class="fas fa-arrow-alt-circle-up" style="color: #cccccc;"></i>
 					</a>
 				</div>

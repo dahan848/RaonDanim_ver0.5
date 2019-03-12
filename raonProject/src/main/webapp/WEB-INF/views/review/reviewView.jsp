@@ -83,7 +83,7 @@
 		margin: 30px;
 		border: 1px solid #cccccc;
 		width: 250px;
-		height: 350px;
+		height: auto;
 		text-align: center;
 		font-size: 20px;
 		background: #eeeeee;
@@ -94,6 +94,9 @@
 	}
 	#btnList {
 		float: right;
+		border: 1px solid #cccccc;
+		background-color: #eeeeee;
+		color: green;
 	}
 	#btnSave {
 		display: inline;
@@ -122,6 +125,10 @@
  		margin-top: 20px; 
 		width: 100px;
 		height: 100px;
+	}
+	p img {
+		width: 150px;
+		height: 150px;
 	}
 </style>
 
@@ -163,6 +170,7 @@
 					<br>
 					<span><i style="color: blue;">4.8</i> / 5</span>
 				</i>
+				<br><br>
 			</div>
 			<!----------------------------------------- 프로필 끝 -------------------------------------->
 			
