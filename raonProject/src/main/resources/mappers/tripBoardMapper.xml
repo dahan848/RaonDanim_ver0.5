@@ -114,14 +114,18 @@ from (select
                         <if test="tripEnd!=null">
                            or b.TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
                         </if>
-                         <if test="userNick!=null">
+                         <if test="lName!=null">
                            <!-- or u.user_nick like ('%${userNick}%') -->
-                           or 1 = 1
+                            or u.USER_LNM like ('%${lName}%')
+                        </if>
+                         <if test="fName!=null">
+                           <!-- or u.user_nick like ('%${userNick}%') -->
+                           or u.USER_FNM like ('%${fName}%')
                         </if>
                         <if test="type==0">
                            or 1 = 1
                         </if>
-                       <!--이부분 수정 삭제를 위해 쿼리 수정함 리스트 안뽑히면 아마 이거 때문 -->
+                       <!--이부분 수정 삭제를 위해 쿼리 수정함 리스트 안뽑히면 아마 이거 때문 -잘뽑힘 -->
                   and TRIP_BOARD_ST = 0
                   <!--이부분 수정 삭제를 위해 쿼리 수정함  -->
                         order by b.TRIP_BOARD_KEY desc ))

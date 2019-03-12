@@ -8,11 +8,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc
+<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc
 &callback=initMap">
     </script>
-   <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script
+	src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
@@ -27,7 +28,6 @@
 	width: 100%;
 	margin-bottom: 30px;
 	padding: 0;
-	
 }
 
 #con2 {
@@ -36,7 +36,6 @@
 	margin-bottom: 30px;
 	padding: 0;
 }
-
 </style>
 
 <script type="text/javascript">
@@ -86,10 +85,51 @@
  			});
  		}
 	
+/*  		$("#type").on("blur", function() {
+ 			
+ 			var typeValue = $("#type").value();
+ 			alert(typeValue);
+ 			
+ 			var keywordDiv = $("#keywordDiv");
+ 			var keyword = $("<input type='text' class='form-control' id='keyword' placeholder='검색어를 입력하세요' name='keyword' style='width: 700px;'>");
+ 			var keyword2 = " <label for='email'>성:</label>" + 
+			"      <input type='text' class='form-control' id='lName' name='lName'>" + 
+			"      <label for='pwd'>이름:</label>" + 
+			"      <input type='text' class='form-control' id='fName' name='fName'>";
+			
+			keywordDiv.html("");
+ 			if(typeValue==4){
+ 				keyword2.appendTo(keywordDiv);
+ 			}else{
+ 				keyword.appendTo(keywordDiv);
+ 			}
+
+ 		}) */
+ 		
+	$("#searchType").on("change",function() {
+			
+			var typeValue = $("#searchType option:selected").val();
+			
+			var keywordDiv = $("#keywordDiv");
+			var keyword = $("<input type='text' class='form-control' id='keyword' placeholder='검색어를 입력하세요' name='keyword' style='width: 700px;'>");
+			var keyword2 = $(" <label for='email'>성:</label>" + 
+			"      <input type='text' class='form-control' id='lName' name='lName'>" + 
+			"      <label for='pwd'>이름:</label>" + 
+			"      <input type='text' class='form-control' id='fName' name='fName'>");
 		
+		keywordDiv.html("");
+			if(typeValue==4){
+				keyword2.appendTo(keywordDiv);
+			}else{
+				keyword.appendTo(keywordDiv);
+			}
+			
+		});
+
 		
 	}
 </script>
+
 </head>
 <body>
 	<!-- 인클루드 심플 헤더 -->
@@ -97,6 +137,8 @@
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/trip/trip-navbar.jsp"></jsp:include>
 	<!-- 인클루드 심플 헤더 END -->
+
+
 
 	<!--바디 시작  -->
 	<div class="container" id="con1">
@@ -109,8 +151,10 @@
 
 
 		<div class="container" id="con2">
-		
-			<h1><small><b>여행자들이 선택한 여행지들</b></small></h1>
+
+			<h1>
+				<small><b>여행자들이 선택한 여행지들</b></small>
+			</h1>
 
 			<!--맵자리 시작  -->
 			<div style="height: 500px; border: 1px solid black;" id="map"></div>
@@ -122,8 +166,9 @@
 			<div id="search" class="collapse" style="border: 1px solid;">
 				<div class="container" style="height: 100px;">
 					<form class="form-inline" action="list" method="get">
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-						<br> <br> <select class="form-control" name="type"
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}"> <br> <br> <select
+							class="form-control" name="type" id="searchType"
 							style="width: 100px;">
 							<option value="0">검색</option>
 							<option value="1">제목</option>
@@ -132,10 +177,12 @@
 							<option value="4">여행자</option>
 						</select>
 
-						<div class="form-group">
+
+
+						<div class="form-group" id="keywordDiv">
 							<input type="text" class="form-control" id="keyword"
 								placeholder="검색어를 입력하세요" name="keyword" style="width: 700px;">
-	
+
 						</div>
 
 						<button type="submit" class="btn btn-default">검색</button>
@@ -176,32 +223,25 @@
 
 					<c:forEach items="${tripData.tripBoardList}" var="list">
 						<tr>
-							<td>
-						<%-- 	<c:if test="${list.USER_PROFILE_PIC=='n'}">
-									<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
-										<img alt="프로필이미지" src="${contextPath}/img/trip_Profile.png">
-									</a>
-								</c:if> --%>
-								
-							<c:choose>
-		              			<c:when test="${list.USER_PROFILE_PIC eq 'n'}">
-		              				<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
-		              					<img src="${contextPath}/img/trip_Profile.png">
-		              				</a>
-		              				
-		              			</c:when>
-		              			<c:otherwise>
-			              			<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
-			              				<img src="${contextPath}/image?fileName=${list.USER_PROFILE_PIC}" style="width:30px;height: 30px;">
-			              			</a>  				
-		              			</c:otherwise>
-		              		</c:choose>   
-								
-								
-								</td>
+							<td><c:choose>
+									<c:when test="${list.USER_PROFILE_PIC eq 'n'}">
+										<a href="#" rel="popover" data-placement="bottom"
+											data-popover-content="#chatList"> <img
+											src="${contextPath}/img/trip_Profile.png">
+										</a>
+
+									</c:when>
+									<c:otherwise>
+										<a href="#" rel="popover" data-placement="bottom"
+											data-popover-content="#chatList"> <img
+											src="${contextPath}/image?fileName=${list.USER_PROFILE_PIC}"
+											style="width: 30px; height: 30px;">
+										</a>
+									</c:otherwise>
+								</c:choose></td>
 							<td>${list.USER_LNM}${list.USER_FNM}</td>
-							<td>
-								<a href="view?boardKey=${list.TRIP_BOARD_KEY}&userNum=${list.USER_NUM}">${list.TRIP_BOARD_TITLE}</a>
+							<td><a
+								href="view?boardKey=${list.TRIP_BOARD_KEY}&userNum=${list.USER_NUM}">${list.TRIP_BOARD_TITLE}</a>
 							</td>
 
 
@@ -242,17 +282,17 @@
 
 
 	</div>
-<!--팝오버  -->
-<div id="chatList" class="hide">
-	This is a popover list:
-	<ul>
-		<li>List item 1</li>
-		<li>List item 2</li>
-		<li>List item 3</li>
-	</ul>
-</div>
+	<!--팝오버  -->
+	<div id="chatList" class="hide">
+		This is a popover list:
+		<ul>
+			<li>List item 1</li>
+			<li>List item 2</li>
+			<li>List item 3</li>
+		</ul>
+	</div>
 
-<!--팝오버 끝  -->
+	<!--팝오버 끝  -->
 	<!--바디끝  -->
 
 	<!-- 인클루드-푸터 -->

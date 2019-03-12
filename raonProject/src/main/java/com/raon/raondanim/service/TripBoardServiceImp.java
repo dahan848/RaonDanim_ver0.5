@@ -74,6 +74,9 @@ public class TripBoardServiceImp implements TripBoardService {
 		int pageNum = (int) params.get("pageNum");
 		int type = (int) params.get("type");
 		String keyword = (String) params.get("keyword");
+		String lName = (String) params.get("lName");
+		String fName = (String) params.get("fName");
+		
 
 		int startRow = PER_PAGE * (pageNum - 1) + 1;
 		int endRow = PER_PAGE * pageNum;
@@ -99,7 +102,8 @@ public class TripBoardServiceImp implements TripBoardService {
 		} else if (type == 3) {
 			params.put("tripEnd", keyword);
 		} else if (type == 4) {
-			params.put("userNick", keyword);
+			params.put("lName", lName);
+			params.put("fName", fName);
 		} 
 		//System.out.println("서비스 파라메터 확인  params :"+params);
 		

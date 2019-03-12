@@ -42,7 +42,9 @@ public class TripController {
 	public String boardList(@RequestParam(defaultValue="1")int pageNum,
 			@RequestParam(defaultValue="0") int type,
 			@RequestParam(required=false) String keyword,
-			Model model) {
+			Model model,
+			@RequestParam(required=false) String lName,
+			@RequestParam(required=false) String fName) {
 		System.out.println("list 요청받음");
 		Map<String, Object> params = new HashMap<>();
 		
@@ -54,6 +56,8 @@ public class TripController {
 		params.put("pageNum", pageNum);
 		params.put("type", type);
 		params.put("keyword", keyword);
+		params.put("lName", lName);
+		params.put("fName", fName);
 		Map<String, Object> tripData = tripService.getTenBoardPage(params);
 		//System.out.println("list요청  tripdata 검사:"+tripData);
 		model.addAttribute("tripData", tripData);
