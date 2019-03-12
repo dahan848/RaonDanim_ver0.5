@@ -1,8 +1,11 @@
 package com.raon.raondanim.service;
 
+
 public interface securityUserService {
-    void countFailure(String username); //로그인 실패시 실패 카운트 증가 
-    int checkFailureCount(String username); //로그인 시도하는 사용자의 로그인 실패 회수 체크
-    void disabledUsername(String username); //사용자 계정 비활성화 
-    void updateFailureCountReset(String username); //로그인 성공시 로그인 실패 회수 초기화 : 0
+    void countFailure(String username); //濡쒓렇�씤 �떎�뙣�떆 �떎�뙣 移댁슫�듃 利앷� 
+    int checkFailureCount(String username); //濡쒓렇�씤 �떆�룄�븯�뒗 �궗�슜�옄�쓽 濡쒓렇�씤 �떎�뙣 �쉶�닔 泥댄겕
+    void disabledUsername(String username); //�궗�슜�옄 怨꾩젙 鍮꾪솢�꽦�솕 
+    void updateFailureCountReset(String username); //濡쒓렇�씤 �꽦怨듭떆 濡쒓렇�씤 �떎�뙣 �쉶�닔 珥덇린�솕 : 0
+    
+    
 }

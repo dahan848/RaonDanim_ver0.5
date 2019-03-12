@@ -240,27 +240,27 @@ img {
 					<div class="photo_all">
 						<div class="filebox_big">
 							<label for="cma_file4" id="cma_image4" class="filebox_big_laber">사진
-								인증샷 업로드</label> <input type="file" name="cma_file4" id="cma_file4"
+								인증샷 업로드</label> <input type="file" name="files" id="cma_file4"
 								accept="image/*" capture="camera" id="filebox_big"
 								onchange="getThumbnailPrivew4(this,$('#cma_image4'))" /> <br />
 						</div>
 						<div class="filebox">
 							<label for="cma_file" id="cma_image">사진 인증샷 업로드</label> <input
-								type="file" name="cma_file" id="cma_file" accept="image/*"
+								type="file" name="files" id="cma_file" accept="image/*"
 								capture="camera"
 								onchange="getThumbnailPrivew(this,$('#cma_image'))" /> <label
 								for="cma_file1" id="cma_image1">사진 인증샷 업로드</label> <input
-								type="file" name="cma_file1" id="cma_file1" accept="image/*"
+								type="file" name="files" id="cma_file1" accept="image/*"
 								capture="camera"
 								onchange="getThumbnailPrivew1(this,$('#cma_image1'))" /> <br />
 						</div>
 						<div class="filebox">
 							<label for="cma_file2" id="cma_image2">사진 인증샷 업로드</label> <input
-								type="file" name="cma_file2" id="cma_file2" accept="image/*"
+								type="file" name="files" id="cma_file2" accept="image/*"
 								capture="camera"
 								onchange="getThumbnailPrivew2(this,$('#cma_image2'))" /> <label
 								for="cma_file3" id="cma_image3">사진 인증샷 업로드</label> <input
-								type="file" name="cma_file3" id="cma_file3" accept="image/*"
+								type="file" name="files" id="cma_file3" accept="image/*"
 								capture="camera"
 								onchange="getThumbnailPrivew3(this,$('#cma_image3'))" /> <br />
 						</div>

@@ -140,6 +140,7 @@ textarea {
 								<input type="hidden" value="${motel_city_ko }" name="motel_city_ko">
 								<input type="hidden" value="${motel_nation_en }" name="motel_nation_en">
 								<input type="hidden" value="${motel_nation_ko }" name="motel_nation_ko">
+								<input type="hidden" value="${motel_photoFiles }" name="motel_photoFiles">
 							<div class="form_all" style="width: 90%; height: 90%;">
 								<h4>
 									숙소 대여 가능한 기간을 설정해 주세요.<br>

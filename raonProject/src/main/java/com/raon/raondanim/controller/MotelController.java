@@ -1,6 +1,7 @@
 package com.raon.raondanim.controller;
 
-import java.util.HashMap;
+
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -117,10 +118,13 @@ public class MotelController {
 	
 	@RequestMapping(value="/registor_intro", method = RequestMethod.POST)
 	public String registor_step4(@RequestParam Map<String, Object> param, Model model, 
-			MultipartFile cma_file,MultipartFile cma_file1,MultipartFile cma_file2,MultipartFile cma_file3,MultipartFile cma_file4) {
+			List<MultipartFile> files) {
+			//MultipartFile cma_file,MultipartFile cma_file1,MultipartFile cma_file2,MultipartFile cma_file3,MultipartFile cma_file4
+
 		System.out.println("step4 ¡¯¿‘");
+		System.out.println("file : " + files);
 		System.out.println(param);
-		
+
 		model.addAttribute("motel_city_en", param.get("motel_city_en"));
 		model.addAttribute("motel_city_ko", param.get("motel_city_ko"));
 		model.addAttribute("motel_nation_en", param.get("motel_nation_en"));
@@ -132,14 +136,14 @@ public class MotelController {
 		model.addAttribute("motel_room", param.get("motel_room"));
 		model.addAttribute("motel_bathroom", param.get("motel_bathroom"));
 		model.addAttribute("motel_address", param.get("motel_address"));
-		
+		model.addAttribute("motel_photoFiles", files);
 		
 		model.addAttribute("registor", param);
-		System.out.println("cma_file : " + cma_file);
-		System.out.println("cma_file1 : " + cma_file1);
-		System.out.println("cma_file2 : " + cma_file2);
-		System.out.println("cma_file3 : " + cma_file3);
-		System.out.println("cma_file4 : " + cma_file4);
+//		System.out.println("cma_file : " + cma_file);
+//		System.out.println("cma_file1 : " + cma_file1);
+//		System.out.println("cma_file2 : " + cma_file2);
+//		System.out.println("cma_file3 : " + cma_file3);
+//		System.out.println("cma_file4 : " + cma_file4);
 		
 		return "motel/registor_intro";
 	}
