@@ -15,7 +15,7 @@
 	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
 		<property name="url" value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE"/>
-		<property name="username" value="seb"/>
+		<property name="username" value="serebee"/>
 		<property name="password" value="8406"/>
 	</bean>
 	
@@ -65,6 +65,10 @@
 	</bean>
 	<bean id="accountsUserDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface" value="com.raon.raondanim.dao.AccountsUserDAO"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+	<bean id="searchUserDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.raon.raondanim.dao.SearchUserDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
 

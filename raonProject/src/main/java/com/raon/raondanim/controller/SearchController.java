@@ -1,7 +1,12 @@
 package com.raon.raondanim.controller;
 
+import java.io.BufferedReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.raon.raondanim.service.SearchService;
 
@@ -28,7 +34,6 @@ public class SearchController {
 		params.put("page", page);
 		
 		model.addAllAttributes(service.getViewData(params));
-		System.out.println(model.addAllAttributes(service.getViewData(params)));
 		
 		logger.info("search : 화면 요청받음");
 		return "search/main";
@@ -36,6 +41,7 @@ public class SearchController {
 	
 	@RequestMapping("/test")
 	public String test() {
-		return "search/test";
+		return null;
 	}
+
 }

@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <% request.setAttribute("contextPath", request.getContextPath()); %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +12,12 @@
 <link rel="stylesheet" href="${contextPath}/css/fastselect.css"/>
 <!-- fastselect CSS END -->
 
+<!-- select2 CSS -->
+<link rel="stylesheet" href="${contextPath}/css/select2.css"/>
+<!-- select2 CSS END -->
+
 </head>
+
 <body>
 	<!-- NAV BAR -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
@@ -27,6 +31,11 @@
 	<!-- SWEETALERT JS -->
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<!-- SWEETALERT JS END -->
+	
+	<!-- select2 JS -->
+	<script src="${contextPath}/js/select2.js"></script>
+	<script src="${contextPath}/js/i18n/ko.js"></script>
+	<!-- select2 JS END -->
 	
 	<!-- 상단 검색 섹션 -->
 	<div class="main-container">
@@ -92,9 +101,26 @@
 											<div class="form-group">
 												<label class="col-sm-3 control-label" for="id_city">거주 도시</label>
 												<div class="col-sm-9">
-													<input class="form-control" id="select-city" type="text" data-load-once="true" name="city"/>
+													<select class="form-control select-city" name="city">
+													<!-- placeholder 사용을 위한 option blank -->
+													<option></option>
+													</select>
 													<script>
-														$('#select-city').fastselect();
+													$(document).ready(function(){
+														$(".select-city").select2({
+															allowClear: true,
+															ajax:{
+																url: "/search/test",
+																dataType: 'json',
+																delay: 250,
+																data: function(params){
+																	
+																}
+															},
+															
+															placeholder: "선택"
+														});					
+													});
 													</script>
 												</div>
 											</div>
