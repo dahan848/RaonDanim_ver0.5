@@ -49,6 +49,7 @@ public interface TripBoardService {
 	
 	//게시판 테이블 update rel city 상태값 0으로 바꾼후 인설트
 	public boolean totalUpdate(TripBoard tripBoard, String tripCity);
-	
+	//게시판 조회수 증가
+	public boolean incrementViews(int boardKey);
 	
 }

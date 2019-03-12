@@ -286,7 +286,11 @@ SET REL_ST = 1
 where REL_KEY = #{num}
 </update>
 
-
+<update id="incrementViews" parameterType="int">
+update TRIP_BOARD_TB
+set TRIP_BOARD_READCOUNT = TRIP_BOARD_READCOUNT+1
+where TRIP_BOARD_KEY = #{boardKey}
+</update>
 
 
 </mapper>

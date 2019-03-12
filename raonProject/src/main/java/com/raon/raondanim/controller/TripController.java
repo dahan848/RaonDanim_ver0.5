@@ -3,6 +3,10 @@ package com.raon.raondanim.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +14,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
-import com.raon.raondanim.dao.TripBoardDao;
+
 import com.raon.raondanim.model.TripBoard;
-import com.raon.raondanim.model.TripCity;
+
 import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.AccountsService;
 import com.raon.raondanim.service.TripBoardService;
@@ -51,7 +55,7 @@ public class TripController {
 		params.put("type", type);
 		params.put("keyword", keyword);
 		Map<String, Object> tripData = tripService.getTenBoardPage(params);
-		System.out.println("list요청  tripdata 검사:"+tripData);
+		//System.out.println("list요청  tripdata 검사:"+tripData);
 		model.addAttribute("tripData", tripData);
 		//지도 찍을 위도경도인데 컬럼이 구글에서 받는 형식과 다르고 자바 객체형태는 = 으로 되있다 보니까 json으로 일단 변환시켜서 보내봄
 //		JSONArray tripLatLng = new JSONArray(tripService.getListlatlng());
@@ -71,18 +75,62 @@ public class TripController {
 	}
 
 	@RequestMapping("/view")
-	public String boardView(@RequestParam(required=false) int boardKey, Model model,Authentication authentication) {
+	public String boardView(@RequestParam(required=false) int boardKey,
+			Model model,
+			Authentication authentication,
+			HttpServletRequest req,
+			HttpServletResponse res) {
 		System.out.println(" view 요청받음");
 		
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		int user_Num = user.getUser_num();
+		
+		//조회수 1 증가
+		//쿠키를 사용해서 조회수 무한증가 막아야함
+		Cookie[] cookies = req.getCookies();
+		
+		int viewsCount=0;
+
+		if(cookies!=null) {
+			
+			for(int i=0;i<cookies.length;i++) {
+			
+				if(cookies[i].getName().equals("boardKey"+boardKey)) {
+					System.out.println(cookies[i].getName());
+					viewsCount = 0;
+					break;
+				}else {
+					
+					Cookie cookie = new Cookie("boardKey"+boardKey, String.valueOf(boardKey));
+					//쿠키 수명 60초 60분 24시간
+					cookie.setMaxAge(60*60*24);
+					// /로 시작되는 모든 경로에서 쿠키 생성
+				    cookie.setPath("/");
+					res.addCookie(cookie);
+					
+					viewsCount += 1;
+				}
+			}
+		}
+		
+	/*	System.out.println("쿠키배열 길이"+cookies.length);
+		for(int i=0;i<cookies.length;i++) {
+			System.out.println("쿠키배열 내용"+cookies[i].getName());	
+		}
+		System.out.println("컨트롤러/뷰/뷰카운트 :"+viewsCount);*/
+		
+		if(viewsCount>0) {
+			tripService.incrementViews(boardKey);
+		}
+		
+
 		
 		model.addAttribute("userNum", user_Num);
 		model.addAttribute("boardInfo", tripService.getTripBoardOneInfo(boardKey));
 		model.addAttribute("cityInfo", tripService.getTripBoardCityOneInfo(boardKey));
 	
 //		System.out.println("뷰 요청 테스트 게시판 정보: "+tripService.getTripBoardOneInfo(boardKey));
-		System.out.println("뷰 요청 테스트 도시 정보: "+tripService.getTripBoardCityOneInfo(boardKey));
+//		System.out.println("뷰 요청 테스트 도시 정보: "+tripService.getTripBoardCityOneInfo(boardKey));
 
 		return "trip/TripBoardView";
 	}

@@ -53,5 +53,6 @@ public interface TripBoardDao {
 	public Map<String, Object> getTripBoardOneInfo(int boardKey);
 	public List<Map<String, Object>> getTripBoardCityOneInfo(int boardKey);
 	
-
+	//조회수 1증가
+	public int incrementViews(int boardKey);
 }

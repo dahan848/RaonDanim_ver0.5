@@ -433,6 +433,22 @@ public class TripBoardServiceImp implements TripBoardService {
 		
 	}
 
+	@Override
+	public boolean incrementViews(int boardKey) {
+		//조회수 1증가 메소드
+		
+		if(tripDao.incrementViews(boardKey)>0) {
+			//조회수 증가 성공
+			//System.out.println("조회수 증가");
+			return true;
+		}else {
+			//조회수 증가 실패
+			return false;
+		}
+		
+		
+	}
+
 
 
 }

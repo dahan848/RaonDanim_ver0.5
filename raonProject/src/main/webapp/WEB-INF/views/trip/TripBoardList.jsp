@@ -124,7 +124,7 @@
 					<form class="form-inline" action="list" method="get">
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 						<br> <br> <select class="form-control" name="type"
-							style="width: 80px;">
+							style="width: 100px;">
 							<option value="0">검색</option>
 							<option value="1">제목</option>
 							<option value="2">출발일</option>
@@ -135,6 +135,7 @@
 						<div class="form-group">
 							<input type="text" class="form-control" id="keyword"
 								placeholder="검색어를 입력하세요" name="keyword" style="width: 700px;">
+	
 						</div>
 
 						<button type="submit" class="btn btn-default">검색</button>
@@ -175,11 +176,29 @@
 
 					<c:forEach items="${tripData.tripBoardList}" var="list">
 						<tr>
-							<td><c:if test="${list.USER_PROFILE_PIC=='n'}">
+							<td>
+						<%-- 	<c:if test="${list.USER_PROFILE_PIC=='n'}">
 									<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
 										<img alt="프로필이미지" src="${contextPath}/img/trip_Profile.png">
 									</a>
-								</c:if></td>
+								</c:if> --%>
+								
+							<c:choose>
+		              			<c:when test="${list.USER_PROFILE_PIC eq 'n'}">
+		              				<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
+		              					<img src="${contextPath}/img/trip_Profile.png">
+		              				</a>
+		              				
+		              			</c:when>
+		              			<c:otherwise>
+			              			<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
+			              				<img src="${contextPath}/image?fileName=${list.USER_PROFILE_PIC}" style="width:30px;height: 30px;">
+			              			</a>  				
+		              			</c:otherwise>
+		              		</c:choose>   
+								
+								
+								</td>
 							<td>${list.USER_LNM}${list.USER_FNM}</td>
 							<td>
 								<a href="view?boardKey=${list.TRIP_BOARD_KEY}&userNum=${list.USER_NUM}">${list.TRIP_BOARD_TITLE}</a>
