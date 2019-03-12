@@ -124,5 +124,15 @@
 			value="com.raon.raondanim.dao.ReviewBoardDao"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
+	
+	<bean id="reviewReplyDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.raon.raondanim.dao.ReviewReplyDao"></property>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+	</bean>
+
+
+
+
 
 </beans>

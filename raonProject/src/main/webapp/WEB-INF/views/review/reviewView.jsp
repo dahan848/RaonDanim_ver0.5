@@ -18,8 +18,66 @@
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
   
+<script type="text/javascript">
+	$(function() {
+		
+		createReplyList();
+		
+		$("#replyForm").on("submit", function () {
+			var d = $(this).serialize();
+			$.ajax({
+				url : "${contextPath}/reply/reply",
+				data : d,
+				type : "post",
+				datatype : "json",
+				success : function(data) {
+					if(data) {
+						createReplyList();
+						$("#inputReply").val("");
+					}
+				}
+			});
+			return false;
+		});
+	});
+	
+	function createReplyList() {
+		var replyTable = $("#replies");
+		$("#replies tr:gt(0)").remove();
+		$.ajax({
+			url : "${contextPath}/reply/all/${review.REVIEW_NUM}",
+			type : "get",
+			dataType : "json",
+			success : function(data) {
+				for(var i in data) {
+					var tr = $("<tr>");
+					var href = $("<a href='#' style='text-decoration: none;'>신고</a>");
+					var btnUpdate = $("<button type='button' class='btn btn-primary' id='btnUpdate' onclick='#'>수정</button>");
+					var btnDelete = $("<button type='button' class='btn btn-primary' id='btnDelete' onclick='#'>삭제</button>");
+					$("<td style='text-align: center; border: 1px solid #cccccc;'>").text(data[i].USER_LNM+data[i].USER_FNM).appendTo(tr);
+					$("<td style='border: 1px solid #cccccc;'>").text(data[i].REV_REP_CONTENT).appendTo(tr);
+					$("<td style='text-align: center; border: 1px solid #cccccc;'>").append(btnUpdate).appendTo(tr);
+					$("<td style='text-align: center; border: 1px solid #cccccc;'>").append(btnDelete).appendTo(tr);
+					$("<td style='text-align: center; border: 1px solid #cccccc;'>").append(href).appendTo(tr);
+					tr.appendTo(replyTable);
+				}
+			}
+		});
+	}
+</script>
+
 
 <style type="text/css">
+	#btnUpdate{
+		background-color: #eeeeee;
+		color: green;
+		border: 1px solid #cccccc;
+	}
+	#btnDelete{
+		background-color: #eeeeee;
+		color: green;
+		border: 1px solid #cccccc;
+	}
 	#box {
   		float: left;  
 		margin: 30px;
@@ -150,7 +208,7 @@
 			<table class="table table-striped" id="replies">
       				<tr style="border: 1px solid #cccccc;">
         				<th style="width: 130px; border: 1px solid #cccccc; text-align: center;">닉네임</th>
-        				<th style="width: 900px; border: 1px solid #cccccc; text-align: center;">댓글</th>
+        				<th style="width: 700px; border: 1px solid #cccccc; text-align: center;">댓글</th>
         				<th style="border: 1px solid #cccccc; text-align: center;">수정</th>
         				<th style="border: 1px solid #cccccc; text-align: center;">삭제</th>
         				<th style="float: right;"></th>
@@ -203,8 +261,9 @@
   			<!------------ 댓글 달기 시작 ------------>
   			<form name="replyForm" id="replyForm" method="post" action="#">
   				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-  				<input type="hidden" name="board_num" value="${review.NUM}">
-  				<input type="text" class="form-control form-control-sm" placeholder="댓글을 입력하세요" id="inputReply" name="replycontent">
+  				<input type="hidden" name="REVIEW_NUM" value="${review.REVIEW_NUM}">
+  				<input type="hidden" name="USER_NUM" value="${review.USER_NUM}">
+  				<input type="text" class="form-control form-control-sm" placeholder="댓글을 입력하세요" id="inputReply" name="REV_REP_CONTENT">
 				<input type="submit" class="btn btn-primary" id="btnSave" value="등록">
 			</form>
 			<!------------ 댓글 달기 끝 ------------>

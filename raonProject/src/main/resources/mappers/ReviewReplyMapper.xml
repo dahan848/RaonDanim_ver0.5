@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.raon.raondanim.dao.ReviewReplyDao">
+	
+	<insert id="insertReply" parameterType="map">
+		INSERT
+		  INTO REVIEW_REPLY_TB
+		  		(RE_REPLY_NUM, REVIEW_NUM, USER_NUM, REV_REP_CONTENT, RE_REPLY_DATE, RE_REPLY_ST)
+		VALUES (REVIEW_REPLY_TB_SEQ.nextval, #{REVIEW_NUM}, #{USER_NUM}, #{REV_REP_CONTENT}, SYSDATE, 0)
+	</insert>
+	
+	<update id="updateReply" parameterType="map">
+		UPDATE 		REVIEW_REPLY_TB
+		   SET 		REV_REP_CONTENT = #{REV_REP_CONTENT}
+		WHERE 		RE_REPLY_NUM = #{RE_REPLY_NUM}
+	</update>
+	
+	<delete id="deleteReply" parameterType="int">
+		DELETE
+		  FROM 	REVIEW_REPLY_TB
+		 WHERE 	RE_REPLY_NUM = #{RE_REPLY_NUM}
+	</delete>
+
+	<select id="selectAll" resultType="map">
+		SELECT 	*  
+		  FROM  REVIEW_REPLY_TB	
+	</select>
+	
+	<select id="selectOne" parameterType="int" resultType="map">
+		SELECT *
+		  FROM REVIEW_REPLY_TB
+		 WHERE RE_REPLY_NUM = #{RE_REPLY_NUM}
+	</select>
+	
+	<select id="selectByReviewNum" parameterType="int" resultType="map">
+		SELECT r.RE_REPLY_NUM,
+			   r.REVIEW_NUM,
+			   r.USER_NUM,
+			   r.REV_REP_CONTENT,
+			   r.RE_REPLY_DATE,
+			   r.RE_REPLY_ST,
+			   u.USER_FNM,
+			   u.USER_LNM,
+			   u.USER_PW
+		  FROM REVIEW_REPLY_TB r left outer join USER_TB u
+		    ON  r.USER_NUM = u.USER_NUM
+		 WHERE REVIEW_NUM = #{REVIEW_NUM} 
+	</select>
+	
+	<select id="selectByUserNum" parameterType="int" resultType="map">
+		SELECT *
+		  FROM REVIEW_REPLY_TB
+		 WHERE USER_NUM = #{USER_NUM}
+	</select>
+</mapper>
