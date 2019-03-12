@@ -7,8 +7,10 @@ public interface ReviewBoardService {
 	public boolean insertReview(Map<String, Object> param);
 	public boolean updateReview(Map<String, Object> params);
 	public boolean deleteReview(int num);
-	//user key를 가지고 user의 정보까지 포함한 정보 select
+	//USER_NUM 으로 select
 	public Map<String, Object> selectOne(int num);
+	//REVIEW_NUM 으로 select
+	public Map<String, Object> selectReviewOne(int num);
 	public List<Map<String, Object>> selectAll();
 	//조회수 증가
 	public Map<String, Object> plusReadCount(int num);

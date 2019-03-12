@@ -53,7 +53,7 @@
 		 background: #eeeeee;
 	}
 	#userimg {
- 		background-image: url("${contextPath}/img/img02.jpg");   
+ 		background-image: url("${contextPath}/img/user.jpg");   
 		background-repeat: no-repeat;
 		background-position: bottom;
 		background-size: cover;
@@ -89,28 +89,28 @@
 			<div class="box" id="box">
 				<div id="userimg"></div>
 				<br>
-				<a>${review.USER_ID}</a>
+				<span>${review.USER_LNM}${review.USER_FNM}</span>
 				<br><br>
 				<span>여행지 : <b>${review.REV_DESTINATION}</b></span>
 				<br><br>
 				<i class="fas fa-home">
 					<br>
-					<a>숙소 평점</a>
+					<span>숙소 평점</span>
 					<br>
-					<a><i style="color: blue;">4.2</i> / 5</a>
+					<span><i style="color: blue;">4.2</i> / 5</span>
 				</i>
 				<i class="fas fa-camera" style="margin-left: 20px;">
 					<br>
-					<a>후기 평점</a>
+					<span>후기 평점</span>
 					<br>
-					<a><i style="color: blue;">4.8</i> / 5</a>
+					<span><i style="color: blue;">4.8</i> / 5</span>
 				</i>
 			</div>
 			<!----------------------------------------- 프로필 끝 -------------------------------------->
 			
 			<h3>
 				<i class="fas fa-cloud" style="font-size:38px;color:aqua;"></i>
-				${review.USER_ID}님의 여행후기입니다
+				${review.USER_LNM}${review.USER_FNM}님의 여행후기입니다
 			</h3>
 			
 			<button type="button" class="btn btn-primary" id="btnList" onclick="location.href='reviewMain'">후기 목록</button>

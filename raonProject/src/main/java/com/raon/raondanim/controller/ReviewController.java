@@ -40,8 +40,12 @@ public class ReviewController {
 	
 	//여행후기 작성 FORM
 	@RequestMapping("/writeForm")
-	public String writeForm(Model model) {
+	public String writeForm(Model model,
+			Authentication authentication) {
 		System.out.println("여행후기작성");
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		int userNum = user.getUser_num();
+		model.addAttribute("userNum", userNum);
 		return "review/reviewWrite";
 	}
 	
@@ -52,7 +56,10 @@ public class ReviewController {
 			@RequestParam(value="REV_DESTINATION") String REV_DESTINATION,
 			@RequestParam(value="RE_CONTENT") String RE_CONTENT,
 //			@PathVariable("USER_NUM") int USER_NUM,
-//			@RequestParam(value="USER_NUM") int USER_NUM,
+			@RequestParam(value="userNum") int userNum,
+//			@RequestParam(value="RE_ST") int RE_ST,
+//			@RequestParam(value="RE_COUNT") int RE_COUNT,
+//			@RequestParam(value="RE_REG_DATE") int RE_REG_DATE,
 			RedirectAttributes ra
 			) {
 		System.out.println("여행 후기 작성 중...");
@@ -61,6 +68,9 @@ public class ReviewController {
 		review.put("REV_TITLE", REV_TITLE);
 		review.put("REV_DESTINATION", REV_DESTINATION);	
 		review.put("RE_CONTENT", RE_CONTENT);
+		review.put("USER_NUM", userNum);
+		
+		System.out.println("후기 내용 : " + review);
 		
 		if(reService.insertReview(review)) {
 			System.out.println("작성 성공");
@@ -68,7 +78,7 @@ public class ReviewController {
 		} else {
 			System.out.println("작성 실패");
 		}
-		return "redirect:reviewView";
+		return "redirect:reviewMain";
 	}
 	
 	//여행 후기 상세 페이지
@@ -77,18 +87,14 @@ public class ReviewController {
 				Model model,
 //				@RequestParam(value="num") int num,
 //				int num,
-				HttpServletRequest request,
-				Authentication authentication
+				HttpServletRequest request
 				) {
 			System.out.println("여행 후기 상세 보기");
 			String num = request.getParameter("num");
 			int intNum = Integer.parseInt(num);
-			System.out.println(num);
-			customUserDetails user = (customUserDetails) authentication.getPrincipal();
-			Map<String, Object> rev = reService.selectOne(intNum);
-			
-			System.out.println(rev);
-			
+//			System.out.println(num);
+			Map<String, Object> rev = reService.selectReviewOne(intNum);
+//			System.out.println(rev);
 			model.addAttribute("review", rev);
 			return "review/reviewView"; 
 		}

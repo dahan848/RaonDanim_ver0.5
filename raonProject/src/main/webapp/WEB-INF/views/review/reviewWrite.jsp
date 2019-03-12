@@ -31,6 +31,7 @@
 	
 	<form action="write" method="post" id="write">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+	<input type="hidden" name="userNum" value="${userNum}">
 		<div class="main-container">
 			<section id="section-profile-update" class="bg-gray">
 			<div class="container">

@@ -13,10 +13,24 @@
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
 
+<script type="text/javascript">
+	$(window).on("scroll",function() {
+		var scrollHeight = $(document).height();
+		var scrollPosition = $(window).height() + $(window).scrollTop();
+		
+		if(scrollPosition > scrollHeight - 300) {
+			$("#scroll").append('<div class="box" id="box"></div>');
+		}
+	});
+</script>
+
 <style type="text/css">
 	#upload {
 		float: right;
 		margin-right: 15px;
+		background-color: #eeeeee;
+		color: green;
+		border: 1px solid #cccccc;
 	}
 	#box {
  		float: left; 
@@ -74,6 +88,7 @@
 				<input type="button" onclick="location.href='writeForm'" class="btn btn-primary" id="upload" value="후기 올리기">
 				<br><br>			
 				
+				<div id="scroll">
 				<!------------ 회원 프로필 화면 시작 ------------>
 				<c:forEach items="${review}" var="review" varStatus="status">
 					<div class="box" id="box">
@@ -84,11 +99,12 @@
 							<br>
 							<span style="text-align: center; display: inline-block; text-decoration: none;">여행지 : <b>${review.REV_DESTINATION}</b></span>
 							<br>
-							<a href="reviewView?num=${review.USER_NUM}" style="text-align: center;">${review.REV_TITLE}</a>
+							<a href="reviewView?num=${review.REVIEW_NUM}" style="text-align: center;">${review.REV_TITLE}</a>
 						</div>
 					</div>		
 				</c:forEach>
 				<!------------ 회원 프로필 화면 끝 ------------>
+				</div>
 			
 				<!------------ 화면 맨 위로 시작 ------------>
 				<div style="position: fixed; bottom: 30px; right: 300px;">

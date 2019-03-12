@@ -8,7 +8,10 @@ public interface ReviewBoardDao {
 	public int insertReview(Map<String, Object> param);
 	public int updateReview(Map<String, Object> param);
 	public int deleteReview(int num);
+	//USER_NUM 으로 select
 	public Map<String, Object> selectOne(int num);
+	//REVIEW_NUM 으로  select
+	public Map<String, Object> selectReviewOne(int num);
 	
 	public List<Map<String, Object>> selectByUserNum(int USER_NUM);
 	
