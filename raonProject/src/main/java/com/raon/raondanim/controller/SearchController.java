@@ -33,7 +33,6 @@ public class SearchController {
 		Gson gson = new Gson();
 		String nationality = gson.toJson(service.getNationalityList());
 		model.addAttribute("nationality", nationality);
-		System.out.println(nationality);
 		
 		logger.info("search : 화면 요청받음");
 		return "search/main";

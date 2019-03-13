@@ -33,7 +33,7 @@
 	<!-- SWEETALERT JS END -->
 	
 	<!-- select2 JS -->
-	<script src="${contextPath}/js/select2.js"></script>
+	<script src="${contextPath}/js/select2.min.js"></script>
 	<script src="${contextPath}/js/i18n/ko.js"></script>
 	<!-- select2 JS END -->
 	
@@ -101,36 +101,33 @@
 											<div class="form-group">
 												<label class="col-sm-3 control-label" for="id_city">거주 도시</label>
 												<div class="col-sm-9">
-													<select class="form-control select-city" name="city">
+													<select class="form-control select-city" name="city" id="city">
 													<!-- placeholder 사용을 위한 option blank -->
 													<option></option>
 													</select>
 													<script>
+													var $selectcity = $(".select-city");
+													var a = $selectcity.val();
+													console.log(a);
+													
 													$(document).ready(function(){
-														var aa = "ddd";
-														
 														$(".select-city").select2({
-															allowClear: true,
 															placeholder: "선택",
-															tokenSeparators: [',', ' '],
+															allowClear: true,
 															ajax:{
-																url: "/search/home",
-																dataType: 'get',
-																delay: 250,
+																url: '/json/city.json',
+																dataType: 'json',
 																data: function(params){
-																	return{
-																		console.log(params);
-																		q: params.term
-																	};
+																	console.log(params);
 																},
-																processResults: function(data){
+																processResults: function(data, params){
+																	console.log(data);
 																	return{
-																		results: [{id:1, text:'test'}]
+																		results: data.results
 																	};
-																},
-																cache: true
+																}
 															}
-														});					
+														});
 													});
 													</script>
 												</div>
