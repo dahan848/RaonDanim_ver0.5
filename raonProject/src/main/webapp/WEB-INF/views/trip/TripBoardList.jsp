@@ -110,7 +110,7 @@
 			"      <label for='pwd'>이름:</label>" + 
 			"      <input type='text' class='form-control' id='fName' name='fName'>");
 		
-		keywordDiv.html("");
+			keywordDiv.html("");
 			if(typeValue==4){
 				keyword2.appendTo(keywordDiv);
 			}else{
@@ -141,13 +141,15 @@
 			}else if(lName.val()!="" && fName.val()==""){
 				//이름 입력칸이 비었을때
 				return true;
-			}else{
+			}else if(lName.val()=="" && fName.val()==""){
 				//둘다 비었을때
 				swal({
 					icon:"warning",
 					text:"검색어를 입력해주세요.",
 				});
-				return false
+				return false;
+			}else{
+				return true;
 			}
 			
 			
@@ -226,6 +228,9 @@
 						<div class="form-group" id="keywordDiv">
 							<input type="text" class="form-control" id="keyword"
 								placeholder="검색어를 입력하세요" name="keyword" style="width: 700px;">
+							
+			   			    <input type="hidden" class='form-control' id='lName' name='lName'>			     			
+			     			<input type="hidden" class='form-control' id='fName' name='fName'>	
 
 						</div>
 
@@ -251,7 +256,7 @@
 							</h5></th>
 
 						<th><h5>
-								<b>여행스타일</b>
+								<b>여행스타일(아마도 삭제 예정)</b>
 							</h5></th>
 						<th><h5>
 								<b>동행가능</b>

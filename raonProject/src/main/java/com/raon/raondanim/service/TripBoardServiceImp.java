@@ -88,7 +88,7 @@ public class TripBoardServiceImp implements TripBoardService {
 		params.put("end", endRow);
 		params.put("type", type);
 		
-/*		System.out.println("서비스 파라메터 확인 pageNum :"+pageNum);
+		/*System.out.println("서비스 파라메터 확인 pageNum :"+pageNum);
 		System.out.println("서비스 파라메터 확인  type :"+type);
 		System.out.println("서비스 파라메터 확인  keyword :"+keyword);
 		System.out.println("서비스 파라메터 확인 start :"+startRow);
@@ -118,6 +118,17 @@ public class TripBoardServiceImp implements TripBoardService {
 		tripData.put("total", getTotalPage(params));
 		tripData.put("page", pageNum);
 		
+		
+		System.out.println("서비스 파라메터 확인 lName :"+lName);
+		System.out.println("서비스 파라메터 확인 fName :"+fName);
+		System.out.println("서비스 파라메터 확인 start :"+startRow);
+		System.out.println("서비스 파라메터 확인  end :"+endRow);
+		//System.out.println("서비스/페이징/start 확인 :"+getStartPage(pageNum));
+		//System.out.println("서비스/페이징/end 확인 :"+getEndPage(pageNum));
+		System.out.println("서비스/페이징/total 확인 :"+getTotalPage(params));
+		System.out.println("서비스/페이징/page 확인 :"+pageNum);
+		System.out.println("----------------------------------------------------------------");
+		System.out.println("서비스/페이징/tripBoardList 확인 :"+tripBoardList);
 
 		return tripData;
 	}

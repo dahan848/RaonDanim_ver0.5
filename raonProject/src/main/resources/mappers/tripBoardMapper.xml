@@ -138,26 +138,29 @@ where r between #{start} and #{end}
 <select id="getTotalCount" parameterType="map" resultType="int">
 
 select count(*)
-from TRIP_BOARD_TB
+from TRIP_BOARD_TB b join user_tb u
+on b.user_num = u.user_num
 where 1 = 0
 <if test="title!=null">
-   or TRIP_BOARD_TITLE like ('%${title}%')
+ or b.TRIP_BOARD_TITLE like ('%${title}%')
 </if>
 <if test="tripStart!=null">
-or TRIP_BOARD_START = to_date(#{tripStart},'yyyy/MM/dd')
+ or b.TRIP_BOARD_START = to_date(#{tripStart},'yyyy/MM/dd')
 </if>
 <if test="tripEnd!=null">
- or TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
+ or b.TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
 </if>
-<if test="userNick!=null">
- <!--  or user_nick like ('%${userNick}%') -->
- or 1 = 1
+<if test="lName!=null">
+ or u.USER_LNM like ('%${lName}%')
+</if>
+<if test="fName!=null">
+ or u.USER_FNM like ('%${fName}%')
 </if>
 <if test="type==0">
    or 1 = 1
 </if>
 <!--이부분 수정 삭제를 위해 쿼리 수정함 리스트 안뽑히면 아마 이거 때문 -->
-and TRIP_BOARD_ST = 0
+and b.TRIP_BOARD_ST = 0
 <!--이부분 수정 삭제를 위해 쿼리 수정함  -->
 </select>
 
