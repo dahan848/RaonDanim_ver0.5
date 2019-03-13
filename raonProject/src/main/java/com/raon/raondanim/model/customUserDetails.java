@@ -24,13 +24,12 @@ public class customUserDetails implements UserDetails {
     private Date user_reg_date; //가입일
     private Date user_last_login_time;	 	//마지막 로그인 
     private Date user_last_try_login_time;	//마지막 로그인 시도
-    private int user_failure_cnt; //로그인 실패 회수
+    private int user_failure_count; //로그인 실패 회수
     private String user_verify_code; //이메일 인증코드
     private int user_email_verify; 	 // 이메일 인증유무
     private int user_profile_st;	 //추가 프로필 작성 유무 
     
-    
-    private String user_nick;	//닉네임 
+    private String user_nationality; //국적
     private String user_nation; //거주 국가
     private String user_city; 	//거주 도시
     private String user_phone_num; 	//전화번호 
@@ -144,12 +143,12 @@ public class customUserDetails implements UserDetails {
 		this.user_last_try_login_time = user_last_try_login_time;
 	}
 
-	public int getUser_failure_cnt() {
-		return user_failure_cnt;
+	public int getUser_failure_count() {
+		return user_failure_count;
 	}
 
-	public void setUser_failure_cnt(int user_failure_cnt) {
-		this.user_failure_cnt = user_failure_cnt;
+	public void setUser_failure_count(int user_failure_count) {
+		this.user_failure_count = user_failure_count;
 	}
 
 	public String getUser_verify_code() {
@@ -174,14 +173,6 @@ public class customUserDetails implements UserDetails {
 
 	public void setUser_profile_st(int user_profile_st) {
 		this.user_profile_st = user_profile_st;
-	}
-
-	public String getUser_nick() {
-		return user_nick;
-	}
-
-	public void setUser_nick(String user_nick) {
-		this.user_nick = user_nick;
 	}
 
 	public String getUser_nation() {
@@ -264,19 +255,30 @@ public class customUserDetails implements UserDetails {
 		this.user_point = user_point;
 	}
 
-	
+	public String getUser_nationality() {
+		return user_nationality;
+	}
+
+	public void setUser_nationality(String user_nationality) {
+		this.user_nationality = user_nationality;
+	}
+
 	//toString
 	@Override
 	public String toString() {
 		return "customUserDetails [user_pw=" + user_pw + ", AUTHORITY=" + AUTHORITY + ", ENABLED=" + ENABLED + ", NAME="
 				+ NAME + ", user_num=" + user_num + ", user_id=" + user_id + ", user_fnm=" + user_fnm + ", user_lnm="
 				+ user_lnm + ", user_reg_date=" + user_reg_date + ", user_last_login_time=" + user_last_login_time
-				+ ", user_last_try_login_time=" + user_last_try_login_time + ", user_failure_cnt=" + user_failure_cnt
-				+ ", user_verify_code=" + user_verify_code + ", user_email_verify=" + user_email_verify
-				+ ", user_profile_st=" + user_profile_st + ", user_nick=" + user_nick + ", user_nation=" + user_nation
-				+ ", user_city=" + user_city + ", user_phone_num=" + user_phone_num + ", user_accom_st=" + user_accom_st
-				+ ", user_birth_date=" + user_birth_date + ", user_gender=" + user_gender + ", user_profile_pic="
-				+ user_profile_pic + ", user_with_avg=" + user_with_avg + ", user_motel_avg=" + user_motel_avg
-				+ ", user_point=" + user_point + "]";
+				+ ", user_last_try_login_time=" + user_last_try_login_time + ", user_failure_count="
+				+ user_failure_count + ", user_verify_code=" + user_verify_code + ", user_email_verify="
+				+ user_email_verify + ", user_profile_st=" + user_profile_st + ", user_nationality=" + user_nationality
+				+ ", user_nation=" + user_nation + ", user_city=" + user_city + ", user_phone_num=" + user_phone_num
+				+ ", user_accom_st=" + user_accom_st + ", user_birth_date=" + user_birth_date + ", user_gender="
+				+ user_gender + ", user_profile_pic=" + user_profile_pic + ", user_with_avg=" + user_with_avg
+				+ ", user_motel_avg=" + user_motel_avg + ", user_point=" + user_point + "]";
 	}
+
+	
+	
+
 }

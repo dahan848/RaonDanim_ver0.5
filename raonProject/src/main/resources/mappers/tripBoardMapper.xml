@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.raon.raondanim.dao.TripBoardDao">
+
+<insert id="insertBoard" parameterType="tripBoard">
+<selectKey order="BEFORE" keyProperty="trip_Board_Key" resultType="int">
+   select TRIP_BOARD_TB_SEQ.nextval from dual
+</selectKey>
+insert into TRIP_BOARD_TB
+   (TRIP_BOARD_KEY,
+   USER_NUM,
+   TRIP_BOARD_TITLE,
+   TRIP_BOARD_COUNTENT,
+   TRIP_BOARD_START,
+   TRIP_BOARD_END,
+   TRIP_BOARD_TOGETHER)
+values(#{trip_Board_Key},
+     #{user_Num},
+     #{trip_Board_Title},
+     #{trip_Board_Content},
+     #{trip_Board_Start},
+     #{trip_Board_End},
+     #{trip_Board_Together})
+</insert>
+
+<select id="selectOneByBoardKey" parameterType="int" resultType="tripBoard">
+
+select  TRIP_BOARD_KEY,
+      USER_NUM,
+       TRIP_BOARD_TITLE,
+        TRIP_BOARD_COUNTENT,
+       TRIP_BOARD_START,
+       TRIP_BOARD_END,
+       TRIP_BOARD_TOGETHER,
+       TRIP_BOARD_READCOUNT,
+       TRIP_BOARD_ST
+from TRIP_BOARD_TB
+where TRIP_BOARD_KEY = #{trip_Board_Key}
+
+</select>
+
+<select id="selectOneByUserNum" parameterType="int" resultType="tripBoard">
+
+select  TRIP_BOARD_KEY,
+      USER_NUM,
+       TRIP_BOARD_TITLE,
+        TRIP_BOARD_COUNTENT,
+       TRIP_BOARD_START,
+       TRIP_BOARD_END,
+       TRIP_BOARD_TOGETHER,
+       TRIP_BOARD_READCOUNT,
+       TRIP_BOARD_ST
+from TRIP_BOARD_TB
+where USER_NUM = #{num}
+
+</select>
+
+<select id="selectAll" resultType="tripBoard">
+
+select  TRIP_BOARD_KEY,USER_NUM,
+       TRIP_BOARD_TITLE,
+        TRIP_BOARD_COUNTENT,
+       TRIP_BOARD_START,
+       TRIP_BOARD_END,
+       TRIP_BOARD_TOGETHER,
+       TRIP_BOARD_READCOUNT,
+       TRIP_BOARD_ST
+from TRIP_BOARD_TB
+
+</select>
+
+<!-- 페이징쿼리 -->
+<select id="getTenBoardPage" parameterType="map" resultType="map">
+<!--관심사 희망 여행도시는 못뽑음 테이블 안만듬  -->
+select *
+from (select 
+               rownum as r,
+               TRIP_BOARD_KEY,
+               USER_NUM,
+               USER_FNM,
+               USER_LNM,
+               USER_PROFILE_PIC,
+               TRIP_BOARD_TITLE,
+               TRIP_BOARD_COUNTENT,
+               TRIP_BOARD_START,
+               TRIP_BOARD_END,
+               TRIP_BOARD_TOGETHER,
+               TRIP_BOARD_READCOUNT,
+               TRIP_BOARD_ST
+        from (select    b.TRIP_BOARD_KEY,
+                        u.USER_NUM,
+                        u.USER_FNM,
+                        u.USER_LNM,
+                        u.USER_PROFILE_PIC,
+                        b.TRIP_BOARD_TITLE,
+                        b.TRIP_BOARD_COUNTENT,
+                        b.TRIP_BOARD_START,
+                        b.TRIP_BOARD_END,
+                        b.TRIP_BOARD_TOGETHER,
+                        b.TRIP_BOARD_READCOUNT,
+                        b.TRIP_BOARD_ST
+                        from trip_board_tb b join user_tb u
+                        on b.user_num  = u.user_num
+                        where 1 = 0
+                        <if test="title!=null">
+                           or b.TRIP_BOARD_TITLE like ('%${title}%')
+                        </if>
+                        <if test="tripStart!=null">
+                           or b.TRIP_BOARD_START = to_date(#{tripStart},'yyyy/MM/dd')
+                        </if>
+                        <if test="tripEnd!=null">
+                           or b.TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
+                        </if>
+                         <if test="userNick!=null">
+                           <!-- or u.user_nick like ('%${userNick}%') -->
+                           or 1 = 1
+                        </if>
+                        <if test="type==0">
+                           or 1 = 1
+                        </if>
+                       <!--이부분 수정 삭제를 위해 쿼리 수정함 리스트 안뽑히면 아마 이거 때문 -->
+                  and TRIP_BOARD_ST = 0
+                  <!--이부분 수정 삭제를 위해 쿼리 수정함  -->
+                        order by b.TRIP_BOARD_KEY desc ))
+where r between #{start} and #{end} 
+
+
+
+</select>
+
+<select id="getTotalCount" parameterType="map" resultType="int">
+
+select count(*)
+from TRIP_BOARD_TB
+where 1 = 0
+<if test="title!=null">
+   or TRIP_BOARD_TITLE like ('%${title}%')
+</if>
+<if test="tripStart!=null">
+or TRIP_BOARD_START = to_date(#{tripStart},'yyyy/MM/dd')
+</if>
+<if test="tripEnd!=null">
+ or TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
+</if>
+<if test="userNick!=null">
+ <!--  or user_nick like ('%${userNick}%') -->
+ or 1 = 1
+</if>
+<if test="type==0">
+   or 1 = 1
+</if>
+<!--이부분 수정 삭제를 위해 쿼리 수정함 리스트 안뽑히면 아마 이거 때문 -->
+and TRIP_BOARD_ST = 0
+<!--이부분 수정 삭제를 위해 쿼리 수정함  -->
+</select>
+
+<!--도시 테이블 메소드  -->
+<insert id="insertCity" parameterType="tripCity">
+<selectKey order="BEFORE" keyProperty="trip_City_Key" resultType="int">
+select TRIP_CITY_TB_SEQ.nextval from dual
+</selectKey>
+insert into TRIP_CITY_TB
+(TRIP_CITY_KEY,
+TRIP_CITY_TOWN,
+TRIP_CITY_LAT,
+TRIP_CITY_LNG,
+TRIP_CITY_PID)
+values(   #{trip_City_Key},
+      #{trip_City_Town},
+      #{trip_City_Lat},
+      #{trip_City_Lng},
+      #{trip_City_Pid})
+
+
+</insert>
+
+<select id="selectRelKeyAndCityKey" parameterType="int" resultType="map">
+
+select r.REL_KEY,
+      r.TRIP_CITY_KEY
+from trip_rel_tb r join trip_city_tb c
+on r.TRIP_CITY_KEY = c.TRIP_CITY_KEY
+where r.TRIP_BOARD_KEY = #{num}
+
+</select>
+
+<select id="selectAllByCity" resultType="tripCity">
+
+select * 
+from TRIP_CITY_TB
+
+</select>
+
+
+<!--도시 테이블 메소드 끝  -->
+<!--관계 테이블 메소드  -->
+<insert id="insertRel" parameterType="tripRel">
+insert into TRIP_REL_TB
+(REL_KEY,TRIP_BOARD_KEY,TRIP_CITY_KEY,USER_NUM)
+values(TRIP_REL_TB_SEQ.nextval,#{trip_Board_Key},#{trip_City_Key},#{user_Num})
+</insert>
+
+
+<!--위도경도만 뽑는 메소드  -->
+<select id="getListlatlng" resultType="map">
+select trip_city_lat,trip_city_lng
+from trip_city_tb
+</select>
+
+<!-- 게시판상세화면용 쿼리 -->
+<select id="getTripBoardOneInfo" parameterType="int" resultType="map">
+<!-- 게시판 상세화면용 게시판,유저 정보 뽑는거 인데 유저 키나 게시판 키가 없으면 아무것도 조회 안되는게 맞는듯-->
+SELECT  B.TRIP_BOARD_KEY,
+        U.USER_NUM,
+        U.USER_ID,
+        U.USER_PW,
+         U.USER_FNM,
+         U.USER_LNM,
+        B.TRIP_BOARD_TITLE,
+        B.TRIP_BOARD_COUNTENT,
+        B.TRIP_BOARD_START,
+        B.TRIP_BOARD_END,
+        B.TRIP_BOARD_TOGETHER,
+        B.TRIP_BOARD_READCOUNT,
+        B.TRIP_BOARD_ST
+FROM TRIP_BOARD_TB B JOIN USER_TB U
+ON B.USER_NUM =U.USER_NUM
+WHERE B.TRIP_BOARD_KEY = #{num}
+
+
+</select>
+<select id="getTripBoardCityOneInfo" parameterType="int" resultType="map">
+SELECT  C.TRIP_CITY_KEY,
+      R.TRIP_BOARD_KEY,
+      C.TRIP_CITY_TOWN,
+      C.TRIP_CITY_LAT,
+      C.TRIP_CITY_LNG
+FROM TRIP_REL_TB R JOIN TRIP_CITY_TB C
+ON R.TRIP_CITY_KEY =C.TRIP_CITY_KEY
+WHERE R.TRIP_BOARD_KEY = #{num}
+and TRIP_CITY_ST = 0
+<!--상태값 0은 정상 1은 삭제 데이터라 0으로 일단 밖아놈   -->
+</select>
+
+
+<update id="updateBoard" parameterType="tripBoard">
+update trip_board_tb
+set     TRIP_BOARD_TITLE = #{trip_Board_Title},
+      TRIP_BOARD_COUNTENT = #{trip_Board_Content},
+      TRIP_BOARD_START = #{trip_Board_Start},
+      TRIP_BOARD_END = #{trip_Board_End},
+      TRIP_BOARD_TOGETHER = #{trip_Board_Together}
+where  TRIP_BOARD_KEY = #{trip_Board_Key}
+</update>
+
+<!-- 보류
+<update id="updateCity" parameterType="tripCity">
+update trip_city_tb
+set TRIP_CITY_TOWN = #{trip_City_Town},
+   TRIP_CITY_LAT = #{trip_City_Lat},
+   TRIP_CITY_LNG = #{trip_City_Lng},
+   TRIP_CITY_PID = #{trip_City_Pid}
+where TRIP_CITY_KEY = #{trip_City_Key}
+</update> -->
+
+<!--놋북이랑 디비가 좀달라서 일단 쿼리만 짜놓음  테스트 0 -->
+<update id="deleteBoard" parameterType="int">
+UPDATE TRIP_BOARD_TB
+SET TRIP_BOARD_ST = 1
+WHERE TRIP_BOARD_KEY = #{num}
+</update>
+
+<update id="deleteCity" parameterType="int">
+update TRIP_CITY_TB
+set TRIP_CITY_ST = 1
+where TRIP_CITY_KEY = #{num}
+
+</update>
+
+<update id="deleteRel" parameterType="int">
+update TRIP_REL_TB
+SET REL_ST = 1
+where REL_KEY = #{num}
+</update>
+
+
+
+
+</mapper>

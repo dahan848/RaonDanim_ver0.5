@@ -18,8 +18,12 @@ public class SearchService {
 	private static final int NUM_OF_USER_PER_PAGE = 15;
 	private static final int NUM_OF_NAVI_PAGE = 10;
 	
-	public List<Map<String, Object>> getCityList(){
-		return dao.cityList();
+	public List<Map<String, Object>> getInterestList(){
+		return dao.interestList();
+	}
+	
+	public List<Map<String, Object>> getNationalityList(){
+		return dao.nationalityList();
 	}
 	
 	public List<Map<String, Object>> getUserList(Map<String, Object> params){
@@ -62,9 +66,10 @@ public class SearchService {
 		Map<String, Object> viewData = new HashMap<String, Object>();
 		
 		List<Map<String, Object>> userList = getUserList(daoParam);
-		List<Map<String, Object>> cityList = dao.cityList();
 		
-		viewData.put("cityList", cityList);
+		List<Map<String, Object>> interestList = getInterestList();
+		
+		viewData.put("interestList", interestList);
 		viewData.put("userList", userList);
 		viewData.put("startPage", getStartPage(page));
 		viewData.put("endPage", getEndPage(page));

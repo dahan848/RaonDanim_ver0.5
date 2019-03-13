@@ -1,12 +1,7 @@
 package com.raon.raondanim.controller;
 
-import java.io.BufferedReader;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.raon.raondanim.service.SearchService;
 
 @Controller
@@ -35,13 +30,13 @@ public class SearchController {
 		
 		model.addAllAttributes(service.getViewData(params));
 		
+		Gson gson = new Gson();
+		String nationality = gson.toJson(service.getNationalityList());
+		model.addAttribute("nationality", nationality);
+		System.out.println(nationality);
+		
 		logger.info("search : 화면 요청받음");
 		return "search/main";
-	}
-	
-	@RequestMapping("/test")
-	public String test() {
-		return null;
 	}
 
 }

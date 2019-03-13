@@ -107,18 +107,29 @@
 													</select>
 													<script>
 													$(document).ready(function(){
+														var aa = "ddd";
+														
 														$(".select-city").select2({
 															allowClear: true,
+															placeholder: "선택",
+															tokenSeparators: [',', ' '],
 															ajax:{
-																url: "/search/test",
-																dataType: 'json',
+																url: "/search/home",
+																dataType: 'get',
 																delay: 250,
 																data: function(params){
-																	
-																}
-															},
-															
-															placeholder: "선택"
+																	return{
+																		console.log(params);
+																		q: params.term
+																	};
+																},
+																processResults: function(data){
+																	return{
+																		results: [{id:1, text:'test'}]
+																	};
+																},
+																cache: true
+															}
 														});					
 													});
 													</script>
@@ -247,7 +258,11 @@
 							
 							<!-- 관심사 -->
 							<div class="cover-tags cover-tags-properties">
-								<span class="label label-default">${user.INTEREST}</span>
+								<c:forEach items="${interestList}" var="interest">
+									<c:if test="${user.INTEREST == interest.INTEREST_NUM }">
+									<span class="label label-default">${interest.INTEREST_EN_NAME}</span>
+									</c:if>
+								</c:forEach>
 							</div>
 							
 							<!-- 희망 여행도시 -->
