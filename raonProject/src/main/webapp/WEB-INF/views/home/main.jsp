@@ -11,9 +11,12 @@
 <title>라온다님</title>
 </head>
 <body>
+<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal.user_num" var="user_num"/>
+</sec:authorize>
 <jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
-	
+
 	<section id="section-intro"> <!-- 최상단 -->
 	    <div class="description-intro">
 	        <h1>외국인 여행자와 친구가 되어 <br>즐거운 교류를 경험하세요!</h1>
@@ -99,7 +102,7 @@
 									${user.USER_LNM} ${user.USER_FNM} <br>
 									<a href="${contextPath}/accounts/profile?user=${user.USER_NUM}">프로필보기</a><br>
 									<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->
-									<a href="#">대화하기</a>
+									<a onclick="chatClick(${user_num},${user.USER_NUM})">대화하기</a>
 									</sec:authorize>
 										   
 								</div>   	
@@ -168,8 +171,25 @@
         </div>
     </section>
     
-    
+    <jsp:include page="/WEB-INF/views/test.jsp"></jsp:include>
     <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
+    
+<script type="text/javascript">
 	
+$(function(){
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+            return clone;
+        }
+    }).click(function(e) {
+        e.preventDefault();
+    });
+});
+
+
+</script>
 </body>
 </html>

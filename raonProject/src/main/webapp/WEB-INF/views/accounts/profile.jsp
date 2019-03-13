@@ -501,6 +501,22 @@ input[type="file"] {
 	    </div>
 	</div>
 	
+
+<script type="text/javascript">
+$(function(){
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+            return clone;
+        }
+    }).click(function(e) {
+        e.preventDefault();
+    });
+});
+</script>
+
 <!-- 인클루드-푸터 -->
 <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 <!-- 인클루드-푸터 END -->

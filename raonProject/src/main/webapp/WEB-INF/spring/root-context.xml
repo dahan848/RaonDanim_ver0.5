@@ -115,10 +115,11 @@
 		<property name="mapperInterface" value="com.raon.raondanim.dao.MotelTbDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
-	<!-- <bean id="motelAvgDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.raon.raondanim.dao.MotelAvgDAO"></property>
+	<!-- 채팅DAO -->
+	<bean id="chatDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.raon.raondanim.dao.ChatDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
-	</bean> -->
+	</bean>
 
 
 </beans>

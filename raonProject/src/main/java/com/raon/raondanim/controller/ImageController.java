@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ImageController {
 	private static final String FILE_PATH = "C:\\Users\\bitcamp\\Desktop\\reaondanim ver.5\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\raonProject\\resources/upload/";
 	//private static final String FILE_PATH = "c:\\temp";
-
+	
 	@ResponseBody
 	@RequestMapping("/image")
 	public byte[] getImage(String fileName) {

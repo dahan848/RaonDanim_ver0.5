@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.raon.raondanim.dao.ChatDAO">
+	<!-- 채팅방 생성 -->
+	<insert id="createRoom">
+		insert into CHAT_ROOM_TB 
+			   (CHAT_ROOM_NUM, USER1_NUM, USER2_NUM)
+		values(
+			   CHAT_ROOM_SEQ.nextval,
+			   #{user1_num},
+			   #{user2_num}
+			   )
+	</insert>
+	
+	<!-- 채팅방 반환 -->
+	<select id ="getRoom" resultType = "ChatRoom">
+	select * from CHAT_ROOM_TB 
+	 WHERE 
+	 		(
+	 			USER1_NUM = #{user1_num} 
+	   		and USER2_NUM = #{user2_num}  
+	 		)
+	 		or
+	 		(
+	 			USER1_NUM = #{user2_num} 
+	   		and USER2_NUM = #{user1_num}
+	 		)
+	</select>
+	
+	<!-- 메시지 insert -->
+	<insert id = "insertMessage">
+	insert into MESSAGE_TB 
+		   (
+		   MESSAGE_NUM, CHAT_ROOM_NUM, SEND_USER, RECEIVE_USER,
+		   CONTENT, SEND_TIME
+		   )
+	values (
+		   MESSAGE_TB_SEQ.nextval, #{chat_room_num}, #{send_user}, #{receive_user},
+		   #{content}, sysdate
+		   )
+	</insert>
+	
+	
+</mapper>

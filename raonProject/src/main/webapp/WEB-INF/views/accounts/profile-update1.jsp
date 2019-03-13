@@ -48,36 +48,6 @@
 							<div class="panel panel-default">
 								<div class="panel-body pt-30">
 									<div class="form-group">
-										<label class="col-sm-3 control-label" for="id_nickname">닉네임</label>
-										<div class="col-sm-9">
-											<input class="form-control" id="id_nickname" maxlength="200"
-												name="nickname" placeholder="닉네임" title="" type="text"
-												value="더미" /> 
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-3 control-label" for="id_gender_0">성별</label>
-										<div class="col-sm-9">
-											<div id="id_gender">
-												<div class="radio">
-													<label for="id_gender_0"><input checked="checked"
-														class="" id="id_gender_0" name="gender" title=""
-														type="radio" value="1" required /> 남</label>
-												</div>
-												<div class="radio">
-													<label for="id_gender_1"><input class=""
-														id="id_gender_1" name="gender" title="" type="radio"
-														value="2" required /> 여</label>
-												</div>
-												<div class="radio">
-													<label for="id_gender_2"><input class=""
-														id="id_gender_2" name="gender" title="" type="radio"
-														value="3" required /> 기타</label>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
 										<label class="col-sm-3 control-label" for="id_nationality">국적</label>
 										<div class="col-sm-9">
 											<select
