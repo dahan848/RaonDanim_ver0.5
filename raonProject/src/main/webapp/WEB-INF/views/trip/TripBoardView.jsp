@@ -331,12 +331,24 @@ function togglerereply(i) {
 	
  	
  	
+ 	//인풋태그의 엔터 입력시 submit 을 막기
+ 	// onload 밑 에있을시는 아직 요소가 생성이 안된 상태기 때문에 이 요소를 선택할수 없다 그러니 그려줄때 넣어주니 해결
+    $('input[type="text"]').keydown(function(event) {
+ 	   
+ 	   if (event.keyCode === 13) {
+ 		   //preventDefault() 서브밋 막는 녀석
+ 	        event.preventDefault();      
+ 		    return false;
+ 		   	
+ 	    }
+ 	});
+ 	
 //콜렙스가 아니라 tr을 추가하는 방식으로 진행해보기	- 요소  추가는 되지만 눈에 안보임 - 폐기
 	
 //  	var reRowTr = ("<tr id='reRow"+i+"' style='z-index:99; border:5px solid blue; '>");
 //  	var tr = $("#row"+i);
 //  	$("<td>").html("<img src='${contextPath}/img/trip_arrowImg.jpg'>").appendTo(reRowTr);
-//  	$("<td>").html("<input type='text' class='form-control' name='1' id='1' style='border: 1px solid purple;'>").appendTo(reRowTr);
+//  	$("<td>").html("<input type='text' class='form-control' name='1' id='1' style='border: 1px solid #cccccc;'>").appendTo(reRowTr);
 //  	$("<td>").html("<input type='button' class='btn btn-info' value='작성' id='12' name=''>").appendTo(reRowTr);
 //  	tr.after(reRowTr);
 	
@@ -378,6 +390,20 @@ function reReplyWrite(i) {
 	});
 	
 }
+
+
+function goToProfile() {
+
+	/* 	$(".profile").mousedown(function() {
+			(".profile").css("background-color", "#ef2d4d");
+		})
+		
+		$(".profile").mouseup(function() {
+			location.href = "${contextPath}/accounts/profile?user=${user_Num}";
+		}) */
+		//location.href = "${contextPath}/accounts/profile?user=${userNum}";
+	}
+
 
 
 window.onload = function() {
@@ -466,6 +492,13 @@ window.onload = function() {
          return false;
       }
       
+      
+      
+     
+      
+      
+      
+      
    })
    
    $("#replyForm").on("submit", function() {
@@ -497,7 +530,7 @@ window.onload = function() {
       
    })
    
-   
+
    
    
    
@@ -532,7 +565,7 @@ window.onload = function() {
    max-height: 200px;
    height:20%;
    width: 100%;
-   border-right:1px solid purple;
+   border-right:1px solid #cccccc;
    margin:0px;
    overflow: hidden;
 }
@@ -541,7 +574,7 @@ window.onload = function() {
    max-height: 800px;
    height:800%;
    width: 100%;
-   border: 1px solid purple;
+   border: 1px solid #cccccc;
    margin:0px;
    overflow: auto;
 }
@@ -556,7 +589,7 @@ window.onload = function() {
    max-height: 1000px;
    height:100%;
    width: 50%;
-   border: 1px solid purple;
+   border: 1px solid #cccccc;
    padding: 0px;
    overflow: auto;
    display: none;
@@ -705,7 +738,16 @@ th{
                       </tr>
                       <tr>
                          <td>
-                            default
+                         <c:choose>
+							<c:when test="${userInfo.UserInterest != null}">			
+								<c:forEach items="${userInfo.UserInterest}" var="i">
+									<span class="label label-mint label-lg"><b>${i.INTEREST_NAME}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>			
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
                          </td>
                       </tr>
                       <tr>
@@ -715,7 +757,16 @@ th{
                       </tr>
                       <tr>
                          <td>
-                            default
+                         <c:choose>
+							<c:when test="${userInfo.UserTrStyle != null}">
+								<c:forEach items="${userInfo.UserTrStyle}" var="tr">
+									<span class="label label-mint label-lg"><b>${tr.TR_STYLE}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
                          </td>
                       </tr>
                       
@@ -730,7 +781,8 @@ th{
                       </tr>
                       <tr>
                          <td id="tripsogae">
-                               <pre>${boardInfo.TRIP_BOARD_COUNTENT}</pre>
+                         		<pre>${boardInfo.TRIP_BOARD_COUNTENT}</pre>
+                               
                          </td>
                       </tr>
                    </table>
@@ -965,7 +1017,11 @@ th{
   </div>
   
 </div>   
-   
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
    <!-- 인클루드-푸터 -->
    <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
    <!-- 인클루드-푸터 END -->

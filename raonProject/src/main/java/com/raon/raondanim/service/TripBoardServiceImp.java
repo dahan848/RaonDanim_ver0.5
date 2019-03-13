@@ -106,8 +106,7 @@ public class TripBoardServiceImp implements TripBoardService {
 			params.put("fName", fName);
 		} 
 		//System.out.println("서비스 파라메터 확인  params :"+params);
-		
-		//List<Map<String, Object>> trStyle = getTrStyle(usernum)
+
 		
 		
 		List<Map<String, Object>> tripBoardList = tripDao.getTenBoardPage(params);

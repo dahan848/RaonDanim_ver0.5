@@ -96,19 +96,46 @@ $(function() {
 				<tr>
 					<th style="padding: 20px;" class="warning">나의 관심사</th>
 					<td style="padding: 20px;">
-						<span class="label label-pink label-lg">미작성</span>
+						<c:choose>
+							<c:when test="${userInfo.UserInterest != null}">			
+								<c:forEach items="${userInfo.UserInterest}" var="i">
+									<span class="label label-mint label-lg"><b>${i.INTEREST_NAME}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>			
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
 					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="info">나의 여행희망도시</th>
 					<td style="padding: 20px;">
-						<span class="label label-pink label-lg">미작성</span>
+						<c:choose>
+							<c:when test="${userInfo.UserTravleHope != null}">
+								<c:forEach items="${userInfo.UserTravleHope}" var="th">
+									<span class="label label-mint label-lg"><b>${th.HOPE_CITY}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>
+									<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
 					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="warning">나의 여행 스타일</th>
 					<td style="padding: 20px;">
-						<span class="label label-pink label-lg">미작성</span>
+						<c:choose>
+							<c:when test="${userInfo.UserTrStyle != null}">
+								<c:forEach items="${userInfo.UserTrStyle}" var="tr">
+									<span class="label label-mint label-lg"><b>${tr.TR_STYLE}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
 					</td>
 				</tr>
 				<tr>
@@ -139,7 +166,7 @@ $(function() {
 				<tr>
 					<th style="padding: 20px;" class="info">여행 소개</th>
 					<td style="padding: 20px;">
-						<textarea rows="7" style="width: 500px; font-size: 14pt;" id="boardContent" name="trip_Board_Content">${boardInfo.TRIP_BOARD_COUNTENT}</textarea>
+						<textarea rows="5" cols="10" style="width: 500px; font-size: 14pt;" id="boardContent" name="trip_Board_Content">${boardInfo.TRIP_BOARD_COUNTENT}</textarea>
 					</td>
 				</tr>
 				<tr>

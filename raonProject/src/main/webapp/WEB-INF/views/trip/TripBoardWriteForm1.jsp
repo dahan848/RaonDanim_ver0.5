@@ -168,7 +168,7 @@ function goToProfile() {
 				<tr>
 					<th style="padding: 20px;" class="info">여행 소개</th>
 					<td style="padding: 20px;">
-						<textarea rows="5" cols="50" name="trip_Board_Content"  required="required" style="width: 500px; font-size: 14pt;" ></textarea>
+						<textarea rows="5" cols="10" name="trip_Board_Content"  required="required" style="width: 500px; font-size: 14pt;" ></textarea>
 					</td>
 				</tr>
 				<tr>
