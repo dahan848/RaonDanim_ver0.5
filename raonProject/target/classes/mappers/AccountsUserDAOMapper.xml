@@ -110,4 +110,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteGalleryPic" parameterType="string">
 		delete 
 	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+<!-- 	여행파트 dao추가 -->
+
+<select id="getTrStyle" parameterType="String" resultType="map">
+select *
+from user_tb u join TRAVLE_STYLE_TB t
+on u.user_num = t.user_num
+where u.user_num = #{userNum}
+</select>	
+
+<select id="getTravleHope" parameterType="String" resultType="map">
+select *
+from user_tb u join TRAVLE_HOPE h
+on u.user_num = h.user_num
+where u.user_num = #{userNum}
+</select>	
+	
+	
+<!-- 	여행파트 dao추가 -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

@@ -3,6 +3,7 @@
 <%
 	request.setAttribute("contextPath", request.getContextPath());
 %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,6 +35,24 @@ th {
 .hasDatepicker{cursor: pointer;}
 
 </style>
+<script type="text/javascript">
+
+function goToProfile() {
+
+/* 	$(".profile").mousedown(function() {
+		(".profile").css("background-color", "#ef2d4d");
+	})
+	
+	$(".profile").mouseup(function() {
+		location.href = "${contextPath}/accounts/profile?user=${user_Num}";
+	}) */
+	location.href = "${contextPath}/accounts/profile?user=${user_Num}";
+}
+
+
+</script>
+
+
 </head>
 <body>
 	<!-- 인클루드 심플 헤더 -->
@@ -76,19 +95,49 @@ th {
 					<th style="padding: 20px;" class="info">나의 관심사</th>
 <!-- 					미작성 처리된 부분 추후  c:if 로 걸러서 프로필 없는사람한테 띄우고 onclick 달아서 누르면 프로필 설정으로 이동가능하게 하고 마우스 호버시 툴팀 표시 (클릭시 프로필설정 가능이라고) -->
 					<td style="padding: 20px;">
-						<span class="label label-pink label-lg">미작성</span>
+						<c:choose>
+							<c:when test="${userInfo.UserInterest != null}">			
+								<c:forEach items="${userInfo.UserInterest}" var="i">
+									<span class="label label-mint label-lg"><b>${i.INTEREST_NAME}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>			
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="클릭시 프로필 설정으로 이동합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
 					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="info">나의 여행희망도시</th>
 					<td style="padding: 20px;">
-						<span class="label label-pink label-lg">미작성</span>
+						
+						<c:choose>
+							<c:when test="${userInfo.UserTravleHope != null}">
+								<c:forEach items="${userInfo.UserTravleHope}" var="th">
+									<span class="label label-mint label-lg"><b>${th.HOPE_CITY}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>
+									<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="클릭시 프로필 설정으로 이동합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
+
 					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="info">나의 여행 스타일</th>
 					<td style="padding: 20px;">
-						<span class="label label-pink label-lg">미작성</span>
+						<c:choose>
+							<c:when test="${userInfo.UserTrStyle != null}">
+								<c:forEach items="${userInfo.UserTrStyle}" var="tr">
+									<span class="label label-mint label-lg"><b>${tr.TR_STYLE}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="클릭시 프로필 설정으로 이동합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
+						
 					</td>
 				</tr>
 				<tr>
@@ -136,7 +185,11 @@ th {
 		</form>
 
 	</div>
-	
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
 <%--달력 스크립트 부분 헤드로 올리면 달력 뻑남 --%>	
 <script type="text/javascript">
 $(function() {

@@ -52,4 +52,14 @@ public interface TripBoardService {
 	//게시판 조회수 증가
 	public boolean incrementViews(int boardKey);
 	
+	
+	
+	//유저 관심사 여행스타일 여행희망 국가 뽑기
+	public List<Map<String, Object>> getUserInterest(String usernum); //번호로 유저 관심사 선택
+	public List<Map<String, Object>> getTrStyle(String usernum); //번호로 유저 여행스타일 선택
+	public List<Map<String, Object>> getTravleHope(String usernum); //번호로 유저 희망국가 도시 선택
+	
+	
+	
+	
 }

@@ -31,11 +31,23 @@
 }
 
 #con2 {
-	height: 90%;
+	height: 85%;
 	width: 100%;
 	margin-bottom: 30px;
 	padding: 0;
 }
+
+.swal-text {
+  background-color: #FEFAE3;
+  padding: 17px;
+  border: 1px solid #F0E1A1;
+  display: block;
+  margin: 22px;
+  text-align: center;
+  color: #f94563;
+  font-size: 12pt;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -237,9 +249,7 @@
 						<th><h5>
 								<b>여행기간</b>
 							</h5></th>
-						<th><h5>
-								<b>여행지</b>
-							</h5></th>
+
 						<th><h5>
 								<b>여행스타일</b>
 							</h5></th>
@@ -278,15 +288,13 @@
 
 
 
-							<td><f:formatDate value="${list.TRIP_BOARD_START}"
-									pattern="yyyy-MM-dd" /> &nbsp;<strong>~</strong>&nbsp; <f:formatDate
-									value="${list.TRIP_BOARD_END}" pattern="yyyy-MM-dd" /></td>
-
-
-
 							<td>
-								<span class="label label-pink label-lg">미작성</span>
+								<f:formatDate value="${list.TRIP_BOARD_START}"
+										pattern="yyyy-MM-dd" /> &nbsp;<strong>~</strong>&nbsp; <f:formatDate
+										value="${list.TRIP_BOARD_END}" pattern="yyyy-MM-dd" />
 							</td>
+
+					
 							<td>
 								<span class="label label-pink label-lg">미작성</span>
 							</td>

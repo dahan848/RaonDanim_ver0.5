@@ -263,7 +263,6 @@ html, body {
 			var col = $("<div class='col-sm-12'>");
 			var table = $("<table class='table'>");
 			var tr = $("<tr>");
-			var deleteBtn = $("<input type'button'>")
 			$("<th>").text(j+"번").appendTo(tr);
 			$("<th>").text(cityNames[i].cityName).appendTo(tr);
 			$("<th>").html("<input type='button' value='삭제' data-index='"+i+"' class='btn btn-primary btn-sm' onclick='deleteMaker("+i+")' id='deleteBtn"+i+"'>").appendTo(tr);

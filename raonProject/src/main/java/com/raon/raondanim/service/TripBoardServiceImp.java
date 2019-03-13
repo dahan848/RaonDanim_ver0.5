@@ -107,6 +107,9 @@ public class TripBoardServiceImp implements TripBoardService {
 		} 
 		//System.out.println("서비스 파라메터 확인  params :"+params);
 		
+		//List<Map<String, Object>> trStyle = getTrStyle(usernum)
+		
+		
 		List<Map<String, Object>> tripBoardList = tripDao.getTenBoardPage(params);
 		//System.out.println("서비스 게시글리스트확인 :"+tripBoardList);
 		Map<String, Object> tripData = new HashMap<>();
@@ -451,6 +454,27 @@ public class TripBoardServiceImp implements TripBoardService {
 		}
 		
 		
+	}
+
+	
+	
+	//유저관련 관심사 여행스타일 여행희망도시
+	@Override
+	public List<Map<String, Object>> getUserInterest(String usernum) {
+		
+		return userDao.getUserInterest(usernum);
+	}
+
+	@Override
+	public List<Map<String, Object>> getTrStyle(String usernum) {
+		
+		return userDao.getTrStyle(usernum);
+	}
+
+	@Override
+	public List<Map<String, Object>> getTravleHope(String usernum) {
+		
+		return userDao.getTravleHope(usernum);
 	}
 
 

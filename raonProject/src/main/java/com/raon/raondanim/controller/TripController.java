@@ -1,6 +1,7 @@
 package com.raon.raondanim.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -154,10 +155,32 @@ public class TripController {
 
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		int user_Num = user.getUser_num();
+	
 		
+		
+		//유저 관심사 여행스타일 여행 희망도시 뽑기
+		String userNum = String.valueOf(user_Num);
+		System.out.println(userNum);
+		Map<String, Object> userInfo = new HashMap<>();
+		List<Map<String, Object>> UserInterest = tripService.getUserInterest(userNum);
+		List<Map<String, Object>> UserTrStyle = tripService.getTrStyle(userNum);
+		List<Map<String, Object>> UserTravleHope = tripService.getTravleHope(userNum);
+		
+		if(!UserInterest.isEmpty()) {
+			userInfo.put("UserInterest", UserInterest);
+		}
+		if(!UserTrStyle.isEmpty()) {
+			userInfo.put("UserTrStyle", UserTrStyle);
+		}
+		if(!UserTravleHope.isEmpty()) {
+			userInfo.put("UserTravleHope", UserTravleHope);
+		}
+
+		System.out.println(userInfo);
+		/////////////////////////////////////
+		
+		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("user_Num", user_Num);
-		
-		
 		return "trip/TripBoardWriteForm1";
 	}
 
