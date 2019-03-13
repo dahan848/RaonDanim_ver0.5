@@ -19,7 +19,7 @@ import com.raon.raondanim.service.ReviewReplyService;
 
 @Controller
 @RequestMapping("/reply")
-public class ReplyController {
+public class ReviewReplyController {
 	
 	@Autowired
 	private ReviewReplyService reService;
