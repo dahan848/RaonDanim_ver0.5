@@ -403,7 +403,7 @@ html, body {
 
 						<div class="row">
 							<div class="col-sm-12">
-								<input type="button" value="뒤로가기" class="btn btn-primary btn-sm">		
+								<input type="button" value="뒤로가기" onclick="location.href='modify1'" class="btn btn-primary btn-sm">		
 							</div>
 						</div>
 						<br>

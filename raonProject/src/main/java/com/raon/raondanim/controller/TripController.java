@@ -51,13 +51,22 @@ public class TripController {
 		System.out.println("페이지 번호 : "+pageNum);
 		System.out.println("타입 : "+type);
 		System.out.println("키워드 : "+keyword);
+		System.out.println("성 : "+lName);
+		System.out.println("이름 : "+fName);
 		
 		
 		params.put("pageNum", pageNum);
 		params.put("type", type);
 		params.put("keyword", keyword);
-		params.put("lName", lName);
-		params.put("fName", fName);
+		if(lName!="") {
+			System.out.println("컨트롤러/리스트/검색테스트1");
+			params.put("lName", lName);
+		}
+		if(fName!="") {
+			System.out.println("컨트롤러/리스트/검색테스트2");
+			params.put("fName", fName);
+		}
+		
 		Map<String, Object> tripData = tripService.getTenBoardPage(params);
 		//System.out.println("list요청  tripdata 검사:"+tripData);
 		model.addAttribute("tripData", tripData);
@@ -90,7 +99,7 @@ public class TripController {
 		int user_Num = user.getUser_num();
 		
 		//조회수 1 증가
-		//쿠키를 사용해서 조회수 무한증가 막아야함
+		//쿠키를 사용해서 조회수 무한증가 막음
 		Cookie[] cookies = req.getCookies();
 		
 		int viewsCount=0;

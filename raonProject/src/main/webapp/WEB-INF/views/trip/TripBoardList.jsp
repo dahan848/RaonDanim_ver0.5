@@ -85,26 +85,7 @@
  			});
  		}
 	
-/*  		$("#type").on("blur", function() {
- 			
- 			var typeValue = $("#type").value();
- 			alert(typeValue);
- 			
- 			var keywordDiv = $("#keywordDiv");
- 			var keyword = $("<input type='text' class='form-control' id='keyword' placeholder='검색어를 입력하세요' name='keyword' style='width: 700px;'>");
- 			var keyword2 = " <label for='email'>성:</label>" + 
-			"      <input type='text' class='form-control' id='lName' name='lName'>" + 
-			"      <label for='pwd'>이름:</label>" + 
-			"      <input type='text' class='form-control' id='fName' name='fName'>";
-			
-			keywordDiv.html("");
- 			if(typeValue==4){
- 				keyword2.appendTo(keywordDiv);
- 			}else{
- 				keyword.appendTo(keywordDiv);
- 			}
 
- 		}) */
  		
 	$("#searchType").on("change",function() {
 			
@@ -126,6 +107,58 @@
 			
 		});
 
+	$("#searchForm").on("submit", function() {
+		//검색창 공백 체크
+		
+		var typeValue = $("#searchType option:selected").val();
+		var keyword = $("#keyword");
+		var lName = $("#lName");
+		var fName = $("#fName");
+		
+		//alert("typeValue : "+typeValue);
+
+		if(typeValue==0){
+			
+			return true;
+		}else if(typeValue==4){
+			
+			if(lName.val()=="" && fName.val()!=""){
+				//성입력칸이 비었을때
+				return true;
+				
+			}else if(lName.val()!="" && fName.val()==""){
+				//이름 입력칸이 비었을때
+				return true;
+			}else{
+				//둘다 비었을때
+				swal({
+					icon:"warning",
+					text:"검색어를 입력해주세요.",
+				});
+				return false
+			}
+			
+			
+			
+		}else{
+			if(keyword.val()=="" || keyword.val()==null){
+				
+				swal({
+					icon:"warning",
+					text:"검색어를 입력해주세요.",
+				});
+				return false;
+			}
+			
+		}
+		
+
+		
+	});
+	
+	
+	
+	
 		
 	}
 </script>
@@ -160,16 +193,15 @@
 			<div style="height: 500px; border: 1px solid black;" id="map"></div>
 			<!--맵자리 끝  -->
 
-
-			<input type="button" value="검색" style="width: 100%;"
-				class="btn btn-success" data-toggle="collapse" data-target="#search">
+			<!-- 검색 collaspe 활성화 버튼  -->
+			<input type="button" value="검색" style="width: 100%;" class="btn btn-success" data-toggle="collapse" data-target="#search">
+			<!-- 검색 collaspe 활성화 버튼  -->
 			<div id="search" class="collapse" style="border: 1px solid;">
 				<div class="container" style="height: 100px;">
-					<form class="form-inline" action="list" method="get">
-						<input type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}"> <br> <br> <select
-							class="form-control" name="type" id="searchType"
-							style="width: 100px;">
+					<form class="form-inline" action="list" method="post" id="searchForm">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"> 
+						<br> <br> 
+						<select class="form-control" name="type" id="searchType" style="width: 100px;">
 							<option value="0">검색</option>
 							<option value="1">제목</option>
 							<option value="2">출발일</option>
@@ -185,7 +217,7 @@
 
 						</div>
 
-						<button type="submit" class="btn btn-default">검색</button>
+						<input type="submit" class="btn btn-default" value="검색">
 					</form>
 				</div>
 			</div>
@@ -235,7 +267,7 @@
 										<a href="#" rel="popover" data-placement="bottom"
 											data-popover-content="#chatList"> <img
 											src="${contextPath}/image?fileName=${list.USER_PROFILE_PIC}"
-											style="width: 30px; height: 30px;">
+											style="width: 40px; height: 40px;">
 										</a>
 									</c:otherwise>
 								</c:choose></td>
@@ -252,9 +284,13 @@
 
 
 
-							<td>default</td>
-							<td>default</td>
-							<td>${list.TRIP_BOARD_TOGETHER}</td>
+							<td>
+								<span class="label label-pink label-lg">미작성</span>
+							</td>
+							<td>
+								<span class="label label-pink label-lg">미작성</span>
+							</td>
+							<td>${list.TRIP_BOARD_TOGETHER}<small><b>인</b></small></td>
 							<td>${list.TRIP_BOARD_READCOUNT}</td>
 						</tr>
 					</c:forEach>

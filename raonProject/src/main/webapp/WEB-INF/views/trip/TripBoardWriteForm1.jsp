@@ -67,37 +67,44 @@ th {
 			<table class="table" id="ta">
 
 				<tr>
-					<th style="padding: 20px;" class="success">제목</th>
+					<th style="padding: 20px;" class="info">제목</th>
 					<td style="padding: 20px;">
 						<input type="text" id="trip_Board_Title" name="trip_Board_Title" class="form-control" style=" width: 300px;" required="required">
 					</td>
 				</tr>
 				<tr>
-					<th style="padding: 20px;" class="warning">나의 관심사</th>
-					<td style="padding: 20px;">Default</td>
+					<th style="padding: 20px;" class="info">나의 관심사</th>
+<!-- 					미작성 처리된 부분 추후  c:if 로 걸러서 프로필 없는사람한테 띄우고 onclick 달아서 누르면 프로필 설정으로 이동가능하게 하고 마우스 호버시 툴팀 표시 (클릭시 프로필설정 가능이라고) -->
+					<td style="padding: 20px;">
+						<span class="label label-pink label-lg">미작성</span>
+					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="info">나의 여행희망도시</th>
-					<td style="padding: 20px;">Default</td>
+					<td style="padding: 20px;">
+						<span class="label label-pink label-lg">미작성</span>
+					</td>
 				</tr>
 				<tr>
-					<th style="padding: 20px;" class="warning">나의 여행 스타일</th>
-					<td style="padding: 20px;">Default</td>
+					<th style="padding: 20px;" class="info">나의 여행 스타일</th>
+					<td style="padding: 20px;">
+						<span class="label label-pink label-lg">미작성</span>
+					</td>
 				</tr>
 				<tr>
-					<th style="padding: 20px;" class="danger">여행출발일</th>
+					<th style="padding: 20px;" class="info">여행출발일</th>
 					<td style="padding: 20px;">
 						<input type="date" id="datepicker"  name="trip_Board_Start">
 					</td>
 				</tr>
 				<tr>
-					<th style="padding: 20px;" class="success">여행 종료일</th>
+					<th style="padding: 20px;" class="info">여행 종료일</th>
 					<td style="padding: 20px;">
 						<input type="date" id="datepicker2" name="trip_Board_End">
 					</td>
 				</tr>
 				<tr>
-					<th style="padding: 20px;" class="danger">여행 동행모집</th>
+					<th style="padding: 20px;" class="info">여행 동행모집</th>
 					<td style="padding: 20px;">
 						<select id="Trip_Board_Together" name="Trip_Board_Together" class="form-control" style="width: 200px;">
 							<option value="0">0</option>
@@ -112,12 +119,14 @@ th {
 				<tr>
 					<th style="padding: 20px;" class="info">여행 소개</th>
 					<td style="padding: 20px;">
-						<textarea rows="3" style="width: 500px;" name="trip_Board_Content" required="required"></textarea>
+						<textarea rows="5" cols="50" name="trip_Board_Content"  required="required" style="width: 500px; font-size: 14pt;" ></textarea>
 					</td>
 				</tr>
 				<tr>
 					<th>
+						<input type="button" value="취소하기" class="btn btn-success" onclick="location.href='list'">
 						<input type="submit" value="다음 단계로" class="btn btn-success">
+						
 					</th>
 				</tr>
 

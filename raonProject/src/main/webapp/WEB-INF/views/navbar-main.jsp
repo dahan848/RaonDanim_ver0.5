@@ -37,7 +37,8 @@
 <!-- 스윗 얼럿 -->
 <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-
+<!-- 03-13 여행 구글폰트 추가 -->
+<link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script|Open+Sans" rel="stylesheet">
 
 
 <sec:authorize access="isAuthenticated()">

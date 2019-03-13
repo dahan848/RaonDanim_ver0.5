@@ -620,6 +620,7 @@ th{
 
 }
 
+
 .swal-text {
   background-color: #FEFAE3;
   padding: 17px;
@@ -629,6 +630,9 @@ th{
   text-align: center;
   color: #f94563;
   font-size: 12pt;
+}
+#sogaeTable > tr th td{
+	width: 500px;
 }
 
 </style>
@@ -690,9 +694,9 @@ th{
             </div>
             
             <!--중앙 div 콜렙스 될부분  -->
-            <div class="col-lg-6" id="leftDiv-2">
+            <div class="col-lg-6 container-fluid"  id="leftDiv-2">
                 
-                   <table class="table" id="sogaeTable">
+                   <table class="table" id="sogaeTable" >
                       <tr>
                          <th>
                             <h2><b><small><mark>관심사</mark></small></b></h2>
@@ -726,10 +730,7 @@ th{
                       </tr>
                       <tr>
                          <td id="tripsogae">
-                            <div>
                                <pre>${boardInfo.TRIP_BOARD_COUNTENT}</pre>
-                            </div>          
-                            
                          </td>
                       </tr>
                    </table>

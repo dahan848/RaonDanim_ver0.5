@@ -95,15 +95,21 @@ $(function() {
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="warning">나의 관심사</th>
-					<td style="padding: 20px;">Default</td>
+					<td style="padding: 20px;">
+						<span class="label label-pink label-lg">미작성</span>
+					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="info">나의 여행희망도시</th>
-					<td style="padding: 20px;">Default</td>
+					<td style="padding: 20px;">
+						<span class="label label-pink label-lg">미작성</span>
+					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="warning">나의 여행 스타일</th>
-					<td style="padding: 20px;">Default</td>
+					<td style="padding: 20px;">
+						<span class="label label-pink label-lg">미작성</span>
+					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="danger">여행출발일</th>
@@ -133,13 +139,13 @@ $(function() {
 				<tr>
 					<th style="padding: 20px;" class="info">여행 소개</th>
 					<td style="padding: 20px;">
-						<textarea rows="5" style="width: 500px;" id="boardContent" name="trip_Board_Content">${boardInfo.TRIP_BOARD_COUNTENT}</textarea>
+						<textarea rows="7" style="width: 500px; font-size: 14pt;" id="boardContent" name="trip_Board_Content">${boardInfo.TRIP_BOARD_COUNTENT}</textarea>
 					</td>
 				</tr>
 				<tr>
 					<th>
+						<input type="button" value="취소하기" class="btn btn-success" onclick="location.href='view?boardKey=${boardInfo.TRIP_BOARD_KEY}'">
 						<input type="submit" value="다음 단계로" class="btn btn-success">
-						<input type="button" value="취소하기" class="btn btn-success">
 					</th>
 				</tr>
 
