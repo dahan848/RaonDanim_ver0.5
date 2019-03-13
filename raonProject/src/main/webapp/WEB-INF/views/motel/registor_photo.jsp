@@ -227,7 +227,7 @@ img {
 				<!-- 이 부분에 자신의 페이지 넣기 -->
 				<h3 style="text-align: center">게스트에게 보여줄 숙소의 사진을 등록하세요.(사진등록 5개
 					필수!!)</h3>
-					<form name="form" id="form" action="registor_intro" method="get" class="photo_form"
+					<form name="form" id="form" action="registor_intro" method="post" class="photo_form"
 						enctype="multipart/form-data" autocomplete="off">
 						
 						<input type="text" value="${_csrf.token}" name="${_csrf.parameterName}">

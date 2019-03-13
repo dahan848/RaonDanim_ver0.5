@@ -146,7 +146,6 @@ textarea {
 								<input type="hidden" value="${motel_city_ko }" name="motel_city_ko">
 								<input type="hidden" value="${motel_nation_en }" name="motel_nation_en">
 								<input type="hidden" value="${motel_nation_ko }" name="motel_nation_ko">
-								<input type="hidden" value="${motel_photoFiles }" name="motel_photoFiles">
 								<input type="text" name="user_num" value="${user_num }">
 							<div class="form_all" style="width: 90%; height: 90%;">
 								<h4>

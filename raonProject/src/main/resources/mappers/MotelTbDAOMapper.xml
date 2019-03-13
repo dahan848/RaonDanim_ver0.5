@@ -184,6 +184,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
    </insert>
 
+	<insert id="insertMotel_Photo" parameterType="map">
+		insert into 
+			MOTEL_PIC_TB (MOTEL_NUM,
+						MOTEL_PIC_1,
+						MOTEL_PIC_2,
+						MOTEL_PIC_3,
+						MOTEL_PIC_4,
+						MOTEL_PIC_5)
+			values (#{MOTEL_NUM},
+					#{motel_photo_1},
+					#{motel_photo_2},
+					#{motel_photo_3},
+					#{motel_photo_4},
+					#{motel_photo_5})			
+			
+	</insert>
 
    <select id="National_selectAll" resultType="map">
       select * from nationality_dtb
@@ -192,6 +208,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    <select id="City_selectAll" resultType="map">
       select * from CITY_COUNTRY_DTB
    </select>
+	
 	
 	
 </mapper>

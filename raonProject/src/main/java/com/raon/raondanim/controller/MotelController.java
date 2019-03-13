@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.mail.Session;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,33 +161,6 @@ public class MotelController {
 	      
 	      return "motel/result";
 	   }
-	
-	//이미지를 가져오는 메서드
-	@ResponseBody
-	@RequestMapping("/image")
-	public byte[] getImage(String fileName) {
-		System.out.println("/image 요청 : "+fileName);
-		File file = new File(FILE_PATH+fileName);
-		InputStream in = null;
-		try {
-			in = new FileInputStream(file);
-			return IOUtils.toByteArray(in);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//해당 이미지를 byte[]의 형태로 반환
- catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-		return null;
-	}
-	
-
 
 	@RequestMapping("/search")
 	public String aaaaaaaaaaaa() {
@@ -384,9 +361,9 @@ public class MotelController {
 		return "motel/registor_photo";
 	}
 	
-	@RequestMapping(value="/registor_intro", method = RequestMethod.GET)
+	@RequestMapping(value="/registor_intro", method = RequestMethod.POST)
 	public String registor_step4(@RequestParam Map<String, Object> param, Model model, 
-			List<MultipartFile> files) {
+			List<MultipartFile> files, HttpSession session) {
 			//MultipartFile cma_file,MultipartFile cma_file1,MultipartFile cma_file2,MultipartFile cma_file3,MultipartFile cma_file4
 
 		System.out.println("step4 진입");
@@ -406,6 +383,9 @@ public class MotelController {
 		model.addAttribute("motel_address", param.get("motel_address"));
 		model.addAttribute("motel_photoFiles", files);
 		
+		session.setAttribute("motel_photo", files);
+		
+		
 		model.addAttribute("registor", param);
 //		System.out.println("cma_file : " + cma_file);
 //		System.out.println("cma_file1 : " + cma_file1);
@@ -417,10 +397,12 @@ public class MotelController {
 	}
 	
 	@RequestMapping(value="/registor_complete", method = RequestMethod.POST)
-	public String registor_complete(@RequestParam Map<String, Object> param, Model model) {
+	public String registor_complete(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
 		System.out.println("registor_complete 진입");
 		System.out.println("complete : " + param);
-		int motel_num = service.write_Motel(param);
+		System.out.println("complete motel_photo : " + session.getAttribute("motel_photo"));
+		System.out.println("complete motel_photo : " + session.getAttribute("motel_photo").getClass());
+		int motel_num = service.write_Motel1(param, (List<MultipartFile>) session.getAttribute("motel_photo"));
 		if(motel_num!=0) {
 			//숙박 글 정상 등록
 			System.out.println("숙박글 등록 성공");

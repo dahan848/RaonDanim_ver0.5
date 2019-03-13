@@ -38,4 +38,8 @@ public interface MotelTbDAO {
 	public List<Map<String, Object>> National_selectAll();
 	public List<Map<String, Object>> City_selectAll();
 	public int motel_insert(Map<String, Object> param);
+	//숙소 사진 등록
+	public int insertMotel_Photo(Map<String, Object> param);
+	
+	
 }
