@@ -40,6 +40,7 @@ public interface MotelTbDAO {
 	public int motel_insert(Map<String, Object> param);
 	//숙소 사진 등록
 	public int insertMotel_Photo(Map<String, Object> param);
-	
+	// 숙박가능날짜  pl/sql 함수 실행
+	public void motel_Date_procedure(Map<String, Object> motel_procedure);
 	
 }

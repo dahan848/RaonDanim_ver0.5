@@ -201,6 +201,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			
 	</insert>
 
+	<select id="motel_Date_procedure" statementType="CALLABLE" parameterType="map">
+		{ call trip_date(
+				#{start_number, mode=IN},
+				#{end_number, mode=IN},
+				#{insert_motel_number, mode=IN},
+				#{start_date, mode=IN}
+		)}
+	</select>
+	
+	
    <select id="National_selectAll" resultType="map">
       select * from nationality_dtb
    </select>

@@ -2,6 +2,9 @@ package com.raon.raondanim.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -265,67 +268,64 @@ public class MotelTbService {
 	// 파일 업로드까지 등록
 	public int write_Motel1(Map<String, Object> param, List<MultipartFile> motel_photo) {
 		int motel_num = 0;
-		System.out.println("write_motel1 session : " + motel_photo);
+		//System.out.println("write_motel1 session : " + motel_photo);
+		String checkin = (String) param.get("motel_fromDate");
+		String checkout = (String) param.get("motel_checkoutDate");
+		System.out.println("checkin : " + checkin);
+		System.out.println("checkout : " + checkout);
 		
-//		if (dao.motel_insert(param) > 0) {
-//			// MOTEL_TB 에 정상등록시 사진테이블도 insert 해준다
-//
-//			motel_num = (int) param.get("MOTEL_NUM");
-//			System.out.println("motel_num" + motel_num);
-//
-//			Map<String, Object> filesParam = new HashMap<String, Object>();
-//			for (int i = 0; i < files.size(); i++) {
-//				filesParam.put("motel_photo_" + i, wirte_motel_Photo(files.get(i)));
-//			}
-//			
-//			System.out.println("filesParam : " + filesParam);
-//			dao.insertMotel_Photo(filesParam);
-//			return motel_num;
-//		} else {
-//			return motel_num;
-//		}
-		return motel_num;
-	}
-
-	public Map<String, Object> photo_temporary_save(List<MultipartFile> files) {
-		Map<String, Object> filesParam = new HashMap<String, Object>();
-		for (int i = 0; i < files.size(); i++) {
-			filesParam.put("motel_photo_" + i, wirte_motel_Photo(files.get(i)));
-		}
-		return filesParam;
-	}
-	
-	public List<String> wirte_motel_Photo1(List<MultipartFile> file) {
-		List<String> ListfullName = null;
-		String fullName = null;
-		// 1. UUID만들어내서 원래 파일이름에 붙여서 fullName을 만들어냄
-		// 2. 만들어낸 fullName으로 파일 저장(지정한 경로에 복사)
-		// 3. fullName 반환
-
-		// 1. UUID만들어내서 원래 파일이름에 붙여서 fullName을 만들어냄
-		for(int i=0;i<file.size();i++) {
-			UUID uuid = UUID.randomUUID();
-			fullName = uuid.toString() + "_" + file.get(i).getOriginalFilename()+i;
-			ListfullName.add(fullName);
-		}
-		return ListfullName;
-	}
-	
-	public List<String> wirte_motel_Photo2(List<MultipartFile> file) {
-		List<String> ListfullName = null;
-		String fullName = null;
-		for(int i=1;i<file.size();i++) {
 		
-			File target = new File(UPLOAD_PATH, fullName+i);
-			try {
-				FileCopyUtils.copy(file.get(i).getBytes(), target);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		System.out.println(param);
+		
+		if (dao.motel_insert(param) > 0) {
+			// MOTEL_TB 에 정상등록시 사진테이블도 insert 해준다
+
+			motel_num = (int) param.get("MOTEL_NUM");
+			//System.out.println("motel_num" + motel_num);
+			System.out.println("========pl/sql========================");
+			
+			//숙박 가능 테이블에 데이터를 넣기위해 pl/sql 에 필요한 변수설정
+			Map<String, Object> motel_procedure = new HashMap<String, Object>();
+			int start_number = 0;
+			int end_number = startEnd(checkin, checkout);
+			int insert_motel_number = (int) param.get("MOTEL_NUM");
+			//Date start_date = (Date) param.get("motel_fromDate");
+			
+			String date = param.get("motel_fromDate").toString();
+			System.out.println(date);
+			SimpleDateFormat start_date = new SimpleDateFormat("yyyy-mm-dd");
+			
+//			java.text.SimpleDateFormat start_date = new java.text.SimpleDateFormat(date);
+//			int start_date = (int) param.get("motel_fromDate");
+//			System.out.println("start_date : " + start_date);
+		
+			System.out.println("end_number : " + end_number);
+			System.out.println("insert_motel_number : " + insert_motel_number);
+			System.out.println("start_date : " + start_date);
+			motel_procedure.put("start_number", start_number);
+			motel_procedure.put("end_number", end_number);
+			motel_procedure.put("insert_motel_number", insert_motel_number);
+			motel_procedure.put("start_date", date);
+			//숙박 가능날짜 테이블 pl/sql end
+			
+			
+			
+			dao.motel_Date_procedure(motel_procedure);
+			
+			Map<String, Object> filesParam = new HashMap<String, Object>();
+			filesParam.put("MOTEL_NUM", motel_num);
+			System.out.println("service motel_photo : " + motel_photo);
+			for (int i = 0; i < motel_photo.size(); i++) {
+				filesParam.put("motel_photo_" + (i+1), wirte_motel_Photo(motel_photo.get(i)));
 			}
-			ListfullName.add(fullName+i);
+			
+			System.out.println("filesParam : " + filesParam);
+			dao.insertMotel_Photo(filesParam);
+			return motel_num;
+		} else {
+			return motel_num;
 		}
-		return ListfullName;
+		
 	}
 	
 	public String wirte_motel_Photo(MultipartFile file) {
@@ -349,5 +349,42 @@ public class MotelTbService {
 		}
 		return fullName;
 	}
+	
+	// 날짜 입력받아서 pl/sql 함수에 넣을 값 만들기 
+	public int startEnd(String checkin, String checkout) {
+		if(checkin.equals("") && checkout.equals("")) {
+			return 0;
+		}else {
+			
+			String tmpCheckIn = checkin;
+			tmpCheckIn = tmpCheckIn.replace("-", "");
+			int startYear = Integer.parseInt(tmpCheckIn.substring(0, 4));
+			int startMonth = Integer.parseInt(tmpCheckIn.substring(4,6));
+			int startDate = Integer.parseInt(tmpCheckIn.substring(6,8));
+			String tmpEndDate = checkout;
+			tmpEndDate = tmpEndDate.replace("-", "");
+			int endDate = Integer.parseInt(tmpEndDate);
+			/*int endDate = Integer.parseInt(checkout);*/
+			
+			
+			Calendar cal = Calendar.getInstance();
+			
+			cal.set(startYear, startMonth-1,startDate);
+			int count = 0;
+			while(true) {
+				cal.add(Calendar.DATE, 1);
+				count++;
+				if(getDateByInteger(cal.getTime()) > endDate) {
+					break;
+				}
+			}
+			return count;
+		}
+		
+	}
+	 public static int getDateByInteger(Date date) {
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	        return Integer.parseInt(sdf.format(date));
+	 }
 
 }

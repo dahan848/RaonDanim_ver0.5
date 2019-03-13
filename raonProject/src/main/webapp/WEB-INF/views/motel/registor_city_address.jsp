@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>	
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,8 +17,30 @@
         <script defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc&callback=initMap&libraries=places">
     </script>
-
 <script type="text/javascript">
+//submit 실행시 form 확인 함수
+function form_Check(){
+	alert($('#nation').val());
+// 	var type = $('#motel_type').val();
+// 	var category = $('#motel_category').val(); 
+// 	if(type == 0){
+// 		swal({
+//                text:"숙소 종류를 선택해 주세요.",
+//                icon:"warning",
+//                buttons:[false,"확인"]
+//             })
+// 		return false;
+// 	}else if(category == 0){
+// 		swal({
+//                text:"숙박 유형을 선택해 주세요.",
+//                icon:"warning",
+//                buttons:[false,"확인"]
+//             })
+// 		return false;
+// 	}
+}
+
+
 	$(function(){
 		//국가입력 스크립트
 		$(".national").click(function() {
@@ -211,6 +234,7 @@
 </style>
 </head>
 <body>
+
 <%-- 	확이 : ${city}.length<br> --%>
 	motel_bath : ${motel_bathroom }
 	<br> motel_type : ${motel_type }
@@ -232,7 +256,7 @@
 			<div class="container">
 				<div class="registor_main">
 					<div class="registor_contain" style="width: 70%;">
-					<form action="registor_photo" method="post" id = "register_form" onkeydown="return captureReturnKey(event)">
+					<form action="registor_photo" method="post" id = "register_form" onkeydown="return captureReturnKey(event)" onsubmit="return form_Check();">
 						<input type="hidden" value="${_csrf.token}"
 							name="${_csrf.parameterName}">
 						<!-- 						기존에 받았던 데이터 -->
@@ -242,49 +266,9 @@
 						<input type="hidden" value="${motel_room }" name="motel_room"> 
 						<input type="hidden" value="${motel_people }" name="motel_people">
 
-<%-- 						<c:if test="${!empty national}"> --%>
-
-<!-- 							<select name="selectBox" id="selectBox" style="width: 80px;" -->
-<!-- 								class="select_02"> -->
-
-<%-- 								<c:forEach var="national" items="${national}" varStatus="i"> --%>
-
-<%-- 									<option value="${national.NATIONALITY_KOR_NAME}">${national.NATIONALITY_NAME}${national.NATIONALITY_KOR_NAME}</option> --%>
-
-<%-- 								</c:forEach> --%>
-
-<!-- 							</select> -->
-
-<%-- 						</c:if> --%>
-
-<!-- 						<br> -->
-
-<!-- 						<input list="brow"> -->
-<!-- 						<datalist id="brow"> -->
-<!-- 							<option value="Internet Explorer"> -->
-							
-<!-- 							<option value="Firefox"> -->
-  
-<!-- 							<option value="Chrome"> -->
-  
-<!-- 							<option value="Opera"> -->
-  
-<!-- 							<option value="Safari"> -->
-							
-<!-- 							<option value="한국"> -->
-							
-<!-- 							<option value="일본"> -->
-							
-<!-- 							<option value="중국"> -->
-							
-<!-- 							<option value="미국"> -->
-
-<!-- 						</datalist> -->
-<!-- 						<br> -->
-
 						<h4>숙소의 국가를 선택하여 주세요.</h4> 
 						<c:if test="${!empty national}">
-							<input list="brow" class="national" name="motel_nation" style="width: 300px;">
+							<input list="brow" id="nation" class="national" name="motel_nation" style="width: 300px;">
 							<datalist id="brow">
 
 								<c:forEach var="national" items="${national}" varStatus="i">

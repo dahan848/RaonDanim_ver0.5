@@ -282,8 +282,9 @@ public class MotelController {
 	}
 	
 	@RequestMapping(value = "/write_registor_type_style", method = RequestMethod.GET)
-	public String registor_step1() {
+	public String registor_step1(HttpSession session) {
 		System.out.println("숙소 등록 진입 ");
+		System.out.println("session motel_photo : " + session.getAttribute("motel_photo"));
 		return "motel/registor_type_style";
 	}
 	
@@ -383,8 +384,12 @@ public class MotelController {
 		model.addAttribute("motel_address", param.get("motel_address"));
 		model.addAttribute("motel_photoFiles", files);
 		
-		session.setAttribute("motel_photo", files);
 		
+		session.setAttribute("motel_photo", files);
+//		System.out.println("=======================================================");
+//		System.out.println(session.getAttributeNames());
+//		
+//		System.out.println(session.getAttribute("motel_photo"));
 		
 		model.addAttribute("registor", param);
 //		System.out.println("cma_file : " + cma_file);
@@ -402,7 +407,8 @@ public class MotelController {
 		System.out.println("complete : " + param);
 		System.out.println("complete motel_photo : " + session.getAttribute("motel_photo"));
 		System.out.println("complete motel_photo : " + session.getAttribute("motel_photo").getClass());
-		int motel_num = service.write_Motel1(param, (List<MultipartFile>) session.getAttribute("motel_photo"));
+		List<MultipartFile> files = (List<MultipartFile>) session.getAttribute("motel_photo");
+		int motel_num = service.write_Motel1(param, files);
 		if(motel_num!=0) {
 			//숙박 글 정상 등록
 			System.out.println("숙박글 등록 성공");
