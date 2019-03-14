@@ -16,7 +16,7 @@ import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.WithReviewBoardService;
 
 @Controller
-@RequestMapping("/reply")
+@RequestMapping("/with")
 public class WithReviewController {
 	
 	@Autowired
@@ -35,8 +35,10 @@ public class WithReviewController {
 		System.out.println(num + "번 회원의 타임라인");
 		Map<String, Object> rev = wiService.selectWithOne(num);
 		model.addAttribute("with", rev);
+		System.out.println(rev);
 		Map<String, Object> rev2 = wiService.selectOne(num);
 		model.addAttribute("withBoard", rev2);
+		System.out.println(rev2);
 		return "review/withList";
 	}
 	
