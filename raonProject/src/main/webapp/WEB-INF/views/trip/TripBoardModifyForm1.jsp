@@ -141,13 +141,13 @@ $(function() {
 				<tr>
 					<th style="padding: 20px;" class="danger">여행출발일</th>
 					<td style="padding: 20px;">
-						<input type="date" id="datepicker"  name="trip_Board_Start" value="${boardInfo.TRIP_BOARD_START}">
+						<input type="date" id="datepicker"  name="trip_Board_Start" value="${boardInfo.TRIP_BOARD_START}" required="required">
 					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="success">여행 종료일</th>
 					<td style="padding: 20px;">
-						<input type="date" id="datepicker2" name="trip_Board_End" value="${boardInfo.TRIP_BOARD_END}">
+						<input type="date" id="datepicker2" name="trip_Board_End" value="${boardInfo.TRIP_BOARD_END}" required="required">
 					</td>
 				</tr>
 				<tr>

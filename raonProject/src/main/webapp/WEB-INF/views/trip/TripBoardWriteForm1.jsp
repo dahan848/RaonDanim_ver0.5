@@ -143,13 +143,13 @@ function goToProfile() {
 				<tr>
 					<th style="padding: 20px;" class="info">여행출발일</th>
 					<td style="padding: 20px;">
-						<input type="date" id="datepicker"  name="trip_Board_Start">
+						<input type="date" id="datepicker"  name="trip_Board_Start" required="required">
 					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="info">여행 종료일</th>
 					<td style="padding: 20px;">
-						<input type="date" id="datepicker2" name="trip_Board_End">
+						<input type="date" id="datepicker2" name="trip_Board_End" required="required">
 					</td>
 				</tr>
 				<tr>

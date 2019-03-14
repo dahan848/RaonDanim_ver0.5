@@ -667,6 +667,17 @@ th{
 #sogaeTable > tr th td{
 	width: 500px;
 }
+#boardInfoContent{
+    min-height: 520px;
+    max-height: 520px;
+    min-width : 330px;
+    max-width : 330px;
+    width: 100%;
+	height : 100%;
+    word-wrap: break-word;
+    overflow: auto;
+
+}
 
 </style>
 </head>
@@ -796,7 +807,10 @@ th{
                       </tr>
                       <tr>
                          <td id="tripsogae">
-                         		<pre>${boardInfo.TRIP_BOARD_COUNTENT}</pre>
+                         		<div id="boardInfoContent">
+                         			${boardInfo.TRIP_BOARD_COUNTENT}
+                         		</div>
+                         		
                                
                          </td>
                       </tr>

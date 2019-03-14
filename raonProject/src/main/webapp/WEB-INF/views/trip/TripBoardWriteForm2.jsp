@@ -16,6 +16,7 @@
 
 #r2{
 	background-color: #eeeeee;
+	
 }
 
 #cc {
@@ -259,13 +260,13 @@ html, body {
 		ff.html("");
 		for(var i in cityNames){
 		
-			var row = $("<div class='row' style='border: 2px solid #a0c4ff;' >");	
+			var row = $("<div class='row' style='border: 1px solid #cccccc;' >");	
 			var col = $("<div class='col-sm-12'>");
 			var table = $("<table class='table'>");
 			var tr = $("<tr>");
-			$("<th>").text(j+"번").appendTo(tr);
-			$("<th>").text(cityNames[i].cityName).appendTo(tr);
-			$("<th>").html("<input type='button' value='삭제' data-index='"+i+"' class='btn btn-primary btn-sm' onclick='deleteMaker("+i+")' id='deleteBtn"+i+"'>").appendTo(tr);
+			$("<th style='width: 40px;'>").text(j+"번").appendTo(tr);
+			$("<th style='max-width: 300px; min-width: 150px; text-align: left; width: 300px;'>").text(cityNames[i].cityName).appendTo(tr);
+			$("<th style='max-width: 15px; min-width: 15px; text-align: right; width: 15px;'>").html("<input type='button' value='삭제' data-index='"+i+"' class='btn btn-primary btn-sm' onclick='deleteMaker("+i+")' id='deleteBtn"+i+"'>").appendTo(tr);
 			$("<th>").html("<input type='hidden' value='"+cityNames[i].lat+"' class='btn btn-primary btn-sm' id='deleteLat"+i+"'>").appendTo(tr);
 			tr.appendTo(table);
 			table.appendTo(col);
@@ -433,9 +434,8 @@ html, body {
 							<div class="col-sm-12">
 								<table class="table">
 									<tr>
-										<th>번호</th>
-										<th>도시이름</th>
-										<th>삭제</th>
+										<th><span style="color:#ef4550;"><b>장소검색을 통해 계획중인 여행지를 추가 할 수 있습니다.</b></span></th>
+										
 									</tr>
 								</table>
 							</div>
