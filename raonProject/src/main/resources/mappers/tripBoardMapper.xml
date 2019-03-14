@@ -28,10 +28,10 @@ values(#{trip_Board_Key},
 
 <select id="selectOneByBoardKey" parameterType="int" resultType="tripBoard">
 
-select  TRIP_BOARD_KEY,
-      USER_NUM,
+select TRIP_BOARD_KEY,
+       USER_NUM,
        TRIP_BOARD_TITLE,
-        TRIP_BOARD_COUNTENT,
+       TRIP_BOARD_COUNTENT,
        TRIP_BOARD_START,
        TRIP_BOARD_END,
        TRIP_BOARD_TOGETHER,
@@ -44,10 +44,10 @@ where TRIP_BOARD_KEY = #{trip_Board_Key}
 
 <select id="selectOneByUserNum" parameterType="int" resultType="tripBoard">
 
-select  TRIP_BOARD_KEY,
-      USER_NUM,
+select TRIP_BOARD_KEY,
+       USER_NUM,
        TRIP_BOARD_TITLE,
-        TRIP_BOARD_COUNTENT,
+       TRIP_BOARD_COUNTENT,
        TRIP_BOARD_START,
        TRIP_BOARD_END,
        TRIP_BOARD_TOGETHER,
@@ -125,9 +125,7 @@ from (select
                         <if test="type==0">
                            or 1 = 1
                         </if>
-                       <!--이부분 수정 삭제를 위해 쿼리 수정함 리스트 안뽑히면 아마 이거 때문 -잘뽑힘 -->
-                  and TRIP_BOARD_ST = 0
-                  <!--이부분 수정 삭제를 위해 쿼리 수정함  -->
+                  		and TRIP_BOARD_ST = 0
                         order by b.TRIP_BOARD_KEY desc ))
 where r between #{start} and #{end} 
 

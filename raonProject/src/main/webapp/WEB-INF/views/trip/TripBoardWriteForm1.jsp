@@ -12,7 +12,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>여행일정</title>
 <style type="text/css">
 #con {
 	height: 900px;

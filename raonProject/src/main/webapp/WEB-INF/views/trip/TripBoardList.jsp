@@ -15,7 +15,7 @@
 <script
 	src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>동행</title>
 <style type="text/css">
 #con {
 	min-height: 1300px;
@@ -127,13 +127,11 @@
 		var lName = $("#lName");
 		var fName = $("#fName");
 		
-		//alert("typeValue : "+typeValue);
-
 		if(typeValue==0){
-			
+			//디폴트
 			return true;
 		}else if(typeValue==4){
-			
+			//이름검색
 			if(lName.val()=="" && fName.val()!=""){
 				//성입력칸이 비었을때
 				return true;
@@ -149,6 +147,7 @@
 				});
 				return false;
 			}else{
+				//둘다 입력했을때
 				return true;
 			}
 			
@@ -156,7 +155,7 @@
 			
 		}else{
 			if(keyword.val()=="" || keyword.val()==null){
-				
+				//옵션밸류 1~3으로 입력값 안집어넣었을 때
 				swal({
 					icon:"warning",
 					text:"검색어를 입력해주세요.",
@@ -171,9 +170,7 @@
 	});
 	
 	
-	
-	
-		
+
 	}
 </script>
 
@@ -229,8 +226,8 @@
 							<input type="text" class="form-control" id="keyword"
 								placeholder="검색어를 입력하세요" name="keyword" style="width: 700px;">
 							
-			   			    <input type="hidden" class='form-control' id='lName' name='lName'>			     			
-			     			<input type="hidden" class='form-control' id='fName' name='fName'>	
+			   			    <input type="hidden" class='form-control' id='lName' name='lName' value="">			     			
+			     			<input type="hidden" class='form-control' id='fName' name='fName' value="">	
 
 						</div>
 
@@ -267,6 +264,17 @@
 					</tr>
 				</thead>
 				<tbody>
+				<c:if test="${empty tripData.tripBoardList}">
+					
+					<script>
+						swal({
+							icon:"warning",
+							text:"검색된 결과가 없습니다.",
+						});
+						
+					</script>
+					
+				</c:if>
 
 					<c:forEach items="${tripData.tripBoardList}" var="list">
 						<tr>
@@ -319,7 +327,7 @@
 					<c:forEach var="pageNum" begin="${tripData.start}"
 						end="${tripData.end < tripData.total ? tripData.end: tripData.total}">
 						<a
-							href="list?pageNum=${pageNum}&type=${param.type}&keyword=${param.keyword}">${pageNum}&nbsp;&nbsp;&nbsp;</a>
+							href="list?pageNum=${pageNum}&type=${param.type}&keyword=${param.keyword}&lName=${param.lName}&fName=${param.fName}">${pageNum}&nbsp;&nbsp;&nbsp;</a>
 					</c:forEach>
 					<c:if test="${tripData.page!=tripData.total}">
 						<li><a

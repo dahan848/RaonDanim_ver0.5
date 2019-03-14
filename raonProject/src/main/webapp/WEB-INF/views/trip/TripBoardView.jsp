@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>여행상세</title>
 
 <script type="text/javascript">
 var locations = ${cityInfo};

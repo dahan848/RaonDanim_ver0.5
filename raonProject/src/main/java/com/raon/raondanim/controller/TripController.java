@@ -67,21 +67,16 @@ public class TripController {
 		Map<String, Object> tripData = tripService.getTenBoardPage(params);
 		// System.out.println("list요청 tripdata 검사:"+tripData);
 		model.addAttribute("tripData", tripData);
-		// 지도 찍을 위도경도인데 컬럼이 구글에서 받는 형식과 다르고 자바 객체형태는 = 으로 되있다 보니까 json으로 일단 변환시켜서 보내봄
+		// 지도 찍을 위도경도인데 컬럼이 구글에서 받는 형식과 다르고 자바 리스트형태는 = 으로 되있다 보니까 json으로 일단 변환시켜서 보내봄
 //		JSONArray tripLatLng = new JSONArray(tripService.getListlatlng());
 
 		// list<map> 구조를 jsonarr 로 변경하는건 안되는데 list<map>을 json객체로 바꿔서 보내니까 됨 뭔차이가
 		Gson gson = new Gson();
 		String tripLatLng = gson.toJson(tripService.getListlatlng());
 
-		/*
-		 * customUserDetails user = (customUserDetails) authentication.getPrincipal();
-		 * int user_Num = user.getUser_num();
-		 * 
-		 * model.addAttribute("user_Num", user_Num);
-		 */
+
 		model.addAttribute("tripLatLng", tripLatLng);
-		// System.out.println(tripLatLng);
+	
 
 		return "trip/TripBoardList";
 	}
@@ -251,7 +246,7 @@ public class TripController {
 
 		// 유저 관심사 여행스타일 여행 희망도시 뽑기
 		String userNum = String.valueOf(boardInfo.get("USER_NUM"));
-		
+
 		Map<String, Object> userInfo = new HashMap<>();
 		List<Map<String, Object>> UserInterest = tripService.getUserInterest(userNum);
 		List<Map<String, Object>> UserTrStyle = tripService.getTrStyle(userNum);
