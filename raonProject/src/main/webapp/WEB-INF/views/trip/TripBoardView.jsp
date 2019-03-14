@@ -807,10 +807,10 @@ th{
                       </tr>
                       <tr>
                          <td id="tripsogae">
-                         		<div id="boardInfoContent">
+                         		<%-- <div id="boardInfoContent">
                          			${boardInfo.TRIP_BOARD_COUNTENT}
-                         		</div>
-                         		
+                         		</div> --%>
+                         		<pre id="boardInfoContent">${boardInfo.TRIP_BOARD_COUNTENT}</pre>
                                
                          </td>
                       </tr>
