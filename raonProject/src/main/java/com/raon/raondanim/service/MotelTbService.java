@@ -287,17 +287,13 @@ public class MotelTbService {
 			//숙박 가능 테이블에 데이터를 넣기위해 pl/sql 에 필요한 변수설정
 			Map<String, Object> motel_procedure = new HashMap<String, Object>();
 			int start_number = 0;
-			int end_number = startEnd(checkin, checkout);
+			int end_number = startEnd(checkin, checkout)-1;
 			int insert_motel_number = (int) param.get("MOTEL_NUM");
 			//Date start_date = (Date) param.get("motel_fromDate");
 			
-			String date = param.get("motel_fromDate").toString();
-			System.out.println(date);
-			SimpleDateFormat start_date = new SimpleDateFormat("yyyy-mm-dd");
-			
-//			java.text.SimpleDateFormat start_date = new java.text.SimpleDateFormat(date);
-//			int start_date = (int) param.get("motel_fromDate");
-//			System.out.println("start_date : " + start_date);
+			String start_date = param.get("motel_fromDate").toString();
+			System.out.println(start_date);
+//			SimpleDateFormat start_date = new SimpleDateFormat("yyyy-mm-dd");
 		
 			System.out.println("end_number : " + end_number);
 			System.out.println("insert_motel_number : " + insert_motel_number);
@@ -305,7 +301,7 @@ public class MotelTbService {
 			motel_procedure.put("start_number", start_number);
 			motel_procedure.put("end_number", end_number);
 			motel_procedure.put("insert_motel_number", insert_motel_number);
-			motel_procedure.put("start_date", date);
+			motel_procedure.put("start_date", start_date);
 			//숙박 가능날짜 테이블 pl/sql end
 			
 			

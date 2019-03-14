@@ -13,35 +13,74 @@
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
-    
-        <script defer
+    <script defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc&callback=initMap&libraries=places">
     </script>
 <script type="text/javascript">
-//submit 실행시 form 확인 함수
+//submit 실행시 form안에 
+//나라 도시 주소 입력 확인 함수
 function form_Check(){
-	alert($('#nation').val());
-// 	var type = $('#motel_type').val();
-// 	var category = $('#motel_category').val(); 
-// 	if(type == 0){
+// 	alert($('#nationDB').val());
+	
+// 	var nationDB = $('#nationDB').val();
+	var nation = $('#nation').val();
+	var city = $('#city').val();
+	var address = $('#address').val();
+	
+	alert(nation);
+	var nation_split = nation.split(', ');
+	var nation_en = nation_split[0];
+	var nation_ko = nation_split[1];
+	
+	
+	alert(nation_en);
+	alert(nation_ko);
+	alert(nation_db_en);
+	
+	var arr = "${national.NATIONALITY_NAME}";
+	
+	for(var i in arr{
+		alert(arr[i]);	
+	};
+	
+	
+	
+		
+	//alert(${national.NATIONALITY_KOR_NAME});
+
+	
+	
+// 	if(${national})
+	
+// 	if(nation != nationDB){
 // 		swal({
-//                text:"숙소 종류를 선택해 주세요.",
-//                icon:"warning",
-//                buttons:[false,"확인"]
-//             })
+//       	  text:"숙소 국가를 검색해 주세요.",
+//       	  icon:"warning",
+//       	  buttons:[false,"확인"]
+//      	})
 // 		return false;
-// 	}else if(category == 0){
+// 	}
+// 	if(city == null){
 // 		swal({
-//                text:"숙박 유형을 선택해 주세요.",
-//                icon:"warning",
-//                buttons:[false,"확인"]
-//             })
+//       	  text:"숙소 국가를 검색해 주세요.",
+//       	  icon:"warning",
+//       	  buttons:[false,"확인"]
+//      	})
+// 		return false;
+// 	}
+// 	if(address == null){
+// 		swal({
+//       	  text:"숙소 국가를 검색해 주세요.",
+//       	  icon:"warning",
+//       	  buttons:[false,"확인"]
+//      	})
 // 		return false;
 // 	}
 }
 
 
 	$(function(){
+		//console.log($('#nationDB'));
 		//국가입력 스크립트
 		$(".national").click(function() {
 			$(this).next().show();
@@ -146,6 +185,9 @@ function form_Check(){
 
 </script>	
 <style type="text/css">
+#register_form{
+	padding-left: 10px;
+}
 .btn_next {
 	background-image: url('${contextPath}/img/motel/next.jpg');
 	background-position: 0px 0px;
@@ -157,7 +199,7 @@ function form_Check(){
 	outline: 0;
 	margin-top: 10px;
 	float: right;
-	margin-right: 15%;
+	margin-right: 2%;
 }
 
 .btn_back {
@@ -186,7 +228,7 @@ function form_Check(){
 /*  	margin-top : 15%;  */
 	background-position: center;
 	width: 60%;
-	height: 80%;
+	height: 85%;
 	background-color: white;
 	width: 60%;
 	border: 1px solid #444444;
@@ -201,14 +243,14 @@ function form_Check(){
        * element that contains the map. */
       #map {
         height: 250px;
-        width: 500px;
+        width: 700px;
         margin-top: 65px;
         
       }
       #searchMap{
          display:none;
          height: 250px;
-         width: 500px;
+         width: 700px;
         margin-top: 65px;
       }
       /* Optional: Makes the sample page fill the window. */
@@ -230,18 +272,17 @@ function form_Check(){
       }
 
 
-
 </style>
 </head>
 <body>
 
 <%-- 	확이 : ${city}.length<br> --%>
-	motel_bath : ${motel_bathroom }
-	<br> motel_type : ${motel_type }
-	<br> motel_category : ${motel_category }
-	<br> motel_people : ${motel_people }
-	<br> motel_room : ${motel_room }
-	<br>
+<%-- 	motel_bath : ${motel_bathroom } --%>
+<%-- 	<br> motel_type : ${motel_type } --%>
+<%-- 	<br> motel_category : ${motel_category } --%>
+<%-- 	<br> motel_people : ${motel_people } --%>
+<%-- 	<br> motel_room : ${motel_room } --%>
+<!-- 	<br> -->
 	<!-- 인클루드 심플 헤더 -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
@@ -256,6 +297,7 @@ function form_Check(){
 			<div class="container">
 				<div class="registor_main">
 					<div class="registor_contain" style="width: 70%;">
+					
 					<form action="registor_photo" method="post" id = "register_form" onkeydown="return captureReturnKey(event)" onsubmit="return form_Check();">
 						<input type="hidden" value="${_csrf.token}"
 							name="${_csrf.parameterName}">
@@ -273,7 +315,7 @@ function form_Check(){
 
 								<c:forEach var="national" items="${national}" varStatus="i">
 
-									<option
+									<option id = "nationDB"
 										value="${national.NATIONALITY_NAME}, ${national.NATIONALITY_KOR_NAME}" onkeypress='chkCode(this,event.keyCode)'></option>
 
 								</c:forEach>
@@ -284,7 +326,7 @@ function form_Check(){
 						
 						<h4>숙소의 도시를 선택하여 주세요.</h4>
 						<c:if test="${!empty city}">
-							<input list="brow1" class="city" name="motel_city" style="width: 300px;">
+							<input list="brow1" id="city" class="city" name="motel_city" style="width: 300px;">
 							<datalist id="brow1">
 
 								<c:forEach var="city" items="${city}" varStatus="i">
@@ -301,7 +343,7 @@ function form_Check(){
 							
 						<h4>상세주소를 입려하여주세요.(지도에서 위치를 확인하여주세요.)</h4>
 							<div id="floating-panel">
-								<input id="address" type="textbox" placeholder="주소를 입력하세요" name="motel_address">
+								<input id="address" type="text" placeholder="주소를 입력하세요" name="motel_address">
 								<input id="submit" type="button" value="검색">
 							</div>
 							<div id="map"></div>

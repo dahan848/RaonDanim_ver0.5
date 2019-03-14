@@ -19,23 +19,35 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+	//submit 실행시 사진 등록 확인 
+// 	function form_Check(){
+// 		var cma_file4 = $('#cma_file4').val();
+// 		var cma_file = $('#cma_file').val();
+// 		var cma_file1 = $('#cma_file1').val();
+// 		var cma_file2 = $('#cma_file2').val();
+// 		var cma_file3 = $('#cma_file3').val();
+		
+// // 		alert("cma_file : " + cma_file);
+// // 		alert("cma_file1 : " + cma_file1);
+// // 		alert("cma_file2 : " + cma_file2);
+// // 		alert("cma_file3 : " + cma_file3);
+// //		alert("cma_file4 : " + cma_file4);
+// 		if(cma_file4 == '' || cma_file == '' || cma_file1 == '' || cma_file2 == '' || cma_file3 == ''){
+// 			swal({
+// 	               text:"숙소 사진을 선택해 주세요.",
+// 	               icon:"warning",
+// 	               buttons:[false,"확인"]
+// 	            })
+// 			return false;
+// 		}
+// 	};
+
+
 	//사진 등록 함수 
 	function getThumbnailPrivew(html, $target) {
 		if (html.files && html.files[0]) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				//$target.css('display', '');
-				//$('.filebox').css('background-image', 'url(\"' + e.target.result + '\")');
-// 				$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
-						
-//  				$target.css('background-repeat',"no-repeat");
-//  				$target.css('background-size',"contain");
- 				
- 				
-
-// 				$target.css('height','300px');
-// 				$target.css('width','300px');
-				// 				$(".label").text("");
 				$target.html('<img src="' + e.target.result + '" border="0" alt="" />');
 			}
 
@@ -228,7 +240,7 @@ img {
 				<h3 style="text-align: center">게스트에게 보여줄 숙소의 사진을 등록하세요.(사진등록 5개
 					필수!!)</h3>
 					<form name="form" id="form" action="registor_intro" method="post" class="photo_form"
-						enctype="multipart/form-data" autocomplete="off">
+						enctype="multipart/form-data" autocomplete="off" onsubmit="return form_Check();">
 						
 						<input type="text" value="${_csrf.token}" name="${_csrf.parameterName}">
 							

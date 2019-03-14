@@ -45,6 +45,54 @@
 	});
 
 	function form_Check() {
+		var motel_intro = $('#motel_intro').val();
+		var motel_price = $('#motel_price').val();
+		var motel_title = $('#motel_title').val();	
+		
+		var fromDate = $('#fromDate').val();
+		var checkoutDate = $('#checkoutDate').val();
+		
+// 		alert(fromDate);
+// 		alert(checkoutDate);
+		//날짜입력에 대한 유효성 검사
+		if(fromDate == "" || checkoutDate ==""){
+			swal({
+	               text:"숙박대여 날짜를 확인해 주세요.",
+	               icon:"warning",
+	               buttons:[false,"확인"]
+	            })
+			return false;
+		}
+		//숙소 소개 글 유효성 검사
+		if(motel_intro == "" || motel_intro.length < 15){
+			swal({
+	               text:"숙소 소개 작성란을 확인해 주세요.",
+	               icon:"warning",
+	               buttons:[false,"확인"]
+	            })
+			return false;
+		}
+		//숙소 제목 유효성검사
+		if(motel_title == "" || motel_title.length < 3){
+			swal({
+	               text:"숙소 소개제목을 확인해 주세요.",
+	               icon:"warning",
+	               buttons:[false,"확인"]
+	            })
+			return false;
+		}
+		// price 숫자입력 및 액수 제한 유효성검사 
+		var priceCheck = /^[0-9]+$/;
+		if(!priceCheck.test(motel_price)){
+			swal({
+	               text:"가격을 확인해 주세요.",
+	               icon:"warning",
+	               buttons:[false,"확인"]
+	            })
+			return false;
+		}
+
+		
 		var up;
 		up = confirm("등록하시겠습니까 ??");
 
@@ -152,21 +200,23 @@ textarea {
 									숙소 대여 가능한 기간을 설정해 주세요.<br>
 								</h4>
 
-									<input type="text" id="fromDate" name="motel_fromDate"> ~ 
-									<input type="text" id="checkoutDate" name="motel_checkoutDate">
+									<input type="text" id="fromDate" name="motel_fromDate" readonly="readonly"> ~ 
+									<input type="text" id="checkoutDate" name="motel_checkoutDate" readonly="readonly">
 
 								<h4>
 									숙소에 대한 소개를 남겨 주세요.<br>
 								</h4>
-								<textarea name="motel_intro" rows="10" cols="100"></textarea>
+								<textarea name="motel_intro" id="motel_intro" rows="10" cols="100"></textarea>
 								<h4>
 									숙소 등록을 위한 제목을 남겨 주세요.<br>
 								</h4>
-								<input type="text" name="motel_title" style="width: 725px;">
+								<input type="text" name="motel_title" id="motel_title" style="width: 725px;">
 								<h4>
 									숙소의 요금을 설정해 주세요.(설정하지 않을 경우 게스트가 무료로 이용 가능합니다.)<br>
 								</h4>
-								<input type="text" name="motel_price" style="width: 725px;">
+								<input type="text" name="motel_price" id="motel_price" value="0">
+								<b id="dollar" style="font-size: 1.6em; padding: 2px;">$</b><br>
+								
 								
 								<div class="button" style="width: 90%;">
 									<input type="submit" value="" class="btn_next"> <input
