@@ -298,5 +298,38 @@ set TRIP_BOARD_READCOUNT = TRIP_BOARD_READCOUNT+1
 where TRIP_BOARD_KEY = #{boardKey}
 </update>
 
+<select id="getDeclaration" resultType="map">
+select DECLARATION_KEY,
+	   DECLARATION_CONTENT
+from DECLARATION_DTB
+</select>
+
+
+<insert id="insertDeclaration" parameterType="map">
+insert into TRIP_DECLARATION_TB
+(TRIP_BOARD_KEY,
+ D_USER_NUM,
+ USER_NUM,
+ DECLARATION_KEY,
+ TRIP_D_DETAILCONTENT)
+values( #{TRIP_BOARD_KEY},
+		#{D_USER_NUM},
+		#{USER_NUM},
+		#{DECLARATION_KEY},
+		#{TRIP_D_DETAILCONTENT})
+</insert>
+
+<select id="selectOneByDeclaration" parameterType="map" resultType="map">
+select  TRIP_BOARD_KEY,
+		D_USER_NUM,
+		USER_NUM,
+		DECLARATION_KEY,
+		TRIP_D_DETAILCONTENT
+from TRIP_DECLARATION_TB
+where USER_NUM = #{USER_NUM}
+and TRIP_BOARD_KEY = #{TRIP_BOARD_KEY}
+</select>
+
+
 
 </mapper>

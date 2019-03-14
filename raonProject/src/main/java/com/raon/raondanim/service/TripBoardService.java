@@ -60,6 +60,11 @@ public interface TripBoardService {
 	public List<Map<String, Object>> getTravleHope(String usernum); //번호로 유저 희망국가 도시 선택
 	
 	
+	//신고 목록 데이터 불러오기
+	public List<Map<String, Object>> getDeclaration();
+	
+	//신고 입력하기
+	public boolean insertDeclaration(Map<String, Object> params);
 	
 	
 }

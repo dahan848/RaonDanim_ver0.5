@@ -55,4 +55,13 @@ public interface TripBoardDao {
 	
 	//조회수 1증가
 	public int incrementViews(int boardKey);
+	
+	
+	//신고 목록 불러오기
+	public List<Map<String, Object>> getDeclaration();
+	//신고내용 테이블 저장
+	public int insertDeclaration(Map<String, Object> params);
+	//이미신고한건지 알기위해 조회
+	public Map<String, Object> selectOneByDeclaration(Map<String, Object> params);
+	
 }

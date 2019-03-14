@@ -531,6 +531,78 @@ window.onload = function() {
    })
    
 
+   $("#declarationBtn").on("click", function() {
+   		
+	    var dModal = $("#declarationModalBody");
+	   
+   		dModal.html("");
+   		
+   		$.ajax({
+		   url:"getDeclaration",
+		   type:"post",
+		   data:{"${_csrf.parameterName}":"${_csrf.token}"},
+		   dataType:"json",
+		   success:function(data){
+	   
+			   var str = "	<select class='form-control' name='DECLARATION_KEY' id='searchType' style='width: 100%;'>" + 
+				"							<option value='"+data[0].DECLARATION_KEY+"'>"+data[0].DECLARATION_CONTENT+"</option>" + 
+				"							<option value='"+data[1].DECLARATION_KEY+"'>"+data[1].DECLARATION_CONTENT+"</option>" + 
+				"							<option value='"+data[2].DECLARATION_KEY+"'>"+data[2].DECLARATION_CONTENT+"</option>" + 
+				"							<option value='"+data[3].DECLARATION_KEY+"'>"+data[3].DECLARATION_CONTENT+"</option>" + 
+				"							<option value='"+data[4].DECLARATION_KEY+"'>"+data[4].DECLARATION_CONTENT+"</option>" + 
+				"							<option value='"+data[5].DECLARATION_KEY+"'>"+data[5].DECLARATION_CONTENT+"</option>" +
+				"							<option value='"+data[6].DECLARATION_KEY+"'>"+data[6].DECLARATION_CONTENT+"</option>" +
+				"		</select>";
+			   
+			   dModal.html(str);
+				
+				
+		   }
+		   
+		   
+		   
+	   });
+	   
+	   
+	   
+   })
+   
+   
+   $("#dSubmit").on("click", function() {
+   
+	   var dSerialize = $("#declarationForm").serialize();
+	   
+	   $.ajax({
+		   url:"insertDeclaration",
+		   type:"post",
+		   data:dSerialize,
+		   dataType:"json",
+		   success:function(result){
+			   if(result){
+				   
+				   swal({
+					   icon:"success",
+					   text:"신고 접수 완료하였습니다.",
+				   });
+				   $("#dContent").val("");
+			   }else{
+				   swal({
+					   icon:"warning",
+					   text:"게시글당 신고는 한번만 가능합니다.",
+				   });
+				   $("#dContent").val("");
+			   }
+		   }
+		   
+		   
+		   
+		   
+	   });
+	   
+   })
+   
+   
+   
    
    
    
@@ -736,7 +808,7 @@ th{
                       <tr>
                          <td><input  type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#replyModal" value="동행">
                          <input type="button" onclick="toggleDisplay()" class="btn btn-primary btn-xs" value="소개">
-                         <input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#declarationModal" value="신고">
+                         <input type="button" id="declarationBtn"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#declarationModal" value="신고">
                          <input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modifyModal"value="수정">
                          <input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deleteModal" value="삭제">
 <!--                           <input type="button" class="btn btn-primary" value="답글" id="" onclick="" style="height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;" >  -->
@@ -922,14 +994,27 @@ th{
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">
+				<b>게시글 신고</b>
+			</h4>
         </div>
-        <div class="modal-body" id="declarationModalBody">
-          <p>신고모달</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+       <form action="#" id="declarationForm" method="post">
+	       	 <div class="modal-body" id="declarationModalBody">
+<!-- 	         	신고데이터 테이블에서 데이터 끌고와 넣는곳 -->
+
+	        </div>
+	        <div class="modal-footer">
+	       	    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+	       	 	<input type="hidden" name="TRIP_BOARD_KEY" value="${boardInfo.TRIP_BOARD_KEY}">
+	         	<input type="hidden" name="D_USER_NUM" value="${boardInfo.USER_NUM}">
+	         	<input type="hidden" name="USER_NUM" value="${userNum}">   	
+	         	<p style="text-align: left;" >상세 신고내용</p>
+	         	<textarea rows="10" cols="30" style="width: 100%;" id="dContent"  name="TRIP_D_DETAILCONTENT"></textarea>
+	         	<input type="button" id="dSubmit" class="btn btn-info" value="신고작성">
+	         
+	
+	        </div>
+       </form>
       </div>
       
     </div>

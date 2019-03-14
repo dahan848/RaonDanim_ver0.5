@@ -148,9 +148,9 @@ public class TripController {
 			userInfo.put("UserTravleHope", UserTravleHope);
 		}
 
-		model.addAttribute("userInfo", userInfo);
-		model.addAttribute("userNum", user_Num);
-		model.addAttribute("boardInfo", boardInfo);
+		model.addAttribute("userInfo", userInfo);//게시판 등록한 사람의 관심사 여행스타일 등등
+		model.addAttribute("userNum", user_Num);//로그인한사람 유저 넘버
+		model.addAttribute("boardInfo", boardInfo);//게시판 정보
 		model.addAttribute("cityInfo", tripService.getTripBoardCityOneInfo(boardKey));
 
 //		System.out.println("뷰 요청 테스트 게시판 정보: "+tripService.getTripBoardOneInfo(boardKey));
@@ -298,4 +298,50 @@ public class TripController {
 
 	}
 
+	@ResponseBody
+	@RequestMapping("/getDeclaration")
+	public List<Map<String, Object>> getDeclaration(){
+		System.out.println("신고목록 불러오기 요청받음");
+		
+		
+		List<Map<String, Object>> declaration = tripService.getDeclaration();
+		//System.out.println("컨틀롤러/신고목록 데이터 확인 :"+declaration);
+		
+		return declaration;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/insertDeclaration")
+	public boolean insertDeclaration(int TRIP_BOARD_KEY,
+									 int D_USER_NUM,
+									 int USER_NUM,
+									 int DECLARATION_KEY,
+									 String TRIP_D_DETAILCONTENT) {
+		System.out.println("신고 입력 요청 받음");
+				
+		Map<String, Object> params = new HashMap<>();
+		params.put("TRIP_BOARD_KEY", TRIP_BOARD_KEY);
+		params.put("D_USER_NUM", D_USER_NUM);
+		params.put("USER_NUM", USER_NUM);
+		params.put("DECLARATION_KEY", DECLARATION_KEY);
+		params.put("TRIP_D_DETAILCONTENT", TRIP_D_DETAILCONTENT);
+		
+		//System.out.println("컨트롤러/신고입력/ 신고 파라메터 데이터 확인 : "+params);
+		
+		
+		
+		
+		
+		return tripService.insertDeclaration(params);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

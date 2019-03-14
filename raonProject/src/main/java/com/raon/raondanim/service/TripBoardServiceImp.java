@@ -119,16 +119,16 @@ public class TripBoardServiceImp implements TripBoardService {
 		tripData.put("page", pageNum);
 		
 		
-		System.out.println("서비스 파라메터 확인 lName :"+lName);
-		System.out.println("서비스 파라메터 확인 fName :"+fName);
-		System.out.println("서비스 파라메터 확인 start :"+startRow);
-		System.out.println("서비스 파라메터 확인  end :"+endRow);
-		//System.out.println("서비스/페이징/start 확인 :"+getStartPage(pageNum));
-		//System.out.println("서비스/페이징/end 확인 :"+getEndPage(pageNum));
-		System.out.println("서비스/페이징/total 확인 :"+getTotalPage(params));
-		System.out.println("서비스/페이징/page 확인 :"+pageNum);
-		System.out.println("----------------------------------------------------------------");
-		System.out.println("서비스/페이징/tripBoardList 확인 :"+tripBoardList);
+//		System.out.println("서비스 파라메터 확인 lName :"+lName);
+//		System.out.println("서비스 파라메터 확인 fName :"+fName);
+//		System.out.println("서비스 파라메터 확인 start :"+startRow);
+//		System.out.println("서비스 파라메터 확인  end :"+endRow);
+//		System.out.println("서비스/페이징/start 확인 :"+getStartPage(pageNum));
+//		System.out.println("서비스/페이징/end 확인 :"+getEndPage(pageNum));
+//		System.out.println("서비스/페이징/total 확인 :"+getTotalPage(params));
+//		System.out.println("서비스/페이징/page 확인 :"+pageNum);
+//		System.out.println("----------------------------------------------------------------");
+//		System.out.println("서비스/페이징/tripBoardList 확인 :"+tripBoardList);
 
 		return tripData;
 	}
@@ -485,6 +485,34 @@ public class TripBoardServiceImp implements TripBoardService {
 	public List<Map<String, Object>> getTravleHope(String usernum) {
 		
 		return userDao.getTravleHope(usernum);
+	}
+
+	@Override
+	public List<Map<String, Object>> getDeclaration() {
+		//신고목록 불러오기
+		return tripDao.getDeclaration();
+	}
+
+	@Override
+	public boolean insertDeclaration(Map<String, Object> params) {
+		//이미 신고했는지 체크 하고 아니면 신고 입력 신고했으면 false반환 
+		
+		if(tripDao.selectOneByDeclaration(params)==null) {
+			//신고 한번도 안한상태
+			if(tripDao.insertDeclaration(params)>0) {
+				//신고 입력 성공
+				return true;
+			}else {
+				//신고 입력 실패
+				return false;
+			}
+			
+		}else {
+			//중복신고상태
+			return false;
+		}
+		
+		
 	}
 
 
