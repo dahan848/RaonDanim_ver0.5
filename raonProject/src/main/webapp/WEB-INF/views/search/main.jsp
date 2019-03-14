@@ -101,31 +101,18 @@
 											<div class="form-group">
 												<label class="col-sm-3 control-label" for="id_city">거주 도시</label>
 												<div class="col-sm-9">
-													<select class="form-control select-city" name="city" id="city">
+													<select class="form-control select-city select-city2" name="city" id="city">
 													<!-- placeholder 사용을 위한 option blank -->
 													<option></option>
 													</select>
 													<script>
-													var $selectcity = $(".select-city");
-													var a = $selectcity.val();
-													console.log(a);
-													
 													$(document).ready(function(){
+														var data = ${nationality};
+														console.log(data);
 														$(".select-city").select2({
 															placeholder: "선택",
 															allowClear: true,
-															ajax:{
-																url: '/json/city.json',
-																dataType: 'json',
-																data: function(params){
-																	console.log(params);
-																},
-																processResults: function(data, params){
-																	console.log(data);
-																	return{
-																		results: data.results
-																	};
-																}
+															data: data,
 															}
 														});
 													});
@@ -246,7 +233,7 @@
 							</div>
 							
 							<!-- 닉네임 -->
-							<h4 class="profile-name">${user.USER_LNM} ${user.USER_FNM }</h4>
+							<h4 class="profile-name">${user.USER_LNM} ${user.USER_FNM}</h4>
 							
 							<!-- 거주도시 -->
 							<p class="profile-city">거주도시: ${user.USER_CITY}</p>

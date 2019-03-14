@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.raon.raondanim.service.SearchService;
@@ -38,4 +39,11 @@ public class SearchController {
 		return "search/main";
 	}
 
+	@RequestMapping("/nationality")
+	@ResponseBody
+	public String nationality() {
+		Gson gson = new Gson();
+		String nationality = gson.toJson(service.getNationalityList());
+		return nationality;
+	}
 }
