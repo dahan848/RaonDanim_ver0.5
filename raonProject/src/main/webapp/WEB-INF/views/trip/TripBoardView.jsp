@@ -701,7 +701,22 @@ th{
                       </tr>
                       <tr>
                          <th>
-                            <img src="${contextPath}/img/trip_Profile.png" width="30px;">
+                            <c:choose>
+									<c:when test="${boardInfo.USER_PROFILE_PIC eq 'n'}">
+										<a href="#" rel="popover" data-placement="bottom"
+											data-popover-content="#chatList"> <img
+											src="${contextPath}/img/trip_Profile.png">
+										</a>
+
+									</c:when>
+									<c:otherwise>
+										<a href="#" rel="popover" data-placement="bottom"
+											data-popover-content="#chatList"> <img
+											src="${contextPath}/image?fileName=${boardInfo.USER_PROFILE_PIC}"
+											style="width: 40px; height: 40px;">
+										</a>
+									</c:otherwise>
+								</c:choose>
                             &nbsp;&nbsp;
                             <span>${boardInfo.USER_LNM}${boardInfo.USER_FNM}</span>
                             
@@ -796,7 +811,7 @@ th{
          <div class="col-lg-8" id="rightDiv">
             <div id="map">지도</div> 
          <%--   
-            우측 div를 상하단으로 8/2비뷸로 나눌때 
+            우측 div를 상하단으로 8/2비율로 나눌때 
          <div class="row" id="rightRow1">
                
             </div>
@@ -830,7 +845,7 @@ th{
         <div class="modal-body" id="replyModalBody">
             <form action="#" method="post" id="replyForm">
                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                 <textarea class="form-control" rows="2" id="replyContent" name="trip_Reply_Content" ></textarea>
+                 <textarea class="form-control" rows="2" id="replyContent" name="trip_Reply_Content" required="required"></textarea>
                  <input type="hidden" id="replyBoardKey" name="trip_Board_Key" value="${boardInfo.TRIP_BOARD_KEY}">
                  <input type="hidden" id="replyUserNum" name="user_Num" value="${userNum}">
                  <input type="hidden" id="replyGid" name="trip_Reply_Gid" value="0">
@@ -933,8 +948,8 @@ th{
           
         </div>
         <div class="modal-footer">
-          <input type="submit" class="btn btn-danger" value="확인">
           <input type="button" class="btn btn-info" data-dismiss="modal" value="닫기">
+          <input type="submit" class="btn btn-danger" value="확인">
         </div>
            
     </form>
@@ -970,8 +985,8 @@ th{
           
         </div>
         <div class="modal-footer">
-          <input type="submit" class="btn btn-danger" value="확인">
           <input type="button" class="btn btn-info" data-dismiss="modal" value="닫기">
+          <input type="submit" class="btn btn-danger" value="확인">
         </div>
            
     </form>
@@ -1016,7 +1031,22 @@ th{
     </div>
   </div>
   
-</div>   
+</div> 
+
+<!--팝오버  -->
+	<div id="chatList" class="hide">
+		This is a popover list:
+		<ul>
+			<li>List item 1</li>
+			<li>List item 2</li>
+			<li>List item 3</li>
+		</ul>
+	</div>
+
+	<!--팝오버 끝  -->
+
+
+  
 <script>
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();   

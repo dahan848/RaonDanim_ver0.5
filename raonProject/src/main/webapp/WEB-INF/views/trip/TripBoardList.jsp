@@ -252,9 +252,9 @@
 								<b>여행기간</b>
 							</h5></th>
 
-						<th><h5>
+<!-- 						<th><h5>
 								<b>여행스타일(아마도 삭제 예정)</b>
-							</h5></th>
+							</h5></th> -->
 						<th><h5>
 								<b>동행가능</b>
 							</h5></th>
@@ -308,9 +308,9 @@
 							</td>
 
 					
-							<td>
+						<!-- 	<td>
 								<span class="label label-pink label-lg">미작성</span>
-							</td>
+							</td> -->
 							<td>${list.TRIP_BOARD_TOGETHER}<small><b>인</b></small></td>
 							<td>${list.TRIP_BOARD_READCOUNT}</td>
 						</tr>
