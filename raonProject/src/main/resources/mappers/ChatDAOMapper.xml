@@ -42,5 +42,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   )
 	</insert>
 	
+	<!-- user_num으로 채팅방 참여 중인 채팅방 반환 -->
+	<select id="getRoomList" resultType="map" parameterType="int">
+		select r.chat_room_num, m.content
+		  from chat_room_tb r, message_tb m , ( select r.chat_room_num,max( m.message_num) as last_message_num
+	                                          from chat_room_tb r, message_tb m
+	                                         where r.chat_room_num = m.chat_room_num
+	                                           and (r.user1_num = #{usernum}
+	                                            or  r.user2_num = #{usernum})
+	                                           group by r.chat_room_num
+	                                          ) c
+		 where r.chat_room_num = m.chat_room_num
+		   and (r.user1_num = #{usernum}
+		    or  r.user2_num = #{usernum})
+		   and r.chat_room_num = c.chat_room_num
+		   and m.message_num = c.last_message_num
+	</select>
+	
+	<!-- user_num으로 채팅방 참여자 정보 반환 -->
+	<select id="getRoomPartner" resultType="map" parameterType="int">
+		select r.chat_room_num, u.user_num, u.user_lnm, u.user_fnm, u.user_profile_pic
+		  from user_tb u,   (select distinct * 
+	                    from (select decode(c.USER1_NUM,25,'',c.USER1_NUM)||decode(c.USER2_NUM,25,'',c.USER2_NUM) as USER_NUM, c.chat_room_num
+	                              from user_tb u,chat_room_tb c
+	                             where (u.USER_NUM = c.USER1_NUM
+	                                or u.USER_NUM = c.USER2_NUM)
+	                               and u.USER_NUM = #{usernum}
+	                              order by c.CHAT_ROOM_NUM
+	                            ))r
+	 	 where u.user_num = r.user_num
+	</select>
+	
+	<!-- 해당하는 방 번호의 메시지를 반환 -->
+	<select id="getMessageList" resultType="map" parameterType="int">
+	    select * from message_tb
+    	where chat_room_num = #{roomnum}
+   		order by message_num asc
+	</select>
+	
 	
 </mapper>

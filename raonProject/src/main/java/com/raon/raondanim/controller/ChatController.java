@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.ChatService;
 
 @Controller
@@ -74,17 +76,37 @@ public class ChatController {
 	
 	@ResponseBody
 	@RequestMapping(value="/chatList/{usernum}",method=RequestMethod.GET)
-	public ResponseEntity<List<Map<String, Object>>> getChatList(@PathVariable("usernum") int usernum){
-		//System.out.println("chat 리스트 요청 받음!" + usernum);
-		ResponseEntity<List<Map<String, Object>>> entity = null;
+	public ResponseEntity<Map<String, Object>> getChatList(@PathVariable("usernum") int usernum){
+		System.out.println("chat 리스트 요청 받음!" + usernum);
+		ResponseEntity<Map<String, Object>> entity = null;
 		try{
-			List<Map<String, Object>> chatList = service.getChatList(usernum);
-			entity = new ResponseEntity<List<Map<String,Object>>>(chatList, HttpStatus.OK);
+			Map<String, Object> chatList = service.getRoomList(usernum);
+			entity = new ResponseEntity<Map<String, Object>>(chatList, HttpStatus.OK);
 		}catch (Exception e) {
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/messageList/{roomnum}",method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getMessageList(@PathVariable("roomnum") int roomnum, Authentication authentication){
+		System.out.println("chat 리스트 요청 받음!" + roomnum);
+		//아오 그냥 뒷단에서 하자 
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		int usernum = user.getUser_num();
+		//반환 할 데이터 만들기 
+		ResponseEntity<Map<String, Object>> entity = null;
+		try{
+			Map<String, Object> chatList = service.getMessageList(roomnum, usernum);
+			entity = new ResponseEntity<Map<String, Object>>(chatList, HttpStatus.OK);
+		}catch (Exception e) {
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
+	
 	
 	
 }

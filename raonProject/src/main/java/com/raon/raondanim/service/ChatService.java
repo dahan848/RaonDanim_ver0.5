@@ -1,4 +1,6 @@
 package com.raon.raondanim.service;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,22 +77,37 @@ public class ChatService {
 	}
 	
 	//채팅리스트 그리는데 필요한 데이터 반환하는 ()
-	public List<Map<String, Object>> getChatList(int usernum) {
-		/*
-			채팅 리스트 그리는데 필요한 데이터 
-			아래의 정보가 하나의 맵에 들어가고
-			이러한 정보는 해당 유저의 채팅방 갯수 만큼 만들어짐   
-			1. 상대방 프로필 사진  			: 유저 테이블
-			2. 상대방 이름 	  			: 유저 테이블
-			3. 상대방 번호				: 채팅방 테이블
-			4. 채팅방 번호 				: 채팅방 테이블
-			5. 해당 채팅방의 마지막 메시지 		: 메시지 테이블
-			6. 마지막 메시지의 SEND_USER 	: 메시지 테이블
-			7. 마지막 메시지 전송 시간  		: 메시지 테이블 
-		*/
+	public Map<String, Object> getRoomList(int usernum) {
+		System.out.println("서비스 getChatRoomList 요청 받음!");
+		//반환 할Map선언 
+		Map<String, Object> data = new HashMap<String, Object>();
+		//선언 한 Map에 두 개의 List을 넣어줌 
+		data.put("roomList", dao.getRoomList(usernum));
+		data.put("partnerInfo", dao.getRoomPartner(usernum));
 		
-		
-		return null;
+		//sysout
+//		for(Map<String, Object> test: dao.getRoomList(usernum)) {
+//			System.out.println(test.toString());
+//		}
+//		
+//		for(Map<String, Object> test: dao.getRoomPartner(usernum)) {
+//			System.out.println(test.toString());
+//		}
+		//반환
+		return data;
+	}
+	
+	//방 번호를 전달 받아서 해당 방의 메시지 목록을 반환하는 ()
+	public Map<String, Object> getMessageList(int roomnum, int usernum){
+		//반환 할Map선언 
+		Map<String, Object> data = new HashMap<String, Object>();
+		//선언 한 Map에 메시지 목록을 넣어줌 
+		data.put("mList", dao.getMessageList(roomnum));
+		data.put("usernum", usernum);
+		for(Map<String, Object> test: dao.getMessageList(roomnum)) {
+			System.out.println(test.toString());
+		}
+		return data;
 	}
 }
 	

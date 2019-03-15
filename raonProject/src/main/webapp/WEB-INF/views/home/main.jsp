@@ -102,7 +102,7 @@
 									${user.USER_LNM} ${user.USER_FNM} <br>
 									<a href="${contextPath}/accounts/profile?user=${user.USER_NUM}">프로필보기</a><br>
 									<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->
-									<a onclick="chatClick(${user_num},${user.USER_NUM})">대화하기</a>
+									<a onclick="chatClickbyUser(${user_num},${user.USER_NUM})">대화하기</a>
 									</sec:authorize>
 										   
 								</div>   	

@@ -69,6 +69,37 @@
 			url:"/accounts/logout"
 		});
 	}
+	//문자 아이콘 클릭 시 나올 채팅 방 목록 그려주는 () 
+	function getChatRoomList() {
+		var path = "http://localhost:8081";
+		var usernum = ${user_num}
+		//alert(path);
+		//alert(usernum);
+		$.ajax({
+			url: path + "/chatList/" + usernum,
+			type: "get",
+			dateType : "json",
+			success : function(data){
+				//화면을 한 번만 그릴 수 있도록 조건문 
+
+				for(var i in data.partnerInfo){
+					//partnerInfo
+					var profile_pic = path + "/image?fileName=" + data.partnerInfo[i].USER_PROFILE_PIC;
+					var name = data.partnerInfo[i].USER_LNM +" "+data.partnerInfo[i].USER_FNM;
+					var user_num = data.partnerInfo[i].USER_NUM;
+					var room_num = data.partnerInfo[i].CHAT_ROOM_NUM;
+					//roomList
+					var content = data.roomList[i].CONTENT;
+					 //화면 그리기  
+					 $(".chat_body").append("<div class='user' onclick='chatClickbyRoom("+room_num+")'> <img src='"+profile_pic+"'/><div class='namechat'>"+name+"</div><div class='chat_msg'>"+content+"</div></div><hr>");
+				}//반복문 종료
+			}
+		});
+	}
+	
+	$(document).ready(function() {
+		getChatRoomList(); //화면이 그려지면 메시지 리스트를 그려줌
+	});//onLoad END
 </script>
 
 <!-- navbar-main -->
@@ -118,7 +149,7 @@
 						<c:if test="${verify eq 1}"> <!-- 이메일 인증 사용자가 아니면 탭 안나오게 -->
 							<li><span class="vertical-separator"></span>
 								<!-- 메시지List 버튼 -->
-								<a onclick="getChatRoomList(${user_num})" id="btn_msg" href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
+								<a id="btn_msg" href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
 										<i class="fa fa-envelope fa-lg"></i>
 								</a>
 							</li>
@@ -146,11 +177,7 @@
 <div id="chatList" class="hide">
  <div class="chat_box2">
 	<div class="chat_body"> 
-        <div class="user" >
-            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/2_copy.jpg" /> 
-            <div class="namechat">이름</div>
-            <div class="chat_msg">안녕하세요</div>
-        </div>
+	
 	</div>
   </div>
 </div>

@@ -1,5 +1,5 @@
 //대화하기 버튼 눌렀을 때 모달 창 출력 및 필요한 데이터를 인자로 받아옴 
-function chatClick(user, targetid) {
+function chatClickbyUser(user, targetid) {
 	//소켓 통신을 위한 객체 선언 
 	var sock;
 	var stompClient = null;
@@ -21,6 +21,55 @@ function chatClick(user, targetid) {
 	//클릭 될 떄 마다 창 닫고 열기 
 	$("#raonChat").show();
 	$(".msg_box").show();
+}
+
+//채팅방 목록에서 채팅방을 클릭하면 실행되는 함수
+function chatClickbyRoom(roomnum) {
+	var path = "http://localhost:8081";
+	$.ajax({
+		url: path + "/messageList/" + roomnum,
+		type: "get",
+		dateType : "json",
+		success : function(result){
+			var loginuser = result.usernum;
+			//alert(loginuser);
+			//화면을 한 번만 그릴 수 있도록 반복문 
+			for(var i in result.mList){
+				var suser = result.mList[i].SEND_USER; //송신자
+				var ruser = result.mList[i].RECEIVE_USER; //수신자
+				var sendtime = result.mList[i].SEND_TIME; //송신시간
+				var mnum = result.mList[i].MESSAGE_NUM; //메시지 넘
+				var msg = result.mList[i].CONTENT; //내용
+				//테스트
+				//alert(ruser +" "+sendtime +" "+ mnum+" "+ msg);
+				
+				//화면 그리기 
+				//중복 출력을 방지하기 위한 변수 선언 및 조건문 
+				var checknum = mnum;
+				var test = $("#"+result.mList[i].MESSAGE_NUM+"");
+				alert("체크넘"+checknum);
+				alert("ㅌ세ㅡ트 : " + test)
+				if(checknum == $("#"+result.mList[i].MESSAGE_NUM+"")){
+					alert("메시지 중복됨 그리지 않음.")
+				}else{
+					if(loginuser == suser){
+						alert("로그인 유저가 송신자4")
+						$('<div class="msg_b" id='+result.mList[i].MESSAGE_NUM+'>' + msg + '</div>').insertBefore('.msg_push');
+						$('.msg_body').scrollTop($('.msg_body')[0].scrollHeight);					
+					}else if(loginuser == ruser){
+						alert("로그인 유저가 수신자4")
+						$('<div class="msg_a" id='+mnum+'>' + msg + '</div>').insertBefore('.msg_push');
+						$('.msg_body').scrollTop($('.msg_body')[0].scrollHeight);	
+					}					
+				}
+			}//반복문 종료
+			$("#raonChat").show();
+			$(".msg_box").show();
+		}
+	});
+	
+	
+	
 }
 //ContextPath 구하기
 function getContextPath() {
@@ -90,32 +139,7 @@ function send(user, target) {
 			});
 }
 
-//메시지 아이콘 클릭 시 채팅목록 그려주는 ()
-function getChatRoomList(usernum) {
-	//alert("테스트 전달 : " + usernum);
-	var path = getContextPath();
-	$.ajax({
-		url: path + "/chatList/" + usernum,
-		type: "get",
-		dateType : "json",
-//		success : function(data){
-//			for(var i in data){
-//				var path = "${contextPath}/image?fileName=" + data[i].GALLERY_FILE_NAME;
-//				var fileNum = data[i].GALLERY_FILE_NUM;
-//				 //기본 뼈대 그리기 
-//				 $(".carousel-indicators").append("<li data-target='#myCarousel' data-slide-to=\""+i+"\"></li>");
-//				 $(".carousel-inner").append("<div class='item'><img src='"+path+"' alt='"+i+"' style='width: 100%'></div>");
-//
-//				 //클래스 속성 부여하기
-//		         $(".carousel-indicators li:first").addClass("active");
-//		         $(".carousel-inner .item:first").addClass("active");
-//		         $('.carousel').carousel();
-//			}//반복문 종료 
-//		}
-	});
-}
-
 $(document).ready(function() {
-
+	
 });//onLoad END
 
