@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -422,7 +423,20 @@ public class MotelController {
 		return "redirect:/motel/view?num="+motel_num+"&host="+param.get("user_num");
 	}
 	
-	
+	//ajax로 DB에서 국가목록 데이터 화면단으로 전송
+	@ResponseBody
+	@RequestMapping(value = "/DB_nation", method = RequestMethod.GET)
+	public List<Map<String, Object>> DB_nation(){
+		System.out.println("DB_nation 입장!!!");
+		System.out.println("DB_nation 입장!!!" + service.getAllNational());
+		return service.getAllNational();
+	}
+	@ResponseBody
+	@RequestMapping(value = "/DB_city", method = RequestMethod.GET)
+	public List<Map<String, Object>> DB_city(){
+		System.out.println("DB_city 입장 !! : " + service.getAllCity());
+		return service.getAllCity();
+	}
 	
 
 }

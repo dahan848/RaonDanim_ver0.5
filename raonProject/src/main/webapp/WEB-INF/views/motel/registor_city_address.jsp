@@ -19,68 +19,10 @@
 <script type="text/javascript">
 //submit 실행시 form안에 
 //나라 도시 주소 입력 확인 함수
-function form_Check(){
-// 	alert($('#nationDB').val());
-	
-// 	var nationDB = $('#nationDB').val();
-	var nation = $('#nation').val();
-	var city = $('#city').val();
-	var address = $('#address').val();
-	
-	alert(nation);
-	var nation_split = nation.split(', ');
-	var nation_en = nation_split[0];
-	var nation_ko = nation_split[1];
-	
-	
-	alert(nation_en);
-	alert(nation_ko);
-	alert(nation_db_en);
-	
-	var arr = "${national.NATIONALITY_NAME}";
-	
-	for(var i in arr{
-		alert(arr[i]);	
-	};
-	
-	
-	
-		
-	//alert(${national.NATIONALITY_KOR_NAME});
-
-	
-	
-// 	if(${national})
-	
-// 	if(nation != nationDB){
-// 		swal({
-//       	  text:"숙소 국가를 검색해 주세요.",
-//       	  icon:"warning",
-//       	  buttons:[false,"확인"]
-//      	})
-// 		return false;
-// 	}
-// 	if(city == null){
-// 		swal({
-//       	  text:"숙소 국가를 검색해 주세요.",
-//       	  icon:"warning",
-//       	  buttons:[false,"확인"]
-//      	})
-// 		return false;
-// 	}
-// 	if(address == null){
-// 		swal({
-//       	  text:"숙소 국가를 검색해 주세요.",
-//       	  icon:"warning",
-//       	  buttons:[false,"확인"]
-//      	})
-// 		return false;
-// 	}
-}
-
 
 	$(function(){
-		//console.log($('#nationDB'));
+		
+		
 		//국가입력 스크립트
 		$(".national").click(function() {
 			$(this).next().show();
@@ -91,6 +33,95 @@ function form_Check(){
 			$(this).next().show();
 			$(this).next().hide();
 		});
+		
+		//서밋 이벤트실행 시 유효성 검사
+		$("#register_form").on("submit",function (){
+			
+			var nation = $('#nation').val();
+			var city = $('#city').val();
+			var address = $('#address').val();
+			
+			var city_split = city.split(', ');
+			var city_en = city_split[0];
+			var city_ko = city_split[1];
+// 			alert(city);
+// 			alert(city_en);
+// 			alert(city_ko);
+			
+			var nation_split = nation.split(', ');
+			var nation_en = nation_split[0];
+			var nation_ko = nation_split[1];
+			//var isFind = false;
+			var checkNum = 0;
+			
+			if(address == "" || address.length < 5){
+				swal({
+		               text:"숙소의 상세주소를 작성해 주세요.",
+		               icon:"warning",
+		               buttons:[false,"확인"]
+		            })
+				return false;
+			}
+			
+			
+			$.ajax({
+				url : "${contextPath}/motel/DB_nation",
+				type : "get",
+				async : false,
+				dataType : "json",
+				success : function(data) {
+						//alert("나라  : " + nation_ko);
+//		 				console.log("나라  : " + nation_ko);
+//		 				console.log("nation : " + nation_en);
+						
+						//console.log(data[i].NATIONALITY_KOR_NAME);
+						//console.log(data[i].NATIONALITY_NAME);
+
+					for(var i in data){
+						
+						if(data[i].NATIONALITY_KOR_NAME == nation_ko && data[i].NATIONALITY_NAME == nation_en){
+							//서밋
+							//console.log("같다!!!12312312")
+							checkNum++;
+							break;
+						}
+						
+					}		
+				}
+			});
+			
+			$.ajax({
+				url : "${contextPath}/motel/DB_city",
+				type : "get",
+				async : false,
+				dataType : "json",
+				success : function(data) {
+					for(var i in data){
+						
+						if(data[i].KO_CITY == city_ko && data[i].CITY == city_en){
+							checkNum++
+
+						}
+						
+					}		
+				}
+			});
+ 			debugger;
+			if(checkNum == 2){
+				//console.log("같다!!!");
+				
+			}else{
+				//console.log("다르다");
+				swal({
+		               text:"숙소의 국가/도시를 정확히 선택해 주세요.",
+		               icon:"warning",
+		               buttons:[false,"확인"]
+		            })
+				return false;
+			}
+				
+		});
+		
 	});
 
 
@@ -132,13 +163,6 @@ function form_Check(){
           }
         });
       }
-      
-		
-	$(document).ready(function() {
-		
-		
-
-	});
 	
       //국가 도시 검색 후 엔터키 쳤을 때 페이지 넘어가는것 막는 코드
 	 function captureReturnKey(e) {
@@ -298,7 +322,7 @@ function form_Check(){
 				<div class="registor_main">
 					<div class="registor_contain" style="width: 70%;">
 					
-					<form action="registor_photo" method="post" id = "register_form" onkeydown="return captureReturnKey(event)" onsubmit="return form_Check();">
+					<form method="post" action="registor_photo" id = "register_form" onkeydown="return captureReturnKey(event)">
 						<input type="hidden" value="${_csrf.token}"
 							name="${_csrf.parameterName}">
 						<!-- 						기존에 받았던 데이터 -->
@@ -349,9 +373,9 @@ function form_Check(){
 							<div id="map"></div>
 							<div id="searchMap"></div>
 
-							<input type="submit" value="" class="btn_next">
+							<input type="submit" value="" class="btn_next" id="btn_next">
 						 <input	type="button" value="" class="btn_back"
-									onclick="history.back(-1);">
+									onclick="history.back(-1);" >
 					</form>
 					</div>
 				</div>
