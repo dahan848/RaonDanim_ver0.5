@@ -71,6 +71,7 @@
 	<nav class="navbar navbar-default">
     	<div class="container">
         	<div class="navbar-header" style="width: 875px;">
+        		<a href="#">관리자</a>
        			<a class="navbar-brand hidden-xs" href="${contextPath}/">
             		<img src="${contextPath}/img/home_logo-raon.png">
         		</a>

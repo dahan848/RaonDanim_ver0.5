@@ -2,6 +2,9 @@
    pageEncoding="UTF-8"%>
    <% request.setAttribute("contextPath", request.getContextPath()); %>
    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+   <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -810,14 +813,14 @@ th{
                             <c:choose>
 									<c:when test="${boardInfo.USER_PROFILE_PIC eq 'n'}">
 										<a href="#" rel="popover" data-placement="bottom"
-											data-popover-content="#chatList"> <img
+											data-popover-content="#userInfo"> <img
 											src="${contextPath}/img/trip_Profile.png">
 										</a>
 
 									</c:when>
 									<c:otherwise>
 										<a href="#" rel="popover" data-placement="bottom"
-											data-popover-content="#chatList"> <img
+											data-popover-content="#userInfo"> <img
 											src="${contextPath}/image?fileName=${boardInfo.USER_PROFILE_PIC}"
 											style="width: 40px; height: 40px;">
 										</a>
@@ -1156,14 +1159,14 @@ th{
 </div> 
 
 <!--팝오버  -->
-	<div id="chatList" class="hide">
-		This is a popover list:
-		<ul>
-			<li>List item 1</li>
-			<li>List item 2</li>
-			<li>List item 3</li>
-		</ul>
-	</div>
+ <div id="userInfo" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
+									${boardInfo.USER_LNM} ${boardInfo.USER_FNM} <br>
+									<a href="${contextPath}/accounts/profile?user=${boardInfo.USER_NUM}">프로필보기</a><br>
+									<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->
+									<a href="#">대화하기</a>
+									</sec:authorize>
+										   
+								</div> 
 
 	<!--팝오버 끝  -->
 
