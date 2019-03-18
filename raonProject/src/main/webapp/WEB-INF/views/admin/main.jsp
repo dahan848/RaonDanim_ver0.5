@@ -8,7 +8,7 @@
 	<link rel="icon" type="image/png" href="${contextPath}/img/favicon.ico">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<title>Light Bootstrap Dashboard by Creative Tim</title>
+	<title>관리자 화면</title>
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -24,20 +24,21 @@
     <link href="${contextPath}/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet"/>
 
 
-    <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="${contextPath}/css/demo.css" rel="stylesheet" />
-
-
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="${contextPath}/css/pe-icon-7-stroke.css" rel="stylesheet" />
 
+<!-- 차트 js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+
 </head>
 <body>
 
 <div class="wrapper">
-    <div class="sidebar" data-color="purple" data-image="${contextPath}/img/sidebar-5.jpg">
+    <!-- 좌측 메뉴바부분 시작 -->
+    <div class="sidebar" data-color="blue" data-image="${contextPath}/img/sidebar-5.jpg">
 
     <!--
 
@@ -48,65 +49,44 @@
 
     	<div class="sidebar-wrapper">
             <div class="logo">
-                <a href="http://www.creative-tim.com" class="simple-text">
-                    Creative Tim
+                <a href="" class="simple-text">
+                    Raon Danim
                 </a>
             </div>
 
             <ul class="nav">
                 <li class="active">
-                    <a href="dashboard.html">
+                    <a href="">
                         <i class="pe-7s-graph"></i>
-                        <p>Dashboard</p>
+                        <p>메인</p>
                     </a>
                 </li>
                 <li>
-                    <a href="user.html">
+                    <a href="">
                         <i class="pe-7s-user"></i>
-                        <p>User Profile</p>
+                        <p>게시글 관리</p>
                     </a>
                 </li>
                 <li>
-                    <a href="table.html">
+                    <a href="">
                         <i class="pe-7s-note2"></i>
-                        <p>Table List</p>
+                        <p>신고</p>
                     </a>
                 </li>
                 <li>
-                    <a href="typography.html">
+                    <a href="#">
                         <i class="pe-7s-news-paper"></i>
-                        <p>Typography</p>
+                        	<p>결제</p>
                     </a>
                 </li>
-                <li>
-                    <a href="icons.html">
-                        <i class="pe-7s-science"></i>
-                        <p>Icons</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="maps.html">
-                        <i class="pe-7s-map-marker"></i>
-                        <p>Maps</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="notifications.html">
-                        <i class="pe-7s-bell"></i>
-                        <p>Notifications</p>
-                    </a>
-                </li>
-				<li class="active-pro">
-                    <a href="upgrade.html">
-                        <i class="pe-7s-rocket"></i>
-                        <p>Upgrade to PRO</p>
-                    </a>
-                </li>
+
             </ul>
     	</div>
     </div>
-
+ <!-- 좌측 메뉴바부분 끝 -->
+ 
     <div class="main-panel">
+<!--     네비바 좌측 시작 -->
         <nav class="navbar navbar-default navbar-fixed">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -118,65 +98,36 @@
                     </button>
                     <a class="navbar-brand" href="#">Dashboard</a>
                 </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-left">
-                        <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-dashboard"></i>
-								<p class="hidden-lg hidden-md">Dashboard</p>
-                            </a>
-                        </li>
-                        <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-globe"></i>
-                                    <b class="caret hidden-lg hidden-md"></b>
-									<p class="hidden-lg hidden-md">
-										5 Notifications
-										<b class="caret"></b>
-									</p>
-                              </a>
-                              <ul class="dropdown-menu">
-                                <li><a href="#">Notification 1</a></li>
-                                <li><a href="#">Notification 2</a></li>
-                                <li><a href="#">Notification 3</a></li>
-                                <li><a href="#">Notification 4</a></li>
-                                <li><a href="#">Another notification</a></li>
-                              </ul>
-                        </li>
-                        <li>
-                           <a href="">
-                                <i class="fa fa-search"></i>
-								<p class="hidden-lg hidden-md">Search</p>
-                            </a>
-                        </li>
-                    </ul>
 
+                <div class="collapse navbar-collapse">
+
+<!-- 					네비바 우측 -->
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                            <a href="">
                                <p>Account</p>
                             </a>
                         </li>
-                        <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <p>
-										Dropdown
-										<b class="caret"></b>
-									</p>
+<!--                         <li class="dropdown"> -->
+<!--                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"> -->
+<!--                                     <p> -->
+<!-- 										Dropdown -->
+<!-- 										<b class="caret"></b> -->
+<!-- 									</p> -->
 
-                              </a>
-                              <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                              </ul>
-                        </li>
+<!--                               </a> -->
+<!--                               <ul class="dropdown-menu"> -->
+<!--                                 <li><a href="#">Action</a></li> -->
+<!--                                 <li><a href="#">Another action</a></li> -->
+<!--                                 <li><a href="#">Something</a></li> -->
+<!--                                 <li><a href="#">Another action</a></li> -->
+<!--                                 <li><a href="#">Something</a></li> -->
+<!--                                 <li class="divider"></li> -->
+<!--                                 <li><a href="#">Separated link</a></li> -->
+<!--                               </ul> -->
+<!--                         </li> -->
                         <li>
-                            <a href="#">
+                            <a href="">
                                 <p>Log out</p>
                             </a>
                         </li>
@@ -185,7 +136,7 @@
                 </div>
             </div>
         </nav>
-
+<!-- 네비바 우측 끝 -->
 
         <div class="content">
             <div class="container-fluid">
@@ -194,21 +145,68 @@
                         <div class="card">
 
                             <div class="header">
-                                <h4 class="title">Email Statistics</h4>
-                                <p class="category">Last Campaign Performance</p>
+                                <h4 class="title">월별 가입자 수</h4>
+<!--                                 <p class="category">Last Campaign Performance</p> -->
                             </div>
                             <div class="content">
-                                <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
+<!--                                 <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div> -->
+								<canvas id="myChart"></canvas>
+								<script type="text/javascript">
+									var ctx = document.getElementById('myChart').getContext('2d');
+									var myChart = new Chart(ctx, {
+									    type: 'bar',
+									    data: {
+									        labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+									        datasets: [{
+									            label: '가입자 증가 비율',
+									            data: [0,10,30,50,70,100,150,200,0,10,20,120],
+									            backgroundColor: [
+									                'rgba(255, 99, 132, 0.2)',
+									                'rgba(54, 162, 235, 0.2)',
+									                'rgba(255, 206, 86, 0.2)',
+									                'rgba(75, 192, 192, 0.2)',
+									                'rgba(153, 102, 255, 0.2)',
+									                'rgba(255, 159, 64, 0.2)',
+									                'rgba(250, 99, 132, 0.2)',
+									                'rgba(57, 162, 235, 0.2)',
+									                'rgba(235, 206, 86, 0.2)',
+									                'rgba(175, 192, 192, 0.2)',
+									                'rgba(173, 102, 255, 0.2)',
+									                'rgba(205, 159, 64, 0.2)'
+									            ],
+									            borderColor: [
+									                'rgba(255, 99, 132, 1)',
+									                'rgba(54, 162, 235, 1)',
+									                'rgba(255, 206, 86, 1)',
+									                'rgba(75, 192, 192, 1)',
+									                'rgba(153, 102, 255, 1)',
+									                'rgba(255, 159, 64, 1)',
+									                'rgba(255, 99, 132, 1)',
+									                'rgba(54, 162, 235, 1)',
+									                'rgba(255, 206, 86, 1)',
+									                'rgba(75, 192, 192, 1)',
+									                'rgba(153, 102, 255, 1)',
+									                'rgba(255, 159, 64, 1)'
+									            ],
+									            borderWidth: 1
+									        }]
+									    },
+									    options: {
+									        scales: {
+									            yAxes: [{
+									                ticks: {
+									                    beginAtZero: true
+									                }
+									            }]
+									        }
+									    }
+									});
+								
+								</script>
 
                                 <div class="footer">
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Bounce
-                                        <i class="fa fa-circle text-warning"></i> Unsubscribe
-                                    </div>
-                                    <hr>
                                     <div class="stats">
-                                        <i class="fa fa-clock-o"></i> Campaign sent 2 days ago
+                                        <i class="fa fa-clock-o"></i> 2019.01~2019.12 기준
                                     </div>
                                 </div>
                             </div>
@@ -397,35 +395,8 @@
 
 
         <footer class="footer">
-            <div class="container-fluid">
-                <nav class="pull-left">
-                    <ul>
-                        <li>
-                            <a href="#">
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Company
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Portfolio
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                               Blog
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <p class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
-                </p>
-            </div>
+           
+
         </footer>
 
     </div>
@@ -463,7 +434,7 @@
 
         	$.notify({
             	icon: 'pe-7s-gift',
-            	message: "Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer."
+            	message: "<b>관리자 화면에 오신걸 환영합니다.</b>"
 
             },{
                 type: 'info',
