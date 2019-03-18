@@ -69,4 +69,10 @@ public interface TripBoardDao {
 	//이미신고한건지 알기위해 조회
 	public Map<String, Object> selectOneByDeclaration(Map<String, Object> params);
 	
+	
+	public int insertDummyData(Map<String, Object> tripBoard);
+	
+	
+	
+	
 }

@@ -69,6 +69,7 @@ public interface TripBoardService {
 	//로그인한 유저가 동행신청 남긴 게시글 중복제외하고 삭제된게시글 제외하고 가져오기
 	public List<Map<String, Object>> getMyDongHangList(String userNum);
 	
-	
+	//더미 데이터 생성
+	public boolean insertDummyData(String writeDate);
 	
 }

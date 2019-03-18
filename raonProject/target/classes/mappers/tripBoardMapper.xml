@@ -348,5 +348,26 @@ where TRIP_BOARD_KEY in (  select TRIP_BOARD_KEY
 and TRIP_BOARD_ST = 0    
 </select>
 
+<insert id="insertDummyData" parameterType="map">
+<!-- 도시정보 그리고 키테이블에 입력 안되는 게시글만 있는 더미 데이터 -->
+insert into TRIP_BOARD_TB
+   (TRIP_BOARD_KEY,
+    USER_NUM,
+    TRIP_BOARD_TITLE,
+    TRIP_BOARD_COUNTENT,
+    TRIP_BOARD_START,
+    TRIP_BOARD_END,
+    TRIP_BOARD_TOGETHER,
+    TRIP_WRITEDATE)
+values(TRIP_BOARD_TB_SEQ.nextval,
+     #{user_Num},
+     #{trip_Board_Title},
+     #{trip_Board_Content},
+     #{trip_Board_Start},
+     #{trip_Board_End},
+     #{trip_Board_Together},
+     #{trip_WriteDate})
+</insert>
+
 
 </mapper>

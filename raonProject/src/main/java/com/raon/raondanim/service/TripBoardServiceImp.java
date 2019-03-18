@@ -522,6 +522,39 @@ public class TripBoardServiceImp implements TripBoardService {
 		return tripDao.getMyDongHangList(userNum);
 	}
 
+	@Override
+	public boolean insertDummyData(String writeDate) {
+		
+		
+		try {
+			
+			for(int i =0;i<(int)(Math.random()*50)+10;i++) {
+				Map<String, Object> tripBoard = new HashMap<>();
+				tripBoard.put("user_Num", i);
+				tripBoard.put("trip_Board_Title", "dummy"+i);
+				tripBoard.put("trip_Board_Content", "dummy"+i);
+				tripBoard.put("trip_Board_Start", "2019-01-01");
+				tripBoard.put("trip_Board_End", "2019-01-01");
+				tripBoard.put("trip_Board_Together", 0);
+				tripBoard.put("trip_WriteDate", writeDate);
+				tripDao.insertDummyData(tripBoard);
+				
+			}
+			
+			return true;
+		} catch (Exception e) {
+			System.out.println("더미 데이터 생성중 오류");
+			e.printStackTrace();
+			return false;
+			
+		}
+	
+		
+		
+		
+		
+	}
+
 
 
 }

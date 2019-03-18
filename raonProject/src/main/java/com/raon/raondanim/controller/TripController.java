@@ -353,8 +353,22 @@ public class TripController {
 		
 	}
 	
-	
-	
+	@RequestMapping("/insertDummy")
+	public String insertDummyData(@RequestParam(defaultValue="2019-01-01")String writeDate,
+			RedirectAttributes ra) {
+		
+		
+		if(tripService.insertDummyData(writeDate)) {
+			ra.addFlashAttribute("msg", "더미데이터 생성 성공");
+			return "redirect:list";
+		}else {
+			ra.addFlashAttribute("msg", "더미데이터 생성 실패");
+			return "redirect:list";
+		}
+		
+		
+		
+	}
 	
 	
 }
