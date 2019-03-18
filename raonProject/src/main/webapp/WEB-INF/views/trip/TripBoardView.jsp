@@ -555,7 +555,27 @@ window.onload = function() {
 				"		</select>";
 			   
 			   dModal.html(str);
+			   var dContent = $("#dContent");
+			   dContent.css("display","none");
+		  	   $("#dp").css("display", "none");
+			   
+			   
+			    $("#searchType").on("change", function() {
+			  	  
+			       
+			  	   var TypeVal = $("#searchType option:selected").val();
+			  	   if(TypeVal==7){
+			  		  dContent.css("display","block");
+			  		  $("#dp").css("display", "block");
+			  	   }else{
+			  		  dContent.css("display","none");
+			  		 $("#dp").css("display", "none");
+			  	   }
+			 	   
+			 	   
+			     })
 				
+	   
 				
 		   }
 		   
@@ -601,7 +621,9 @@ window.onload = function() {
 	   
    })
    
+
    
+  
    
    
    
@@ -1004,12 +1026,12 @@ th{
 <!-- 	         	신고데이터 테이블에서 데이터 끌고와 넣는곳 -->
 
 	        </div>
-	        <div class="modal-footer">
+	        <div class="modal-footer" id="dForm">
 	       	    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	       	 	<input type="hidden" name="TRIP_BOARD_KEY" value="${boardInfo.TRIP_BOARD_KEY}">
 	         	<input type="hidden" name="D_USER_NUM" value="${boardInfo.USER_NUM}">
 	         	<input type="hidden" name="USER_NUM" value="${userNum}">   	
-	         	<p style="text-align: left;" >상세 신고내용</p>
+	         	<p style="text-align: left;" id="dp" >상세 신고내용</p>
 	         	<textarea rows="10" cols="30" style="width: 100%;" id="dContent"  name="TRIP_D_DETAILCONTENT"></textarea>
 	         	<input type="button" id="dSubmit" class="btn btn-info" value="신고작성">
 	         

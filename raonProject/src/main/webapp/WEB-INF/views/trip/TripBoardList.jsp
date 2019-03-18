@@ -182,7 +182,7 @@
 				
 				for(var i in result){
 					var tr = $("<tr>");
-					$("<td>").html("<a href='#'>"+result[i].TRIP_BOARD_TITLE+"</a>").appendTo(tr);
+					$("<td>").html("<a href='view?boardKey="+result[i].TRIP_BOARD_KEY+"'>"+result[i].TRIP_BOARD_TITLE+"</a>").appendTo(tr);
 					$("<td>").text(result[i].TRIP_BOARD_START).appendTo(tr);
 					$("<td>").text(result[i].TRIP_BOARD_END).appendTo(tr);
 					$("<td>").text(result[i].TRIP_BOARD_TOGETHER+"인").appendTo(tr);

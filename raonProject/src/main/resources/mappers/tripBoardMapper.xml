@@ -306,13 +306,15 @@ from DECLARATION_DTB
 
 
 <insert id="insertDeclaration" parameterType="map">
-insert into TRIP_DECLARATION_TB
-(TRIP_BOARD_KEY,
+insert into DECLARATION_TB
+(D_KEY,
+ TRIP_BOARD_KEY,
  D_USER_NUM,
  USER_NUM,
  DECLARATION_KEY,
  TRIP_D_DETAILCONTENT)
-values( #{TRIP_BOARD_KEY},
+values( DECLARATION_TB_SEQ.nextval,
+		#{TRIP_BOARD_KEY},
 		#{D_USER_NUM},
 		#{USER_NUM},
 		#{DECLARATION_KEY},
@@ -320,12 +322,13 @@ values( #{TRIP_BOARD_KEY},
 </insert>
 
 <select id="selectOneByDeclaration" parameterType="map" resultType="map">
-select  TRIP_BOARD_KEY,
+select  D_KEY,
+		TRIP_BOARD_KEY,
 		D_USER_NUM,
 		USER_NUM,
 		DECLARATION_KEY,
 		TRIP_D_DETAILCONTENT
-from TRIP_DECLARATION_TB
+from DECLARATION_TB
 where USER_NUM = #{USER_NUM}
 and TRIP_BOARD_KEY = #{TRIP_BOARD_KEY}
 </select>
