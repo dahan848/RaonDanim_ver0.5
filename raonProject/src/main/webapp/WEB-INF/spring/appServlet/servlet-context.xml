@@ -11,6 +11,7 @@
 	<annotation-driven />
 
 	<!-- resources 파일 (img,css 등) 경로 설정 -->
+	<resources mapping="/sass/**" location="/resources/sass/" /> 
 	<resources mapping="/css/**" location="/resources/css/" /> 
 	<resources mapping="/img/**" location="/resources/img/" /> 
 	<resources mapping="/js/**" location="/resources/js/" />
