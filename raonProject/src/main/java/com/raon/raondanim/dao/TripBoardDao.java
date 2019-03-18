@@ -31,7 +31,7 @@ public interface TripBoardDao {
 	
 	//도시테이블 입력
 	public int insertCity(TripCity tripCity);
-/*	//도시 수정 -보류
+/*	//도시 수정 -보류 - 안씀
 	public int updateCity(TripCity tripCity);*/
 	//도시 삭제
 	public int deleteCity(int CityKey);
@@ -55,6 +55,11 @@ public interface TripBoardDao {
 	
 	//조회수 1증가
 	public int incrementViews(int boardKey);
+	
+	
+	//내가 동행신청 남긴 게시글 가져오기
+	public List<Map<String, Object>> getMyDongHangList(String userNum);
+	
 	
 	
 	//신고 목록 불러오기

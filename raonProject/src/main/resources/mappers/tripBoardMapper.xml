@@ -330,6 +330,20 @@ where USER_NUM = #{USER_NUM}
 and TRIP_BOARD_KEY = #{TRIP_BOARD_KEY}
 </select>
 
+<select id="getMyDongHangList" parameterType="String" resultType="map">
+select  TRIP_BOARD_KEY,
+        TRIP_BOARD_TITLE,
+        to_char(TRIP_BOARD_START,'yy-MM-dd') as TRIP_BOARD_START,
+        to_char(TRIP_BOARD_END,'yy-MM-dd') as TRIP_BOARD_END,
+        TRIP_BOARD_ST,
+        TRIP_BOARD_TOGETHER
+from trip_board_tb
+where TRIP_BOARD_KEY in (  select TRIP_BOARD_KEY
+                           from trip_reply_tb
+                           where user_num = #{userNum}
+                           group by TRIP_BOARD_KEY)
+and TRIP_BOARD_ST = 0    
+</select>
 
 
 </mapper>

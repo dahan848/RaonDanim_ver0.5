@@ -515,6 +515,13 @@ public class TripBoardServiceImp implements TripBoardService {
 		
 	}
 
+	@Override
+	public List<Map<String, Object>> getMyDongHangList(String userNum) {
+		// 동행 신청 남긴 게시글 보기 시큐리티에서 유저 넘 끌고와야함
+
+		return tripDao.getMyDongHangList(userNum);
+	}
+
 
 
 }

@@ -748,6 +748,7 @@ th{
 	height : 100%;
     word-wrap: break-word;
     overflow: auto;
+    white-space: pre-wrap;
 
 }
 

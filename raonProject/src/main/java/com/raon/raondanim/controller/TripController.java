@@ -91,6 +91,7 @@ public class TripController {
 
 		// 조회수 1 증가
 		// 쿠키를 사용해서 조회수 무한증가 막음
+		// 쿠키가 브라우저당 생성이라 같은 브라우저로 다른 계정 돌려써봤자 조회수가 안늘어나는 단점 이 있음
 		Cookie[] cookies = req.getCookies();
 
 		int viewsCount = 0;
@@ -125,6 +126,7 @@ public class TripController {
 		 */
 
 		if (viewsCount > 0) {
+			System.out.println("조회수 테스트");
 			tripService.incrementViews(boardKey);
 		}
 
@@ -337,8 +339,19 @@ public class TripController {
 		
 	}
 	
-	
-	
+	@ResponseBody
+	@RequestMapping("/getMyDongHangList")
+	public List<Map<String, Object>> getMyDongHangList(Authentication authentication){
+		
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		int user_Num = user.getUser_num();
+		
+		String userNum = String.valueOf(user_Num);
+		
+
+		return tripService.getMyDongHangList(userNum);
+		
+	}
 	
 	
 	

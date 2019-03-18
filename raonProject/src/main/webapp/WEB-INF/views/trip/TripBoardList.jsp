@@ -31,7 +31,7 @@
 }
 
 #con2 {
-	height: 85%;
+	height: 70%;
 	width: 100%;
 	margin-bottom: 30px;
 	padding: 0;
@@ -168,6 +168,43 @@
 
 		
 	});
+	
+	
+	$("#dongHangBtn").on("click", function() {
+		var dongHangTable = $("#dongHangTable");
+		$("#dongHangTable tr:gt(0)").remove();
+		$.ajax({
+			url:"getMyDongHangList",
+			type:"post",
+			data:{"${_csrf.parameterName}":"${_csrf.token}"},
+			dataType:"json",
+			success:function(result){
+				
+				for(var i in result){
+					var tr = $("<tr>");
+					$("<td>").html("<a href='#'>"+result[i].TRIP_BOARD_TITLE+"</a>").appendTo(tr);
+					$("<td>").text(result[i].TRIP_BOARD_START).appendTo(tr);
+					$("<td>").text(result[i].TRIP_BOARD_END).appendTo(tr);
+					$("<td>").text(result[i].TRIP_BOARD_TOGETHER+"인").appendTo(tr);
+					tr.appendTo(dongHangTable);
+					
+					
+				}
+				
+				
+				
+				
+			}
+			
+		})
+		
+			
+		
+		
+	});
+	
+	
+	
 	
 	
 
@@ -315,11 +352,13 @@
 							<td>${list.TRIP_BOARD_READCOUNT}</td>
 						</tr>
 					</c:forEach>
-
 				</tbody>
 			</table>
+			
+			
 			<div class="container">
-				<ul class="pager">
+				<input type="button" class="btn btn-info" data-toggle="modal" id="dongHangBtn" data-target="#dongHang" value="내 동행신청" style="margin-right: 30%;">
+				<ul class="pager" style="display: inline-block;">
 					<c:if test="${tripData.page!=1}">
 						<li><a
 							href="list?pageNum=${param.pageNum-1}&type=${param.type}&keyword=${param.keyword}">Previous</a></li>
@@ -351,6 +390,55 @@
 
 	<!--팝오버 끝  -->
 	<!--바디끝  -->
+
+<!-- 내 동행신청 모달 -->
+<div class="container">
+
+  <!-- Modal -->
+  <div class="modal fade" id="dongHang" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><small><b>동행신청리스트</b></small></h2>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body" id="dongHangBody" style="overflow: auto;">
+        	
+         	<table id="dongHangTable" class="table">
+         		<tr class="warning">
+         			<th>
+         				동행 신청 글
+         			</th>
+         			<th>
+         				여행 출발 일
+         			</th>
+         			<th>
+         				여행 종료 일
+         			</th>
+         			<th>
+         				동행 가능 수
+         			</th>
+         		</tr>
+         	
+         	</table>
+          
+          
+          
+          
+          
+          
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 내 동행신청 모달  끝-->
 
 	<!-- 인클루드-푸터 -->
 	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
