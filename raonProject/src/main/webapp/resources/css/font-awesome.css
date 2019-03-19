@@ -2087,3 +2087,10 @@
 .fa-kakao:before {
   content: "\e900";
 }
+.fa-shower:before{
+	content : "\f2cc";
+}
+/* .fa-trash-alt:before{
+	content: "\f2ed";
+} */
+

@@ -55,6 +55,7 @@ public class MotelTbService {
 		return dao.selectOne(num);
 	}
 
+
 	public Map<String, Object> readFile(int num) {
 		System.out.println("readFile : " + num);
 		return dao.selectAttach(num);
@@ -88,6 +89,12 @@ public class MotelTbService {
 
 	// 1 11 21 31 2-1*10 + 1
 	// 10 20 30 40 ((10-1)/10 + 1)*10
+
+	
+
+	//1 11 21 31     2-1*10 + 1
+	//10 20 30 40     ((10-1)/10 + 1)*10 
+
 	private int getFirstRow(int page) {
 		int result = (page - 1) * NUM_OF_BOARD_PER_PAGE + 1;
 //		System.out.println("firstrow : " + result);
@@ -128,8 +135,14 @@ public class MotelTbService {
 		int totalPage = (totalCount - 1) / NUM_OF_BOARD_PER_PAGE + 1;
 		return totalPage;
 	}
+/*<<<<<<< HEAD
 
 	public boolean starAvg(Map<String, Object> params) {
+=======*/
+	
+	//별점 인서트
+	public boolean starAvg(Map<String, Object>params) {
+
 		int result = dao.starAvg(params);
 		if (result > 0) {
 			return true;
@@ -139,32 +152,76 @@ public class MotelTbService {
 
 	}
 
+
+
+	//별점 업데이트
+	public boolean starUpdate(Map<String, Object>params) {
+		int result = dao.starUpdate(params);
+		if(result>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	//별점 업데이트를 위해 셀렉해서 값이 있는지 확인
+	public boolean starCheck(Map<String, Object>params) {
+		if(dao.starCheck(params)==null) {
+			return true;
+		}else {		
+			return false;
+		}
+	}
+	
+
 	public Map<String, Object> getViewData(Map<String, Object> params) {
 		// startPage, endPage, totalPage, boardList 반환
 		System.out.println("서비스 호출");
 		System.out.println(params);
+
 		int page = (int) params.get("page");
-		int type = (int) params.get("type");
-		String keyword = (String) params.get("keyword");
+//		int type = (int) params.get("type");
+//		String keyword = (String) params.get("keyword");
 		Map<String, Object> daoParam = new HashMap<String, Object>();
-		daoParam.put("type", type);
-		if (type == 1) {
-			// 제목검사
-			daoParam.put("title", keyword);
-		} else if (type == 2) {
-			// 작성자
-			daoParam.put("name", keyword);
-		} else if (type == 3) {
-			// 제목 작성자
-			daoParam.put("title", keyword);
-			daoParam.put("name", keyword);
-		} else if (type == 4) {
-			// 내용
-			daoParam.put("content", keyword);
-		}
+//		daoParam.put("type", type);
+//		if (type == 1) {
+//			// 제목검사
+//			daoParam.put("title", keyword);
+//		} else if (type == 2) {
+//			// 작성자
+//			daoParam.put("name", keyword);
+//		} else if (type == 3) {
+//			// 제목 작성자
+//			daoParam.put("title", keyword);
+//			daoParam.put("name", keyword);
+//		} else if (type == 4) {
+//			// 내용
+//			daoParam.put("content", keyword);
+//		}
 		daoParam.put("firstRow", getFirstRow(page));
 		daoParam.put("endRow", getEndRow(page));
 		Map<String, Object> viewData = new HashMap<String, Object>();
+
+
+		/*int page = (int)params.get("page");*/
+		int motel_type = (int)params.get("motel_type");
+		
+		/*Map<String, Object> daoParam = new HashMap<String,Object>();*/
+		daoParam.put("firstRow", getFirstRow(page));
+		daoParam.put("endRow", getEndRow(page));
+		daoParam.put("motel_type", motel_type);
+		daoParam.put("motel_category", params.get("motel_category"));
+		daoParam.put("motel_people", params.get("motel_people"));
+		daoParam.put("motel_price1", params.get("motel_price1"));
+		daoParam.put("motel_price2", params.get("motel_price2"));
+		daoParam.put("startDate", params.get("startDate"));
+		daoParam.put("endDate", params.get("endDate"));
+		daoParam.put("city", params.get("city"));
+		
+
+		
+		
+		/*Map<String, Object> viewData = new HashMap<String,Object>();*/
+		
 
 		viewData.put("boardList", getBoardList(daoParam));
 		viewData.put("startPage", getStartPage(page));
@@ -217,6 +274,7 @@ public class MotelTbService {
 
 	
 
+
 	public View getUploadFile(int num) {
 		// TODO Auto-generated method stub
 		// 게시글 번호에 해당하는 File 복사 후
@@ -230,9 +288,13 @@ public class MotelTbService {
 		return view;
 	}
 
-	// 숙박 게시글 상세정보(view화면용)
+/*	// 숙박 게시글 상세정보(view화면용)
 	public Map<String, Object> viewSelect(Map<String, Object> params) {
 
+=======*/
+
+	//숙박 게시글 상세정보(view화면용)
+	public Map<String, Object> viewSelect(Map<String, Object> params){
 		return dao.viewSelect(params);
 	}
 
@@ -242,7 +304,86 @@ public class MotelTbService {
 		return dao.viewReply(params);
 	}
 
+
 	// 모텔 서비스 병합중
+
+
+	//숙소 예약시 motel_date_tb 상태값 N으로 변경 
+	public boolean date_tb_update(Map<String, Object>params) {
+		if(dao.date_tb_update(params)>0) {
+			return true;
+		}else {
+			return false;			
+		}
+		
+	}
+	//motel_date_tb 업데이트 후 중복 예약 방지 체크
+	public boolean checkDate(Map<String, Object>params) {
+		if(dao.checkDate(params)>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	//댓글 상태값 삭제로 변경
+	public boolean deleteReply(Map<String, Object>params) {
+		if(dao.deleteReply(params)>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	//댓글 신고 데이터 불러오기
+	public List<Map<String, Object>> declaration(){
+		
+		return dao.declaration();
+	}
+	
+	//신고테이블 insert(reply)
+	public boolean insertDeclaration(Map<String, Object>params) {
+		if(dao.insertDeclaration(params)>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	//신고테이블 insert(motel)
+	public boolean insert_motel_Declaration(Map<String, Object>params) {
+		if(dao.insert_motel_Declaration(params)>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	//댓글 중복신고 방지 체크
+	public boolean insertDeclaration_check(Map<String, Object>params) {
+		if(dao.insertDeclaration_check(params)==null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	//숙박글 중복신고 방지 체크
+	public boolean insert_motel_Declaration_check(Map<String, Object>params) {
+		if(dao.insert_motel_Declaration_check(params)==null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	//숙박글 삭제
+	public boolean delete_motel(Map<String, Object>params) {
+		if(dao.delete_motel(params)>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
+	//모텔 서비스 병합중
+	
 
 	public List<Map<String, Object>> getAllNational() {
 		// System.out.println("service : " + dao.National_selectAll());
