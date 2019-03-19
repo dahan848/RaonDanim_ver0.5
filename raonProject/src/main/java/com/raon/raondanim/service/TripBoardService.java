@@ -75,5 +75,8 @@ public interface TripBoardService {
 	//월별 게시글 작성 데이터 뽑기
 	public List<Integer> getMonthWriteData();
 	
+	//여행 게시판 게시글 총게시글수와 신고수 선택
+	public Map<String, Integer> getBoardAndDeclatation();
+	
 	
 }

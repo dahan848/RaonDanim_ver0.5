@@ -223,8 +223,12 @@
                             
                                 <canvas id="myChart2"></canvas>
 								<script type="text/javascript">
-									var boardList = "${boardList}";
-									
+								var boardList = [];
+								<c:forEach items="${boardList }" var="board">
+									boardList.push(${board}); 
+								</c:forEach>
+									console.log(boardList);
+									alert(typeof(boardList));
 									var ctx = document.getElementById('myChart2').getContext('2d');
 									var myChart = new Chart(ctx, {
 									    type: 'line',
@@ -232,7 +236,7 @@
 									        labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
 									        datasets: [{
 									            label: '게시글 작성 비율',
-									            data: [20,25,50,16,12,21,16],
+									            data : boardList,
 									            backgroundColor: [
 									                'rgba(255, 99, 132, 0.2)',
 									                'rgba(54, 162, 235, 0.2)',
@@ -291,17 +295,54 @@
                 </div>
 
 
-
+				
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card ">
                             <div class="header">
-                                <h4 class="title">2014 Sales</h4>
-                                <p class="category">All products including Taxes</p>
+                                <h4 class="title">신고현황</h4>
+                                <p class="category">신고수/총게시글수</p>
                             </div>
                             <div class="content">
-                                <div id="chartActivity" class="ct-chart"></div>
+                            
+                                
+                                <canvas id="myChart3"></canvas>
+								<script type="text/javascript">
+								
+								var ctx = document.getElementById('myChart3').getContext('2d');
+								var data = "${boardAndDeclaration}";
+								
 
+								var myChart = new Chart(ctx, {
+								    type: 'pie',
+								    data: {
+								        labels: ['신고건','총게시글수'],
+								        datasets: [{
+								            label: '신고현황',
+								            data: ["${boardAndDeclaration.DCOUNT}","${boardAndDeclaration.BOARDCOUNT}"],
+								            backgroundColor: [
+								                'rgba(255, 99, 132, 0.2)',
+								                'rgba(54, 162, 235, 0.2)'
+								            ],
+								            borderColor: [
+								                'rgba(255, 99, 132, 1)',
+								                'rgba(54, 162, 235, 1)'
+								            ],
+								            borderWidth: 1
+								        }]
+								    },
+								    options: {
+								        scales: {
+								            yAxes: [{
+								                ticks: {
+								                    beginAtZero: false
+								                }
+								            }]
+								        }
+								    }
+								});
+								
+								</script>
                                 <div class="footer">
                                  
                                     <hr>
@@ -326,11 +367,11 @@
                                             <tr>
                                                 <td>
 													<div class="checkbox">
-						  							  	<input id="checkbox1" type="checkbox">
+						  							  	<input id="checkbox1" type="checkbox" checked>
 						  							  	<label for="checkbox1"></label>
 					  						  		</div>
                                                 </td>
-                                                <td>Sign contract for "What are conference organizers afraid of?"</td>
+                                                <td>현재까지 ${boardAndDeclaration.BOARDCOUNT}개의 글이 작성되었습니다.</td>
                                                 <td class="td-actions text-right">
                                                     <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">
                                                         <i class="fa fa-edit"></i>
@@ -347,7 +388,7 @@
 						  							  	<label for="checkbox2"></label>
 					  						  		</div>
                                                 </td>
-                                                <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
+                                                <td>현재 신고 접수된 게시글은 ${boardAndDeclaration.DCOUNT}개 입니다. </td>
                                                 <td class="td-actions text-right">
                                                     <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">
                                                         <i class="fa fa-edit"></i>
@@ -360,11 +401,11 @@
                                             <tr>
                                                 <td>
 													<div class="checkbox">
-						  							  	<input id="checkbox3" type="checkbox">
+						  							  	<input id="checkbox3" type="checkbox" checked>
 						  							  	<label for="checkbox3"></label>
 					  						  		</div>
                                                 </td>
-                                                <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
+                                                <td>현재 신고 접수된 유저가 존재합니다.
 												</td>
                                                 <td class="td-actions text-right">
                                                     <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">
@@ -375,57 +416,7 @@
                                                     </button>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-													<div class="checkbox">
-						  							  	<input id="checkbox4" type="checkbox" checked>
-						  							  	<label for="checkbox4"></label>
-					  						  		</div>
-                                                </td>
-                                                <td>Create 4 Invisible User Experiences you Never Knew About</td>
-                                                <td class="td-actions text-right">
-                                                    <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">
-                                                        <i class="fa fa-edit"></i>
-                                                    </button>
-                                                    <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-                                                        <i class="fa fa-times"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-													<div class="checkbox">
-						  							  	<input id="checkbox5" type="checkbox">
-						  							  	<label for="checkbox5"></label>
-					  						  		</div>
-                                                </td>
-                                                <td>Read "Following makes Medium better"</td>
-                                                <td class="td-actions text-right">
-                                                    <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">
-                                                        <i class="fa fa-edit"></i>
-                                                    </button>
-                                                    <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-                                                        <i class="fa fa-times"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-													<div class="checkbox">
-						  							  	<input id="checkbox6" type="checkbox" checked>
-						  							  	<label for="checkbox6"></label>
-					  						  		</div>
-                                                </td>
-                                                <td>Unfollow 5 enemies from twitter</td>
-                                                <td class="td-actions text-right">
-                                                    <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">
-                                                        <i class="fa fa-edit"></i>
-                                                    </button>
-                                                    <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-                                                        <i class="fa fa-times"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                           
                                         </tbody>
                                     </table>
                                 </div>

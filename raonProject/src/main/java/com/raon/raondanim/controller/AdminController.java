@@ -19,8 +19,10 @@ public class AdminController {
 	public String main(Model model) {
 		System.out.println("관리자 메인화면 요청받음");
 		
-		System.out.println("관리자/컨트롤러/월별 게시글 작성수 확인 : "+tripService.getMonthWriteData());
+		//System.out.println("관리자/컨트롤러/월별 게시글 작성수 확인 : "+tripService.getMonthWriteData());
+		System.out.println("관리자/컨트롤러/총게시글그리고신고글수: "+tripService.getBoardAndDeclatation());
 		model.addAttribute("boardList", tripService.getMonthWriteData());
+		model.addAttribute("boardAndDeclaration", tripService.getBoardAndDeclatation());
 		return "admin/main";
 		
 	}

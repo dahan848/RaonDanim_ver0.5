@@ -377,5 +377,11 @@ group by TRIP_WRITEDATE
 order by TRIP_WRITEDATE
 </select>
 
+<select id="getBoardAndDeclatation" resultType="map">
+select count(b.TRIP_BOARD_KEY) as boardcount, count(d.D_KEY) as dcount
+from trip_board_tb b left outer join DECLARATION_TB d
+on b.TRIP_BOARD_KEY = d.TRIP_BOARD_KEY
+</select>
+
 
 </mapper>

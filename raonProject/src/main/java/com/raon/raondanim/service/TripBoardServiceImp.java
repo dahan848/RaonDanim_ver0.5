@@ -558,6 +558,12 @@ public class TripBoardServiceImp implements TripBoardService {
 		return tripDao.getMonthWriteData();
 	}
 
+	@Override
+	public Map<String, Integer> getBoardAndDeclatation() {
+		
+		return tripDao.getBoardAndDeclatation();
+	}
+
 
 
 }
