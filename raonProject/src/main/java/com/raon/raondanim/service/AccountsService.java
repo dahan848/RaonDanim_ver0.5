@@ -49,7 +49,7 @@ public class AccountsService {
 	
 	//더미 사용자 데이터 생성 서비스
 	public void setDnmmyData() {
-		for(int i = 0 ; i<50 ; i++) {
+		for(int i = 201 ; i<230 ; i++) {
 			user = new User();
 			user.setUser_id("test@" + i);
 			user.setUser_pw("1");

@@ -32,7 +32,28 @@ public interface MotelTbDAO {
 	public int write_reply(Map<String, Object> params);
 	//평점 등록
 	public int starAvg(Map<String, Object>params);
-	
+	//평점 업데이트
+	public int starUpdate(Map<String, Object>params);
+	//평점 달았는지 하나 불러옴
+	public Map<String, Object> starCheck(Map<String, Object>params);
+	//숙소 예약시 motel_date_tb 상태값 N으로 변경 
+	public int date_tb_update(Map<String, Object>params);
+	//motel_date_tb 업데이트 후 중복 예약 방지 체크
+	public int checkDate(Map<String, Object>params);
+	//댓글 상태값 삭제로 변경
+	public int deleteReply(Map<String, Object>params);
+	//댓글 신고 내용 가져오기
+	public List<Map<String, Object>> declaration();
+	//신고테이블 insert
+	public int insertDeclaration (Map<String, Object>params);
+	//숙박글 신고 insert
+	public int insert_motel_Declaration(Map<String, Object>params);
+	//댓글 중복신고 방지 체크
+	public Map<String, Object> insertDeclaration_check(Map<String, Object>params);
+	//숙박글 중복신고 방지 체크
+	public Map<String, Object>insert_motel_Declaration_check(Map<String, Object>params);
+	//숙박글 삭제
+	public int delete_motel(Map<String, Object>params);
 	
 	//모텔 병합중
 	public List<Map<String, Object>> National_selectAll();
