@@ -386,13 +386,10 @@ public class TripBoardServiceImp implements TripBoardService {
 		
 		JsonParser parser = new JsonParser();
 		JsonArray jsonArray = (JsonArray) parser.parse(tripCity);
-		
-		
+
 		try {
 			
-			
-			
-			
+
 			params = tripDao.selectRelKeyAndCityKey(boardKey);
 			//연관된 테이블 row의 상태값 1로 
 			for(Map<String, Object> a :params) {
@@ -553,6 +550,12 @@ public class TripBoardServiceImp implements TripBoardService {
 		
 		
 		
+	}
+
+	@Override
+	public List<Integer> getMonthWriteData() {
+		
+		return tripDao.getMonthWriteData();
 	}
 
 

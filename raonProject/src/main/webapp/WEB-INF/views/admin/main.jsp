@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%	request.setAttribute("contextPath", request.getContextPath()); %>	
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -159,7 +160,7 @@
 									        labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
 									        datasets: [{
 									            label: '가입자 증가 비율',
-									            data: [0,10,30,50,70,100,150,200,0,10,20],
+									            data: [15,10,30,50,70,40,50,0,0,0,0],
 									            backgroundColor: [
 									                'rgba(255, 99, 132, 0.2)',
 									                'rgba(54, 162, 235, 0.2)',
@@ -216,20 +217,72 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Users Behavior</h4>
-                                <p class="category">24 Hours performance</p>
+                                <h4 class="title">월별 게시글 작성 현황</h4>      
                             </div>
                             <div class="content">
-                                <div id="chartHours" class="ct-chart"></div>
+                            
+                                <canvas id="myChart2"></canvas>
+								<script type="text/javascript">
+									var boardList = "${boardList}";
+									
+									var ctx = document.getElementById('myChart2').getContext('2d');
+									var myChart = new Chart(ctx, {
+									    type: 'line',
+									    data: {
+									        labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+									        datasets: [{
+									            label: '게시글 작성 비율',
+									            data: [20,25,50,16,12,21,16],
+									            backgroundColor: [
+									                'rgba(255, 99, 132, 0.2)',
+									                'rgba(54, 162, 235, 0.2)',
+									                'rgba(255, 206, 86, 0.2)',
+									                'rgba(75, 192, 192, 0.2)',
+									                'rgba(153, 102, 255, 0.2)',
+									                'rgba(255, 159, 64, 0.2)',
+									                'rgba(250, 99, 132, 0.2)',
+									                'rgba(57, 162, 235, 0.2)',
+									                'rgba(235, 206, 86, 0.2)',
+									                'rgba(175, 192, 192, 0.2)',
+									                'rgba(173, 102, 255, 0.2)',
+									                'rgba(205, 159, 64, 0.2)'
+									            ],
+									            borderColor: [
+									                'rgba(255, 99, 132, 1)',
+									                'rgba(54, 162, 235, 1)',
+									                'rgba(255, 206, 86, 1)',
+									                'rgba(75, 192, 192, 1)',
+									                'rgba(153, 102, 255, 1)',
+									                'rgba(255, 159, 64, 1)',
+									                'rgba(205, 99, 132, 1)',
+									                'rgba(154, 162, 235, 1)',
+									                'rgba(155, 206, 86, 1)',
+									                'rgba(45, 192, 192, 1)',
+									                'rgba(173, 102, 255, 1)',
+									                'rgba(205, 159, 64, 1)'
+									            ],
+									            borderWidth: 1
+									        }]
+									    },
+									    options: {
+									        scales: {
+									            yAxes: [{
+									                ticks: {
+									                    beginAtZero: true
+									                }
+									            }]
+									        }
+									    }
+									});
+								
+								</script>
+
+                                
                                 <div class="footer">
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Click
-                                        <i class="fa fa-circle text-warning"></i> Click Second Time
-                                    </div>
-                                    <hr>
+
+
                                     <div class="stats">
-                                        <i class="fa fa-history"></i> Updated 3 minutes ago
+                                        <i class="fa fa-history"></i> 2019.01~2019.12 기준
                                     </div>
                                 </div>
                             </div>
@@ -250,13 +303,10 @@
                                 <div id="chartActivity" class="ct-chart"></div>
 
                                 <div class="footer">
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Tesla Model S
-                                        <i class="fa fa-circle text-danger"></i> BMW 5 Series
-                                    </div>
+                                 
                                     <hr>
                                     <div class="stats">
-                                        <i class="fa fa-check"></i> Data information certified
+                                        <i class="fa fa-check"></i> 2019.01~2019.12 기준
                                     </div>
                                 </div>
                             </div>
@@ -267,7 +317,7 @@
                         <div class="card ">
                             <div class="header">
                                 <h4 class="title">Tasks</h4>
-                                <p class="category">Backend development</p>
+                                <p class="category">알림</p>
                             </div>
                             <div class="content">
                                 <div class="table-full-width">

@@ -72,4 +72,8 @@ public interface TripBoardService {
 	//더미 데이터 생성
 	public boolean insertDummyData(String writeDate);
 	
+	//월별 게시글 작성 데이터 뽑기
+	public List<Integer> getMonthWriteData();
+	
+	
 }

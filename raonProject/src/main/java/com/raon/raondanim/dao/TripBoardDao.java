@@ -69,9 +69,12 @@ public interface TripBoardDao {
 	//이미신고한건지 알기위해 조회
 	public Map<String, Object> selectOneByDeclaration(Map<String, Object> params);
 	
-	
+	//더미데이터 추가 
 	public int insertDummyData(Map<String, Object> tripBoard);
 	
+	
+	//월별 게시글 작성수
+	public List<Integer> getMonthWriteData();
 	
 	
 	

@@ -370,4 +370,12 @@ values(TRIP_BOARD_TB_SEQ.nextval,
 </insert>
 
 
+<select id="getMonthWriteData" resultType="int">
+SELECT count(TO_CHAR(TRIP_WRITEDATE,'MM') ) as monthCount
+FROM TRIP_BOARD_TB
+group by TRIP_WRITEDATE
+order by TRIP_WRITEDATE
+</select>
+
+
 </mapper>

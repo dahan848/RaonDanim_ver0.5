@@ -356,7 +356,7 @@ public class TripController {
 	@RequestMapping("/insertDummy")
 	public String insertDummyData(@RequestParam(defaultValue="2019-01-01")String writeDate,
 			RedirectAttributes ra) {
-		
+		//더미데이터 생성 요청 파라메터로 년월일 집어넣으면 그 날짜로 게시글만 생성됨
 		
 		if(tripService.insertDummyData(writeDate)) {
 			ra.addFlashAttribute("msg", "더미데이터 생성 성공");
