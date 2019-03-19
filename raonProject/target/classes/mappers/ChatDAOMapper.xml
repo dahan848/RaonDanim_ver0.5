@@ -57,13 +57,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    or  r.user2_num = #{usernum})
 		   and r.chat_room_num = c.chat_room_num
 		   and m.message_num = c.last_message_num
+		   order by c.last_message_num desc
 	</select>
 	
 	<!-- user_num으로 채팅방 참여자 정보 반환 -->
 	<select id="getRoomPartner" resultType="map" parameterType="int">
 		select r.chat_room_num, u.user_num, u.user_lnm, u.user_fnm, u.user_profile_pic
 		  from user_tb u,   (select distinct * 
-	                    from (select decode(c.USER1_NUM,25,'',c.USER1_NUM)||decode(c.USER2_NUM,25,'',c.USER2_NUM) as USER_NUM, c.chat_room_num
+	                    from (select decode(c.USER1_NUM,#{usernum},'',c.USER1_NUM)||decode(c.USER2_NUM,#{usernum},'',c.USER2_NUM) as USER_NUM, c.chat_room_num
 	                              from user_tb u,chat_room_tb c
 	                             where (u.USER_NUM = c.USER1_NUM
 	                                or u.USER_NUM = c.USER2_NUM)
@@ -78,6 +79,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    select * from message_tb
     	where chat_room_num = #{roomnum}
    		order by message_num asc
+	</select>
+	
+	<!-- 채팅방 참여자의 번호를 얻는 () -->
+	<select id="getRoomPartnerByMap" resultType="map" parameterType="map">
+		select decode(c.USER1_NUM,#{usernum},'',c.USER1_NUM)||decode(c.USER2_NUM,#{usernum},'',c.USER2_NUM) as USER_NUM, c.chat_room_num
+		  from user_tb u,chat_room_tb c
+		 where ((u.USER_NUM = c.USER1_NUM
+		    or u.USER_NUM = c.USER2_NUM)
+		   and (u.USER_NUM = #{usernum}))
+		   and c.chat_room_num = #{chat_room_num}
 	</select>
 	
 	

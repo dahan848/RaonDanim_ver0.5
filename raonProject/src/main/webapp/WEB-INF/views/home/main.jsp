@@ -171,7 +171,7 @@
         </div>
     </section>
     
-    <jsp:include page="/WEB-INF/views/test.jsp"></jsp:include>
+    <jsp:include page="/WEB-INF/views/test.jsp"></jsp:include> <!-- 채팅방 모달창 -->
     <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
     
 <script type="text/javascript">

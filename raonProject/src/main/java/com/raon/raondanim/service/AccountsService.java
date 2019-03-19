@@ -64,8 +64,8 @@ public class AccountsService {
 			user = new User();
 			user.setUser_id("test@" + i);
 			user.setUser_pw("1");
-			user.setUser_fnm("스트" + i);
-			user.setUser_lnm("테" + i);
+			user.setUser_fnm("저" + i);
+			user.setUser_lnm("유");
 			dao.setDnmmyData(user);
 		}
 	}

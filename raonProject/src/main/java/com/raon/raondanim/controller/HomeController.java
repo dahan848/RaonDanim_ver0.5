@@ -53,4 +53,10 @@ public class HomeController {
 		return "test";
 	}
 	
+	@RequestMapping("/test99")
+	public String test99() {
+		System.out.println("home 테스트 요청 받음 ");
+		return "tset99";
+	}
+	
 }

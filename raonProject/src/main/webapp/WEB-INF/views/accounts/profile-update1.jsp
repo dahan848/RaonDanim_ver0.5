@@ -21,7 +21,7 @@
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
 				<h3 class="section-title">
-					<img class="section-header-icon" src="${contextPath}/img/Profile.png" alt="">
+					<img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt="">
 					1단계: 기본 정보 입력하기
 				</h3>
 				<div class="progress">

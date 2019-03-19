@@ -34,11 +34,6 @@
                    			</label>
                			</div>
            			</div>
-           			<c:if test="${not empty msg}">
-				        <font color="red">
-				        ${msg}
-				        </font>
-					</c:if>
                     <button class="btn btn-potluck btn-block" type="submit">로그인</button>
 					<a href="#" class="btn btn-block btn-social btn-kakao">
 					  <span class="fa fa-kakao" style="width: 32px;"></span>
@@ -52,6 +47,11 @@
                 </form>
             </div>
             <p>라온다님에 오신것을 환영합니다</p>
+            <c:if test="${not empty error}">
+		        <font color="red">
+		        ${error}
+		        </font>
+ 		   </c:if>
         </div>
     </section>
 <!-- 인클루드-푸터 -->

@@ -192,7 +192,7 @@ function gallerypicSubmit() {
 function createGallery() {
 	var contextPath = '<c:out value="${contextPath}"/>';
 	$.ajax({
-		url: contextPath + "/accounts/gallery/${userNum}",
+		url: contextPath + "/accounts/gallery/${profileUser}",
 		type: "get",
 		dateType : "json",
 		success : function(data){
@@ -256,7 +256,7 @@ input[type="file"] {
 				<img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt="" >
             		 나의 프로필
             	<!-- 자신의 페이지 일 때만 [프로필 수정]버튼 보임 -->
-				<c:if test="${userNum eq user_num}">
+				<c:if test="${profileUser eq user_num}">
                 	<a href="${contextPath}/accounts/update1Form" class="btn btn-potluck pull-right">프로필 수정</a>
                 </c:if>
 			</h3>
@@ -400,14 +400,14 @@ input[type="file"] {
 	<!-- POPOVER DIV -->
 	<div id="userInfo" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
 	   <c:choose>
-			<c:when test="${userNum eq user_num}">
+			<c:when test="${profileUser eq user_num}">
 	        	<a href="#" data-toggle="modal" data-target="#modal-profile-image">프로필 사진</a><br>
 	        	<a href="#" data-toggle="modal" data-target="#modal-gallery-image">갤러리 사진</a><br>
 	        	<a href="${contextPath}/accounts/gallerySettings">갤러리 관리</a>
 	   		</c:when>
         	<c:otherwise>
 				<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->    	    		
-        		<a href="#">대화하기</a>
+        		<a onclick="chatClickbyUser(${profileUser},${user_num})">대화하기</a>
 				</sec:authorize>
 				<sec:authorize access="isAnonymous()"> <!-- 로그인 상태 X -->
 				<a href="#">로그인 이후 사용 가능합니다.</a>
@@ -518,6 +518,7 @@ $(function(){
 </script>
 
 <!-- 인클루드-푸터 -->
+<jsp:include page="/WEB-INF/views/test.jsp"></jsp:include> <!-- 채팅방 모달창 -->
 <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 <!-- 인클루드-푸터 END -->
 </body>

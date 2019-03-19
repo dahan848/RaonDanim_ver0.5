@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.raon.raondanim.model.User;
 import com.raon.raondanim.model.customUserDetails;
@@ -39,15 +40,24 @@ public class AccountsController {
 	
 	//로그인 화면 요청
 	@RequestMapping(value = "/loginForm")
-	public String loginForm() {
+	public String loginForm(@RequestParam(value = "error", defaultValue = "defalutValue") String error, Model model) {
+		if(!error.equals("defalutValue")) {
+			model.addAttribute("msg", error);			
+		}
+		System.out.println("받은거 : " + error);
 		logger.info("");
 		return"accounts/loginForm";
 	}
 	
 	//로그인 실패 
 	@RequestMapping(value = "/loginError")
-	public String loginError() {
+	public String loginError(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		String msg = (String) request.getAttribute("errormsgname");
+		redirectAttributes.addAttribute("error", msg);
+		//redirectAttributes.addFlashAttribute("error", msg);
+		System.out.println("실패 핸들러가 보낸 놈 : " + msg);
 		return "redirect:/accounts/loginForm";
+		//return "accounts/loginError";
 	}
 	
 	//회원가입 화면 요청
@@ -96,7 +106,7 @@ public class AccountsController {
 		//System.out.println("==============프로필 데이터==============");
 		//System.out.println(userData);
 		model.addAttribute("user", userData);
-		model.addAttribute("userNum", userNum);
+		model.addAttribute("profileUser", userNum);
 		return "accounts/profile";
 	}
 	
