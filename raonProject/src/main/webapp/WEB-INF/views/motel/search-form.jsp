@@ -1086,7 +1086,6 @@ to {
 																					language:  'ko',
 																					minDate: 0,
 																			        weekStart: 1,
-																			        
 																					autoclose: 1,
 																					todayHighlight: 1,
 																					startView: 2,
