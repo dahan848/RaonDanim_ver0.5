@@ -65,13 +65,13 @@
                 <li>
                     <a href="">
                         <i class="pe-7s-user"></i>
-                        <p>게시글 관리</p>
+                        <p>유저</p>
                     </a>
                 </li>
                 <li>
                     <a href="">
                         <i class="pe-7s-note2"></i>
-                        <p>신고</p>
+                        <p>게시글 관리</p>
                     </a>
                 </li>
                 <li>
@@ -153,6 +153,21 @@
 <!--                                 <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div> -->
 								<canvas id="myChart"></canvas>
 								<script type="text/javascript">
+									var userRegList = "${userRegList}";
+									var monthCounts = [];
+									var regDates = [];
+// 									alert(userRegList);
+// 									for(var i in userRegList){
+// 										monthCounts.push(userRegList[i].MONTHCOUNT);
+// 										regDates.push(userRegList[i].USER_REG_DATE);	
+// 									}
+									
+									<c:forEach items="${userRegList }" var="reg">
+										monthCounts.push(${reg.MONTHCOUNT}); 
+										//regDates.push(${reg.USER_REG_DATE});
+									</c:forEach>
+
+								
 									var ctx = document.getElementById('myChart').getContext('2d');
 									var myChart = new Chart(ctx, {
 									    type: 'bar',
@@ -160,7 +175,7 @@
 									        labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
 									        datasets: [{
 									            label: '가입자 증가 비율',
-									            data: [15,10,30,50,70,40,50,0,0,0,0],
+									            data: monthCounts,
 									            backgroundColor: [
 									                'rgba(255, 99, 132, 0.2)',
 									                'rgba(54, 162, 235, 0.2)',
@@ -228,7 +243,6 @@
 									boardList.push(${board}); 
 								</c:forEach>
 									console.log(boardList);
-									alert(typeof(boardList));
 									var ctx = document.getElementById('myChart2').getContext('2d');
 									var myChart = new Chart(ctx, {
 									    type: 'line',
@@ -371,7 +385,7 @@
 						  							  	<label for="checkbox1"></label>
 					  						  		</div>
                                                 </td>
-                                                <td>현재까지 ${boardAndDeclaration.BOARDCOUNT}개의 글이 작성되었습니다.</td>
+                                                <td>현재까지<span style="color: red;"> ${boardAndDeclaration.BOARDCOUNT}</span>개의 글이 작성되었습니다.</td>
                                                 <td class="td-actions text-right">
                                                     <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">
                                                         <i class="fa fa-edit"></i>
@@ -388,7 +402,7 @@
 						  							  	<label for="checkbox2"></label>
 					  						  		</div>
                                                 </td>
-                                                <td>현재 신고 접수된 게시글은 ${boardAndDeclaration.DCOUNT}개 입니다. </td>
+                                                <td>현재 신고 접수된 게시글은<span style="color: red;">${boardAndDeclaration.DCOUNT}</span>개 입니다. </td>
                                                 <td class="td-actions text-right">
                                                     <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">
                                                         <i class="fa fa-edit"></i>
@@ -405,7 +419,7 @@
 						  							  	<label for="checkbox3"></label>
 					  						  		</div>
                                                 </td>
-                                                <td>현재 신고 접수된 유저가 존재합니다.
+                                                <td>현재 계정이 잠긴 유저가 존재합니다.
 												</td>
                                                 <td class="td-actions text-right">
                                                     <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">

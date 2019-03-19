@@ -418,4 +418,65 @@ public class AccountsService {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//유저 월별 가입 숫자 뽑아오기 -
+	public List<Map<String, Object>> getUserRegDate(){
+		
+		
+		return dao.getUserRegDate();
+		
+	};
+	
 }

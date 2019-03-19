@@ -144,6 +144,13 @@ on u.user_num = h.user_num
 where u.user_num = #{userNum}
 </select>	
 	
+<select id="getUserRegDate" resultType="map">
+<!-- 데이터가 충분치 않아 정렬에 오류가 있을수 있음 -->
+SELECT TO_CHAR(USER_REG_DATE,'MM')||'월' as USER_REG_DATE,count(TO_CHAR(USER_REG_DATE,'MM')) as monthCount
+FROM user_tb
+group by TO_CHAR(USER_REG_DATE,'MM')
+order by USER_REG_DATE
+</select>	
 	
 <!-- 	여행파트 dao추가 -->
 	

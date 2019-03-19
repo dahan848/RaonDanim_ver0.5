@@ -40,7 +40,7 @@ public interface AccountsUserDAO {
 	//여행파트 dao추가
 	public List<Map<String, Object>> getTrStyle(String usernum); //번호로 유저 여행스타일 선택
 	public List<Map<String, Object>> getTravleHope(String usernum); //번호로 유저 희망국가 도시 선택
-	
+	public List<Map<String, Object>> getUserRegDate(); // 월별 가입일로 유저 총 갯수 뽑아오기 
 	////////////////////////////////
 
 }
