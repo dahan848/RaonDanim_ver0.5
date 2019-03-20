@@ -91,7 +91,7 @@
 		
 		initMap();
 		
-		//수정 삭제 성공시 alert로 사용자에게 알림 -주소창에 보이는 못가져옴 예외가 없어보임 지도관련 예외 있음
+		//수정 삭제 성공시 alert로 사용자에게 알림 
  		var msg = "${msg}";
  		if(msg !=null && msg != ""){
  			swal({
@@ -109,9 +109,9 @@
 			var keywordDiv = $("#keywordDiv");
 			var keyword = $("<input type='text' class='form-control' id='keyword' placeholder='검색어를 입력하세요' name='keyword' style='width: 700px;'>");
 			var keyword2 = $(" <label for='email'>성:</label>" + 
-			"      <input type='text' class='form-control' id='lName' name='lName'>" + 
+			"      <input type='text' class='form-control' placeholder='성 을 입력하세요' id='lName' name='lName'>" + 
 			"      <label for='pwd'>이름:</label>" + 
-			"      <input type='text' class='form-control' id='fName' name='fName'>");
+			"      <input type='text' class='form-control' placeholder='이름 를 입력하세요' id='fName' name='fName'>");
 		
 			keywordDiv.html("");
 			if(typeValue==4){

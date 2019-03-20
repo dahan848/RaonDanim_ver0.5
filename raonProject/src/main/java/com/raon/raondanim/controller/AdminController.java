@@ -24,7 +24,7 @@ public class AdminController {
 		
 		//System.out.println("관리자/컨트롤러/월별 게시글 작성수 확인  : "+tripService.getMonthWriteData());
 		//System.out.println("관리자/컨트롤러/총게시글그리고신고글수 : "+tripService.getBoardAndDeclatation());
-		System.out.println("관리자/컨트롤러/월별 유저 가입수 : "+accountsService.getUserRegDate());
+		//System.out.println("관리자/컨트롤러/월별 유저 가입수 : "+accountsService.getUserRegDate());
 	
 		
 		model.addAttribute("boardList", tripService.getMonthWriteData());
@@ -33,7 +33,21 @@ public class AdminController {
 		return "admin/main";
 		
 	}
+	@RequestMapping("/user")
+	public String user() {
+		System.out.println("유저 관리 화면 요청");
+		
+		return "admin/user";
+		
+	}
 	
-	
-	
+	@RequestMapping("/board")
+	public String board(Model model) {
+		System.out.println("게시글 관리 화면 요청");
+		
+		System.out.println("관리자/컨트롤러/ 신고당한 게시글 목록 데이터 확인 : "+model.addAttribute("dBoardList", tripService.getDeclarationBoard()));
+		model.addAttribute("dBoardList", tripService.getDeclarationBoard());
+		return "admin/board";
+		
+	}
 }

@@ -50,36 +50,36 @@
 
     	<div class="sidebar-wrapper">
             <div class="logo">
-                <a href="" class="simple-text">
+                <a href="${contextPath}/" class="simple-text">
                     Raon Danim
                 </a>
             </div>
-
+			
             <ul class="nav">
                 <li class="active">
-                    <a href="">
+                    <a href="main">
                         <i class="pe-7s-graph"></i>
                         <p>메인</p>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="user">
                         <i class="pe-7s-user"></i>
                         <p>유저</p>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="board">
                         <i class="pe-7s-note2"></i>
                         <p>게시글 관리</p>
                     </a>
                 </li>
-                <li>
+<!--                 <li>
                     <a href="#">
                         <i class="pe-7s-news-paper"></i>
                         	<p>결제</p>
                     </a>
-                </li>
+                </li> -->
 
             </ul>
     	</div>
@@ -144,7 +144,8 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card">
-
+							
+							
                             <div class="header">
                                 <h4 class="title">월별 가입자 현황</h4>
 <!--                                 <p class="category">Last Campaign Performance</p> -->
@@ -164,7 +165,7 @@
 									
 									<c:forEach items="${userRegList }" var="reg">
 										monthCounts.push(${reg.MONTHCOUNT}); 
-										//regDates.push(${reg.USER_REG_DATE});
+										regDates.push('${reg.USER_REG_DATE}');
 									</c:forEach>
 
 								
@@ -172,7 +173,7 @@
 									var myChart = new Chart(ctx, {
 									    type: 'bar',
 									    data: {
-									        labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+									        labels: regDates,
 									        datasets: [{
 									            label: '가입자 증가 비율',
 									            data: monthCounts,

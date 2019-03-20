@@ -383,5 +383,32 @@ from trip_board_tb b left outer join DECLARATION_TB d
 on b.TRIP_BOARD_KEY = d.TRIP_BOARD_KEY
 </select>
 
+<select id="getDeclarationBoard" resultType="map">
+select  b.TRIP_BOARD_KEY,
+        b.USER_NUM,
+        u.USER_ID,
+        u.USER_FNM,
+        u.USER_LNM,
+        u.USER_PW,
+        b.TRIP_BOARD_TITLE,
+        b.TRIP_BOARD_COUNTENT,
+        b.TRIP_BOARD_START,
+        b.TRIP_BOARD_END,
+        b.TRIP_BOARD_TOGETHER,
+        b.TRIP_BOARD_READCOUNT,
+        b.TRIP_BOARD_ST,
+        b.TRIP_WRITEDATE,
+        d.D_KEY,
+        d.TRIP_D_DETAILCONTENT,
+        dt.DECLARATION_CONTENT
+from trip_board_tb b join user_tb u
+on b.user_num =  u.user_num
+join DECLARATION_TB d
+on b.TRIP_BOARD_KEY = d.TRIP_BOARD_KEY
+join DECLARATION_DTB dt
+on d.DECLARATION_KEY = dt.DECLARATION_KEY
+where b.TRIP_BOARD_KEY in (select distinct TRIP_BOARD_KEY
+                           from DECLARATION_TB)
+</select>
 
 </mapper>

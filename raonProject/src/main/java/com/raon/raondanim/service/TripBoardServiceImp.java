@@ -564,6 +564,12 @@ public class TripBoardServiceImp implements TripBoardService {
 		return tripDao.getBoardAndDeclatation();
 	}
 
+	@Override
+	public List<Map<String, Object>> getDeclarationBoard() {
+		
+		return tripDao.getDeclarationBoard();
+	}
+
 
 
 }

@@ -60,7 +60,7 @@ public interface TripBoardService {
 	public List<Map<String, Object>> getTravleHope(String usernum); //번호로 유저 희망국가 도시 선택
 	
 	
-	//신고 목록 데이터 불러오기
+	//신고 목록 데이터 불러오기 -그닥 쓸일 없을듯
 	public List<Map<String, Object>> getDeclaration();
 	
 	//신고 입력하기
@@ -78,5 +78,7 @@ public interface TripBoardService {
 	//여행 게시판 게시글 총게시글수와 신고수 선택
 	public Map<String, Integer> getBoardAndDeclatation();
 	
+	// 관리자용 신고당한 게시글 리스트 출력(출력 3번 누적이아닌 신고 1번이라도 있으면 출력)
+	public List<Map<String, Object>> getDeclarationBoard();
 	
 }
