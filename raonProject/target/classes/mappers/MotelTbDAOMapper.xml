@@ -49,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				and motel.motel_num = date_tb.motel_num
 				and motel.motel_st = 0
 				<if test="startDate != null">
-				and date_tb.motel_date between #{startDate} and #{endDate}
+				and date_tb.motel_date between to_Date(#{startDate},'RR-MM-dd') and to_Date(#{endDate},'RR-MM-dd')
 				</if>
 				
 				<if test="city != null">
@@ -160,7 +160,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(
 			select * from motel_date_tb
 			where motel_num = #{num} and
-			(motel_date between #{checkIn} and to_Date(#{checkOut},'RR/MM/dd')-1)
+			(motel_date between to_Date(#{checkIn},'RR/MM/dd') and to_Date(#{checkOut},'RR/MM/dd')-1)
 		)
 		set motel_ready = 'N'
 	</update>
@@ -170,7 +170,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select  count(motel_date)as y
 		from motel_date_tb
 		where motel_ready like 'Y' and motel_num = #{motel_num}
-			  and motel_date between #{motel_checkin} and to_Date(#{motel_checkout},'RR/MM/dd')-1
+			  and motel_date between to_Date(#{motel_checkin},'RR/MM/dd') and to_Date(#{motel_checkout},'RR/MM/dd')-1
 	</select>
 	
 	<!-- 댓글 상태값 삭제로 변경 -->
@@ -223,6 +223,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where user_num = #{user_num}
 		and motel_num = #{motel_num}
 	</update>
+	
+	<!-- 이미지 가져오기  -->
+	<select id="getImage" resultType="Map" parameterType="Int">
+		select * from MOTEL_PIC_TB
+		where motel_num = #{motel_num}
+	</select>
+	
+	<!-- 숙소 결제시 host user 포인트 적립 -->
+	<update id="add_point" parameterType="Map">
+		update user_tb
+		set USER_POINT = user_point+#{price}
+		where user_num = #{host}
+	</update>
+	
+	<!-- 숙소 결제시 결제 내역 insert -->
+	<insert id="pay_history_insert" parameterType="Map">
+		insert into motel_pay_tb
+		(pay_num,payment_user_num,host_user_num,motel_num,pay_price)
+		values(Motel_pay_tb_SEQ.nextval,#{user_num},#{host},#{num},#{price})
+	</insert>
 	
 	
 	

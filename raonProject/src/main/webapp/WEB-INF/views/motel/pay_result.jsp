@@ -26,6 +26,7 @@
 		var url = "${url}";
 		var check = "${doubleResult}";
 		var check2 = "${result}";
+		var check3 = "${result_free}"
 		if(check==""){
 			if(check2=="true"){
 				   swal({
@@ -39,15 +40,28 @@
 				   })
 				   
 			   }else{
-				   swal({
-					   text:"${msg}",					
-						icon:"warning",		
-						buttons:[false,"확인"]
-				   }).then(function(isConfirm){
-					   var theURL = "http://localhost:8081/${contextPath}"+url;
-					   opener.window.location = theURL;
-					   window.close();
-				   })
+				   if(check3 == "true"){
+					   swal({
+						   text:"${msg}",					
+							icon:"success",		
+							buttons:[false,"확인"]
+					   }).then(function(isConfirm){
+						   var theURL = "http://localhost:8081/${contextPath}"+url;
+						   location.href=theURL;
+						   
+					   })
+				   }else{
+					   swal({
+						   text:"${msg}",					
+							icon:"warning",		
+							buttons:[false,"확인"]
+					   }).then(function(isConfirm){
+						   var theURL = "http://localhost:8081/${contextPath}"+url;
+						   opener.window.location = theURL;
+						   window.close();
+					   }) 
+				   }
+				   
 			   }
 		}else{
 

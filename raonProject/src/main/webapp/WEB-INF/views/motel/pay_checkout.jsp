@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="org.springframework.security.core.Authentication" %>
@@ -20,19 +21,12 @@
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
 <script type="text/javascript">
-
-	function popup(frm) {
-// 		var popWidth  = '600'; // 파업사이즈 너비
-// 		var popHeight = '700'; // 팝업사이즈 높이
-
-// 		var winWidth  = document.body.clientWidth;  // 현재창의 너비
-// 		var winHeight = document.body.clientHeight; // 현재창의 높이
-// 		var winX      = window.screenX || window.screenLeft || 0;// 현재창의 x좌표
-// 		var winY      = window.screenY || window.screenTop || 0; // 현재창의 y좌표
-// 		var w = winX + (winWidth - popWidth) / 2;
-// 		var h = winY + (winHeight - popHeight) / 2;
-		
-		
+// 	$("#btnFree").on("click",function(){
+// 		$("#pay_form").attr("action","{$contextPath}/motel/pay_result");
+// 		$("#pay_form").attr("method","post");
+// 		$("#pay_form").on("submit");
+// 	})
+	function popup(frm) {		
 		var url = "pay_paypal";
 		var title = "pay_popup";
 		var status = "toolbar=no,directories=no,scrollbars=no,resizable=no,status=no,menubar=no,width=600px, height=700px, top=50,left=0";
@@ -152,7 +146,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		<input type="button" name="btn_pay" value="확인" onclick="javascript:popup(this.form)">
 	</form> --%>
 
-	<form name="pay_form">
+	<form name="pay_form" method = "POST" action="pay_result">
 <div data-hypernova-key="spaspabundlejs"
 		data-hypernova-id="11cd1c3f-4ad4-489a-b877-080fc9a6924b">
 		<div dir="ltr" data-reactroot="">
@@ -349,7 +343,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 												</div></span>
 										</div>
 									</div>
-									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+									<input type="hidden" name="_csrf" value="${_csrf}">
 									<input type="hidden" name="price" value="${price}">
 									<input type="hidden" name="motel_num" value="${motel_num}">
 									<input type="hidden" name="host" value="${host}">
@@ -362,11 +356,23 @@ google.maps.event.addDomListener(window, 'load', initialize);
 										<div style="margin-left: 8px">
 											<div class="_czvge1u">
 											
-												<button type="button" class="_oaitdxj" 
+											<c:set var="m_price" value="${motel_price }"/>
+											<c:choose>
+												<c:when test="${m_price eq 0 }">
+													<button id="btnFree" type="submit" class="_oaitdxj" onclick="location.href='${contextPath}/motel/pay_result'">
+													<span class="_ftj2sg4"><span class="_16b473m7"><div
+																class="_1283fq">예약</div></span></span>
+												</button>
+												</c:when>
+												<c:otherwise>
+													<button type="button" class="_oaitdxj" 
 													onclick="javascript:popup(this.form)">
 													<span class="_ftj2sg4"><span class="_16b473m7"><div
 																class="_1283fq">결제</div></span></span>
 												</button>
+												</c:otherwise>
+											</c:choose>
+												
 											</div>
 										</div>
 									</div>

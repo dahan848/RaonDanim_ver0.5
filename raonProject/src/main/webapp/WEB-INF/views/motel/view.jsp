@@ -424,14 +424,25 @@ function replyList(){
 	
 	
 }
-	
+// function getOriginFilename(fileName){
+// 	//fileName에서 uuid를 제외한 원래 파일명을 반환
+// 	if(fileName == null){
+// 		return;
+// 	}
+// 	var idx = fileName.indexOf("_")+1;
+// 	return fileName.substr(idx);
+// }
 
 	$(function(){
+		
+		
+		
 		$("#price").text(price);
 		$("#price_1").text(price);
 		$("#price_2").val(price);
 		$("#totalPrice").text(totalPrice);
 		$("#pay_price").val(totalPrice);
+		
 		
 		
 		$("#motel_declaration").on("click",function(){
@@ -732,7 +743,7 @@ function replyList(){
     <div class="carousel-inner">
      
       <div class="item active" style="width:700px; height:500px;">
-        <img src="${contextPath}/img/house1.jpg" alt="Los Angeles" style="width:100%; height:100%;">
+        <img id="pic1" src="${contextPath }/motel/image?fileName=${image.MOTEL_PIC_1}" style="width:100%; height:100%;">
         <div class="carousel-caption back">
 			<button class="fa fa-share-square fa-lg" data-toggle="modal" data-target="#myModal" style="margin: 0, auto;"></button>
  			
@@ -748,7 +759,7 @@ function replyList(){
       </div>
 
       <div class="item" style="width:700px; height:500px;">
-        <img src="${contextPath}/img/house2.jpg" alt="Chicago" style="width:100%; height:100%;">
+        <img id="pic2" src="${contextPath }/motel/image?fileName=${image.MOTEL_PIC_2}" style="width:100%; height:100%;">
         <div class="carousel-caption back">
 			<button class="fa fa-share-square fa-lg" data-toggle="modal" data-target="#myModal" style="margin: 0, auto;"></button>
 			<c:choose>
@@ -760,7 +771,7 @@ function replyList(){
       </div>
     
       <div class="item" style="width:700px; height:500px;">
-        <img src="${contextPath}/img/house3.jpg" alt="New york" style="width:100%; height:100%;">
+        <img id="pic3" src="${contextPath }/motel/image?fileName=${image.MOTEL_PIC_3}" style="width:100%; height:100%;">
         <div class="carousel-caption back">
 			<button class="fa fa-share-square fa-lg" data-toggle="modal" data-target="#myModal" style="margin: 0, auto;"></button>
 			<c:choose>
@@ -772,7 +783,7 @@ function replyList(){
       </div>
       
       <div class="item" style="width:700px; height:500px;">
-        <img src="${contextPath}/img/house4.jpg" alt="New york" style="width:100%; height:100%;">
+        <img id="pic4" src="${contextPath }/motel/image?fileName=${image.MOTEL_PIC_4}" style="width:100%; height:100%;">
         <div class="carousel-caption back">
 			<button class="fa fa-share-square fa-lg" data-toggle="modal" data-target="#myModal" style="margin: 0, auto;"></button>
 			<c:choose>
@@ -785,7 +796,7 @@ function replyList(){
       
       <div class="item" style="width:700px; height:500px;">
       
-        <img src="${contextPath}/img/house5.jpg" alt="New york" style="width:100%; height:100%;">
+        <img id="pic5" src="${contextPath }/motel/image?fileName=${image.MOTEL_PIC_5}" style="width:100%; height:100%;">
         <div class="carousel-caption back">
 			<button class="fa fa-share-square fa-lg" data-toggle="modal" data-target="#myModal" style="margin: 0, auto;"></button>
 			<c:choose>
@@ -1024,7 +1035,7 @@ function replyList(){
 		          <h4 class="modal-title">예약 하기</h4>
 		        </div>
 		        <div class="modal-body">
-		          	<form id="formReservation" action="${contextPath}/motel/checkout">
+		          	<form id="formReservation" method="post" action="${contextPath}/motel/checkout">
 		          		<!-- <input type="hidden" name="item" value="연필" readonly="readonly"> -->
 		          		<p><b>Price</b></p>
 		          		<p><span id="price"></span>/박</p>
@@ -1035,6 +1046,8 @@ function replyList(){
 		          		<p><b>Total Price</b></p>
 		          		<p><span id="price_1"></span> X ${tripDate}박	<span id="totalPrice"></span></p>
 						<input type="hidden" id="pay_price" name="price" value="totalPrice" readonly="readonly"><br>
+						
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 						<input type="hidden" name="motel_title" value="${MOTEL_TITLE}">
 						<input type="hidden" name="motel_people" value="${people}">
 						<input type="hidden" name="motel_checkin" value="${checkIn}">
