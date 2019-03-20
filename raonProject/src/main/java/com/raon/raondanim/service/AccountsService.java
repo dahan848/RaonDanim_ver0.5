@@ -117,6 +117,7 @@ public class AccountsService {
 	
 	//프로필 화면에 넘길 데이터 (Map) 반환하는 서비스
 	public Map<String, Object> getProfileData(int usernum){
+		System.out.println("프로필 화면 요청 받음 : " + usernum);
 		//반환 할 Map 선언
 		Map<String, Object> result = new HashMap<String, Object>();
 		//인자로 받은 int 타입 usernum String으로 형 변환 
@@ -141,6 +142,15 @@ public class AccountsService {
 		}else {
 			age = 0;
 		}
+		
+		//거주도시 이름 만들기 
+		String userCityCountry = null;
+		if(dao.getUserCityCountry(userNum) != null) {
+			Map<String, Object> CityCountry = dao.getUserCityCountry(userNum);
+			String city = (String) CityCountry.get("CITY");
+			String country = (String) CityCountry.get("COUNTRY");
+			userCityCountry = city + "," + country;
+		}
 		//관심사(좋아 하는 것)
 		List<Map<String, Object>> interest = dao.getUserInterest(userNum);
 		//사용가능 언어 
@@ -148,7 +158,7 @@ public class AccountsService {
 
 		result.put("profile", user.getUser_profile_pic());				//프로필 사진 : 디폴트n
 		result.put("name", user_name); 			 						//이름
-		//작성X															//거주지역 : 패스
+		result.put("city", userCityCountry);							//거주지역
 		result.put("gender", user.getUser_gender()); 					//성별
 		result.put("lastLogin", lastLogin);								//마지막 로그인 시간
 		result.put("with_avg", user.getUser_with_avg());				//후기 평점

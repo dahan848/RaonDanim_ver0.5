@@ -22,10 +22,11 @@
 <script src="${contextPath}/js/jquery.color.js" ></script>
 <script src="${contextPath}/js/jquery.Jcrop.js" ></script>
 <script src="${contextPath}/js/gallery-image.js" ></script>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc"></script>
 
 <script type="text/javascript">
 $(document).ready(function() { 
-	//alert("로딩 완료45"); 
+	alert("로딩 완료46"); 
 	
 	createGallery(); //갤러리 그려주는 ()
 	
@@ -211,6 +212,37 @@ function createGallery() {
 		}
 	});
 };
+
+
+//테스트
+function initialize() {
+	//사용자 거주 도시가 있을 때 화면 
+   var searchMap = new google.maps.Map(document.getElementById('googleMap'), {
+        zoom: 14,
+   });
+	
+   var geocoder = new google.maps.Geocoder();
+   geocodeAddress(geocoder, searchMap);
+   function geocodeAddress(geocoder, resultsMap) {
+        
+        var address = "${user.city}";
+	    geocoder.geocode({'address': address}, function(results, status) {        	
+        
+           
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location
+            });
+          } else {
+            //alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+      }
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+
 </script>
 <style type="text/css">
 .head{
@@ -369,21 +401,12 @@ input[type="file"] {
                 <div class="row">
                     <label class="col-sm-3 control-label text-right">거주 도시</label>
                     <div class="col-sm-9">
-                        <p>프로필 화면 테스트 더미 데이터</p>
+                    <c:if test="${user.city eq null}">
+                  	  	<span class="label label-pink label-lg">미작성</span>
+                    </c:if>
+                        <p>${user.city}</p>
+                        <div id="googleMap" style="width: 700px; height: 500px;"></div>
                     </div>
-                </div>
-                <div class="row">	<!-- 나와의 거리 영역 지도 필요 -->
-                	<label class="col-sm-3 control-label text-right">나와의 거리</label>
-                    	<div class="col-sm-9">
-                        	<p id="map-address-info"
-                            	data-mylat="37.56600"
-                            	data-mylng="126.97840"
-                            	data-friendlat="37.56600"
-                            	data-friendlng="126.97840">
-                             	Seoul, South Korea - Seoul, South Korea
-                             <strong id="distance"></strong>KM</p>
-                         	<div id="map-canvas" style="height: 300px;"></div>
-                     	</div>
                 </div>
                 <div class="row">
                     <label class="col-sm-3 control-label text-right">숙박 제공 가능 여부</label>

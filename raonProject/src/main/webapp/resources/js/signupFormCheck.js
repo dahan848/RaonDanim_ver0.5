@@ -1,7 +1,4 @@
 $(document).ready(function() {
-	
-	alert("77777777777");
-	
 	//이메일 유효성 및 중복여부 체크 
 	$("#id_email").change(function(){
 		emailCheck($('#id_email').val());
@@ -16,6 +13,10 @@ $(document).ready(function() {
 	$("#id_password2").change(function(){
 	    checkPassword2($('#id_password1').val(),$('#id_password2').val());
 	});
+	
+	if($("input:checkbox[id='id_is_agreed_2']").is(":checked") == true){
+		alert("테");
+	}
 });//onLoad END
 
 //이메일 사용가능 여부 체크 

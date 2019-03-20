@@ -83,6 +83,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                            			from user_tb
                           		   where user_num = #{usernum})
 	</select>
+	<select id="getUserCityCountry" parameterType="string" resultType="map">
+		select *
+		  from CITY_COUNTRY_DTB
+		 where CITY_COUNTRY_NUM = (select USER_CITY_COUNTRY
+                           			from user_tb
+                          		   where user_num = #{usernum})
+	</select>
 	<select id="getUserGallery" parameterType="string" resultType="map">
 		SELECT GALLERY_FILE_NUM, GALLERY_FILE_NAME, GALLERY_PIC_REG_DATE 
 		  FROM GALLERY_TB

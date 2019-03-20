@@ -84,5 +84,10 @@
 <!-- 인클루드-푸터 -->
 <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 <!-- 인클루드-푸터 END -->
+<script type="text/javascript">
+	if($("input:checkbox[id='id_is_agreed_2']").is(":checked") == true){
+		alert("테");
+	}
+</script>
 </body>
 </html>
