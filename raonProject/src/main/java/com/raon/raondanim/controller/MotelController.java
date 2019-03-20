@@ -22,6 +22,8 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -109,8 +111,15 @@ public class MotelController {
 	@RequestMapping(value="/replyList",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> replyList(@RequestParam(value="page",defaultValue="1")int page,
-			Model model, int num) {
+			Model model, int num, HttpSession session, HttpServletRequest req) {
 		System.out.println("댓글 요청");
+		CsrfToken _csrf1 = (CsrfToken) req.getAttribute("CsrfToken");
+		CsrfToken _csrf2 = (CsrfToken) req.getAttribute("_csrf");
+		
+		System.out.println("token1 : " + _csrf1);
+		System.out.println("token2 :" + _csrf2);
+		
+		
 		Map<String, Object>params = new HashMap<String, Object>();
 		params.put("page", page);
 		params.put("num", num);
@@ -143,6 +152,10 @@ public class MotelController {
 		System.out.println("startDate : "+startDate);
 		System.out.println("endDate : "+endDate);
 		System.out.println("city : "+city);
+		String tmpStartDate = startDate.substring(2,10);
+		System.out.println("tmpStartDate : "+tmpStartDate);
+		String tmpendDate = endDate.substring(2, 10);
+		System.out.println(tmpendDate);
 		Map<String, Object>params = new HashMap<String, Object>();
 		params.put("page", page);
 		params.put("motel_type", motel_type);
@@ -150,8 +163,8 @@ public class MotelController {
 		params.put("motel_people", motel_people);
 		params.put("motel_price1", motel_price1);
 		params.put("motel_price2", motel_price2);
-		params.put("startDate", startDate);
-		params.put("endDate", endDate);
+		params.put("startDate", tmpStartDate);
+		params.put("endDate", tmpendDate);
 		params.put("city", city);
 		Map<String, Object>result = new HashMap<String, Object>();
 		result.put("board", service.getViewData(params));
@@ -228,7 +241,7 @@ public class MotelController {
 		motel.put("checkOut", checkOut);
 		motel.put("tripDate", tripDate);
 		motel.put("people", people);
-		
+		motel.put("image", service.getImage(num));
 		int motelType=Integer.parseInt(String.valueOf(service.viewSelect(params).get("MOTEL_TYPE")));
 		int motelCategory = Integer.parseInt(String.valueOf(service.viewSelect(params).get("MOTEL_CATEGORY")));
 		if(motelType==1) {
@@ -265,10 +278,7 @@ public class MotelController {
 		
 		Map<String, Object> motel = new HashMap<String, Object>();
 		motel=service.viewSelect(params);
-/*		motel.put("checkIn", checkIn);
-		motel.put("checkOut", checkOut);
-		motel.put("tripDate", tripDate);
-		motel.put("people", people);*/
+		motel.put("image", service.getImage(num));
 		
 		int motelType=Integer.parseInt(String.valueOf(service.viewSelect(params).get("MOTEL_TYPE")));
 		int motelCategory = Integer.parseInt(String.valueOf(service.viewSelect(params).get("MOTEL_CATEGORY")));
@@ -298,9 +308,15 @@ public class MotelController {
 	
 	
 	
-	@RequestMapping("/checkout")
-	public String checkoutPage(@RequestParam Map<String,Object> paramMap, Model model) {
+	@RequestMapping(value="/checkout",method=RequestMethod.POST)
+	public String checkoutPage(@RequestParam Map<String,Object> paramMap, Model model,HttpSession session, HttpServletRequest req) {
 		System.out.println(paramMap);
+		CsrfToken _csrf1 = (CsrfToken) req.getAttribute("CsrfToken");
+		CsrfToken _csrf2 = (CsrfToken) req.getAttribute("_csrf");
+		
+		System.out.println("token1 : " + _csrf1);
+		System.out.println("token2 :" + _csrf2.getParameterName() + " " + _csrf2.getToken());
+		model.addAttribute("_csrf", _csrf2);
 		if(service.checkDate(paramMap)) {
 			model.addAllAttributes(paramMap);
 			System.out.println("체크아웃 파라미터 확인");
@@ -323,6 +339,27 @@ public class MotelController {
 		model.addAllAttributes(paramMap);
 		return "motel/pay_paypal";
 	}
+	@RequestMapping(value="/pay_result",method=RequestMethod.POST)
+	public String pay_result_free(@RequestParam Map<String, Object>params,Model model) {
+		System.out.println("무료 숙소 파라미터");
+		System.out.println(params);
+		int num = Integer.parseInt((String)params.get("motel_num"));
+		int host = Integer.parseInt((String)params.get("host"));
+		String checkIn = params.get("checkIn").toString();
+		String checkOut = params.get("checkOut").toString();
+		int tripDate = Integer.parseInt((String)params.get("tripDate"));
+		int people = Integer.parseInt((String)params.get("people"));
+		params.remove("motel_num");
+		params.put("num", num);
+		if(date_tb_update(params)) {
+			if(service.add_point(params)&&service.pay_history_insert(params)) {
+				model.addAttribute("msg","결제가 완료 되었습니다.");
+				model.addAttribute("result_free","true");
+				model.addAttribute("url","/motel/view?num="+num+"&host="+host+"&checkIn="+checkIn+"&checkOut="+checkOut+"&tripDate="+tripDate+"&people="+people);
+			}
+		}
+		return "motel/pay_result";
+	}
 	
 	@RequestMapping("/pay_result")
 	public String paypal(@RequestParam Map<String, Object> paramMap, Model model) {
@@ -339,10 +376,11 @@ public class MotelController {
 		
 		
 			if(paramMap.get("imp_success").equals("true")&&date_tb_update(paramMap)) {
-				model.addAttribute("msg","결제가 완료 되었습니다.");
-				model.addAttribute("result","true");
-				model.addAttribute("url","/motel/view?num="+num+"&host="+host+"&checkIn="+checkIn+"&checkOut="+checkOut+"&tripDate="+tripDate+"&people="+people);
-				
+				if(service.add_point(paramMap)&&service.pay_history_insert(paramMap)) {
+					model.addAttribute("msg","결제가 완료 되었습니다.");
+					model.addAttribute("result","true");
+					model.addAttribute("url","/motel/view?num="+num+"&host="+host+"&checkIn="+checkIn+"&checkOut="+checkOut+"&tripDate="+tripDate+"&people="+people);
+				}
 			}else {
 				model.addAttribute("msg","잔액이 부족합니다.");
 				model.addAttribute("result","false");

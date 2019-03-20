@@ -54,6 +54,13 @@ public interface MotelTbDAO {
 	public Map<String, Object>insert_motel_Declaration_check(Map<String, Object>params);
 	//숙박글 삭제
 	public int delete_motel(Map<String, Object>params);
+	//이미지 가져오기 테스트
+	public Map<String, Object> getImage(int motel_num);
+	//숙소 결제시 host user 포인트 적립
+	public int add_point(Map<String, Object>params);
+	//숙소 결제시 결제 내역 insert
+	public int pay_history_insert(Map<String, Object>params);
+	
 	
 	//모텔 병합중
 	public List<Map<String, Object>> National_selectAll();

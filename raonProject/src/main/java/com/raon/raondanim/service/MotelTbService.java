@@ -3,9 +3,11 @@ package com.raon.raondanim.service;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -19,7 +21,10 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
 
+import com.raon.raondanim.controller.DownloadView;
 import com.raon.raondanim.dao.MotelTbDAO;
+
+
 
 @Service
 public class MotelTbService {
@@ -275,18 +280,7 @@ public class MotelTbService {
 	
 
 
-	public View getUploadFile(int num) {
-		// TODO Auto-generated method stub
-		// 게시글 번호에 해당하는 File 복사 후
-		// View로 만들어 반환
-		// 파일을 복사해오기 위해 파일의 정확한 이름을 알아야 한다
 
-		String fileName = (String) dao.selectOne(num).get("FILENAME");
-		// DownloadView 객체 만들어 반환
-		File file = new File(UPLOAD_PATH, fileName);
-		View view = new DownloadView(file);
-		return view;
-	}
 
 /*	// 숙박 게시글 상세정보(view화면용)
 	public Map<String, Object> viewSelect(Map<String, Object> params) {
@@ -380,6 +374,66 @@ public class MotelTbService {
 			return false;
 		}
 	}
+	
+	//이미지 가져오기 테스트
+//	public List<View> getUploadFile(int motel_num) {
+//		// TODO Auto-generated method stub
+//		//게시글 번호에 해당하는 File 복사 후
+//		//View로 만들어 반환
+//		//파일을 복사해오기 위해 파일의 정확한 이름을 알아야 한다
+//		String motel_pic_1 = "";
+//		String motel_pic_2 = "";
+//		String motel_pic_3 = "";
+//		String motel_pic_4 = "";
+//		String motel_pic_5 = "";
+//		Map<String, Object> testImage = new HashMap<String, Object>();
+//		
+//		List<View> image = new ArrayList<View>();
+//
+//		testImage = dao.getImage(motel_num);
+//		if(testImage != null) {
+//			for (int i = 1; i<6 ;i++) {
+//				File file = new File(UPLOAD_PATH,(String)testImage.get("MOTEL_PIC_"+i));
+//				View view = new DownloadView(file);
+//				image.add(view);
+//			}
+//		}
+//		return image;
+//	}
+	//이미지 가져오기 테스트2
+	public Map<String, Object> getImage(int motel_num){
+		return dao.getImage(motel_num);
+	}
+	//숙소 결제시 host user 포인트 적립
+	public boolean add_point(Map<String, Object>params) {
+		if(dao.add_point(params)>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	//숙소 결제시 결제 내역 insert
+	public boolean pay_history_insert(Map<String, Object>params) {
+		if(dao.pay_history_insert(params)>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
+//	public View getUploadFile(int num) {
+//	// TODO Auto-generated method stub
+//	// 게시글 번호에 해당하는 File 복사 후
+//	// View로 만들어 반환
+//	// 파일을 복사해오기 위해 파일의 정확한 이름을 알아야 한다
+//
+//	String fileName = (String) dao.selectOne(num).get("FILENAME");
+//	// DownloadView 객체 만들어 반환
+//	File file = new File(UPLOAD_PATH, fileName);
+//	View view = new DownloadView(file);
+//	return view;
+//}
 	
 	
 	//모텔 서비스 병합중

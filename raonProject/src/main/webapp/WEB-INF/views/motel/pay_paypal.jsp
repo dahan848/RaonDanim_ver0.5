@@ -44,7 +44,7 @@
 		    buyer_tel : '',
 		    buyer_addr : '',
 		    buyer_postcode : '',
-		   	m_redirect_url : 'http://localhost:8081/${contextPath}/motel/pay_result?num='+num+'&host='+host+'&checkIn='+checkIn+'&checkOut='+checkOut+'&tripDate='+tripDate+'&people='+people
+		   	m_redirect_url : 'http://localhost:8081/${contextPath}/motel/pay_result?num='+num+'&host='+host+'&checkIn='+checkIn+'&checkOut='+checkOut+'&tripDate='+tripDate+'&people='+people+'&price='+price+'&user_num='+${user_num}
 		} , function(rsp) {
 		    if ( rsp.success ) {
 

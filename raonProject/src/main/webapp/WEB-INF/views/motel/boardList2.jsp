@@ -333,8 +333,6 @@
 						alert("실패");
 					},
 					success : function(data) {
-						
-							
 						for ( var i in data.board.boardList) {
 							
 							$("#con").append('<div class="col-md-4 col-sm-6" id="col'+n+'">');
