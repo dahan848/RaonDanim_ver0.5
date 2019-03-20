@@ -156,6 +156,13 @@ public class AccountsController {
 	}
 	
 	//프로필 수정 화면 3
+	@RequestMapping(value = "/update3Form")
+	public String update3Form() {
+		return "accounts/profile-update3";
+	}
+	
+	
+	//프로필 수정 화면 3
 	@RequestMapping(value = "/gallerySettings")
 	public String gallerySettings(Authentication authentication, Model model) {
 		//현재 로그인 한 유저 (시큐리티 세션 이용)의 유저넘을 가지고 온다.
