@@ -54,7 +54,7 @@
                     	<div class="checkbox">
                     		<label for="id_is_agreed_1">
                     			<input class="" id="id_is_agreed_1" name="is_agreed_1" type="checkbox" required /> 
-                    				회원약관 동의 <a href='/policies/terms/' class='text-potluck' target='_blank'>(보기)</a>
+                    				회원약관 동의 <a href='${contextPath}/policies' class='text-potluck' target='_blank'>(보기)</a>
                				</label>
            				</div>
        				</div>
@@ -62,7 +62,7 @@
                     	<div class="checkbox">
                     		<label for="id_is_agreed_2">
                     			<input class="" id="id_is_agreed_2" name="is_agreed_2" type="checkbox" required /> 개인정보취급방침 동의
-                    				 <a href='/policies/privacy/' class='text-potluck' target='_blank'>(보기)</a>
+                    				 <a href='${contextPath}/privacyPolicy' class='text-potluck' target='_blank'>(보기)</a>
                				 </label>
            				 </div>
        				 </div>

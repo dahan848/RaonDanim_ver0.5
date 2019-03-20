@@ -15,8 +15,8 @@
         <div class="col-sm-3">
             <ul>
                 <li><h5>약관안내</h5></li>
-                <li><a href="#">개인정보처리방침</a></li>
-                <li><a href="#">이용약관</a></li>
+                <li><a href="${contextPath}/privacyPolicy">개인정보처리방침</a></li>
+                <li><a href="${contextPath}/policies">회원약관</a></li>
             </ul>
         </div>
         <div class="col-sm-3">

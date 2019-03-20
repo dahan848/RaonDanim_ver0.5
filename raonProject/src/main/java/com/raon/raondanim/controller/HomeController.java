@@ -47,6 +47,20 @@ public class HomeController {
 		return "home/inquiry";
 	}	
 	
+	//이용약관 페이지 화면 요청 
+	@RequestMapping(value = "/policies", method = RequestMethod.GET)
+	public String 	policies() {
+		logger.info("");
+		return "home/policies";
+	}
+	
+	//개인정보취급방침 화면 요청
+	@RequestMapping(value = "/privacyPolicy", method = RequestMethod.GET)
+	public String 	privacyPolicy() {
+		logger.info("");
+		return "home/privacyPolicy";
+	}
+	
 	@RequestMapping("/test")
 	public String test() {
 		System.out.println("home 테스트 요청 받음 ");
