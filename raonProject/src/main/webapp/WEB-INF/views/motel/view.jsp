@@ -882,7 +882,7 @@ function replyList(){
 				<b style="font-size: 30px;">숙소</b>
 			</div>
 		  	<div>
-		  		<p>${MOTEL_INTRODUCE }</p>
+		  		<p>${MOTEL_INTRO}</p>
 		  	</div>
 		  </div>
 		  

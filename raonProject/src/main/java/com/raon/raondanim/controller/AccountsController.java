@@ -131,12 +131,17 @@ public class AccountsController {
 	
 	//프로필 수정 화면 1
 	@RequestMapping(value = "/update1Form")
-	public String update1Form() {
+	public String update1Form(Authentication authentication) {
 		//나의 정보를 클릭하면, 추가 프로필 등록 1단계 화면이 나옴.
 		//사용자의 정보를 추가 프로필 1단계 화면으로 넘겨주어야 한다.
 		//1. 수정(입력)된 정보 발생
 		//'다음'버튼 클릭 시 별도의 알림 창 없이 [저장]
 		//'다른 탭'을 클릭 하려고 하면 수정된 정보가 있는데 저장 할 것인가를 물음.
+		
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		String usernum = Integer.toString(user.getUser_num());
+		System.out.println("update1Form : " + user);
+		
 		return "accounts/profile-update1";
 	}
 	
