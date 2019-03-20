@@ -273,6 +273,9 @@ public class AccountsService {
 	}
 	
 	public boolean join(Map<String, Object> param) { //회원가입 
+		//반환 할 boolean 변수 선언
+		boolean result = false;
+		
 		//유저 객체 초기화
 		user = new User();   
 		//USER 객체에 파라미터로 받은 데이터 set
@@ -284,13 +287,18 @@ public class AccountsService {
 		//이메일 인증에 사용 될 key 넣기 
 		user.setUser_verify_code(create_key());
 		
-		//조건문을 통해서 boolean 값 반환  
-		if(dao.joinUser(user) > 0) {
-			send_mail(user); //이메일 인증 메일 전송 하기 
-			return true;
-		}else{
-			return false;
+		//사용자가 입력 한 아이디가 중복되지 않을 때에만 회원가입 로직 실행
+		if(dao.selectByUserId((String)param.get("user_id")) == null) {
+			result = false;
+			//조건문을 통해서 boolean 변수의 참조 값 변경 
+			if(dao.joinUser(user) > 0) { //가입 성공 시
+				send_mail(user); //이메일 인증 메일 전송 하기 
+				result = true;
+			}else{ // 가입 실패시
+				result = false;
+			}			
 		}
+		return result;
 	}
 	
 	//////////////////////////////////기타 메서드 
@@ -426,6 +434,15 @@ public class AccountsService {
 			System.out.println("회원 인증 실패 : " + e);
 		}
 	
+	}
+	
+	//이메일 중복여부 
+	public boolean emailCheck(String email) {
+		if(dao.selectByUserId(email) != null) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 	
 	

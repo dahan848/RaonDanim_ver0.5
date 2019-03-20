@@ -240,4 +240,11 @@ public class AccountsController {
 		System.out.println("=============더미데이터 생성완료============");
 		return "";
 	}
+	
+	//회원가입 이메일 중복 검사 
+	@ResponseBody
+	@RequestMapping(value = "/emailCheck")
+	public boolean passwordChange(@RequestParam String check) {
+		return service.emailCheck(check);
+	}
 }

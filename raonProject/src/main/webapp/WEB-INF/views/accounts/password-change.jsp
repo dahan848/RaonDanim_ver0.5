@@ -18,25 +18,44 @@
 	<script type="text/javascript">
 	
 	 $(document).ready(function(){
-		 //alert("짠88888888");
-		 //기존 비밀번호, 새로운 비밀번호 유효성 검사 : 동일한 값인지
-		 $("#id_password1").on("blur", function() {
-			//비교 할 비밀번호 값 변수에 참조 
-			var oldPw = $("#id_oldpassword").val();
-			var newPw = $(this).val();
-			//조건문 검사. 기존 비밀번호 칸에 값이 입력 된 상태이고, 기존 비밀번호와 동일하다면..
-				//2. 기존 비밀번호와 동일한 비밀번호 인지 검사 
-				if(oldPw.length != 0 && oldPw == newPw){
-					//경고창 문구 출력 
-					$("#alarm").text("기존 비밀번호와 같은 비밀번호는 사용할 수 없습니다.");
-					$("#alarm").css("color","red");
-					//값 비우기 
-					$(this).val('');
-				}else{
-					$("#alarm").text('');
-				}//비교 if END
+		//비교 할 비밀번호 값 변수에 참조 
+		var oldPw = $("#oldpassword").val(); //DB에 저장 된 비밀번호  
+		 
+		//현재 비밀번호의 입력 유효성 검사 
+		$("#id_oldpassword").change(function(){
+			var inPutOldPw = $("#id_oldpassword").val(); //사용자가 입력 한 현재 비밀번호			 
+			 //입력 한 현재비밀번호가 틀렸을 경우 
+			 if(inPutOldPw.length != 0 && oldPw != inPutOldPw){
+				 $("#alarm").text("기존 비밀번호와 다른 비밀번호가 입력되었습니다.");
+				 $("#alarm").css("color","red");
+				 $(this).val('').focus();
+		 	}else{
+		 		$("#alarm").text('');
+		 	}
 		});
-
+		
+		//새 비밀번호 입력 창 1 유효성 검사 
+		$("#id_password1").change(function(){
+			var inPutOldPw = $("#id_oldpassword").val(); //사용자가 입력 한 현재 비밀번호
+			var newPw = $("#id_password1").val();
+			if(inPutOldPw.length != 0 && inPutOldPw == newPw){
+				$("#alarm").text("기존 비밀번호와 같은 비밀번호는 사용할 수 없습니다.");
+				$("#alarm").css("color","red");
+				$(this).val('').focus();
+			}
+		});
+		
+		//새 비밀번호 입력 창 2 유효성 검사 
+		$("#id_password2").change(function(){
+			var newPw1 = $("#id_password1").val(); 
+			var newPw2 = $("#id_password2").val();
+			if(newPw1.length != 0 && newPw1 != newPw2){
+				$("#alarm").text("새로운 비밀번호가 동일하지 않습니다.");
+				$("#alarm").css("color","red");
+				$(this).val('').focus();
+			}
+		});
+				
 		 $("#password-change-form").on("submit", function() {
 	    		//fomr 요소에 있는 데이터 직렬화 
 	    		var pwdata = $(this).serialize();
@@ -83,7 +102,7 @@
 			<div class="form-block">
 				<img src="${contextPath}/img/home_logo-raon.png" alt="">
 				<form name="pwChange" id="password-change-form" method="post">
-					<input type="hidden" name="user_pw" value="${pass}">
+					<input type="hidden" id = "oldpassword" name="user_pw" value="${pass}">
 					<div class="form-group">
 						<label class="sr-only control-label" for="id_oldpassword">현재
 							비밀번호</label> <input class="form-control" id="id_oldpassword"

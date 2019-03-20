@@ -13,24 +13,28 @@
 <!-- 인클루드 심플 헤더 -->
 <jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 <!-- 인클루드 심플 헤더 END -->
+<script src="${contextPath}/js/signupFormCheck.js" ></script> <!-- 웹 소켓 통신 -->
  <section id="section-authentication">
         <div class="container">
             <div class="form-block">
-                <img src="../img/logo-raon.png" alt="">
+                <img src="${contextPath}/img/home_logo-raon.png" alt="">
                 <!-- 가입자 폼 -->
                 <form action="signup" method="post">
                  	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                     <div class="form-group">
                     	<label class="sr-only control-label" for="id_email">이메일</label>
                     		<input class="form-control" id="id_email" name="user_id" placeholder="이메일 주소" title="" type="email" required />
+                    		<div id="idCheck" class="help-block" style="display: none; color: #a94442;"></div>
                		</div>
                     <div class="form-group">
                     	<label class="sr-only control-label" for="id_password1">비밀번호</label>
                     		<input class="form-control" id="id_password1" name="user_pw" placeholder="비밀번호" title="" type="password" required />
+                    		<div id="pwCheck" class="help-block" style="display: none; color: #a94442;"></div>
                		</div>
                     <div class="form-group">
                     	<label class="sr-only control-label" for="id_password2">비밀번호 (확인)</label>
                     		<input class="form-control" id="id_password2" name="user_pw2" placeholder="비밀번호 (확인)" title="" type="password" required />
+                    		<div id="pwCheck2" class="help-block" style="display: none; color: #a94442;"></div>
                		</div>
                     <div class="row row-p5">
                         <div class="col-xs-4">
