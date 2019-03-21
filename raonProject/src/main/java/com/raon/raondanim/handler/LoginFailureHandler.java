@@ -68,8 +68,8 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     	}
 		//에러 메시지 담기
 		request.setAttribute("errormsgname", errormsg);
-		System.out.println(errormsg);
-		System.out.println(defaultFailureUrl);
+		System.out.println("로그인 실패 핸들러 : "+errormsg);
+		//System.out.println(defaultFailureUrl);
 		//보내기
 		request.getRequestDispatcher(defaultFailureUrl).forward(request, response);
 	}

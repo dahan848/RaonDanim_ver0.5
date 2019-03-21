@@ -20,6 +20,8 @@ import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
@@ -60,10 +62,12 @@ public class AccountsService {
 	
 	//더미 사용자 데이터 생성 서비스
 	public void setDnmmyData() {
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
 		for(int i = 0 ; i<50 ; i++) {
 			user = new User();
 			user.setUser_id("test@" + i);
-			user.setUser_pw("1");
+			user.setUser_pw(encoder.encode("1")); //비밀번호 암호화 하여 저장 
 			user.setUser_fnm("저" + i);
 			user.setUser_lnm("유");
 			dao.setDnmmyData(user);
@@ -138,7 +142,7 @@ public class AccountsService {
 		//나이 구하기 (if문으로 간단 예외처리)
 		String age;
 		if(user.getUser_birth_date() != null) {
-			System.out.println("나이 들어있음");
+			//System.out.println("나이 들어있음");
 			age = Integer.toString(getAgeFromBirthday(user.getUser_birth_date())); 
 		}else {
 			age = null;
@@ -293,12 +297,14 @@ public class AccountsService {
 	public boolean join(Map<String, Object> param) { //회원가입 
 		//반환 할 boolean 변수 선언
 		boolean result = false;
+		//비밀번호 암호화를 위한 BCryptPasswordEncoder 선언 및 초기화 
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		
 		//유저 객체 초기화
 		user = new User();   
 		//USER 객체에 파라미터로 받은 데이터 set
 		user.setUser_id((String)param.get("user_id")); //아이디 : 이메일
-		user.setUser_pw((String)param.get("user_pw")); //비밀번호
+		user.setUser_pw(encoder.encode((String)param.get("user_pw"))); //비밀번호를 암호화 하여 저장
 		user.setUser_lnm((String)param.get("user_lnm")); //성
 		user.setUser_fnm((String)param.get("user_fnm")); //이름
 		

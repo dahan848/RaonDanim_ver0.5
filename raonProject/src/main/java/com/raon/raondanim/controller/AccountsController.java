@@ -44,7 +44,7 @@ public class AccountsController {
 		if(!error.equals("defalutValue")) {
 			model.addAttribute("msg", error);			
 		}
-		System.out.println("받은거 : " + error);
+		//System.out.println("받은거 : " + error);
 		logger.info("");
 		return"accounts/loginForm";
 	}
@@ -55,7 +55,7 @@ public class AccountsController {
 		String msg = (String) request.getAttribute("errormsgname");
 		redirectAttributes.addAttribute("error", msg);
 		//redirectAttributes.addFlashAttribute("error", msg);
-		System.out.println("실패 핸들러가 보낸 놈 : " + msg);
+		//System.out.println("실패 핸들러가 보낸 놈 : " + msg);
 		return "redirect:/accounts/loginForm";
 		//return "accounts/loginError";
 	}
@@ -245,7 +245,7 @@ public class AccountsController {
 	public String dnmmyData() {
 		service.setDnmmyData();
 		System.out.println("=============더미데이터 생성완료============");
-		return "";
+		return "accounts/setDnmmy";
 	}
 	
 	//회원가입 이메일 중복 검사 

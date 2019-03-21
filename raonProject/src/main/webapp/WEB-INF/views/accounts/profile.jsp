@@ -26,7 +26,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() { 
-	alert("로딩 완료46"); 
+	//alert("로딩 완료46"); 
 	
 	createGallery(); //갤러리 그려주는 ()
 	
