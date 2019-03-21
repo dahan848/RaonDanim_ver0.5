@@ -251,7 +251,18 @@ public class AccountsController {
 	//회원가입 이메일 중복 검사 
 	@ResponseBody
 	@RequestMapping(value = "/emailCheck")
-	public boolean passwordChange(@RequestParam String check) {
+	public boolean emailChange(@RequestParam String check) {
 		return service.emailCheck(check);
+	}
+	
+	//비밀번호 변경 요청 시 
+	@ResponseBody
+	@RequestMapping(value = "/passwordCheck")
+	public boolean passwordCheck(@RequestParam String check, Authentication authentication) {
+		//현재 로그인 한 사용자의 usernum을 변수에 참조하기 위해 Authentication 객체를 사용 필요한 데이터를 가져온다.
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		String usernum = Integer.toString(user.getUser_num());
+		//System.out.println(check);
+		return service.passwordCheck(check, usernum);
 	}
 }

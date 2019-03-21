@@ -57,9 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	<update id="passwordChange" parameterType="map">
 		UPDATE user_tb
-		
-		   SET user_pw 		= #{new_user_pw1}
-		   	   
+		   SET user_pw 		= #{new_user_pw}
 		 WHERE user_num 	= #{user_num}
 	</update>
 	<select id="getUserInterest" parameterType="string" resultType="map">

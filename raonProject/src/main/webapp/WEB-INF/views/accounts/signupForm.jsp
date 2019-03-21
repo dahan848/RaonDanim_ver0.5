@@ -13,7 +13,7 @@
 <!-- 인클루드 심플 헤더 -->
 <jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 <!-- 인클루드 심플 헤더 END -->
-<script src="${contextPath}/js/signupFormCheck.js" ></script> <!-- 웹 소켓 통신 -->
+<script src="${contextPath}/js/signupFormCheck.js" ></script> <!-- Ajax -->
  <section id="section-authentication">
         <div class="container">
             <div class="form-block">

@@ -251,29 +251,37 @@ public class AccountsService {
 	
 	//비밀번호 변경 ()
 	public int passwordChange(Map<String, Object> param) {
-		System.out.println("서비스 전달 받은 MAP : " + param);
+		//비밀번호 암호화에 사용 될 객체 선언 및 초기화
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		//DAO에 넘겨줄 때 사용 할 Map 선언
+		Map<String, Object> user = new HashMap<String, Object>();
+		
+		//System.out.println("서비스 전달 받은 MAP : " + param);
+		
 		//반환 할 int 형 변수 선언 
 		int result;
 		
-		//전달 받은 Map 에서 필요한 데이터 변수에 참조
+		//전달 받은 Map 에서 필요한 데이터 변수에 참조 : 생략가능
 		String user_pw = (String)param.get("user_pw"); //DB상 비밀번호 
 		String old_pw = (String)param.get("old_user_pw"); //화면에 입력한 기존 비밀번호 
 		String pw1 = (String)param.get("new_user_pw1"); //변경 비밀번호
 		String pw2 = (String)param.get("new_user_pw2"); //변경 비밀번호 확인
 		
+		//전달 받은 Map에서 DAO로 넘길 떄 사용 될 USERNUM put
+		user.put("user_num", param.get("user_num"));
+		
 		if(pw1.equals(pw2)) {
-			System.out.println("새 비밀번호 동일");
-			if(user_pw.equals(old_pw)) {
-				//비밀번호 변경 성공
-				result = 1;
-				dao.passwordChange(param);
+			if(encoder.matches(old_pw,user_pw)) {
+				result = 1; //비밀번호 변경 성공
+				//DB에 저장 될 암호를 암호화 하여 Map에 Put 
+				user.put("new_user_pw", encoder.encode(pw1));
+				//DB에 새로운 비밀번호를 저장
+				dao.passwordChange(user);
 			}else {
-				//입력한 현재 비밀번호가 틀렸을 때
-				result = 2;
+				result = 2; //입력한 현재 비밀번호가 틀렸을 때
 			}
 		}else {
-			//확인 비밀번호 틀림
-			result = 0;
+			result = 0; //확인 비밀번호 틀림
 		}
 		return result;
 	}
@@ -467,6 +475,21 @@ public class AccountsService {
 		}else {
 			return true;
 		}
+	}
+	
+	//비밀번호 체크 
+	public boolean passwordCheck(String check, String usernum) {
+		//반환 할 boolean 변수 선언 
+		boolean result;
+		//DB에 저장되어 있는 사용자의 비밀번호를 변수에 참조한다.
+		String oldPw = dao.selectByUserNum(usernum).getUser_pw();
+		//System.out.println(oldPw);
+		//System.out.println(check);
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		//PasswordEncoder의 matches()를 이용해서 암호를 비교 
+		result = encoder.matches(check, oldPw);
+		//결과 반환 
+		return result;
 	}
 	
 	
