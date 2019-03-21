@@ -31,8 +31,9 @@
 			name="driverClassName" />
 		<property
 			value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
-		<property value="hyeonGom" name="username" />
-		<property value="891024" name="password" />
+		<property value="pr" name="username" />
+		<property value="123" name="password" />
+
 	</bean>
 
 	<!-- 마이바티스 연동 -->

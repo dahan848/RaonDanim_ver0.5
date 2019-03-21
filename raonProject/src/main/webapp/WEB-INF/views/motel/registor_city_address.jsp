@@ -106,7 +106,7 @@
 					}		
 				}
 			});
- 			debugger;
+ 			//debugger;
 			if(checkNum == 2){
 				//console.log("같다!!!");
 				
@@ -157,7 +157,7 @@
               map: resultsMap,
               position: results[0].geometry.location
             });
-            debugger;
+            //debugger;
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }

@@ -67,7 +67,7 @@ public class FileUploadController {
         String root = multi.getSession().getServletContext().getRealPath("/");
         String path = root+"resources/upload/";
         System.out.println(path);
-        //System.out.println("경로  ? : " + path);
+        System.out.println("경로  ? : " + path);
          
         String newFileName = ""; // 업로드 되는 파일명
         String usernum = (String) getParam().get("user_num") + "_profile_"; //파일명 앞에 작성 할 usernum
@@ -133,6 +133,8 @@ public class FileUploadController {
         // 저장 경로 설정
         String root = multi.getSession().getServletContext().getRealPath("/");
         String path = root+"resources/upload/";
+        
+        System.out.println(path);
          
         String newFileName = ""; // 업로드 되는 파일명
         String delimiter = "_gallery_"; //구분자

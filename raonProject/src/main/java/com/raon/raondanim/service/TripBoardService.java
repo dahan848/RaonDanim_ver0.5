@@ -49,6 +49,40 @@ public interface TripBoardService {
 	
 	//게시판 테이블 update rel city 상태값 0으로 바꾼후 인설트
 	public boolean totalUpdate(TripBoard tripBoard, String tripCity);
+	//게시판 조회수 증가
+	public boolean incrementViews(int boardKey);
+	
+	
+	
+	//유저 관심사 여행스타일 여행희망 국가 뽑기
+	public List<Map<String, Object>> getUserInterest(String usernum); //번호로 유저 관심사 선택
+	public List<Map<String, Object>> getTrStyle(String usernum); //번호로 유저 여행스타일 선택
+	public List<Map<String, Object>> getTravleHope(String usernum); //번호로 유저 희망국가 도시 선택
+	
+	
+	//신고 목록 데이터 불러오기 -그닥 쓸일 없을듯
+	public List<Map<String, Object>> getDeclaration();
+	
+	//신고 입력하기
+	public boolean insertDeclaration(Map<String, Object> params);
+	
+	//로그인한 유저가 동행신청 남긴 게시글 중복제외하고 삭제된게시글 제외하고 가져오기
+	public List<Map<String, Object>> getMyDongHangList(String userNum);
+	
+	//더미 데이터 생성
+	public boolean insertDummyData(String writeDate);
+	
+	//월별 게시글 작성 데이터 뽑기
+	public List<Integer> getMonthWriteData();
+	
+	//여행 게시판 게시글 총게시글수와 신고수 선택
+	public Map<String, Integer> getBoardAndDeclatation();
+	
+	// 관리자용 신고당한 게시글 리스트 출력(출력 3번 누적이아닌 신고 1번이라도 있으면 출력)
+	public List<Map<String, Object>> getDeclarationBoard();
+
+	//관리자용 모텔 게시글 그래프 용 월별 총 리스트 출력 
+	public List<Integer> getMotelMonthWriteData();
 	
 	
 }

@@ -8,7 +8,7 @@ public class TripReply {
 	int trip_Reply_Gid;
 	int trip_Reply_Depth;
 	int trip_Reply_Sorts;
-	String trip_reply_Content;
+	String trip_Reply_Content;
 	String trip_trply_WriteDate;
 	int trip_Reply_St;
 	
@@ -48,11 +48,11 @@ public class TripReply {
 	public void setTrip_Reply_Sorts(int trip_Reply_Sorts) {
 		this.trip_Reply_Sorts = trip_Reply_Sorts;
 	}
-	public String getTrip_reply_Content() {
-		return trip_reply_Content;
+	public String gettrip_Reply_Content() {
+		return trip_Reply_Content;
 	}
-	public void setTrip_reply_Content(String trip_reply_Content) {
-		this.trip_reply_Content = trip_reply_Content;
+	public void settrip_Reply_Content(String trip_Reply_Content) {
+		this.trip_Reply_Content = trip_Reply_Content;
 	}
 	public String getTrip_trply_WriteDate() {
 		return trip_trply_WriteDate;
@@ -71,7 +71,7 @@ public class TripReply {
 	public String toString() {
 		return "TripReply [trip_Reply_Key=" + trip_Reply_Key + ", trip_Board_Key=" + trip_Board_Key + ", user_Num="
 				+ user_Num + ", trip_Reply_Gid=" + trip_Reply_Gid + ", trip_Reply_Depth=" + trip_Reply_Depth
-				+ ", trip_Reply_Sorts=" + trip_Reply_Sorts + ", trip_reply_Content=" + trip_reply_Content
+				+ ", trip_Reply_Sorts=" + trip_Reply_Sorts + ", trip_Reply_Content=" + trip_Reply_Content
 				+ ", trip_trply_WriteDate=" + trip_trply_WriteDate + ", trip_Reply_St=" + trip_Reply_St + "]";
 	}
 	

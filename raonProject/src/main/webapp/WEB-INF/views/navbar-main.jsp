@@ -37,7 +37,8 @@
 <!-- 스윗 얼럿 -->
 <script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-
+<!-- 03-13 여행 구글폰트 추가 -->
+<link href="https://fonts.googleapis.com/css?family=Nanum+Pen+Script|Open+Sans" rel="stylesheet">
 
 
 <sec:authorize access="isAuthenticated()">
@@ -70,6 +71,7 @@
 	<nav class="navbar navbar-default">
     	<div class="container">
         	<div class="navbar-header" style="width: 875px;">
+        		<a href="${contextPath}/admin/main">관리자</a>
        			<a class="navbar-brand hidden-xs" href="${contextPath}/">
             		<img src="${contextPath}/img/home_logo-raon.png">
         		</a>
