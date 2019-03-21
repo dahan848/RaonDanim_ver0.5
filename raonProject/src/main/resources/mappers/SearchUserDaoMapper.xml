@@ -15,8 +15,8 @@
 	
 	<select id="userList" parameterType="map" resultType="map">
 		SELECT *
-			FROM (SELECT ROWNUM as RNUM, user_num, user_fnm, user_lnm, user_city, interest, hopecity
-			FROM (SELECT u.user_num, u.user_fnm, u.user_lnm, u.user_city, i.interest_num as interest, h.hope_city as hopecity
+			FROM (SELECT ROWNUM as RNUM, user_num, user_fnm, user_lnm, user_city_country, interest, hopecity
+			FROM (SELECT u.user_num, u.user_fnm, u.user_lnm, u.user_city_country, i.interest_num as interest, h.hope_city as hopecity
 			FROM user_tb u
 			     left outer join interest_tb i ON u.user_num = i.user_num
 			     left outer join travle_hope h ON u.user_num = h.user_num

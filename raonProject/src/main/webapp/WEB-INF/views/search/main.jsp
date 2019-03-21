@@ -107,12 +107,32 @@
 													</select>
 													<script>
 													$(document).ready(function(){
-														var data = ${nationality};
-														console.log(data);
 														$(".select-city").select2({
 															placeholder: "선택",
 															allowClear: true,
-															data: data,
+															ajax: {
+																url: function(params){
+																	console.log(params);
+																	var url = "http://localhost:8000/api/cities";
+																	if(params.page > 1){
+																		url = "http://localhost:8000/api/cities/?page=" + params.page;
+																	}
+																	return url
+																},
+																dataType: 'json',
+																data: function(params){
+																	search: params.term
+																},
+																processResults: function(data,params){
+																	console.log(data);
+																	params.page = params.page || 1;
+																	return{
+																		results: data.results,
+																		pagination: {
+																			more: (params.page * 30) < data.count
+																		}
+																	};
+																}
 															}
 														});
 													});
