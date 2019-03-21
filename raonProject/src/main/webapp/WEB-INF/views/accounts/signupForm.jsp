@@ -19,7 +19,7 @@
             <div class="form-block">
                 <img src="${contextPath}/img/home_logo-raon.png" alt="">
                 <!-- 가입자 폼 -->
-                <form action="signup" method="post">
+                <form action="signup" method="post" id="signupform">
                  	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                     <div class="form-group">
                     	<label class="sr-only control-label" for="id_email">이메일</label>
@@ -66,7 +66,7 @@
                				 </label>
            				 </div>
        				 </div>
-                    <button class="btn btn-potluck btn-block" type="submit">회원가입</button>
+                    <button class="btn btn-potluck btn-block" type="submit" id="btn_submit">회원가입</button>
 					<a href="#" class="btn btn-block btn-social btn-kakao">
 					  <span class="fa fa-kakao" style="width: 32px;"></span>
 					 		 <span style="display: inline-block; text-align: center; width: 250px;">카카오톡 로그인</span>
@@ -85,6 +85,7 @@
 <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 <!-- 인클루드-푸터 END -->
 <script type="text/javascript">
+
 	if($("input:checkbox[id='id_is_agreed_2']").is(":checked") == true){
 		alert("테");
 	}

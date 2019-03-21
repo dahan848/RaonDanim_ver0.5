@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	alert("테스트4");
 	//이메일 유효성 및 중복여부 체크 
 	$("#id_email").change(function(){
 		emailCheck($('#id_email').val());
@@ -14,6 +15,31 @@ $(document).ready(function() {
 	    checkPassword2($('#id_password1').val(),$('#id_password2').val());
 	});
 	
+	//서밋 이벤트가 발생하면 알람창 출력 
+	/*
+	 	sweetalert은 일반 alert와 달리 창이 떠 있는 동안 발생 한 이벤트가 멈추지 않는다.
+	 	preventDefault();와 setTimeout 그리고 sweetalert에 .then()을 추가하여 해당 문제를 해결 
+	 */
+	$("#signupform").submit(function(event){
+		var form = this;
+		swal({
+			  title: "환영합니다!",
+			  text: "사이트 이용은 이메일 인증 이후 가능합니다.",
+			  icon: "success",
+			  button: "확인",
+			}).then(function() {
+				//확인 버튼을 누르면 바로 submit 이벤트를 발생
+				form.submit();
+			});		
+		//submit 이벤트를 멈춘다.
+		event.preventDefault();
+		//5초 후에 다시 해당 폼의 submit 이벤트를 발생시킨다.
+	    setTimeout( function () { 
+	        form.submit();
+	    }, 5000);
+	});
+
+	
 	if($("input:checkbox[id='id_is_agreed_2']").is(":checked") == true){
 		alert("테");
 	}
@@ -21,7 +47,7 @@ $(document).ready(function() {
 
 //이메일 사용가능 여부 체크 
 function emailCheck(email) {
-	
+	var path = "http://localhost:8081";
 	/*
 	 1.유효성 검사를 통해 이메일 주소 인지 판단
 	 2.사용자가 입력 한 이메일 주소가 이미 가입되어 있는 이메일 주소인지 Ajax로 비동기적 체크 
@@ -35,35 +61,28 @@ function emailCheck(email) {
 		idForm.show(); 
 		$('#id_email').val('').focus();
 	}else{
-		idForm.hide(); 
+		idForm.hide();
+		//2.Ajax 활용 중복여부 체크 
+		$.ajax({
+	        type : 'get',
+	        url : path + '/accounts/emailCheck',
+	        data : {"check":email},
+	        datType:"json",
+	        success : function(result) {
+	        	if(result){
+	        		idForm.hide();
+	        	}else{
+	        		idForm.text("해당 이메일은 이미 사용되고 있습니다."); 
+	        		idForm.show(); 
+	        		$('#id_email').focus();
+	        	}
+	        },
+	        error : function(error) {
+	            console.log(error);
+	            console.log(error.status);
+	        }
+	    });
 	}
-	
-	//2.Ajax 활용 중복여부 체크 
-	
-	var path = "http://localhost:8081";
-	
-	
-	$.ajax({
-        type : 'get',
-        url : path + '/accounts/emailCheck',
-        data : {"check":email},
-        datType:"json",
-        success : function(result) {
-        	if(result){
-        		idForm.hide();
-        	}else{
-        		idForm.text("해당 이메일은 이미 사용되고 있습니다."); 
-        		idForm.show(); 
-        		$('#id_email').focus();
-        	}
-        },
-        error : function(error) {
-            console.log(error);
-            console.log(error.status);
-        }
-    });
-	
-	
 }
 
 //비밀번호 1,2가 같은지 체크하는 함수 
