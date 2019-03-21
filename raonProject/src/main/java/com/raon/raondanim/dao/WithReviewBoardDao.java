@@ -10,9 +10,9 @@ public interface WithReviewBoardDao {
 	public int updateWith(Map<String, Object> param);
 	public int deleteWith(int num);
 	
-	//USER_NUM 으로 select
+	//타임라인 주인 TL_USER_NUM 으로 select
 	public Map<String, Object> selectOne(int num);
-	//WITH_NUM 으로  select
+	//타임라인에 글쓴 사람 WR_USER_NUM 으로 select
 	public Map<String, Object> selectWithOne(int num);
 	
 	public List<Map<String, Object>> selectByUserNum(int USER_NUM);

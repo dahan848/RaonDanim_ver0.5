@@ -50,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	<!-- 타임라인 주인 TL_USER_NUM 으로 select -->
-	<select id="selectOne" parameterType="int" resultMap="reviewMap">
+	<select id="selectOne" parameterType="int" resultMap="reviewMap" resultType="map">
 		SELECT 	r.WITH_NUM,
 				r.TL_USER_NUM,
 				r.WR_USER_NUM,
@@ -73,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_MOTEL_AVG,
 				u.USER_ID,
 				u.USER_PW
-		  FROM 	WITH_BOARD_TB r left outer join USER_TB u
+		  FROM 	USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r  
 		    ON  r.TL_USER_NUM = u.USER_NUM
 		 WHERE  r.TL_USER_NUM = #{TL_USER_NUM}
 	</select>
@@ -107,7 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_PW
 		  FROM 	USER_TB u left outer join WITH_BOARD_TB r
 		    ON  r.WR_USER_NUM = u.USER_NUM
-		 WHERE  r.WR_USER_NUM = #{WR_USER_NUM}
+		 WHERE  r.WITH_NUM = #{WITH_NUM}
 	</select>
 	<resultMap type="HashMap" id="reviewViewMap">
 		<result property="WITH_CONTENT" column="WITH_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
@@ -120,11 +120,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	
-	
+<!-- 	리스트 그리는 부분 -->
 	<select id="selectByUserNum" parameterType="int" resultType="map">
-		SELECT *
-		  FROM WITH_BOARD_TB
-		 WHERE USER_NUM = #{USER_NUM}
+		SELECT 	r.WITH_NUM,
+				r.TL_USER_NUM,
+				r.WR_USER_NUM,
+				r.WITH_CONTENT,
+				r.WITH_GPA,
+				r.WITH_COUNT,
+				r.WITH_REG_DATE,
+				r.WITH_ST,
+				r.WITH_AVG,
+				u.USER_NUM,
+				u.USER_ID,
+				u.USER_FNM,
+				u.USER_LNM,
+				u.USER_NATIONALITY,
+				u.USER_NATION,
+				u.USER_CITY,
+				u.USER_GENDER,
+				u.USER_PROFILE_PIC,
+				u.USER_WITH_AVG,
+				u.USER_MOTEL_AVG,
+				u.USER_ID,
+				u.USER_PW
+		  FROM 	WITH_BOARD_TB r LEFT OUTER JOIN USER_TB u   
+		    ON  r.WR_USER_NUM = u.USER_NUM
+		 WHERE r.TL_USER_NUM = #{USER_NUM}
+		 ORDER BY r.WITH_NUM DESC
 	</select>
 	
 </mapper>

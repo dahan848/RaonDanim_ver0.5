@@ -49,9 +49,6 @@
 
 </head>
 <body>
-
-with : ${with}					<br>
-withBoard : ${withBoard }
 	<!-- 인클루드 심플 헤더 -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
@@ -60,7 +57,8 @@ withBoard : ${withBoard }
 
 <form action="withWriteForm" method="get">
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-<input type="hidden" name="USER_NUM" value="${userNum}">
+<%-- <input type="hidden" name="userName" value="${withBoard.USER_LNM}${withBoard.USER_FNM}"> --%>
+<%-- <input type="hidden" name="user_num" value="${withBoard.USER_NUM}"> --%>
        <div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
@@ -68,14 +66,14 @@ withBoard : ${withBoard }
  
                 <h3>
                     <i class="fas fa-cloud" style="font-size: 38px; color: aqua;"></i>
-                    ${with.USER_LNM}${with.USER_FNM}님의 후기 게시판
+                    ${withBoard.user_lnm}${withBoard.user_fnm}님의 후기 게시판
                 </h3>
  
                 <!----------------------------------------- 프로필 시작 -------------------------------------->
                 <div class="box" id="box">
                     <div id="userimg"></div>
-                    <br> <a>${with.USER_LNM}${with.USER_FNM}</a> <br>
-                    <br> <a>여행지 : <b>${with.USER_GENDER}</b></a> <br>
+                    <br> <a>${withBoard.user_lnm}${withBoard.user_fnm}</a> <br>
+                    <br> <a>여행지 : <b>${withBoard.user_gender}</b></a> <br>
                     <br> <i class="fas fa-home"> <br> <a>숙소 평점</a> <br>
                         <a><i style="color: blue;">4.2</i> / 5</a>
                     </i> <i class="fas fa-camera" style="margin-left: 20px;"> <br>
@@ -83,9 +81,9 @@ withBoard : ${withBoard }
                     </i>
                 </div>
                 <!----------------------------------------- 프로필 끝 -------------------------------------->
- 
-                <button type="button" class="btn btn-primary" id="btnSave"
-                    style="float: right;" onclick="location.href='withWriteForm'">후기올리기</button>
+ 				<input type="hidden" name="num" value="${param.num}">
+                <input type="button" class="btn btn-primary" id="upload"
+                    style="float: right;" onclick="location.href='withWriteForm?num=${param.num}'" value="후기올리기">
                     
                 <button type="button" class="btn btn-primary" id="btnMain"
                     style="float: right; margin-right: 20px;" onclick="location.href='withMain'">메인화면</button>
@@ -102,37 +100,28 @@ withBoard : ${withBoard }
                     <th style="border: 1px solid #cccccc; text-align: center;">닉네임</th>
                     <th style="border: 1px solid #cccccc; text-align: center;">평점</th>
                     <th style="border: 1px solid #cccccc; text-align: center;">상세보기</th>
-                    <th style="border: 1px solid #cccccc; text-align: center;">수정</th>
-                    <th style="border: 1px solid #cccccc; text-align: center;">삭제</th>
-                    <th style="border: 1px solid #cccccc;"></th>
                 </tr>
- 
-                <c:forEach items="${withBoard}" var="withBoard" varStatus="status">
+ 				
+                <c:forEach items="${withList}" var="withList" varStatus="status">
                     <tr style="border: 1px solid #cccccc;">
                         <td style="border: 1px solid #cccccc; text-align: center;">
                             <a style="font-size: 20px;">
-                                ${withBoard.USER_LNM}${withBoard.USER_FNM}
+                                ${withList.USER_LNM}${withList.USER_FNM}
                             </a>
                         </td>
                         <td style="border: 1px solid #cccccc; text-align: center;">
                             <a style="font-size: 20px;">
-                                <i style="color: blue;">${withBoard.WITH_GPA}</i> / 5
+                                <i style="color: blue;">${withList.WITH_GPA}</i> / 5
                             </a>
                         </td>
                         <td style="border: 1px solid #cccccc; text-align: center;">
+                        	<input type="hidden" name="WR_USER_NUM" value="${withList.WR_USER_NUM }">
+                        	<input type="hidden" name="WITH_NUM" value="${withList.WITH_NUM}">
+                        	<input type="hidden" name="TL_USER_NUM" value="${withList.TL_USER_NUM }">
                             <input type="button" class="btn btn-primary" id="btnWithReview" 
-                                onclick="location.href='reviewView02?num=${review.NUM}&withnum=${withBoard.WITHNUM}'" 
+                                onclick="location.href='withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}'" 
                                 value="상세보기" style="background-color: #eeeeee; color: green;">
                         </td>
-                        <td style="border: 1px solid #cccccc; text-align: center;">
-                            <input type="button" class="btn btn-primary" id="btnWithModify" 
-                                onclick="location.href='#'" value="수정" style="background-color: #eeeeee; color: green;">
-                        </td>
-                        <td style="border: 1px solid #cccccc; text-align: center;">
-                            <input type="button" class="btn btn-primary" id="btnWithDelete" 
-                                onclick="location.href='#'" value="삭제" style="background-color: #eeeeee; color: green;">
-                        </td>
-                        <td style="border: 1px solid #cccccc; text-align: center;"><a href="#">신고</a></td>
                     </tr>
                 </c:forEach>
             </table>

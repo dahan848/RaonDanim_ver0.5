@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.raon.raondanim.model.customUserDetails;
-import com.raon.raondanim.service.ReviewReplyService;
+import com.raon.raondanim.service.WithReplyService;
 
 @Controller
-@RequestMapping("/reply")
-public class ReviewReplyController {
-	
+@RequestMapping("/wiReply")
+public class WithReplyController {
+
 	@Autowired
-	private ReviewReplyService reService;
+	private WithReplyService wiService;
 	
 	@ResponseBody
 	@RequestMapping(value="/reply")
@@ -34,46 +34,33 @@ public class ReviewReplyController {
 //		System.out.println(params);
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		int loginUserNum = user.getUser_num();
-//		model.addAttribute("loginUserNum", loginUserNum);
+		model.addAttribute("loginUserNum", loginUserNum);
 		params.put("USER_NUM", loginUserNum);
 //		System.out.println("loginUserNum : " + loginUserNum);
 //		System.out.println("param : " + params);
-		return reService.insertReply(params);
+		return wiService.insertReply(params);
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/all/{REVIEW_NUM}")
+	@RequestMapping(value="/all/{WITH_NUM}")
 	public ResponseEntity<Map<String, Object>> list (
-			Model model,
-			@PathVariable("REVIEW_NUM") int num,
-			@RequestParam(value="page", defaultValue="1")int page,
-			@RequestParam Map<String, Object> param) {
+			@PathVariable("WITH_NUM") int num,
+			@RequestParam(value="page", defaultValue="1")int page) {
 		System.out.println("댓글 리스트 출력");
 		
 //		System.out.println("start page : " + page);
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("page", page);
-		Map<String, Object> viewData = reService.getViewData(params);
+		Map<String, Object> viewData = wiService.getViewData(params);
 		
-		
-//		System.out.println("------------------------");
-//		System.out.println("댓글 띄우기 param : " + param);
-//		System.out.println("------------------------");
-		
-		List<Map<String, Object>> rev = reService.getReviewReply(num);
-		model.addAttribute("reply", rev);
-		
-		System.out.println("======================");
-		System.out.println("댓글 띄우기 rev" + rev);
-		System.out.println("======================");
 		
 		ResponseEntity <Map<String, Object>> entity = null;
 		try {
-//			List<Map<String, Object>> replyList = reService.getReviewReply(num);
+			List<Map<String, Object>> replyList = wiService.getWithReply(num);
 			
-//			System.out.println("replyList : " + replyList);
-			
+//			System.out.println("댓글 replyList : " + replyList);
+			//entity = new ResponseEntity<Map<String,Object>>(viewDate, HttpStatus.OK);
 			entity = new ResponseEntity<Map<String,Object>>(viewData,HttpStatus.OK);
 		} catch (Exception e) {
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -81,14 +68,13 @@ public class ReviewReplyController {
 		return entity;
 	}
 
-	
 	@ResponseBody
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
 	public boolean deleteReply(
 			@RequestParam(value="input_reply_pass") int input_reply_pass,
 			@RequestParam(value="userNum") int userNum,
 			@RequestParam(value="num") int num,
-			@RequestParam(value="re_Reply_Num") int re_Reply_Num
+			@RequestParam(value="wi_Reply_Num") int wi_Reply_Num
 			) {
 		System.out.println("댓글 삭제 컨트롤러 진입");
 
@@ -101,8 +87,9 @@ public class ReviewReplyController {
 		replyDelete.put("input_reply_pass", input_reply_pass);
 		replyDelete.put("userNum", userNum);
 		replyDelete.put("num", num);
-		replyDelete.put("re_Reply_Num", re_Reply_Num);
+		replyDelete.put("wi_Reply_Num", wi_Reply_Num);
 		
-		return reService.deleteReply(replyDelete);
+		return wiService.deleteReply(replyDelete);
 	}
+	
 }

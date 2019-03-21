@@ -9,13 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.raon.raondanim.dao.AccountsUserDAO;
 import com.raon.raondanim.dao.ReviewReplyDao;
+import com.raon.raondanim.dao.WithReplyDao;
 import com.raon.raondanim.model.User;
 
 @Service
-public class ReviewReplyServiceImp implements ReviewReplyService{
+public class WithReplyServiceImp implements WithReplyService{
 
 	@Autowired
-	private ReviewReplyDao dao;
+	private WithReplyDao dao;
 	
 	@Autowired
 	private AccountsUserDAO accDao;
@@ -27,9 +28,12 @@ public class ReviewReplyServiceImp implements ReviewReplyService{
 
 	@Override
 	public boolean insertReply(Map<String, Object> param) {
+//		System.out.println("서비스 / 댓글입력");
 		if(dao.insertReply(param) > 0) {
+//			System.out.println("서비스 / 댓글입력 성공");
 			return true;
 		} else {
+//			System.out.println("서비스 / 댓글입력 실패");
 			return false;
 		}
 	}
@@ -47,15 +51,15 @@ public class ReviewReplyServiceImp implements ReviewReplyService{
 	public boolean deleteReply(Map<String, Object> params) {
 		//입력한 비밀번호
 		String input_reply_pass = String.valueOf(params.get("input_reply_pass"));
-		//게시글 번호(REVIEW_NUM)
+		//게시글 번호(WITH_NUM)
 		String numStr = String.valueOf(params.get("num"));
 		int num = Integer.parseInt(numStr);
 		//로그인 한 USER_NUM
 		String userNum = String.valueOf(params.get("userNum"));
-		//댓글 번호(RE_REPLY_NUM)
-		int re_Reply_Num = (Integer)params.get("re_Reply_Num");
+		//댓글 번호(WI_REPLY_NUM)
+		int wi_Reply_Num = (Integer)params.get("wi_Reply_Num");
 		// 댓글 키에서 select one해서 해당 댓글의 유저 넘 뽑기
-		Map<String, Object> replyWriteUserNum = dao.selectOne(re_Reply_Num);
+		Map<String, Object> replyWriteUserNum = dao.selectOne(wi_Reply_Num);
 		// 뽑은 유저 넘으로 유저 셀렉트 하면 유저 정보 뽑아옴
 		User user = accDao.selectByUserNum(String.valueOf(replyWriteUserNum.get("USER_NUM")));
 		//유저한테 뽑아온 인트 유저넘
@@ -64,7 +68,7 @@ public class ReviewReplyServiceImp implements ReviewReplyService{
 		// 뽑은 유저 비밀번호 == 가져온 비번 비교
 		if(userNum.equals(uNum)) {
 			if(user.getUser_pw().equals(input_reply_pass)) {
-				if(dao.deleteReply(re_Reply_Num)>0) {
+				if(dao.deleteReply(wi_Reply_Num)>0) {
 					return true;
 				} else {
 					return false;
@@ -88,8 +92,8 @@ public class ReviewReplyServiceImp implements ReviewReplyService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getReviewReply(int num) {
-		return dao.selectByReviewNum(num);
+	public List<Map<String, Object>> getWithReply(int num) {
+		return dao.selectByWithNum(num);
 	}
 
 	

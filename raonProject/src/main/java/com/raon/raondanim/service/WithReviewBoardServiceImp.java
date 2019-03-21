@@ -6,13 +6,18 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.raon.raondanim.dao.AccountsUserDAO;
 import com.raon.raondanim.dao.WithReviewBoardDao;
+import com.raon.raondanim.model.User;
 
 @Service
 public class WithReviewBoardServiceImp implements WithReviewBoardService{
 	
 	@Autowired
 	private WithReviewBoardDao dao;
+	
+	@Autowired
+	private AccountsUserDAO userDao;
 	
 	@Override
 	public boolean insertWith(Map<String, Object> param) {
@@ -73,8 +78,15 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getWithBoard(int USER_NUM) {
-		return dao.selectByUserNum(USER_NUM);
+	public List<Map<String, Object>> getWithBoard(int TL_USER_NUM) {
+		return dao.selectByUserNum(TL_USER_NUM);
 	}
+
+	@Override
+	public User selectByUserNum(String num) {
+		return userDao.selectByUserNum(num);
+	}
+	
+	
 
 }

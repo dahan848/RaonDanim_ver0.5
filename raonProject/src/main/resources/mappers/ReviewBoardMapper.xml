@@ -60,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   SET 		REV_TITLE = #{REV_TITLE},
 					REV_DESTINATION = #{REV_DESTINATION},
 					RE_CONTENT = #{RE_CONTENT}
-		WHERE 		REVIEW_NUM = #{NUM}
+		WHERE 		REVIEW_NUM = #{num}
 	</update>
 	
 	

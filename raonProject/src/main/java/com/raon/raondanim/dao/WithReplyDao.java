@@ -3,7 +3,7 @@ package com.raon.raondanim.dao;
 import java.util.List;
 import java.util.Map;
 
-public interface ReviewReplyDao {
+public interface WithReplyDao {
 	
 	public List<Map<String, Object>> selectAll();
 	
@@ -15,8 +15,8 @@ public interface ReviewReplyDao {
 	public Map<String, Object> selectOne(int num);
 	//USER_NUM 으로 select
 	public Map<String, Object> selectByUserNum(int num);
-	//REVIEW_NUM 으로  select
-	public List<Map<String, Object>> selectByReviewNum(int num);
+	//WITH_NUM 으로  select
+	public List<Map<String, Object>> selectByWithNum(int num);
 	
 	public List<Map<String, Object>> replyList(Map<String, Object> param);
 	public int selectTotalCount();	

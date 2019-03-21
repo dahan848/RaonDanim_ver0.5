@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.raon.raondanim.model.User;
 
-public interface ReviewReplyService {
+public interface WithReplyService {
 
 	public List<Map<String, Object>> selectAll();
 	
@@ -17,8 +17,8 @@ public interface ReviewReplyService {
 	public Map<String, Object> selectOne(int num);
 	//USER_NUM 으로 select
 	public Map<String, Object> selectByUserNum(int num);
-	//REVIEW_NUM 으로  select
-	public List<Map<String, Object>> getReviewReply(int num);
+	//With_NUM 으로  select
+	public List<Map<String, Object>> getWithReply(int num);
 	
 	//네비게이션 표시 위한 정보 받기
 	public Map<String, Object> getViewData(Map<String, Object> params);

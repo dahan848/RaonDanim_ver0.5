@@ -107,10 +107,12 @@
             
             <!------------ 회원 프로필 화면 시작 ------------>
             <c:forEach items="${with}" var="with" varStatus="status"> 
+            <input type="hidden" name="num" value="${with.USER_NUM }">
                <div class="box" id="box">
                   <div id="backimg"></div>
                     <div id="userimg"></div>  
                   <div id="profile">
+                  
                      <a href="withList?num=${with.USER_NUM}" style="text-align: center; display: inline-block;">${with.USER_LNM}${with.USER_FNM}</a>
                      <br>
                      <i class="fas fa-home">

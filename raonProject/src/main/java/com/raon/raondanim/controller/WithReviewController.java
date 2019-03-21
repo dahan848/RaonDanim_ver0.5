@@ -1,7 +1,9 @@
 package com.raon.raondanim.controller;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.raon.raondanim.model.User;
 import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.WithReviewBoardService;
 
@@ -30,51 +33,123 @@ public class WithReviewController {
 	}
 	
 	@RequestMapping("/withList")
-	public String withList(Model model,
-			@RequestParam(value="num") int num) {
+	public String withList(
+			Model model,
+			Authentication authentication,
+			HttpServletRequest req,
+			@RequestParam(value="num") int num,		//num = TL_USER_NUM
+			@RequestParam Map<String, Object> param
+			) {
+		
 		System.out.println(num + "번 회원의 타임라인");
-		Map<String, Object> rev = wiService.selectWithOne(num);
-		model.addAttribute("with", rev);
-		System.out.println(rev);
-		Map<String, Object> rev2 = wiService.selectOne(num);
-		model.addAttribute("withBoard", rev2);
-		System.out.println(rev2);
+		
+//		System.out.println("withList param : " + param);
+		
+		//
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		int userNum = user.getUser_num();	//로그인한 USER_NUM
+
+//		System.out.println("WITH_NUM : " + req.getParameter("WITH_NUM"));
+//		String withNum = req.getParameter("WITH_NUM");
+//		int WITH_NUM = Integer.parseInt(withNum);
+		
+		//타임라인 USER 정보 
+		String strNum = String.valueOf(num);
+		User rev = wiService.selectByUserNum(strNum);
+		model.addAttribute("withBoard", rev);
+		
+		//리스트 부분
+		List<Map<String, Object>> rev2 = wiService.getWithBoard(num);
+		model.addAttribute("withList", rev2);
+		
 		return "review/withList";
 	}
 	
 	@RequestMapping("/withWriteForm")
-	public String withWriteForm(Model model,
-			Authentication authentication) {
+	public String withWriteForm(
+			Model model,
+			Authentication authentication,
+			@RequestParam(value="num") int num
+			) {
+		
 		System.out.println("동행 후기 작성");
+		
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
-		int userNum = user.getUser_num();
-		model.addAttribute("userNum", userNum);
-		System.out.println(userNum);
+		int WR_USER_NUM = user.getUser_num();
+		model.addAttribute("userNum", WR_USER_NUM);
+//		System.out.println("로그인한 USER_NUM : " + WR_USER_NUM);
+		
+		String strNum = String.valueOf(num);
+		User rev = wiService.selectByUserNum(strNum);
+//		Map<String, Object> rev = wiService.selectOne(num);		//num = 타임라인 주인 USER_NUM
+		model.addAttribute("withBoard", rev);
+//		System.out.println("writeForm 타임라인 주인 : " + num);
+		
 		return "review/withWrite";
 	}
 	
 	@RequestMapping("/withWrite")
 	public String withWrite(
-			@RequestParam(required=false) int WITH_GPA,
-			@RequestParam(value="WITH_CONTENT") String WITH_CONTENT,
-			@RequestParam(value="USER_NUM") int USER_NUM,
-			RedirectAttributes ra) {
+			Model model,
+			@RequestParam Map<String, Object> param,
+			RedirectAttributes ra,
+			@RequestParam(value="TL_USER_NUM") int TL_USER_NUM) {
+		
 		System.out.println("동행후기 저장 중...");
+	
+		System.out.println("param : " + param);		
+		//WR_USER_NUM -> 현재 로그인 되어있는 user_num
+		//TL_USER_NUM이 필요 -> url에 num 으로 받아오는 애
 		
-		Map<String, Object> review = new HashMap<>();
-		review.put("USER_NUM", USER_NUM);
-		review.put("WITH_GPA", WITH_GPA);
-		review.put("WITH_CONTENT", WITH_CONTENT);
 		
-		System.out.println("후기내용 : " + review);
+//		Map<String, Object> rev = wiService.selectOne(TL_USER_NUM);		//num = TL_USER_NUM
+//		model.addAttribute("withBoard", rev);
+//		System.out.println("write 타임라인 주인 : " + TL_USER_NUM);
 		
-		if(wiService.insertWith(review)) {
+		if(wiService.insertWith(param)) {
 			System.out.println("동행후기 작성 성공");
-			ra.addAttribute("USER_NUM", review.get("USER_NUM"));
 		} else {
 			System.out.println("동행후기 작성 실패");
 		}
-		return "review/withList";
+		return "redirect:withList";
+	}
+	
+	@RequestMapping("/withView")
+	public String withView(
+			Model model,
+			HttpServletRequest request,
+			Authentication authentication,
+			@RequestParam Map<String, Object> param) {
+		
+		System.out.println("동행 후기 상세 보기");
+//		System.out.println("param : " + param);
+		
+		String num = request.getParameter("wrUser");
+		int WR_USER_NUM = Integer.parseInt(num);
+//		System.out.println("게시글 작성자 번호 : " + WR_USER_NUM);
+		
+		
+		String withNum = request.getParameter("withNum");
+		int WITH_NUM = Integer.parseInt(withNum);
+		
+		
+		Map<String, Object> rev = wiService.selectWithOne(WITH_NUM);
+//		System.out.println("컨트롤러 데이터 확인-----------------");
+//		System.out.println(WITH_NUM);
+//		System.out.println(wiService.selectWithOne(WITH_NUM));
+		model.addAttribute("withBoard", rev);
+		
+//		System.out.println("게시글 정보 : " + rev);
+	
+		
+//		model.addAttribute("withBoard", wiService.plusReadCount(WITH_NUM));
+//		System.out.println("withBoard 데이터 확인:"+wiService.plusReadCount(WITH_NUM));
+		String TL_USER_NUM = request.getParameter("tlUser");
+		User rev2 = wiService.selectByUserNum(TL_USER_NUM);
+		model.addAttribute("tlUser", rev2);
+//		System.out.println("타임라인 주인 번호 : " +  TL_USER_NUM);		
+				
+		return "review/withView";
 	}
 	
 	
