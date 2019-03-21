@@ -367,13 +367,19 @@ input[type="file"] {
                     	<label class="col-sm-3 control-label text-right">나이</label>
 	                    <div class="col-sm-9">
 	                    	<!-- 나이 -->
-	                    	<p>${user.age}</p> 
+	                    	<c:if test="${user.age eq null}">
+	                  			<span class="label label-pink label-lg">미작성</span>
+							</c:if>
+	                    		<p>${user.age}</p> 
 	                    </div>
                 	</div>
                 <div class="row">
                     <label class="col-sm-3 control-label text-right">좋아하는 것</label>
                     	<div class="col-sm-9">
                     		<!-- 좋아하는 것(관심사) 반복문으로 출력 -->
+      			            <c:if test="${user.interest eq null}">
+	                  			<span class="label label-pink label-lg">미작성</span>
+	                  		</c:if>
                     		<c:forEach items="${user.interest}" var="interest">
                     			<span class="label label-default label-lg">${interest.INTEREST_NAME}</span>	
                     		</c:forEach>
@@ -382,7 +388,10 @@ input[type="file"] {
                 <div class="row">
                     <label class="col-sm-3 control-label text-right">사용가능언어</label>
                     	<div class="col-sm-9">
-                    		<!-- 사용가능언어 : 반복문 -->
+                    		<!-- 사용가능언어 : 조건문 + 반복문 -->
+      			            <c:if test="${user.language eq null}">
+	                  			<span class="label label-pink label-lg">미작성</span>
+	                  		</c:if>
                            	<c:forEach items="${user.language}" var="language">
                     			<span class="label label-default label-lg">${language.LANGUAGE_NAME}</span>	
                     		</c:forEach>

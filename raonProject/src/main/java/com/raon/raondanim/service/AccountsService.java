@@ -83,7 +83,7 @@ public class AccountsService {
 	
 	//갤러리 사진 등록()
 	public boolean setGalleryPic(List<Map<String, Object>> param) {
-		System.out.println("서비스 전달 받은 맵 확인 : " + param);
+		//System.out.println("서비스 전달 받은 맵 확인 : " + param);
 		//System.out.println("전달 받은 맵의 사이즈 : " + param.size());
 		//여러개의 파일을 넣어야 하기 때문에 반복문을 돌면서 dao에 값을 insert 해야 한다.
 		
@@ -117,7 +117,7 @@ public class AccountsService {
 	
 	//프로필 화면에 넘길 데이터 (Map) 반환하는 서비스
 	public Map<String, Object> getProfileData(int usernum){
-		System.out.println("프로필 화면 요청 받음 : " + usernum);
+		//System.out.println("프로필 화면 요청 받음 : " + usernum);
 		//반환 할 Map 선언
 		Map<String, Object> result = new HashMap<String, Object>();
 		//인자로 받은 int 타입 usernum String으로 형 변환 
@@ -136,11 +136,12 @@ public class AccountsService {
 		}
 
 		//나이 구하기 (if문으로 간단 예외처리)
-		int age;
+		String age;
 		if(user.getUser_birth_date() != null) {
-			age = getAgeFromBirthday(user.getUser_birth_date());
+			System.out.println("나이 들어있음");
+			age = Integer.toString(getAgeFromBirthday(user.getUser_birth_date())); 
 		}else {
-			age = 0;
+			age = null;
 		}
 		
 		//거주도시 이름 만들기 
@@ -152,9 +153,16 @@ public class AccountsService {
 			userCityCountry = city + "," + country;
 		}
 		//관심사(좋아 하는 것)
-		List<Map<String, Object>> interest = dao.getUserInterest(userNum);
-		//사용가능 언어 
-		List<Map<String, Object>> language = dao.getUserLanguage(userNum);
+		List<Map<String, Object>> interest = null;
+		if(!dao.getUserInterest(userNum).isEmpty()) {
+			//System.out.println("좋아하는 것 null 아님 : " + dao.getUserInterest(userNum).toString());
+			interest = dao.getUserInterest(userNum);			
+		}
+		//사용가능 언어
+		List<Map<String, Object>> language = null;
+		if(!dao.getUserLanguage(userNum).isEmpty()) {
+			language = dao.getUserLanguage(userNum);
+		}
 
 		result.put("profile", user.getUser_profile_pic());				//프로필 사진 : 디폴트n
 		result.put("name", user_name); 			 						//이름
