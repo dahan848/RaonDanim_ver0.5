@@ -74,7 +74,7 @@
                     <hr>
                     <p>이미 라온다님 회원인가요?</p>
                     <div class="form-link">
-                        <a class="text-potluck" href="login.jsp">로그인</a>
+                        <a class="text-potluck" href="${contextPath}/accounts/loginForm">로그인</a>
                     </div>
                 </form>
             </div>

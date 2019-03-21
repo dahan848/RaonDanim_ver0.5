@@ -492,5 +492,69 @@ public class AccountsService {
 		return result;
 	}
 	
+	//비밀번호 초기화
+	public boolean passwordReset(String email) {
+		//DB에 저장 될 비밀번호를 암호화 하기 위한 객체 선언 
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(dao.selectByUserId(email) != null) {
+			//아이디가 존재하면 새로운 비밀번호를 DB에 넣고 이메일 전송을 진행한다.
+			//임시로 저장하고, 메일로 전송 할 비밀번호를 변수에 담는다 
+			String reset_pw = create_key();
+			//send_pwreset_mail()를 통해 사용자가 기입 한 메일로 메일을 보낸다.
+			User user = dao.selectByUserId(email);
+			send_pwreset_mail(user, reset_pw);
+			//DAO에 넘길 Map 선언 및 데이터 put
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("reset_pw", encoder.encode(reset_pw)); //암호화 된 암호를 넘겨준다.
+			param.put("userid", email);
+			dao.passwordReset(param);
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	//이메일 발송 () 
+	public void send_pwreset_mail(User user, String newpw){
+		// Mail Server 설정
+		String charSet = "utf-8";
+		String hostSMTP = "smtp.naver.com";
+		String hostSMTPid = "hyeungil9143@naver.com";
+		String hostSMTPpwd = "dkakwhs12!";
+
+		// 보내는 사람 EMail, 제목, 내용
+		String fromEmail = "hyeungil9143@naver.com";
+		String fromName = "라온다님 ";
+		String subject = "";
+		String msg = "";
+
+		// 회원가입 메일 내용
+		String name = user.getUser_lnm() + user.getUser_fnm(); //유저 이름을 담는 변수
+		
+		subject = "라온다님 임시 비밀번호 발급 메일입니다.";
+		msg += "<table border='0'cellpadding='0'cellspacing='0'width='100%'style='table-layout: fixed;'><tr><td bgcolor='#ffffff'align='center'style='padding: 70px 15px 70px 15px;'class='section-padding'><table border='0'cellpadding='0'cellspacing='0'width='500'class='responsive-table'><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'><tbody><tr><td class='padding-copy'><table width='100%'border='0'cellspacing='0'cellpadding='0'><tr><td><a target='_blank'><img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/48935/responsive-email.jpg'width='500'height='200'border='0'alt='Can an email really be responsive?'style='display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; width: 500px; height: 200px;'class='img-max'></a></td></tr></table></td></tr></tbody></table></td></tr><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'><tr><td align='center'style='font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;'class='padding-copy'>임시 비밀번호 발급 메일입니다.</td></tr><tr><td align='center'style='padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;'class='padding-copy'>하단에 표시된 임시 비밀번호로 로그인 후<br>반드시 비밀번호를 변경해주세요.<br><br><strong>"+newpw+"</strong></td></tr></table></td></tr><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'class='mobile-button-container'><tr><td align='center'style='padding: 25px 0 0 0;'class='padding-copy'><table border='0'cellspacing='0'cellpadding='0'class='responsive-table'><tr><td align='center'><a href='http://localhost:8081/accounts/loginForm'target='_blank'style='font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #ffffff; text-decoration: none; background-color: #5D9CEC; border-top: 15px solid #5D9CEC; border-bottom: 15px solid #5D9CEC; border-left: 25px solid #5D9CEC; border-right: 25px solid #5D9CEC; border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; display: inline-block;'class='mobile-button'>로그인 페이지&rarr;</a></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table>";
+
+		// 받는 사람 E-Mail 주소
+		String mail = user.getUser_id();
+		try {
+			HtmlEmail email = new HtmlEmail();
+			email.setDebug(true);
+			email.setCharset(charSet);
+			email.setSSL(true);
+			email.setHostName(hostSMTP);
+			email.setSmtpPort(587);
+
+			email.setAuthentication(hostSMTPid, hostSMTPpwd);
+			email.setTLS(true);
+			email.addTo(mail, charSet);
+			email.setFrom(fromEmail, fromName, charSet);
+			email.setSubject(subject);
+			email.setHtmlMsg(msg);
+			email.send();
+		} catch (Exception e) {
+			System.out.println("메일발송 실패 : " + e);
+		}
+	}
+	
 	
 }

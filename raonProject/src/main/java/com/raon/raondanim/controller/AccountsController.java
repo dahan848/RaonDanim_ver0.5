@@ -265,4 +265,19 @@ public class AccountsController {
 		//System.out.println(check);
 		return service.passwordCheck(check, usernum);
 	}
+	
+	//비밀번호 찾기 화면 요청 
+	@RequestMapping("/passwordresetform")
+	public String passwordreset() {
+		return "accounts/password-reset";
+	}
+	
+	//비밀번호 찾기 Ajax 요청 
+	@ResponseBody
+	@RequestMapping(value = "/passwordreset")
+	public boolean resetPw(@RequestParam Map<String, Object> param) {
+		//System.out.println(param);
+		return service.passwordReset((String)param.get("email"));
+	}
+	
 }

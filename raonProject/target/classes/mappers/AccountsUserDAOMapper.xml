@@ -117,4 +117,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM gallery_tb
 		 WHERE GALLERY_FILE_NUM = #{num} 
 	</delete>
+	<update id="passwordReset" parameterType="map">
+		UPDATE user_tb
+		   SET user_pw 		= #{reset_pw}
+		 WHERE user_id		= #{userid}
+	</update>
 </mapper>

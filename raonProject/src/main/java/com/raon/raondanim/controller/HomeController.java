@@ -70,7 +70,8 @@ public class HomeController {
 	@RequestMapping("/test99")
 	public String test99() {
 		System.out.println("home 테스트 요청 받음 ");
-		return "test99";
+		return "etest";
 	}
+	
 	
 }

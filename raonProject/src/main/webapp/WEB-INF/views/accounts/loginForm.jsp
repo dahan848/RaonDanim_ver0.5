@@ -46,7 +46,7 @@
 					</a>
                     <hr>
                     <div class="form-link">
-                        <a class="text-gray" href="#">비밀번호 찾기</a>
+                        <a class="text-gray" href="${contextPath}/accounts/passwordresetform">비밀번호 찾기</a>
                         <a class="text-gray" href="${contextPath}/accounts/signupForm">회원가입</a>
                     </div>
                 </form>
