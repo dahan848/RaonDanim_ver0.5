@@ -73,5 +73,11 @@ public class HomeController {
 		return "etest";
 	}
 	
+	@RequestMapping("/test98")
+	public String test98() {
+		System.out.println("home 테스트 요청 받음 ");
+		return "select2";
+	}
+	
 	
 }

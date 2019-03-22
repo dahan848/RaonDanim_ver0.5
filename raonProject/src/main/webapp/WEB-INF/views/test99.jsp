@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>권한 테스트</title>
+<title>권한 테스트333333</title>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>

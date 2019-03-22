@@ -6,17 +6,28 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<!-- 테스트 추가 코드 -->
+<style type="text/css">
+.capitalize {
+	text-transform: capitalize;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice {
+	padding: 5px 5px 5px 18px;
+}
+</style>
 <title>라온다님</title>
-</head>
-<body>
 	<!-- 인클루드 심플 헤더 -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/accounts/accounts-navbar.jsp"></jsp:include>
 	<!-- 인클루드 심플 헤더 END -->
-
-
-
+	
+	<!-- 테스트를 위한 추가  -->
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.css" />
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-css/1.4.6/select2-bootstrap.min.css" />
+</head>
+<body>
 	<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
@@ -50,12 +61,8 @@
 									<div class="form-group">
 										<label class="col-sm-3 control-label" for="id_nationality">국적</label>
 										<div class="col-sm-9">
-											<select
-												class="form-control"
-												id="id_nationality" name="nationality" title="">
-												<option value="122" selected="selected">South Korea</option>
-												<option value="999" selected="selected">언어 DB테스트</option>
-											</select>
+											<!-- 테스트 추가 코드 -->
+											<input id="nationality" style="width: 100%;" placeholder="숫자를 입력하고 스크롤하여 자세한 결과를 확인하십시오." />
 										</div>
 									</div>
 									<div class="form-group">
@@ -182,5 +189,57 @@
 	<!-- 인클루드-푸터 -->
 	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 	<!-- 인클루드-푸터 END -->
+	
+	<!-- 테스트 추가 코드 -->
+	<script type="text/javascript" src='//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+	<script	src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.15.0/lodash.min.js"></script>
+	<script	src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
 </body>
+
+	<!-- 테스트 추가 코드 -->
+	<script type="text/javascript">
+	//화면에 표시 될 데이터를 넣어주는 부분 Ajax를 활용하여 데이터를 서버로 부터 받아오는 식으로 넣어주면 될 것 같다.
+	//_.map() 함수 설명 : https://medium.com/@cheonmyung0217/underscore-js-map-%ED%95%A8%EC%88%98-cd3d47774d96
+	//_.range() 함수 설명 : https://mylife365.tistory.com/192
+	//그려질 배열의 총 길이를 설정하는 부분이라 생각하면 될 것 같음.
+	function mockData() {
+		//시작 숫자와 끝 숫자는 DB 데이터의 KEY 넘의 시작과 끝 번호로 넣어주면 됨
+		return _.map(_.range(1, 20000), function(i) {
+			return {
+				id : i, //이 부분에 DB에 저장 된 KEY 값으로 넣어주고 
+				text : '테스트' + ' ' + i, //이 부분에는 DB상에 저장 된 문자 (EX: 서울, 대한민국)
+			};
+		});
+	}
+	
+	//무한 스크롤을 발생 시키는 코드 
+	(function() {
+		$('#nationality').select2(
+				{
+					data : mockData(), //위에서 만든 데이터 
+					placeholder : 'search',
+					multiple : true, //다중 선택 여부 
+					// query with pagination
+					query : function(q) {
+						var pageSize, results, that = this;
+						pageSize = 20; //한 번에 불러올 로우의 개수 
+						results = [];
+						if (q.term && q.term !== '') {
+							// HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
+							results = _.filter(that.data, function(e) {
+								return e.text.toUpperCase().indexOf(
+										q.term.toUpperCase()) >= 0;
+							});
+						} else if (q.term === '') {
+							results = that.data;
+						}
+						q.callback({
+							results : results.slice((q.page - 1) * pageSize,
+									q.page * pageSize),
+							more : results.length >= q.page * pageSize,
+						});
+					},
+				});
+	})();
+	</script>
 </html>

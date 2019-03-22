@@ -1,76 +1,117 @@
 <%@ page language='java' contentType='text/html; charset=UTF-8'
-    pageEncoding='UTF-8'%>
+	pageEncoding='UTF-8'%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset='UTF-8'>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+<style type="text/css">
+.container-fluid {
+	padding-top: 30px;
+}
+
+.select2-results-dept-0 { /* do the columns */
+  float: left;
+  width: 20%;
+}
+
+img.flag {
+  height: 10px;
+  padding-right: 5px;
+  width: 15px;
+}
+
+/* move close cross [x] from left to right on the selected value (tag) */
+#s2id_e2_2.select2-container-multi .select2-choices .select2-search-choice {
+  padding: 3px 18px 3px 5px;
+}
+#s2id_e2_2.select2-container-multi .select2-search-choice-close {
+  left: auto;
+  right: 3px;
+}
+
+</style>
 <title>Insert title here</title>
 </head>
 <body>
-<table border='0' cellpadding='0' cellspacing='0' width='100%' style='table-layout: fixed;'>
-    <tr>
-        <td bgcolor='#ffffff' align='center' style='padding: 70px 15px 70px 15px;' class='section-padding'>
-            <table border='0' cellpadding='0' cellspacing='0' width='500' class='responsive-table'>
-                <tr>
-                    <td>
-                        <table width='100%' border='0' cellspacing='0' cellpadding='0'>
-                            <tr>
-                                <td>
-                                    <table width='100%' border='0' cellspacing='0' cellpadding='0'>
-                                        <tbody>
-                                             <tr>
-                                                  <td class='padding-copy'>
-                                                      <table width='100%' border='0' cellspacing='0' cellpadding='0'>
-                                                          <tr>
-                                                              <td>
-                                                                  <a target='_blank'><img src='https://i.imgur.com/JhhrjFD.jpg' width='500' height='200' border='0' alt='Can an email really be responsive?' style='display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; width: 500px; height: 200px;' class='img-max'></a>
-                                                              </td>
-                                                            </tr>
-                                                        </table>
-                                                  </td>
-                                              </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table width='100%' border='0' cellspacing='0' cellpadding='0'>
-                                        <tr>
-                                            <td align='center' style='font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;' class='padding-copy'><br><br>[이름]님 라온다님 회원가입을 환영합니다.</td>
-                                        </tr>
-                                        <tr>
-                                            <td align='center' style='padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;' class='padding-copy'>하단의 인증 버튼 클릭 시<br>정상적으로 회원가입이 완료됩니다.<br></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table width='100%' border='0' cellspacing='0' cellpadding='0' class='mobile-button-container'>
-                                        <tr>
-                                            <td align='center' style='padding: 25px 0 0 0;' class='padding-copy'>
-                                                <table border='0' cellspacing='0' cellpadding='0' class='responsive-table'>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
-	<div style='width: 100%; text-align:center;'>
-		<div style='margin: 0 auto; '>
-		    <form method='post' action='http://localhost:8081/accounts/certify'>
-		    <input type='hidden' name='user_id' value='" + user.getUser_id() + "'>
-		    <input type='hidden' name='user_verify_code' value='" + user.getUser_verify_code() + "'>
-	    	<input type='submit' value='인증' style='font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #ffffff; text-decoration: none; background-color: #5D9CEC; border-top: 15px solid #5D9CEC; border-bottom: 15px solid #5D9CEC; border-left: 25px solid #5D9CEC; border-right: 25px solid #5D9CEC; border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; display: inline-block;' class='mobile-button'></form>
-	    </div>
-    </div>
+	<div class="container-fluid">
+		<select id="e2_2" multiple="multiple" style="width: 100%"
+			class="select2-multi-col">
+			<optgroup label="Alaskan/Hawaiian Time Zone">
+				<option value="AK">Alaska</option>
+				<option value="HI">Hawaii</option>
+				<option value="CA">California</option>
+				<option value="NV">Nevada</option>
+				<option value="OR">Oregon</option>
+				<option value="WA">Washington</option>
+				<option value="AZ">Arizona</option>
+				<option value="CO">Colorado</option>
+				<option value="ID">Idaho</option>
+				<option value="MT">Montana</option>
+				<option value="NE">Nebraska</option>
+				<option value="NM">New Mexico</option>
+				<option value="ND">North Dakota</option>
+				<option value="UT">Utah</option>
+				<option value="WY">Wyoming</option>
+				<option value="AL">Alabama</option>
+				<option value="AR">Arkansas</option>
+				<option value="IL">Illinois</option>
+				<option value="IA">Iowa</option>
+				<option value="KS">Kansas</option>
+				<option value="KY">Kentucky</option>
+				<option value="LA">Louisiana</option>
+				<option value="MN">Minnesota</option>
+				<option value="MS">Mississippi</option>
+				<option value="MO">Missouri</option>
+				<option value="OK">Oklahoma</option>
+				<option value="SD">South Dakota</option>
+				<option value="TX">Texas</option>
+				<option value="TN">Tennessee</option>
+				<option value="WI">Wisconsin</option>
+				<option value="CT">Connecticut</option>
+				<option value="DE">Delaware</option>
+				<option value="FL">Florida</option>
+				<option value="GA">Georgia</option>
+				<option value="IN">Indiana</option>
+				<option value="ME">Maine</option>
+				<option value="MD">Maryland</option>
+				<option value="MA">Massachusetts</option>
+				<option value="MI">Michigan</option>
+				<option value="NH">New Hampshire</option>
+				<option value="NJ">New Jersey</option>
+				<option value="NY">New York</option>
+				<option value="NC">North Carolina</option>
+				<option value="OH">Ohio</option>
+				<option value="PA">Pennsylvania</option>
+				<option value="RI">Rhode Island</option>
+				<option value="SC">South Carolina</option>
+				<option value="VT">Vermont</option>
+				<option value="VA">Virginia</option>
+				<option value="WV">West Virginia</option>
+			</optgroup>
+		</select>
+	</div>
+	
+	
+	
+	
 </body>
+<script type="text/javascript">
+function format(state) {
+	 if (!state.id) return state.text; // optgroup
+	  return "<img class='flag' src='//select2.github.io/vendor/images/flags/" + state.id.toLowerCase() + ".png'>" + state.text;
+	}
+	
+	$("#e2_2").select2({
+	  placeholder: "Select a state or many…",
+	  formatResult: format,
+	  formatSelection: format,
+	  escapeMarkup: function(m) { return m; }
+	});
+	
+	
+});
+</script>
 </html>
