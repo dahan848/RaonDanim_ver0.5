@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>	
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,13 +13,16 @@
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
-    
-        <script defer
+    <script defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc&callback=initMap&libraries=places">
     </script>
-
 <script type="text/javascript">
+//submit 실행시 form안에 
+//나라 도시 주소 입력 확인 함수
+
 	$(function(){
+		
+		
 		//국가입력 스크립트
 		$(".national").click(function() {
 			$(this).next().show();
@@ -29,6 +33,95 @@
 			$(this).next().show();
 			$(this).next().hide();
 		});
+		
+		//서밋 이벤트실행 시 유효성 검사
+		$("#register_form").on("submit",function (){
+			
+			var nation = $('#nation').val();
+			var city = $('#city').val();
+			var address = $('#address').val();
+			
+			var city_split = city.split(', ');
+			var city_en = city_split[0];
+			var city_ko = city_split[1];
+// 			alert(city);
+// 			alert(city_en);
+// 			alert(city_ko);
+			
+			var nation_split = nation.split(', ');
+			var nation_en = nation_split[0];
+			var nation_ko = nation_split[1];
+			//var isFind = false;
+			var checkNum = 0;
+			
+			if(address == "" || address.length < 5){
+				swal({
+		               text:"숙소의 상세주소를 작성해 주세요.",
+		               icon:"warning",
+		               buttons:[false,"확인"]
+		            })
+				return false;
+			}
+			
+			
+			$.ajax({
+				url : "${contextPath}/motel/DB_nation",
+				type : "get",
+				async : false,
+				dataType : "json",
+				success : function(data) {
+						//alert("나라  : " + nation_ko);
+//		 				console.log("나라  : " + nation_ko);
+//		 				console.log("nation : " + nation_en);
+						
+						//console.log(data[i].NATIONALITY_KOR_NAME);
+						//console.log(data[i].NATIONALITY_NAME);
+
+					for(var i in data){
+						
+						if(data[i].NATIONALITY_KOR_NAME == nation_ko && data[i].NATIONALITY_NAME == nation_en){
+							//서밋
+							//console.log("같다!!!12312312")
+							checkNum++;
+							break;
+						}
+						
+					}		
+				}
+			});
+			
+			$.ajax({
+				url : "${contextPath}/motel/DB_city",
+				type : "get",
+				async : false,
+				dataType : "json",
+				success : function(data) {
+					for(var i in data){
+						
+						if(data[i].KO_CITY == city_ko && data[i].CITY == city_en){
+							checkNum++
+
+						}
+						
+					}		
+				}
+			});
+ 			//debugger;
+			if(checkNum == 2){
+				//console.log("같다!!!");
+				
+			}else{
+				//console.log("다르다");
+				swal({
+		               text:"숙소의 국가/도시를 정확히 선택해 주세요.",
+		               icon:"warning",
+		               buttons:[false,"확인"]
+		            })
+				return false;
+			}
+				
+		});
+		
 	});
 
 
@@ -64,19 +157,12 @@
               map: resultsMap,
               position: results[0].geometry.location
             });
-            debugger;
+            //debugger;
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
         });
       }
-      
-		
-	$(document).ready(function() {
-		
-		
-
-	});
 	
       //국가 도시 검색 후 엔터키 쳤을 때 페이지 넘어가는것 막는 코드
 	 function captureReturnKey(e) {
@@ -123,6 +209,9 @@
 
 </script>	
 <style type="text/css">
+#register_form{
+	padding-left: 10px;
+}
 .btn_next {
 	background-image: url('${contextPath}/img/motel/next.jpg');
 	background-position: 0px 0px;
@@ -134,7 +223,7 @@
 	outline: 0;
 	margin-top: 10px;
 	float: right;
-	margin-right: 15%;
+	margin-right: 2%;
 }
 
 .btn_back {
@@ -163,7 +252,7 @@
 /*  	margin-top : 15%;  */
 	background-position: center;
 	width: 60%;
-	height: 80%;
+	height: 85%;
 	background-color: white;
 	width: 60%;
 	border: 1px solid #444444;
@@ -178,14 +267,14 @@
        * element that contains the map. */
       #map {
         height: 250px;
-        width: 500px;
+        width: 700px;
         margin-top: 65px;
         
       }
       #searchMap{
          display:none;
          height: 250px;
-         width: 500px;
+         width: 700px;
         margin-top: 65px;
       }
       /* Optional: Makes the sample page fill the window. */
@@ -207,17 +296,17 @@
       }
 
 
-
 </style>
 </head>
 <body>
+
 <%-- 	확이 : ${city}.length<br> --%>
-	motel_bath : ${motel_bathroom }
-	<br> motel_type : ${motel_type }
-	<br> motel_category : ${motel_category }
-	<br> motel_people : ${motel_people }
-	<br> motel_room : ${motel_room }
-	<br>
+<%-- 	motel_bath : ${motel_bathroom } --%>
+<%-- 	<br> motel_type : ${motel_type } --%>
+<%-- 	<br> motel_category : ${motel_category } --%>
+<%-- 	<br> motel_people : ${motel_people } --%>
+<%-- 	<br> motel_room : ${motel_room } --%>
+<!-- 	<br> -->
 	<!-- 인클루드 심플 헤더 -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
@@ -232,7 +321,8 @@
 			<div class="container">
 				<div class="registor_main">
 					<div class="registor_contain" style="width: 70%;">
-					<form action="registor_photo" method="post" id = "register_form" onkeydown="return captureReturnKey(event)">
+					
+					<form method="post" action="registor_photo" id = "register_form" onkeydown="return captureReturnKey(event)">
 						<input type="hidden" value="${_csrf.token}"
 							name="${_csrf.parameterName}">
 						<!-- 						기존에 받았던 데이터 -->
@@ -242,54 +332,14 @@
 						<input type="hidden" value="${motel_room }" name="motel_room"> 
 						<input type="hidden" value="${motel_people }" name="motel_people">
 
-<%-- 						<c:if test="${!empty national}"> --%>
-
-<!-- 							<select name="selectBox" id="selectBox" style="width: 80px;" -->
-<!-- 								class="select_02"> -->
-
-<%-- 								<c:forEach var="national" items="${national}" varStatus="i"> --%>
-
-<%-- 									<option value="${national.NATIONALITY_KOR_NAME}">${national.NATIONALITY_NAME}${national.NATIONALITY_KOR_NAME}</option> --%>
-
-<%-- 								</c:forEach> --%>
-
-<!-- 							</select> -->
-
-<%-- 						</c:if> --%>
-
-<!-- 						<br> -->
-
-<!-- 						<input list="brow"> -->
-<!-- 						<datalist id="brow"> -->
-<!-- 							<option value="Internet Explorer"> -->
-							
-<!-- 							<option value="Firefox"> -->
-  
-<!-- 							<option value="Chrome"> -->
-  
-<!-- 							<option value="Opera"> -->
-  
-<!-- 							<option value="Safari"> -->
-							
-<!-- 							<option value="한국"> -->
-							
-<!-- 							<option value="일본"> -->
-							
-<!-- 							<option value="중국"> -->
-							
-<!-- 							<option value="미국"> -->
-
-<!-- 						</datalist> -->
-<!-- 						<br> -->
-
 						<h4>숙소의 국가를 선택하여 주세요.</h4> 
 						<c:if test="${!empty national}">
-							<input list="brow" class="national" name="motel_nation" style="width: 300px;">
+							<input list="brow" id="nation" class="national" name="motel_nation" style="width: 300px;">
 							<datalist id="brow">
 
 								<c:forEach var="national" items="${national}" varStatus="i">
 
-									<option
+									<option id = "nationDB"
 										value="${national.NATIONALITY_NAME}, ${national.NATIONALITY_KOR_NAME}" onkeypress='chkCode(this,event.keyCode)'></option>
 
 								</c:forEach>
@@ -300,7 +350,7 @@
 						
 						<h4>숙소의 도시를 선택하여 주세요.</h4>
 						<c:if test="${!empty city}">
-							<input list="brow1" class="city" name="motel_city" style="width: 300px;">
+							<input list="brow1" id="city" class="city" name="motel_city" style="width: 300px;">
 							<datalist id="brow1">
 
 								<c:forEach var="city" items="${city}" varStatus="i">
@@ -317,15 +367,15 @@
 							
 						<h4>상세주소를 입려하여주세요.(지도에서 위치를 확인하여주세요.)</h4>
 							<div id="floating-panel">
-								<input id="address" type="textbox" placeholder="주소를 입력하세요" name="motel_address">
+								<input id="address" type="text" placeholder="주소를 입력하세요" name="motel_address">
 								<input id="submit" type="button" value="검색">
 							</div>
 							<div id="map"></div>
 							<div id="searchMap"></div>
 
-							<input type="submit" value="" class="btn_next">
+							<input type="submit" value="" class="btn_next" id="btn_next">
 						 <input	type="button" value="" class="btn_back"
-									onclick="history.back(-1);">
+									onclick="history.back(-1);" >
 					</form>
 					</div>
 				</div>

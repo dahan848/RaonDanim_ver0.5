@@ -34,8 +34,9 @@
 										<label class="control-label" for="id_category">카테고리</label><select
 											class="form-control" id="id_category" name="category"
 											title="" required>
-											<option value="일반문의">일반문의</option>
-											<option value="탈퇴문의">탈퇴문의</option>
+											<option value="0">일반문의</option>
+											<option value="1">계정문의</option>
+											<option value="2">탈퇴문의</option>
 										</select>
 									</div>
 									<div class="form-group">

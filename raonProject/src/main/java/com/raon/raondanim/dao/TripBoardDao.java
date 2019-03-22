@@ -31,7 +31,7 @@ public interface TripBoardDao {
 	
 	//도시테이블 입력
 	public int insertCity(TripCity tripCity);
-/*	//도시 수정 -보류
+/*	//도시 수정 -보류 - 안씀
 	public int updateCity(TripCity tripCity);*/
 	//도시 삭제
 	public int deleteCity(int CityKey);
@@ -53,5 +53,35 @@ public interface TripBoardDao {
 	public Map<String, Object> getTripBoardOneInfo(int boardKey);
 	public List<Map<String, Object>> getTripBoardCityOneInfo(int boardKey);
 	
-
+	//조회수 1증가
+	public int incrementViews(int boardKey);
+	
+	
+	//내가 동행신청 남긴 게시글 가져오기
+	public List<Map<String, Object>> getMyDongHangList(String userNum);
+	
+	
+	
+	//신고 목록 불러오기
+	public List<Map<String, Object>> getDeclaration();
+	//신고내용 테이블 저장
+	public int insertDeclaration(Map<String, Object> params);
+	//이미신고한건지 알기위해 조회
+	public Map<String, Object> selectOneByDeclaration(Map<String, Object> params);
+	
+	//더미데이터 추가 
+	public int insertDummyData(Map<String, Object> tripBoard);
+	
+	
+	//월별 게시글 작성수
+	public List<Integer> getMonthWriteData();
+	//여행 게시판 게시글 총게시글수와 신고수 선택
+	public Map<String, Integer> getBoardAndDeclatation();
+	
+	// 관리자용 신고당한 게시글 리스트 출력(출력 3번 누적이아닌 신고 1번이라도 있으면 출력)
+	public List<Map<String, Object>> getDeclarationBoard();
+	
+	//관리자용 모텔 게시글 그래프 용 월별 총 리스트 출력 
+	public List<Integer> getMotelMonthWriteData();
+	
 }

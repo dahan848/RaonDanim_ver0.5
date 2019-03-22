@@ -20,6 +20,8 @@ import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
@@ -36,11 +38,22 @@ public class AccountsService {
 	
 	//갤러리 사진 삭제 ()
 	public boolean deleteGalleryPic(String param) {
+		System.out.println(param);
 		StringTokenizer tokens = new StringTokenizer(param, ",");
-		while(tokens.hasMoreElements()) {
-			
+		boolean result = false;
+		try {
+			while(tokens.hasMoreElements()) {
+				//System.out.println(tokens.nextToken());
+				dao.deleteGalleryPic(tokens.nextToken());
+				//System.out.println("예외발생");
+			}
+			//System.out.println("삭제성공");
+			result = true;
+		} catch (Exception e) {
+			//System.out.println("삭제실패");
+			e.getMessage();
 		}
-		return false;
+		return result;
 	}
 	
 	//갤러리 정보를 반환하는 ()
@@ -50,12 +63,14 @@ public class AccountsService {
 	
 	//더미 사용자 데이터 생성 서비스
 	public void setDnmmyData() {
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
 		for(int i = 0 ; i<50 ; i++) {
 			user = new User();
 			user.setUser_id("test@" + i);
-			user.setUser_pw("1");
-			user.setUser_fnm("스트" + i);
-			user.setUser_lnm("테" + i);
+			user.setUser_pw(encoder.encode("1")); //비밀번호 암호화 하여 저장 
+			user.setUser_fnm("저" + i);
+			user.setUser_lnm("유");
 			dao.setDnmmyData(user);
 		}
 	}
@@ -73,7 +88,7 @@ public class AccountsService {
 	
 	//갤러리 사진 등록()
 	public boolean setGalleryPic(List<Map<String, Object>> param) {
-		System.out.println("서비스 전달 받은 맵 확인 : " + param);
+		//System.out.println("서비스 전달 받은 맵 확인 : " + param);
 		//System.out.println("전달 받은 맵의 사이즈 : " + param.size());
 		//여러개의 파일을 넣어야 하기 때문에 반복문을 돌면서 dao에 값을 insert 해야 한다.
 		
@@ -107,6 +122,7 @@ public class AccountsService {
 	
 	//프로필 화면에 넘길 데이터 (Map) 반환하는 서비스
 	public Map<String, Object> getProfileData(int usernum){
+		//System.out.println("프로필 화면 요청 받음 : " + usernum);
 		//반환 할 Map 선언
 		Map<String, Object> result = new HashMap<String, Object>();
 		//인자로 받은 int 타입 usernum String으로 형 변환 
@@ -125,20 +141,37 @@ public class AccountsService {
 		}
 
 		//나이 구하기 (if문으로 간단 예외처리)
-		int age;
+		String age;
 		if(user.getUser_birth_date() != null) {
-			age = getAgeFromBirthday(user.getUser_birth_date());
+			//System.out.println("나이 들어있음");
+			age = Integer.toString(getAgeFromBirthday(user.getUser_birth_date())); 
 		}else {
-			age = 0;
+			age = null;
+		}
+		
+		//거주도시 이름 만들기 
+		String userCityCountry = null;
+		if(dao.getUserCityCountry(userNum) != null) {
+			Map<String, Object> CityCountry = dao.getUserCityCountry(userNum);
+			String city = (String) CityCountry.get("CITY");
+			String country = (String) CityCountry.get("COUNTRY");
+			userCityCountry = city + "," + country;
 		}
 		//관심사(좋아 하는 것)
-		List<Map<String, Object>> interest = dao.getUserInterest(userNum);
-		//사용가능 언어 
-		List<Map<String, Object>> language = dao.getUserLanguage(userNum);
+		List<Map<String, Object>> interest = null;
+		if(!dao.getUserInterest(userNum).isEmpty()) {
+			//System.out.println("좋아하는 것 null 아님 : " + dao.getUserInterest(userNum).toString());
+			interest = dao.getUserInterest(userNum);			
+		}
+		//사용가능 언어
+		List<Map<String, Object>> language = null;
+		if(!dao.getUserLanguage(userNum).isEmpty()) {
+			language = dao.getUserLanguage(userNum);
+		}
 
 		result.put("profile", user.getUser_profile_pic());				//프로필 사진 : 디폴트n
 		result.put("name", user_name); 			 						//이름
-		//작성X															//거주지역 : 패스
+		result.put("city", userCityCountry);							//거주지역
 		result.put("gender", user.getUser_gender()); 					//성별
 		result.put("lastLogin", lastLogin);								//마지막 로그인 시간
 		result.put("with_avg", user.getUser_with_avg());				//후기 평점
@@ -219,29 +252,37 @@ public class AccountsService {
 	
 	//비밀번호 변경 ()
 	public int passwordChange(Map<String, Object> param) {
-		System.out.println("서비스 전달 받은 MAP : " + param);
+		//비밀번호 암호화에 사용 될 객체 선언 및 초기화
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		//DAO에 넘겨줄 때 사용 할 Map 선언
+		Map<String, Object> user = new HashMap<String, Object>();
+		
+		//System.out.println("서비스 전달 받은 MAP : " + param);
+		
 		//반환 할 int 형 변수 선언 
 		int result;
 		
-		//전달 받은 Map 에서 필요한 데이터 변수에 참조
+		//전달 받은 Map 에서 필요한 데이터 변수에 참조 : 생략가능
 		String user_pw = (String)param.get("user_pw"); //DB상 비밀번호 
 		String old_pw = (String)param.get("old_user_pw"); //화면에 입력한 기존 비밀번호 
 		String pw1 = (String)param.get("new_user_pw1"); //변경 비밀번호
 		String pw2 = (String)param.get("new_user_pw2"); //변경 비밀번호 확인
 		
+		//전달 받은 Map에서 DAO로 넘길 떄 사용 될 USERNUM put
+		user.put("user_num", param.get("user_num"));
+		
 		if(pw1.equals(pw2)) {
-			System.out.println("새 비밀번호 동일");
-			if(user_pw.equals(old_pw)) {
-				//비밀번호 변경 성공
-				result = 1;
-				dao.passwordChange(param);
+			if(encoder.matches(old_pw,user_pw)) {
+				result = 1; //비밀번호 변경 성공
+				//DB에 저장 될 암호를 암호화 하여 Map에 Put 
+				user.put("new_user_pw", encoder.encode(pw1));
+				//DB에 새로운 비밀번호를 저장
+				dao.passwordChange(user);
 			}else {
-				//입력한 현재 비밀번호가 틀렸을 때
-				result = 2;
+				result = 2; //입력한 현재 비밀번호가 틀렸을 때
 			}
 		}else {
-			//확인 비밀번호 틀림
-			result = 0;
+			result = 0; //확인 비밀번호 틀림
 		}
 		return result;
 	}
@@ -263,24 +304,34 @@ public class AccountsService {
 	}
 	
 	public boolean join(Map<String, Object> param) { //회원가입 
+		//반환 할 boolean 변수 선언
+		boolean result = false;
+		//비밀번호 암호화를 위한 BCryptPasswordEncoder 선언 및 초기화 
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
 		//유저 객체 초기화
 		user = new User();   
 		//USER 객체에 파라미터로 받은 데이터 set
 		user.setUser_id((String)param.get("user_id")); //아이디 : 이메일
-		user.setUser_pw((String)param.get("user_pw")); //비밀번호
+		user.setUser_pw(encoder.encode((String)param.get("user_pw"))); //비밀번호를 암호화 하여 저장
 		user.setUser_lnm((String)param.get("user_lnm")); //성
 		user.setUser_fnm((String)param.get("user_fnm")); //이름
 		
 		//이메일 인증에 사용 될 key 넣기 
 		user.setUser_verify_code(create_key());
 		
-		//조건문을 통해서 boolean 값 반환  
-		if(dao.joinUser(user) > 0) {
-			send_mail(user); //이메일 인증 메일 전송 하기 
-			return true;
-		}else{
-			return false;
+		//사용자가 입력 한 아이디가 중복되지 않을 때에만 회원가입 로직 실행
+		if(dao.selectByUserId((String)param.get("user_id")) == null) {
+			result = false;
+			//조건문을 통해서 boolean 변수의 참조 값 변경 
+			if(dao.joinUser(user) > 0) { //가입 성공 시
+				send_mail(user); //이메일 인증 메일 전송 하기 
+				result = true;
+			}else{ // 가입 실패시
+				result = false;
+			}			
 		}
+		return result;
 	}
 	
 	//////////////////////////////////기타 메서드 
@@ -361,15 +412,7 @@ public class AccountsService {
 		String name = user.getUser_lnm() + user.getUser_fnm(); //유저 이름을 담는 변수
 		
 		subject = "라온다님 회원가입 인증 메일입니다.";
-		msg += "<div align='center' style='border:1px solid black; font-family:verdana'>";
-		msg += "<h3 style='color: blue;'>";
-		msg += name + "님 회원가입을 환영합니다.</h3>";
-		msg += "<div style='font-size: 130%'>";
-		msg += "하단의 인증 버튼 클릭 시 정상적으로 회원가입이 완료됩니다.</div><br/>";
-		msg += "<form method='post' action='http://localhost:8081/accounts/certify'>";
-		msg += "<input type='hidden' name='user_id' value='" + user.getUser_id() + "'>";
-		msg += "<input type='hidden' name='user_verify_code' value='" + user.getUser_verify_code() + "'>";
-		msg += "<input type='submit' value='인증'></form><br/></div>";
+		msg += "<table border='0'cellpadding='0'cellspacing='0'width='100%'style='table-layout: fixed;'><tr><td bgcolor='#ffffff'align='center'style='padding: 70px 15px 70px 15px;'class='section-padding'><table border='0'cellpadding='0'cellspacing='0'width='500'class='responsive-table'><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'><tbody><tr><td class='padding-copy'><table width='100%'border='0'cellspacing='0'cellpadding='0'><tr><td><a target='_blank'><img src='https://i.imgur.com/JhhrjFD.jpg'width='500'height='200'border='0'alt='Can an email really be responsive?'style='display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; width: 500px; height: 200px;'class='img-max'></a></td></tr></table></td></tr></tbody></table></td></tr><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'><tr><td align='center'style='font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;'class='padding-copy'><br><br>"+name+"님 라온다님 회원가입을 환영합니다.</td></tr><tr><td align='center'style='padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;'class='padding-copy'>하단의 인증 버튼 클릭 시<br>정상적으로 회원가입이 완료됩니다.<br></td></tr></table></td></tr><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'class='mobile-button-container'><tr><td align='center'style='padding: 25px 0 0 0;'class='padding-copy'><table border='0'cellspacing='0'cellpadding='0'class='responsive-table'></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table><div style='width: 100%; text-align:center;'><div style='margin: 0 auto; '><form method='post'action='http://localhost:8081/accounts/certify'><input type='hidden'name='user_id'value='" + user.getUser_id() + "'><input type='hidden'name='user_verify_code'value='" + user.getUser_verify_code() + "'><input type='submit'value='인증'style='font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #ffffff; text-decoration: none; background-color: #5D9CEC; border-top: 15px solid #5D9CEC; border-bottom: 15px solid #5D9CEC; border-left: 25px solid #5D9CEC; border-right: 25px solid #5D9CEC; border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; display: inline-block;'class='mobile-button'></form></div></div>";
 
 		// 받는 사람 E-Mail 주소
 		String mail = user.getUser_id();
@@ -417,6 +460,99 @@ public class AccountsService {
 		}
 	
 	}
+	
+	//이메일 중복여부 
+	public boolean emailCheck(String email) {
+		if(dao.selectByUserId(email) != null) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
+	//비밀번호 체크 
+	public boolean passwordCheck(String check, String usernum) {
+		//반환 할 boolean 변수 선언 
+		boolean result;
+		//DB에 저장되어 있는 사용자의 비밀번호를 변수에 참조한다.
+		String oldPw = dao.selectByUserNum(usernum).getUser_pw();
+		//System.out.println(oldPw);
+		//System.out.println(check);
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		//PasswordEncoder의 matches()를 이용해서 암호를 비교 
+		result = encoder.matches(check, oldPw);
+		//결과 반환 
+		return result;
+	}
+	
+	//비밀번호 초기화
+	public boolean passwordReset(String email) {
+		//DB에 저장 될 비밀번호를 암호화 하기 위한 객체 선언 
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(dao.selectByUserId(email) != null) {
+			//아이디가 존재하면 새로운 비밀번호를 DB에 넣고 이메일 전송을 진행한다.
+			//임시로 저장하고, 메일로 전송 할 비밀번호를 변수에 담는다 
+			String reset_pw = create_key();
+			//send_pwreset_mail()를 통해 사용자가 기입 한 메일로 메일을 보낸다.
+			User user = dao.selectByUserId(email);
+			send_pwreset_mail(user, reset_pw);
+			//DAO에 넘길 Map 선언 및 데이터 put
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("reset_pw", encoder.encode(reset_pw)); //암호화 된 암호를 넘겨준다.
+			param.put("userid", email);
+			dao.passwordReset(param);
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	//이메일 발송 () 
+	public void send_pwreset_mail(User user, String newpw){
+		// Mail Server 설정
+		String charSet = "utf-8";
+		String hostSMTP = "smtp.naver.com";
+		String hostSMTPid = "hyeungil9143@naver.com";
+		String hostSMTPpwd = "dkakwhs12!";
+
+		// 보내는 사람 EMail, 제목, 내용
+		String fromEmail = "hyeungil9143@naver.com";
+		String fromName = "라온다님 ";
+		String subject = "";
+		String msg = "";
+
+		// 회원가입 메일 내용
+		String name = user.getUser_lnm() + user.getUser_fnm(); //유저 이름을 담는 변수
+		
+		subject = "라온다님 임시 비밀번호 발급 메일입니다.";
+		msg += "<table border='0'cellpadding='0'cellspacing='0'width='100%'style='table-layout: fixed;'><tr><td bgcolor='#ffffff'align='center'style='padding: 70px 15px 70px 15px;'class='section-padding'><table border='0'cellpadding='0'cellspacing='0'width='500'class='responsive-table'><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'><tbody><tr><td class='padding-copy'><table width='100%'border='0'cellspacing='0'cellpadding='0'><tr><td><a target='_blank'><img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/48935/responsive-email.jpg'width='500'height='200'border='0'alt='Can an email really be responsive?'style='display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px; width: 500px; height: 200px;'class='img-max'></a></td></tr></table></td></tr></tbody></table></td></tr><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'><tr><td align='center'style='font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;'class='padding-copy'>임시 비밀번호 발급 메일입니다.</td></tr><tr><td align='center'style='padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;'class='padding-copy'>하단에 표시된 임시 비밀번호로 로그인 후<br>반드시 비밀번호를 변경해주세요.<br><br><strong>"+newpw+"</strong></td></tr></table></td></tr><tr><td><table width='100%'border='0'cellspacing='0'cellpadding='0'class='mobile-button-container'><tr><td align='center'style='padding: 25px 0 0 0;'class='padding-copy'><table border='0'cellspacing='0'cellpadding='0'class='responsive-table'><tr><td align='center'><a href='http://localhost:8081/accounts/loginForm'target='_blank'style='font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #ffffff; text-decoration: none; background-color: #5D9CEC; border-top: 15px solid #5D9CEC; border-bottom: 15px solid #5D9CEC; border-left: 25px solid #5D9CEC; border-right: 25px solid #5D9CEC; border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; display: inline-block;'class='mobile-button'>로그인 페이지&rarr;</a></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table>";
+
+		// 받는 사람 E-Mail 주소
+		String mail = user.getUser_id();
+		try {
+			HtmlEmail email = new HtmlEmail();
+			email.setDebug(true);
+			email.setCharset(charSet);
+			email.setSSL(true);
+			email.setHostName(hostSMTP);
+			email.setSmtpPort(587);
+
+			email.setAuthentication(hostSMTPid, hostSMTPpwd);
+			email.setTLS(true);
+			email.addTo(mail, charSet);
+			email.setFrom(fromEmail, fromName, charSet);
+			email.setSubject(subject);
+			email.setHtmlMsg(msg);
+			email.send();
+		} catch (Exception e) {
+			System.out.println("메일발송 실패 : " + e);
+		}
+	}
+	
+	//유저 월별 가입 숫자 뽑아오기 -
+	public List<Map<String, Object>> getUserRegDate(){
+		return dao.getUserRegDate();	
+	};
 	
 	
 }

@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<sec:authorize access="isAuthenticated()">
+   <sec:authentication property="principal.user_num" var="user_num"/>
+</sec:authorize>
 <% request.setAttribute("contextPath", request.getContextPath()); %>
 
 <!DOCTYPE html>
@@ -11,25 +17,34 @@
 
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script type="text/javascript">
-	
-	 $(function(){
-		var IMP = window.IMP;  // 생략가능
-		IMP.init('imp07370950'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
-		/* var num = ${num}; */
-		var price = ${price};
-		var item = '${item}';
+// 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+// 생략가능
+	  $(function(){
+		var num = "${motel_num}";
+		var host = "${host}";
+		var checkIn = "${checkIn}";
+		var checkOut = "${checkOut}";
+		var tripDate = "${tripDate}";
+		var people = "${people}";
+		
+		var IMP = window.IMP;  
+		IMP.init('imp07370950');
+
+		var price = '${price}';
+		
+		/* var item = '${item}'; */
 		IMP.request_pay({
-		    pg : 'paypal', // version 1.1.0부터 지원.
+		    pg : 'paypal', 
 		    pay_method : 'card',
 		    merchant_uid : 'merchant_' + new Date().getTime(),
 		    name : '주문명:결제테스트',
-		    amount : price,
+		    amount : 1,
 		    buyer_email : '',
 		    buyer_name : '',
 		    buyer_tel : '',
 		    buyer_addr : '',
 		    buyer_postcode : '',
-		   	m_redirect_url : 'http://localhost:8081/${contextPath}/motel/pay_result?item='+item+'&price='+price
+		   	m_redirect_url : 'http://localhost:8081/${contextPath}/motel/pay_result?num='+num+'&host='+host+'&checkIn='+checkIn+'&checkOut='+checkOut+'&tripDate='+tripDate+'&people='+people+'&price='+price+'&user_num='+${user_num}
 		} , function(rsp) {
 		    if ( rsp.success ) {
 
@@ -50,7 +65,15 @@
 </script>
 </head>
 <body>
-	<input type="hidden" id="price" value="${price }">
-	<input type="hidden" id="item" value="${item }">
+
+	<input type="hidden" name="price" value="${price}">
+	<input type="hidden" name="motel_num" value="${motel_num}">
+	<input type="hidden" name="host" value="${host}">
+	<input type="hidden" name="user_num" value="${user_num}">
+	
+	<input type="hidden" name="checkIn" value="${checkIn}">
+	<input type="hidden" name="checkOut" value="${checkOut }">
+	<input type="hidden" name="tripDate" value="${tripDate }">
+	<input type="hidden" name="people" value="${people}">
 </body>
 </html>

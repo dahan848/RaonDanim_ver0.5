@@ -27,7 +27,7 @@ public class customUserDetails implements UserDetails {
     private int user_failure_count; //로그인 실패 회수
     private String user_verify_code; //이메일 인증코드
     private int user_email_verify; 	 // 이메일 인증유무
-    private int user_profile_st;	 //추가 프로필 작성 유무 
+    private boolean user_profile_st;	 //추가 프로필 작성 유무 
     
     private String user_nationality; //국적
     private String user_nation; //거주 국가
@@ -167,11 +167,11 @@ public class customUserDetails implements UserDetails {
 		this.user_email_verify = user_email_verify;
 	}
 
-	public int getUser_profile_st() {
+	public boolean getUser_profile_st() {
 		return user_profile_st;
 	}
 
-	public void setUser_profile_st(int user_profile_st) {
+	public void setUser_profile_st(boolean user_profile_st) {
 		this.user_profile_st = user_profile_st;
 	}
 

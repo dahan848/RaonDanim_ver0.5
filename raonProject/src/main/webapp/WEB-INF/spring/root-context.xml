@@ -27,10 +27,13 @@
 	<bean
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		id="dataSource">
-		<property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" name="driverClassName" />
-		<property value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
-		<property value="dnrwls1993" name="username" />
-		<property value="123456789" name="password" />
+		<property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
+			name="driverClassName" />
+		<property
+			value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
+		<property value="manzza" name="username" />
+		<property value="1099" name="password" />
+
 	</bean>
 
 	<!-- 마이바티스 연동 -->
@@ -113,12 +116,13 @@
 		<property name="mapperInterface" value="com.raon.raondanim.dao.MotelTbDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
-	<!-- <bean id="motelAvgDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.raon.raondanim.dao.MotelAvgDAO"></property>
+	<!-- 채팅DAO -->
+	<bean id="chatDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.raon.raondanim.dao.ChatDAO"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
-	</bean> -->
+	</bean>
 	
-	<!-- 후기 DAO -->
+		<!-- 후기 DAO -->
 	<bean id="reviewBoardDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface"
 			value="com.raon.raondanim.dao.ReviewBoardDao"></property>
@@ -142,9 +146,6 @@
 			value="com.raon.raondanim.dao.WithReplyDao"></property>
 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
 	</bean>
-
-
-
 
 
 </beans>

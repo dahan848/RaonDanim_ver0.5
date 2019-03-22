@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<sec:authorize access="isAuthenticated()">
+   <sec:authentication property="principal.user_num" var="user_num"/>
+</sec:authorize>
 <%
 	request.setAttribute("contextPath", request.getContextPath());
 %>
@@ -10,27 +16,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- 스윗얼럿 -->
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-<!-- 부트스트랩 -->
-
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<!-- 부트스트랩 END -->
-
-<!-- 달력 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<link href="${contextPath }/css/bootstrap-datepicker2.css" rel="stylesheet">
-<link href="${contextPath }/css/bootstrap-datepicker.css" rel="stylesheet">
-<script src="${contextPath }/js/bootstrap-datepicker.js" type="text/javascript"></script>
-<!-- 달력 END -->
-
 
 
 <!-- 서치바 CSS -->
@@ -46,17 +31,91 @@
 <!-- 폰트어썸 -->
 
 
+<!-- 달력 -->
+<%-- <link href="${contextPath }/css/bootstrap-datepicker2.css" rel="stylesheet">--%>
+<link href="${contextPath }/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<script src="${contextPath }/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="${contextPath }/js/bootstrap-datetimepicker.ko.js" type="text/javascript"></script>
+<!-- 달력 END -->
+
 <script type="text/javascript">
 	var count = 1;
 	var n = 0;
 	var cssCount = 0;
+	var category_value="";
+	var type_value = "";
+	var city = "${city}";
+	var motel_people = "${adults}";
+	var startDate = "${startDate}";
+	var endDate = "${endDate}";
+	var motel_price1=0;
+	var motel_price2=0;
+	var date = "${date}";
+	var currDay = 24 * 60 * 60 * 1000;// 시 * 분 * 초 * 밀리세컨
+	var currMonth = currDay * 30;// 월 만듬
+	var currYear = currMonth * 12; // 년 만듬
+	
 	$("#myModal2").modal({
 		keyboard:true
 	})
-	$(function() {
+	
+	 $(function() {
+		 
+		 //체크인날짜 시간 자르고 input에 넣기
+		 $("input[name=startDate]").on("change",function(){
+			 var dateFormat = $("input[name=startDate]").val();
+			 var day = dateFormat.substring(0,10);
+			 $("input[name=startDate]").val(day);
+				
+		 })
+		 //체크아웃날짜 시간 자르고 input에 넣기
+		 $("input[name=endDate]").on("change",function(){
+			 var dateFormat1 = $("input[name=endDate]").val();
+			 var day1 = dateFormat1.substring(0,10);
+			 $("input[name=endDate]").val(day1);
+		 })
+		 //도시 검색 버튼 클릭시 div box 내용을 비우고 새로운 createList 함수 호출
+		 $("#btnCity").on("click",function(){
+			 	city=""
+				 city = $("input[name=city]").val();
+				 $("#con").empty();
+				 count=1;
+				var placeholder = $("input[name=city]");
+				placeholder.attr("placeholder","");
+				
+				placeholder.attr("placeholder",city);
+				alert(placeholder.attr("placeholder"));
+				placeholder.val("");
+				 createList(city);
+				 count++;
+		 })
+		 
 		
+		 //숙박 카테고리 변경시 div box 내용을 비우고 새로 createList 함수 호출
+		 $("#motel_category").on("change",function(){
+			 var motel_category = $("#motel_category");
+			 category_value="";
+			 category_value = motel_category.val();
+			 
+			 $("#con").empty();
+			 count=1;
+			 createList(category_value);
+			 count++;
+		 })
+		 //숙박 타입 변경시 div box 내용을 비우고 새로 createList 함수 호출
+		 $("#motel_type").on("change",function(){
+			 var motel_type = $("#motel_type");
+			 type_value="";
+			 type_value = motel_type.val();
+			 
+			$("#con").empty();
+			 count=1;
+			 createList(type_value);
+			 count++;
+		 })
+		 
 		var people = $("#people").text();
-		var cPeople = $("#cPeople").text();
+		
 		
 		$("#con").css("height", "0px");
 		
@@ -73,15 +132,8 @@
 			}
 		})
 		createList();
-		
-		/* function price(){
-			var price = "$('#price1').val() "+"~"+" $('#price2').val()";
-			$("#price").val(price);
-			onclick="price();" 
-		} */
-		
-		
-		
+		count++;
+
 		
 		$(".btn-default").on("click", function() {
 			/* alert("123");
@@ -89,32 +141,72 @@
 			alert(price1); */
 			var price = $('.price1').val() +"~"+ $('.price2').val();
 			$(".price").val(price);
+			var tmpPrice = price.split('~');
+			
+			motel_price1 = tmpPrice[0];
+			motel_price2 = tmpPrice[1];
+			
+			$("#con").empty();
+			count=1;
+			 createList(motel_price1, motel_price2);
+			 count++;
 			
 		})
 		
-		/* $("#btnPrice").on("click",function(){
-			alert("123");
-			var price = "$('#price1').val() "+"~"+" $('#price2').val()";
-			$("#price").val(price);
-		}) */
 		
 		
 		$('[data-toggle="popover"]').popover();
-		$("#datePickerCheckIn").datepicker(
-				{
-					
+		/* $(".form_date").datepicker({
+					language:"ko",
+					dateFormat:'yy-mm-dd',
+					minDate:0,
+					onSelect:function(){
+						alert("1234");
+					}
 
-				});
-		/* $("#datePickerCheckIn").on("click",function(){
-		alert($("#datePickerCheckIn").datepicker.option.minDate.val());
-			debugger;
-		}) */
-		$("#datePickerCheckOut").datepicker({
-			
-			dateFormat : 'yyyy-mm-dd',
-			
-			weekStart:1,
-	    	color: 'red',
+				}); */
+		
+		/* $(".form_date").datetimepicker({
+			minDate:0,
+			dateFormat:'yy-mm-dd',
+			language:  'ko',
+			autoclose: 1,
+			todayHighlight: 1,
+			onSelect:function(){
+				alert("1234");
+			}
+
+		}); */
+		
+		$('#datePickerCheckIn').datetimepicker({
+			language:  'ko',
+			minDate: 0,
+	        weekStart: 1,
+	       
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0,
+			onSelect:function(){
+				
+			}
+	    });
+		
+		
+		$("#datePickerCheckOut").datetimepicker({
+			language:  'ko',
+			minDate: 0,
+	        weekStart: 1,
+	        
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0,
+			onSelect:function(){
+				
+			}
 		});
 		
 
@@ -128,11 +220,18 @@
 			}else{
 				people++;
 				$("#people").text(people);
+				
+				$("#con").empty();
+				motel_people="";
+				motel_people=$("#people").text();
+				 count=1;
+				 createList(motel_people);
+				 count++;
 			}
 			
 		})
 		$("#minus").on("click", function() {
-			if($("#people").text()<1){
+			if($("#people").text()<=1){
 				swal({
 					text:"숙박 인원을 1명 이상 설정해 주세요",
 					icon:"warning",
@@ -141,6 +240,12 @@
 			}else{
 				people--;
 				$("#people").text(people);
+				$("#con").empty();
+				motel_people="";
+				motel_people=$("#people").text();
+				 count=1;
+				 createList(motel_people);
+				 count++;
 			}
 			
 		})
@@ -151,6 +256,7 @@
 		$("#cMinus").on("click", function() {
 			cPeople--;
 			$("#cPeople").text(cPeople);
+			
 		})
 
 	});
@@ -164,18 +270,62 @@
 		return fileName.substr(idx);
 	}
 	
+	
+	function startDateCheck(){
+		if($("input[name=startDate]").val()){
+			//strDate1 - strDate2 날짜 연산 
+			var strDate2 = endDate
+			startDate="";
+			startDate = $("input[name=startDate]").val()
+			var strDate1 = startDate
+			var arr1 = strDate1.split('-');
+			var arr2 = strDate2.split('-');
+			var dat1 = new Date(arr1[0], arr1[1], arr1[2]);
+			var dat2 = new Date(arr2[0], arr2[1], arr2[2]);
+			var diff = dat2 - dat1;
+			date = parseInt(diff/currDay)+1;
 
+			
+			$("#con").empty();
+			count = 1;
+			createList(startDate);
+			count++;
+		}
+	}
+	function endDateCheck(){
+		if($("input[name=endDate]").val()){
+			//strDate1 - strDate2 날짜 연산 
+			var strDate1 = startDate
+			endDate="";
+			endDate = $("input[name=endDate]").val()
+			var strDate2 = endDate
+			var arr1 = strDate1.split('-');
+			var arr2 = strDate2.split('-');
+			var dat1 = new Date(arr1[0], arr1[1], arr1[2]);
+			var dat2 = new Date(arr2[0], arr2[1], arr2[2]);
+			var diff = dat2 - dat1;
+			date = parseInt(diff/currDay)+1;
+
+			$("#con").empty();
+			count = 1;
+			createList(endDate);			
+			count++;
+
+		}
+	}
+	
 	function createList() {
 		//회원 목록을 그려주는 역할을 하는 함수
 		//회원 목록을 그리기 위해서는
 		//회원 목록을 서버에 요청해서 받아와야 한다 : ajax
-		var table = $("#listTable");
+		
 		var conHeight = $("#con").height();
 		var heightNum=0;
-		//listTable 요소 중 하위요소인 0보다 큰 tr을 선택하여 remove
+		var naver = "http://www.naver.com";
 
+		
 		$.ajax({
-					url : "${contextPath}/motel/list?page=" + count,
+					url : "${contextPath}/motel/list?page=" + count+"&city="+city+"&motel_people="+motel_people+"&startDate="+startDate+"&endDate="+endDate+"&motel_type="+type_value+"&motel_category="+category_value+"&motel_price1="+motel_price1+"&motel_price2="+motel_price2,
 					data:{"${_csrf.parameterName}":"${_csrf.token}"},
 					type : "post",
 					dataType : "json",
@@ -189,12 +339,20 @@
 							var col="#col"+n;
 							$(col).append('<div class="item-cover item-cover-sm" id="itemCover'+n+'">');
 							var itemCover = "#itemCover"+n;
-							$(itemCover).append('<a href="view?num='+data.board.boardList[i].MOTEL_NUM+'&host='+data.board.boardList[i].USER_NUM+'"><div class="cover-background" style="background-image:url(${contextPath}/img/house1.jpg);"></div></a>');
+							$(itemCover).append('<a href="view?num='+data.board.boardList[i].MOTEL_NUM+'&host='+data.board.boardList[i].MOTEL_USER_NUM+'&checkIn='+startDate+'&checkOut='+endDate+'&tripDate='+date+'&people='+motel_people+'"><div class="cover-background" style="background-image:url(${contextPath}/img/house1.jpg);"></div></a>');
 							$(itemCover).append('<div class="cover-profile-image" id="profile'+n+'"> </div>');
 							var profile="#profile"+n;
-							var $pop=$('<a href="#none" data-toggle="popover" data-html="true" data-content="프로필 보기<br>친구 신청<br>대화 하기" data-trigger="focus"><img src="${contextPath}/img/duny.jpg" class="img-profile"></a>');
-							$(profile).append($pop);
-							$pop.popover();
+							var user_numTest1 = "${user_num}";
+							var user_numTest2 = data.board.boardList[i].MOTEL_USER_NUM;
+							if(user_numTest1 != user_numTest2){
+								var $pop=$('<a href="#none" data-toggle="popover" data-html="true" data-content="<a href='+naver+'>프로필 보기</a><br>친구 신청<br>대화 하기" data-trigger="focus"><img src="${contextPath}/img/duny.jpg" class="img-profile"></a>');
+								$(profile).append($pop);
+								$pop.popover();
+							}else{
+								var $pop=$('<a href="${contextPath}/accounts/profile?user='+user_numTest2+'"><img src="${contextPath}/img/duny.jpg" class="img-profile"></a>');
+								$(profile).append($pop);
+							}
+							
 							$(itemCover).append('<h4 class="profile-name">'+data.board.boardList[i].USER_FNM+data.board.boardList[i].USER_LNM+'</h4>');
 							$(itemCover).append('<p class="profile-city">인원 '+data.board.boardList[i].MOTEL_PEOPLE+'명, 침대 '+data.board.boardList[i].MOTEL_ROOM+'개, 욕실 '+data.board.boardList[i].MOTEL_BATHROOM+'개</p>');
 							var motel_price=data.board.boardList[i].MOTEL_PRICE;										
@@ -216,36 +374,43 @@
 							cssCount++;
 							
 							if(i>=0&&i<=2){
-								heightNum=1;									
+								heightNum=1;	
+								console.log("1번");
 							}
 							if(i>2&&i<=5){
-								heightNum=2;									
+								heightNum=2;
+								console.log("2번");
 							}
 							if(i>5&&i<=8){
-								heightNum=3;									
+								heightNum=3;	
+								console.log("3번");
 							}
+							boxNum = heightNum;
+							console.log("4번");
 							
 							if(i==data.board.boardList.length-1){
 								
+								console.log("5번");
 								
 								if(heightNum==1){
-									conHeight=conHeight+$("#col0").height();
-									/* conHeight=conHeight+360; */
+									conHeight=390;
 									$("#con").css("height",conHeight+"px");
 								}
 								if(heightNum==2){
-									conHeight=conHeight+$("#col0").height()*2;
-									/* conHeight=conHeight+720; */
-									$("#con").css("height",conHeight+"px");
+									conHeight=390*2;
+									$("#con").css("height",conHeight+"px");								
 								}
-								if(heightNum==3){
-									conHeight=conHeight+$("#col0").height()*3;
-									/* conHeight=conHeight+1080; */
-									$("#con").css("height",conHeight+"px");
+								if(heightNum==3){									
+									conHeight=390*3;
+									$("#con").css("height",conHeight+"px");								
 								}
 								heightNum=0;
+								console.log(conHeight);
 								
 							}
+							
+							
+						
 							
 							//listTable 요소에 tr 만들어 내용 채우기
 							
@@ -420,7 +585,7 @@ input{
 }
 </style>
 </head>
-<body>
+<body id="body">
 
 
 	
@@ -430,10 +595,10 @@ input{
 		<div class="row" style="margin-left: 18%; margin-top:2%;">
 			<div id="custom-search-input">
 				<div class="input-group col-md-12">
-					<input type="text" class="  search-query form-control"
-						placeholder="Search" style="width: 500px;" /> 
+					<input type="text" class="  search-query form-control" name="city"
+						placeholder="${city }" style="width: 500px;" /> 
 						<span class="input-group-btn" style="float: left;">
-						<button class="btn btn-primary" type="button">
+						<button class="btn btn-primary" type="button" id="btnCity">
 							<span class=" glyphicon glyphicon-search"></span>
 						</button>
 					</span>
@@ -448,17 +613,32 @@ input{
 		<div >
 			<!-- 날짜 -->
 			
-			<input type="text" id="datePickerCheckIn" placeholder="Check In" style="top: 50%;">
-			~ <input type="text" placeholder="Check Out" id="datePickerCheckOut">
+			<!-- <div class="form-group">
+                
+                <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                    <input class="form-control" size="16" type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+				<input type="hidden" id="dtp_input2" value="" /><br/>
+            </div> -->
 			
+			
+			
+			<input type="text" class="date form_date" id="datePickerCheckIn" name="startDate" readonly="readonly" placeholder="Check In" onchange="startDateCheck()" value="${startDate }" style="top: 50%;">
+			~ <input type="text" class="date form_date" placeholder="Check Out" readonly="readonly" name="endDate" value="${endDate }" onchange="endDateCheck()" id="datePickerCheckOut">
+			
+			
+			
+                
 			<!-- 인원 -->
 			<p style="display: inline-block; margin-left: 30px;">인원</p>
 			<button id="plus" class="fa fa-plus-circle fa-lg" style="outline: none; border: 0; background-color: white; color: #428bca;"></button>
-			<label id="people">0</label>
+			<label id="people">${adults}</label>
 			<!-- label값 변경할것 -->
 			<button id="minus" class="fa fa-minus-circle fa-lg" style="outline: none; border: 0; background-color: white; color: #428bca;"></button>
 			<!-- 숙박 종류 -->
-			<select class="form-control" id="sel1"
+			<select class="form-control" id="motel_type" name="motel_type"
 				style="width: 150px; margin-left:30px; display: inline-block;">
 				<option value="0">숙소 종류</option>
 				<option value="1">아파트</option>
@@ -466,13 +646,13 @@ input{
 				<option value="3">빌라</option>
 			</select>
 			<!-- 숙박 유형 -->
-			<select class="form-control" id="sel1"
+			<select class="form-control" id="motel_category" name="motel_category"
 				style="width: 150px; margin-left:30px; display: inline-block;">
 				<option value="0">숙소 유형</option>
 				<option value="1">집 전체</option>
 				<option value="2">방 하나</option>
 			</select> 
-			<input type="text" placeholder="금액" data-toggle="modal" class="price" data-target="#myModal"  style="margin-left: 30px;">
+			<input type="text" placeholder="금액" readonly="readonly" data-toggle="modal" class="price" data-target="#myModal"  style="margin-left: 30px;">
 		
 			<!-- <input type="text" placeholder="금액" data-toggle="modal" data-target="#myModal"  style="margin-left: 30px; width: 100px;"> -->
 			<div class="modal fade" id="myModal" role="dialog">

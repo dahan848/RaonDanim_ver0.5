@@ -12,10 +12,9 @@
 <!-- <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
 	
-<link href="${contextPath }/css/bootstrap-datepicker2.css" rel="stylesheet">
-<link href="${contextPath }/css/bootstrap-datepicker.css" rel="stylesheet">
-<script src="${contextPath }/js/bootstrap-datepicker.js" type="text/javascript"></script>
-<link href="${contextPath}/css/commonness.css" rel="stylesheet">
+<link href="${contextPath }/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<script src="${contextPath }/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="${contextPath }/js/bootstrap-datetimepicker.ko.js" type="text/javascript"></script>
 <!-- 달력 END -->
 <link
 	href="https://a0.muscache.com/airbnb/static/packages/dls/common_o2.1_cereal-38a6a6c175aa965641bbe496d3c31e2d.css"
@@ -75,32 +74,75 @@
 <link rel="mask-icon"
 	href="https://a0.muscache.com/airbnb/static/icons/airbnb-0611901eac33ccfa5e93d793a2e21f09.svg"
 	color="#FF5A5F" />
-	
-	<!-- <script>
-	$(function() {
-	    $( "#datePickerCheckIn" ).datepicker({
-	    	dateFormat:'yy-mm-dd',
-	    	minDate:0,
-	    	weekStart:1,
-	    	color: 'red',
-	    	onClose:function(selectedDate){
-	    		alert("!@4");
-	    		$("#datePickerCheckOut").datepicker("option","minDate",selectedDate);
-	    	}
-	    	
-	    	
-	    });
-	    $( "#datePickerCheckOut" ).datepicker({
-	    	dateFormat:'yy-mm-dd',
-	    	weekStart:1,
-	    	 color: 'red'
-	    	/* onClose:function(selectedDate){
-	    		$("#datePickerCheckIn").datepicker("option","maxDate",selectedDate);
-	    	} */
-	    	
-	    });
-	});
-	</script> -->
+
+	<script type="text/javascript">
+
+	$(function(){
+		$("#MagicCarpetSearchBar").on("submit",function(e){
+			var tmpLocation = $("#lp-geocomplete").val();
+			var tmpCheckIn = $("#datePickerCheckIn").val();
+			var tmpCheckOut = $("#datePickerCheckOut").val();
+				if(tmpLocation ==""){
+					swal({					
+						text:"여행지를 입력해 주세요",					
+						icon:"warning",		
+						buttons:[false,"확인"]
+					}).then(function(isConfirm){
+						return false;
+					})
+					
+					
+				}else if(tmpCheckIn==""){
+					swal({					
+						text:"체크인 날짜를 입력하세요",					
+						icon:"warning",		
+						buttons:[false,"확인"]
+					}).then(function(isConfirm){
+						return false;
+					})
+				}else if(tmpCheckOut==""){
+					swal({					
+						text:"체크아웃 날짜를 입력하세요",					
+						icon:"warning",		
+						buttons:[false,"확인"]
+					}).then(function(isConfirm){
+						return false;
+					})
+				}else{
+					return true;
+				}
+				return false;
+				//$("#MagicCarpetSearchBar").attr("action","searchList");
+		})
+	})
+		/* function check(){
+		var tmpLocation = $("#lp-geocomplete").val();
+		var tmpCheckIn = $("#datePickerCheckIn").val();
+		var tmpCheckOut = $("#datePickerCheckOut").val();
+			if(tmpLocation ==""){
+				console.log("1")
+				
+				swal({					
+					text:"여행지를 입력해 주세요",					
+					icon:"warning",		
+					buttons:[false,"확인"]
+				}).then(function(isConfirm){
+					location.reload();
+				})
+				
+				
+			}else if(tmpCheckIn==""){
+				alert("체크인 날짜를 입력하세요");
+				return false;
+			}else if(tmpCheckOut==""){
+				alert("체크아웃 날짜를 입력하세요");
+				return false;
+			}else{
+				$("#MagicCarpetSearchBar").attr("action","searchList");
+				return true;
+			} 
+		} */
+	</script>
 <style data-aphrodite="data-aphrodite">
 .ui-datepicker{ font-size: 12px; width: 290px; }
 
@@ -935,8 +977,8 @@ to {
 				</div>
 				<div>
 					<div class="_slilk2">
-						<form id="MagicCarpetSearchBar"
-							data-arrive-module-id="magicCarpetSearchBar" action="searchList">
+						<form id="MagicCarpetSearchBar" action="searchList"
+							data-arrive-module-id="magicCarpetSearchBar" >
 							<div>
 								<div style="margin-top: 20px; margin-bottom: 20px;">
 									<div data-arrive-module-id="mc-autocomplete-module">
@@ -955,7 +997,7 @@ to {
 																		<input type="text" autocomplete="off"
 																			aria-autocomplete="list" aria-expanded="false"
 																			aria-haspopup="true" class="_1mcoxpnl"
-																			id="lp-geocomplete" name="location"
+																			id="lp-geocomplete" name="city"
 																			placeholder="여행지를 입력하세요">
 																		<!-- <div data-veloute="undefined__clearButton"
 																			class="_1cyay8zu">
@@ -999,19 +1041,22 @@ to {
 																		<div class="_178faes">
 																			<input type="text" class="_18nbudra"
 																				data-veloute="checkin_input" id="datePickerCheckIn"
-																				name="checkin" placeholder="년/월/일" value=""
-																				readonly="">
+																				name="startDate" placeholder="년/월/일" value=""
+																				readonly="readonly">
 																				<script>
-																				$( "#datePickerCheckIn" ).datepicker({
-																			    	dateFormat:'yy-mm-dd',
-																			    	minDate:0,
-																			    	weekStart:1,
-																			    	color: 'red',
-																			    	onClose:function(selectedDate){
-																			    		alert("!@4");
-																			    		$("#datePickerCheckOut").datepicker("option","minDate",selectedDate);
-																			    	}
-
+																				$('#datePickerCheckIn').datetimepicker({
+																					language:  'ko',
+																					minDate: 0,
+																			        weekStart: 1,
+																			       
+																					autoclose: 1,
+																					todayHighlight: 1,
+																					startView: 2,
+																					minView: 2,
+																					forceParse: 0,
+																					onSelect:function(){
+																						
+																					}
 																			    });
 																			</script>
 																		</div>
@@ -1034,18 +1079,33 @@ to {
 																		<div class="_178faes">
 																			<input type="text" class="_18nbudra"
 																				data-veloute="checkout_input" id="datePickerCheckOut"
-																				name="checkout" placeholder="년/월/일" value=""
-																				readonly="">
+																				name="endDate" placeholder="년/월/일" value=""
+																				readonly="readonly">
 																				<script type="text/javascript">
-																				$( "#datePickerCheckOut" ).datepicker({
-																			    	dateFormat:'yy-mm-dd',
-																			    	weekStart:1,
-																			    	 color: 'red'
-																			    	/* onClose:function(selectedDate){
-																			    		$("#datePickerCheckIn").datepicker("option","maxDate",selectedDate);
-																			    	} */
-																			    	
-																			    });
+																				$("#datePickerCheckOut").datetimepicker({
+																					language:  'ko',
+																					minDate: 0,
+																			        weekStart: 1,
+																					autoclose: 1,
+																					todayHighlight: 1,
+																					startView: 2,
+																					minView: 2,
+																					forceParse: 0,
+																					onSelect:function(){
+																						
+																					}
+																				});
+																				$("input[name=startDate]").on("change",function(){
+																					 var dateFormat = $("input[name=startDate]").val();
+																					 var day = dateFormat.substring(0,10);
+																					 $("input[name=startDate]").val(day);
+																						
+																				 })
+																				 $("input[name=endDate]").on("change",function(){
+																					 var dateFormat1 = $("input[name=endDate]").val();
+																					 var day1 = dateFormat1.substring(0,10);
+																					 $("input[name=endDate]").val(day1);
+																				 })
 																				</script>
 																		</div>
 																	</div>
@@ -1130,7 +1190,7 @@ to {
 							<div id="lp-search-button"
 								data-veloute="search_bar_small_search_button">
 								<div>
-									<button type="submit" class="_taglxzq" aria-busy="false" >
+									<button type="submit" id="btnSubmit" class="_taglxzq" aria-busy="false" >
 										<span class="_ftj2sg4">검색</span>
 									</button>
 								</div>

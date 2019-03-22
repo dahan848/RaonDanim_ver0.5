@@ -273,7 +273,19 @@ input[type="file"] {
             	xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
             },
             success : function(result) {
-            	alert(result);
+            	if(result){
+                	swal({
+  					  text: "사진 삭제에 성공했습니다.",
+  					  button: "확인",
+  					}).then(function() {
+    						location.reload(); //사진 삭제 성공하면 화면 새로고침
+    					});	
+            	}else{
+            	  	swal({
+    					  text: "사진 삭제에 실패했습니다.",
+    					  button: "확인",
+    					});
+            	}
             },
             error : function(error) {
                 console.log(error);
