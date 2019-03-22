@@ -112,23 +112,37 @@
 															allowClear: true,
 															ajax: {
 																url: function(params){
+																	
 																	console.log(params);
-																	var url = "http://localhost:8000/api/cities";
-																	if(params.page > 1){
-																		url = "http://localhost:8000/api/cities/?page=" + params.page;
+																	var url = "http://localhost:8000/api/cities/";
+																	
+																	if(params.term == null || params.term == ""){
+																		if(params.page > 1){
+																			url = url + "?page=" + params.page;
+																			return url
+																		}else{
+																			return url
+																		}
+																	}else{
+																		if(params.page > 1){
+																			url = url + "?page=" + params.page + "&?search=" + params.term;
+																			return url
+																		}else{
+																			url = url + "?search=" + params.term;
+																			return url
+																		}
 																	}
-																	return url
 																},
+																delay: 250,
 																dataType: 'json',
 																data: function(params){
-																	search: params.term
+																	
 																},
 																processResults: function(data,params){
-																	console.log(data);
 																	params.page = params.page || 1;
 																	return{
 																		results: data.results,
-																		pagination: {
+																		pagination: {																		
 																			more: (params.page * 30) < data.count
 																		}
 																	};
