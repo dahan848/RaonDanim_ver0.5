@@ -150,4 +150,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 ORDER BY r.WITH_NUM DESC
 	</select>
 	
+	<select id="searchUser" parameterType="map" resultType="map">
+		SELECT       * 
+		  FROM       USER_TB
+  		 WHERE 	     1=0
+  		 <if test="USER_LNM != null">
+  		 		or	 USER_LNM   like   ('%#{USER_LNM}%') 
+  		 </if>
+  		 <if test="USER_FNM != null"> 
+  		        or   USER_FNM   like   ('%#{USER_FNM}%') 
+  		 </if>
+  		 <if test="USER_ID != null">
+  		        or   USER_ID    like   ('%#{USER_ID}%')
+  		 </if>
+  		 <if test="type == 0">
+  		 		or   1=1
+  		 </if>
+	</select>
+	
+	<select id="searchTotal" parameterType="map" resultType="int">
+		SELECT 		 count(*) 
+		  FROM 		 USER_TB 
+		  WHERE 	     1=0
+  		 <if test="USER_LNM != null">
+  		 		or	 USER_LNM   like   ('%#{USER_LNM}%') 
+  		 </if>
+  		 <if test="USER_FNM != null"> 
+  		        or   USER_FNM   like   ('%#{USER_FNM}%') 
+  		 </if>
+  		 <if test="USER_ID != null">
+  		        or   USER_ID    like   ('%#{USER_ID}%')
+  		 </if>
+  		 <if test="type == 0">
+  		 		or   1=1
+  		 </if>
+	</select>
 </mapper>

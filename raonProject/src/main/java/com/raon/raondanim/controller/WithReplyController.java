@@ -69,19 +69,19 @@ public class WithReplyController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	@RequestMapping(value="/delete", method=RequestMethod.GET)
 	public boolean deleteReply(
 			@RequestParam(value="input_reply_pass") int input_reply_pass,
-			@RequestParam(value="userNum") int userNum,
+			@RequestParam(value="userNum") String userNum,
 			@RequestParam(value="num") int num,
 			@RequestParam(value="wi_Reply_Num") int wi_Reply_Num
 			) {
 		System.out.println("댓글 삭제 컨트롤러 진입");
 
-//		System.out.println("입력한 비밀번호 : " + input_reply_pass);
-//		System.out.println("로그인된 USER_NUM : " + userNum);
-//		System.out.println("게시글 번호 : " + num);
-//		System.out.println("댓글 번호 : "+re_Reply_Num);
+		System.out.println("입력한 비밀번호 : " + input_reply_pass);
+		System.out.println("로그인된 USER_NUM : " + userNum);
+		System.out.println("게시글 번호 : " + num);
+		System.out.println("댓글 번호 : "+wi_Reply_Num);
 		
 		Map<String, Object> replyDelete = new HashMap<>();
 		replyDelete.put("input_reply_pass", input_reply_pass);

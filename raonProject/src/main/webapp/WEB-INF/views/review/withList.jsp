@@ -15,6 +15,25 @@
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
+<script type="text/javascript">
+//------------------- 별점 시작 ------------------- //
+$(function(){
+    $(".starRev span").click(function(){
+         var index = $(".starRev span").index(this);
+         console.log(index+1);
+         for(i=0; i<5; i++){
+            
+            $(this).parent().children('span').removeClass('on');
+            $(this).addClass('on').prevAll('span').addClass('on');
+         }
+         $("#WITH_GPA").val(index+1);
+	
+        return false;
+      });    
+});
+// ------------------- 별점 끝 ------------------- //
+</script>
+
 <style type="text/css">
 	#box {
     	float: left;
@@ -45,6 +64,28 @@
     	width: 100px;
     	height: 100px;
 	}
+	.starR{
+        	background: url('http://miuu227.godohosting.com/images/icon/ico_review.png') no-repeat right 0;
+          	background-size: auto 100%;
+          	width: 30px;
+          	height: 30px;
+          	display: inline-block;
+          	text-indent: -9999px;
+          	cursor: pointer;
+    	}
+    	.starR.on{
+        	background-position:0 0;
+    	}
+    	#star {
+        	margin-left: 20px; 
+    	}
+    	#starCase {
+/*       		border: 1px solid #cccccc; */
+/*       		background-color: #eeeeee; */
+      		width: 500px;
+/*       		float: right; */
+/*       		margin-bottom: 10px; */
+    	}
 </style>
 
 </head>
@@ -66,14 +107,14 @@
  
                 <h3>
                     <i class="fas fa-cloud" style="font-size: 38px; color: aqua;"></i>
-                    ${withBoard.user_lnm}${withBoard.user_fnm}님의 후기 게시판
+                    ${withBoard.User.user_lnm}${withBoard.User.user_fnm}님의 후기 게시판
                 </h3>
  
                 <!----------------------------------------- 프로필 시작 -------------------------------------->
                 <div class="box" id="box">
                     <div id="userimg"></div>
-                    <br> <a>${withBoard.user_lnm}${withBoard.user_fnm}</a> <br>
-                    <br> <a>여행지 : <b>${withBoard.user_gender}</b></a> <br>
+                    <br> <a>${withBoard.User.user_lnm}${withBoard.User.user_fnm}</a> <br>
+                    <br> <a>여행지 : <b>${withBoard.User.user_gender}</b></a> <br>
                     <br> <i class="fas fa-home"> <br> <a>숙소 평점</a> <br>
                         <a><i style="color: blue;">4.2</i> / 5</a>
                     </i> <i class="fas fa-camera" style="margin-left: 20px;"> <br>
@@ -105,21 +146,51 @@
                 <c:forEach items="${withList}" var="withList" varStatus="status">
                     <tr style="border: 1px solid #cccccc;">
                         <td style="border: 1px solid #cccccc; text-align: center;">
-                            <a style="font-size: 20px;">
+                            <a style="font-size: 20px; vertical-align: middle;">
                                 ${withList.USER_LNM}${withList.USER_FNM}
                             </a>
                         </td>
-                        <td style="border: 1px solid #cccccc; text-align: center;">
-                            <a style="font-size: 20px;">
-                                <i style="color: blue;">${withList.WITH_GPA}</i> / 5
-                            </a>
-                        </td>
+<!--                         <td style="border: 1px solid #cccccc; text-align: center;"> -->
+<!--                             <a style="font-size: 20px;"> -->
+<%--                                 <i style="color: blue;">${withList.WITH_GPA}</i> / 5 --%>
+<!--                             </a> -->
+<!--                         </td> -->
+                        <!----------------------------------------- 별점 시작 -------------------------------------->
+						<td>
+							<div id="starCase">		
+								<div class="starRevWookJin" id="reviewScore">
+									<c:set var="cnt" value="1" />
+									<c:forEach begin="1" end="5">
+										<c:if test="${cnt<= withList.WITH_GPA}">
+											<span class="starR on" id="star">Wookjin</span>
+										</c:if>
+										<c:if test="${cnt> withList.WITH_GPA}">
+											<span class="starR" id="star">Wookjin</span>
+										</c:if>
+									<c:set var="cnt" value="${cnt+1}"/>
+									</c:forEach>							
+<!-- 							<span class="starR on" id="star">별1</span>  -->
+<!-- 							<span class="starR" id="star">별2</span>  -->
+<!-- 							<span class="starR" id="star">별3</span>  -->
+<!-- 							<span class="starR" id="star">별4</span>  -->
+<!-- 							<span class="starR" id="star">별5</span> -->
+								<input type="hidden" name="WITH_GPA" id="WITH_GPA" value="1">
+								</div>
+							</div>
+						<!----------------------------------------- 별점 끝 -------------------------------------->
+                   	 	</td>
+                        
+                        
+                        
+                        
+                        
                         <td style="border: 1px solid #cccccc; text-align: center;">
                         	<input type="hidden" name="WR_USER_NUM" value="${withList.WR_USER_NUM }">
                         	<input type="hidden" name="WITH_NUM" value="${withList.WITH_NUM}">
                         	<input type="hidden" name="TL_USER_NUM" value="${withList.TL_USER_NUM }">
+                        	<input type="hidden" name="userNum" value="${withBoard.userNum}">
                             <input type="button" class="btn btn-primary" id="btnWithReview" 
-                                onclick="location.href='withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}'" 
+                                onclick="location.href='withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}&userNum=${withBoard.userNum}'" 
                                 value="상세보기" style="background-color: #eeeeee; color: green;">
                         </td>
                     </tr>

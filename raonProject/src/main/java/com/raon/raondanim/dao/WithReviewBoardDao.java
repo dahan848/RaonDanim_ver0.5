@@ -19,4 +19,8 @@ public interface WithReviewBoardDao {
 	
 	//조회수 +1
 	public int plusReadCount(int num);
+	
+	//검색
+	public List<Map<String, Object>> searchUser(Map<String, Object> param);
+	public int searchTotal(Map<String, Object> param);	
 }

@@ -48,31 +48,49 @@
  		text-align: center; 
  		z-index: 1;
 	} 
-	.input-group.md-form.form-sm.form-1 input{
-    border: 1px solid #bdbdbd;
-    border-top-right-radius: 0.25rem;
-    border-bottom-right-radius: 0.25rem;
-	}
-	.input-group.md-form.form-sm.form-2 input {
-    	border: 1px solid #bdbdbd;
-    	border-top-left-radius: 0.25rem;
-    	border-bottom-left-radius: 0.25rem;
-	}
-	.input-group.md-form.form-sm.form-2 input.red-border  {
-    	border: 1px solid #ef9a9a;
-	}
-	.input-group.md-form.form-sm.form-2 input.lime-border  {
-    	border: 1px solid #cddc39;
-	}
-	.input-group.md-form.form-sm.form-2 input.amber-border  {
-    	border: 1px solid #ffca28;
-	}
-	#basic-text1 {
-		width: 30px; 
-		height: 30px;
-		margin-left: 10px;
-		border-radius: 50%;
-	}
+/* 	.input-group.md-form.form-sm.form-1 input{ */
+/*     border: 1px solid #bdbdbd; */
+/*     border-top-right-radius: 0.25rem; */
+/*     border-bottom-right-radius: 0.25rem; */
+/* 	} */
+/* 	.input-group.md-form.form-sm.form-2 input { */
+/*     	border: 1px solid #bdbdbd; */
+/*     	border-top-left-radius: 0.25rem; */
+/*     	border-bottom-left-radius: 0.25rem; */
+/* 	} */
+/* 	.input-group.md-form.form-sm.form-2 input.red-border  { */
+/*     	border: 1px solid #ef9a9a; */
+/* 	} */
+/* 	.input-group.md-form.form-sm.form-2 input.lime-border  { */
+/*     	border: 1px solid #cddc39; */
+/* 	} */
+/* 	.input-group.md-form.form-sm.form-2 input.amber-border  { */
+/*     	border: 1px solid #ffca28; */
+/* 	} */
+/* 	#basic-text1 { */
+/* 		width: 30px;  */
+/* 		height: 30px; */
+/* 		margin-left: 10px; */
+/* 		border-radius: 50%; */
+/* 	} */
+input[type=text] {
+  width: 130px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-image: url('searchicon.png');
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 12px 20px 12px 40px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+  width: 50%;
+}
 </style>
 
 </head>
@@ -82,7 +100,7 @@
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/review/review-navbar.jsp"></jsp:include>
 	<!-- 인클루드 심플 헤더 END -->
-	
+<form action="withMain">
 	<!-- 본문 -->
 	<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
@@ -93,13 +111,26 @@
 				<br>
 				
 				<!------------ 검색 시작 ------------>
-           		<div class="input-group md-form form-sm form-2 pl-0" >
-  					<input class="form-control my-0 py-1 red-border" type="text" placeholder="Search" aria-label="Search" style="display: inline-block; width: 1000px;">
-  					<div class="input-group-append"  style="float: right; display: inline-block;">
-    					<button class="input-group-text red lighten-3" id="basic-text1">
-    						<i class="fas fa-search text-grey" aria-hidden="true"></i>
-    					</button>
-  					</div>
+<!--            		<div class="input-group md-form form-sm form-2 pl-0" > -->
+<!--   					<input class="form-control my-0 py-1 red-border" type="text" placeholder="함께 여행한 친구의 이름,아이디를 검색하세요."  -->
+<!--   							aria-label="Search" style="display: inline-block; width: 1000px;" name="keyword"> -->
+<!--   					<div class="input-group-append"  style="float: right; display: inline-block;"> -->
+<!--     					<button class="input-group-text red lighten-3" id="basic-text1"> -->
+<!--     						<i class="fas fa-search text-grey" aria-hidden="true"></i> -->
+<!--   						</button> -->
+<!--   					</div> -->
+<!-- 				</div> -->
+				<div style="display: inline;">
+					<select name="type">
+						<option value="1">이름</option>
+						<option value="2">아이디</option>
+					</select>
+				</div>
+				<div style="display: inline;">
+					<input type="text" name="search" placeholder="Search..">
+				</div>
+				<div style="display: inline;">
+					<input type="submit">
 				</div>
             	<!------------ 검색 끝 ------------>
             
@@ -110,24 +141,23 @@
             <input type="hidden" name="num" value="${with.USER_NUM }">
                <div class="box" id="box">
                   <div id="backimg"></div>
-                    <div id="userimg"></div>  
+                  <div id="userimg"></div>  
                   <div id="profile">
-                  
-                     <a href="withList?num=${with.USER_NUM}" style="text-align: center; display: inline-block;">${with.USER_LNM}${with.USER_FNM}</a>
-                     <br>
-                     <i class="fas fa-home">
-                        <br>
-                        <a>숙소 평점</a>
-                        <br>
-                        <a><i style="color: blue;">4.2</i> / 5</a>
-                     </i>
-                     <i class="fas fa-camera" style="margin-left: 20px;">
-                        <br>
-                        <a>후기 평점</a>
-                        <br>
-                        <a><i style="color: blue;">4.8</i> / 5</a>
-                     </i>
-                  </div>
+                     	<a href="withList?num=${with.USER_NUM}" style="text-align: center; display: inline-block;">${with.USER_LNM}${with.USER_FNM}</a>
+                     	<br>
+                    	 <i class="fas fa-home">
+                        	<br>
+                        	<a>숙소 평점</a>
+                       		<br>
+                        	<a><i style="color: blue;">4.2</i> / 5</a>
+                     	</i>
+                    	<i class="fas fa-camera" style="margin-left: 20px;">
+                        	<br>
+                        	<a>후기 평점</a>
+                        	<br>
+                        	<a><i style="color: blue;">4.8</i> / 5</a>
+                    	 </i>
+                  	</div>
                </div>      
             </c:forEach>
             <!------------ 회원 프로필 화면 끝 ------------>
@@ -142,6 +172,7 @@
 			</div>
 		</section>
 	</div>
+</form>
 	<!-- 본문 END-->
 	
 	<!-- 인클루드-푸터 -->

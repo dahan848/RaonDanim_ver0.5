@@ -1,5 +1,6 @@
 package com.raon.raondanim.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.raon.raondanim.model.User;
@@ -26,11 +28,26 @@ public class WithReviewController {
 	private WithReviewBoardService wiService;
 	
 	@RequestMapping(value="/withMain", method = RequestMethod.GET)
-	public String main(Model model) {
+	public String main(
+			Model model,
+			@RequestParam(required = false) String keyword) {
 		System.out.println("동행후기 메인");
-		model.addAttribute("with", wiService.selectAll());
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("keyword", keyword);
+		
+//		model.addAttribute("with", wiService.selectAll());
+		
+		System.out.println("==========================================");
+		System.out.println("동행후기 검색 : " + params);
+		System.out.println(wiService.getViewData(params));
+		System.out.println("==========================================");
+		
+		model.addAllAttributes(wiService.getViewData(params));
+		
 		return "review/withMain";
 	}
+	
 	
 	@RequestMapping("/withList")
 	public String withList(
@@ -43,9 +60,9 @@ public class WithReviewController {
 		
 		System.out.println(num + "번 회원의 타임라인");
 		
-//		System.out.println("withList param : " + param);
+		System.out.println("withList param : " + param);
 		
-		//
+		
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		int userNum = user.getUser_num();	//로그인한 USER_NUM
 
@@ -56,7 +73,12 @@ public class WithReviewController {
 		//타임라인 USER 정보 
 		String strNum = String.valueOf(num);
 		User rev = wiService.selectByUserNum(strNum);
-		model.addAttribute("withBoard", rev);
+		Map<String, Object> revrev = new HashMap<>();
+		revrev.put("User", rev);
+		revrev.put("userNum",userNum);
+		model.addAttribute("withBoard", revrev);
+		
+//		System.out.println("revrev : " + revrev);
 		
 		//리스트 부분
 		List<Map<String, Object>> rev2 = wiService.getWithBoard(num);
@@ -122,16 +144,19 @@ public class WithReviewController {
 			@RequestParam Map<String, Object> param) {
 		
 		System.out.println("동행 후기 상세 보기");
-//		System.out.println("param : " + param);
+		System.out.println("param : " + param);
 		
-		String num = request.getParameter("wrUser");
-		int WR_USER_NUM = Integer.parseInt(num);
+//		String num = request.getParameter("wrUser");
+//		int WR_USER_NUM = Integer.parseInt(num);
 //		System.out.println("게시글 작성자 번호 : " + WR_USER_NUM);
 		
 		
 		String withNum = request.getParameter("withNum");
 		int WITH_NUM = Integer.parseInt(withNum);
 		
+		String loginUserNum = request.getParameter("userNum");
+		int userNum = Integer.parseInt(loginUserNum);
+		model.addAttribute("userNum", userNum);
 		
 		Map<String, Object> rev = wiService.selectWithOne(WITH_NUM);
 //		System.out.println("컨트롤러 데이터 확인-----------------");
@@ -152,5 +177,13 @@ public class WithReviewController {
 		return "review/withView";
 	}
 	
+	//여행후기 삭제 (모달)
+	@ResponseBody
+	@RequestMapping("/delete")
+	public boolean delete(
+			@RequestParam Map<String, Object> param) {
+		System.out.println("동행 후기 삭제");
+		return wiService.deleteWith(param);
+	}
 	
 }

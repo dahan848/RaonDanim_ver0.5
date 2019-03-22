@@ -65,50 +65,49 @@ $(function(){
 		});
 
 		
-//  	==========================================================================================
-// 		//------------------ 모달 게시글 삭제 ------------------//
-// 		$("#modalDelete").on("click",function() {
+		//------------------ 모달 게시글 삭제 ------------------//
+		$("#modalDelete").on("click",function() {
 		
-// 			var input_pass = $("#modify-pass").val();
-// 			var userNum = ${userNum};
-// 			$.ajax({
-// 				url : "${contextPath}/review/delete",
-// 				data: {"num" : "${review.REVIEW_NUM}", 
-// 					   "input_pass" : input_pass,
-// 					   "${_csrf.parameterName}":'${_csrf.token}', 
-// 					   "userNum":userNum},
-// 				type: "post",
-// 				dataType: "json",
-// 				success: function(data) {
-// 					if(data){
-// // 						swal({
-// // 							icon:"success",
-// // 							text:"삭제 되었습니다",
-// // 						});
-// 						alert("삭제 되었습니다");
-// 						location.href="reviewMain";
-// 					} else {
-// // 						swal({
-// // 							icon:"fail",
-// // 							text:"비밀번호가 틀렸습니다",
-// // 						});
-// 						alert("비밀번호가 일치하지 않습니다");
-// 						location.href="reviewView?num=${review.REVIEW_NUM}";	
-// 					}
-// 				}
-// 			});
-// 		});
+			var input_pass = $("#modify-pass").val();
+			var userNum = "${userNum}";
+			$.ajax({
+				url : "${contextPath}/with/delete",	
+				data: {"num" : "${withBoard.WITH_NUM}", 		//게시글 번호
+					   "input_pass" : input_pass,				//입력한 비밀번호
+					   "${_csrf.parameterName}":'${_csrf.token}', 
+					   "userNum":userNum},				//로그인한 USER_NUM
+				type: "post",
+				dataType: "json",
+				success: function(data) {
+					if(data){
+// 						swal({
+// 							icon:"success",
+// 							text:"삭제 되었습니다",
+// 						});
+						alert("삭제 되었습니다");
+						location.href="withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}&userNum=${withBoard.userNum}";
+					} else {
+// 						swal({
+// 							icon:"fail",
+// 							text:"비밀번호가 틀렸습니다",
+// 						});
+						alert("비밀번호가 일치하지 않습니다");
+						location.href="withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}&userNum=${withBoard.userNum}";	
+					}
+				}
+			});
+		});
 		
-// 		//------- 수정 했을때 alert --------//
-// 		var msg = "${msg}";
-// 		if(msg!=null&&msg!=""){
+		//------- 수정 했을때 alert --------//
+		var msg = "${msg}";
+		if(msg!=null&&msg!=""){
 			
-// 			swal({
-// 				icon:"success",
-// 				text:msg,
-// 			});
-// 		}
-// 		==========================================================================================
+			swal({
+				icon:"success",
+				text:msg,
+			});
+		}
+
 		
 		
 		
@@ -181,16 +180,16 @@ $(function(){
 										   "${_csrf.parameterName}":'${_csrf.token}', 
 									  	   "userNum":userNum,			//로그인 한 USER_NUM
 									   	   "num":num,
-									       "wi_reply_num":wi_reply_num},					//게시글 번호
-									type: "post",
+									       "wi_reply_num":wi_reply_num},					//댓글 번호
+									type: "get",
 									dataType: "json",
 									success: function(data){
 										if(data){
 											alert("삭제 되었습니다");
-											location.href="withView?tlUser=${withBoard.TL_USER_NUM}&wrUser=${withBoard.WR_USER_NUM}&withNum=${withBoard.WITH_NUM}";
+											location.href="withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}&userNum=${userNum}";
 										} else {
 											alert("비밀번호가 일치하지 않습니다");
-											location.href="withView?tlUser=${withBoard.TL_USER_NUM}&wrUser=${withBoard.WR_USER_NUM}&withNum=${withBoard.WITH_NUM}";	
+											location.href="withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}&userNum=${userNum}";	
 										}			
 									}
 								});
@@ -376,7 +375,7 @@ $(function(){
 			
 			<!------- 삭제 버튼, 모달  시작------->
 			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="Delete">삭제하기</button>
-			<input type="hidden" name="num" value="${review.REVIEW_NUM}">
+			<input type="hidden" name="num" value="${withBoard.WITH_NUM}">
 			<input type="hidden" name=userNum value="${userNum}">
 			<div class="modal fade" id="myModal" role="dialog">
     			<div class="modal-dialog modal-lg">
@@ -406,7 +405,7 @@ $(function(){
 			
 				<div class="form-group" id="form-group">
 					<label for="inputlg2">평점</label> 
-<%-- 					<input class="form-control input-lg" id="inputlg2" type="text" readonly="readonly" value="${withBoard.WITH_GPA}"> --%>
+<%-- 				<input class="form-control input-lg" id="inputlg2" type="text" readonly="readonly" value="${withBoard.WITH_GPA}"> --%>
 					<!----------------------------------------- 별점 시작 -------------------------------------->
 					<div id="starCase">		
 					
@@ -433,14 +432,8 @@ $(function(){
 						</div>
 					</div>
 					<!----------------------------------------- 별점 끝 -------------------------------------->
-					
-					
 				</div>
 				
-				
-				
-				
-			
 				<div class="form-group" id="form-group">
 					<label for="inputlg">후기</label> 
 					<div class="form-control input-lg" id="contentView">
@@ -448,7 +441,6 @@ $(function(){
 					</div>
 				</div>
 			<!------------ 등록한 정보 출력 끝 ------------>
-				
 			</div>
 		</div>
 		
