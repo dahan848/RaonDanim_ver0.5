@@ -4,37 +4,42 @@
 <html>
 <head>
 <meta charset='UTF-8'>
-<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 <style type="text/css">
 .container-fluid {
 	padding-top: 30px;
 }
 
 .select2-results-dept-0 { /* do the columns */
-  float: left;
-  width: 20%;
+	float: left;
+	width: 20%;
 }
 
 img.flag {
-  height: 10px;
-  padding-right: 5px;
-  width: 15px;
+	height: 10px;
+	padding-right: 5px;
+	width: 15px;
 }
 
 /* move close cross [x] from left to right on the selected value (tag) */
-#s2id_e2_2.select2-container-multi .select2-choices .select2-search-choice {
-  padding: 3px 18px 3px 5px;
-}
-#s2id_e2_2.select2-container-multi .select2-search-choice-close {
-  left: auto;
-  right: 3px;
+#s2id_e2_2.select2-container-multi .select2-choices .select2-search-choice
+	{
+	padding: 3px 18px 3px 5px;
 }
 
+#s2id_e2_2.select2-container-multi .select2-search-choice-close {
+	left: auto;
+	right: 3px;
+}
 </style>
-<title>Insert title here</title>
+<title>Insert 6 6here</title>
 </head>
+<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css"
+	rel="stylesheet" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 <body>
 	<div class="container-fluid">
 		<select id="e2_2" multiple="multiple" style="width: 100%"
@@ -93,25 +98,48 @@ img.flag {
 			</optgroup>
 		</select>
 	</div>
-	
-	
-	
-	
+
+
 </body>
 <script type="text/javascript">
 function format(state) {
-	 if (!state.id) return state.text; // optgroup
-	  return "<img class='flag' src='//select2.github.io/vendor/images/flags/" + state.id.toLowerCase() + ".png'>" + state.text;
-	}
-	
-	$("#e2_2").select2({
-	  placeholder: "Select a state or many…",
-	  formatResult: format,
-	  formatSelection: format,
-	  escapeMarkup: function(m) { return m; }
+	alert("짠");
+     if (!state.id) return state.text; // optgroup
+     return "<img class='flag' src='//select2.github.io/vendor/images/flags/" + state.id.toLowerCase() + ".png'>" + state.text;
+   }
+
+   $("#e2_2").select2({
+     placeholder: "Select a state or many…",
+     formatResult: format,
+     formatSelection: format,
+     escapeMarkup: function(m) { return m; }
+   });
+   
+   //테스트
+	   $("#e7").select2({
+	    placeholder: "Search for a repository",
+	    minimumInputLength: 3,
+	    ajax: {
+	        url: "https://api.github.com/search/repositories",
+	        dataType: 'json',
+	        quietMillis: 250,
+	        data: function (term, page) { // page is the one-based page number tracked by Select2
+	            return {
+	                q: term, //search term
+	                page: page // page number
+	            };
+	        },
+	        results: function (data, page) {
+	            var more = (page * 30) < data.total_count; // whether or not there are more results available
+	 
+	            // notice we return the value of more so Select2 knows if more results can be loaded
+	            return { results: data.items, more: more };
+	        }
+	    },
+	    formatResult: repoFormatResult, // omitted for brevity, see the source of this page
+	    formatSelection: repoFormatSelection, // omitted for brevity, see the source of this page
+	    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+	    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
 	});
-	
-	
-});
 </script>
 </html>
