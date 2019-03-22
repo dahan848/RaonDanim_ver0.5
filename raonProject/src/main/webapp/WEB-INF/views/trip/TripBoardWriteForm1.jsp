@@ -3,6 +3,7 @@
 <%
 	request.setAttribute("contextPath", request.getContextPath());
 %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +12,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>여행일정</title>
 <style type="text/css">
 #con {
 	height: 900px;
@@ -34,6 +35,24 @@ th {
 .hasDatepicker{cursor: pointer;}
 
 </style>
+<script type="text/javascript">
+
+function goToProfile() {
+
+/* 	$(".profile").mousedown(function() {
+		(".profile").css("background-color", "#ef2d4d");
+	})
+	
+	$(".profile").mouseup(function() {
+		location.href = "${contextPath}/accounts/profile?user=${user_Num}";
+	}) */
+	location.href = "${contextPath}/accounts/profile?user=${user_Num}";
+}
+
+
+</script>
+
+
 </head>
 <body>
 	<!-- 인클루드 심플 헤더 -->
@@ -67,37 +86,74 @@ th {
 			<table class="table" id="ta">
 
 				<tr>
-					<th style="padding: 20px;" class="success">제목</th>
+					<th style="padding: 20px;" class="info">제목</th>
 					<td style="padding: 20px;">
 						<input type="text" id="trip_Board_Title" name="trip_Board_Title" class="form-control" style=" width: 300px;" required="required">
 					</td>
 				</tr>
 				<tr>
-					<th style="padding: 20px;" class="warning">나의 관심사</th>
-					<td style="padding: 20px;">Default</td>
+					<th style="padding: 20px;" class="info">나의 관심사</th>
+<!-- 					미작성 처리된 부분 추후  c:if 로 걸러서 프로필 없는사람한테 띄우고 onclick 달아서 누르면 프로필 설정으로 이동가능하게 하고 마우스 호버시 툴팀 표시 (클릭시 프로필설정 가능이라고) -->
+					<td style="padding: 20px;">
+						<c:choose>
+							<c:when test="${userInfo.UserInterest != null}">			
+								<c:forEach items="${userInfo.UserInterest}" var="i">
+									<span class="label label-mint label-lg"><b>${i.INTEREST_NAME}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>			
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="클릭시 프로필 설정으로 이동합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
+					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="info">나의 여행희망도시</th>
-					<td style="padding: 20px;">Default</td>
-				</tr>
-				<tr>
-					<th style="padding: 20px;" class="warning">나의 여행 스타일</th>
-					<td style="padding: 20px;">Default</td>
-				</tr>
-				<tr>
-					<th style="padding: 20px;" class="danger">여행출발일</th>
 					<td style="padding: 20px;">
-						<input type="date" id="datepicker"  name="trip_Board_Start">
+						
+						<c:choose>
+							<c:when test="${userInfo.UserTravleHope != null}">
+								<c:forEach items="${userInfo.UserTravleHope}" var="th">
+									<span class="label label-mint label-lg"><b>${th.HOPE_CITY}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>
+									<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="클릭시 프로필 설정으로 이동합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
+
 					</td>
 				</tr>
 				<tr>
-					<th style="padding: 20px;" class="success">여행 종료일</th>
+					<th style="padding: 20px;" class="info">나의 여행 스타일</th>
 					<td style="padding: 20px;">
-						<input type="date" id="datepicker2" name="trip_Board_End">
+						<c:choose>
+							<c:when test="${userInfo.UserTrStyle != null}">
+								<c:forEach items="${userInfo.UserTrStyle}" var="tr">
+									<span class="label label-mint label-lg"><b>${tr.TR_STYLE}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="클릭시 프로필 설정으로 이동합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
+						
 					</td>
 				</tr>
 				<tr>
-					<th style="padding: 20px;" class="danger">여행 동행모집</th>
+					<th style="padding: 20px;" class="info">여행출발일</th>
+					<td style="padding: 20px;">
+						<input type="date" id="datepicker"  name="trip_Board_Start" required="required">
+					</td>
+				</tr>
+				<tr>
+					<th style="padding: 20px;" class="info">여행 종료일</th>
+					<td style="padding: 20px;">
+						<input type="date" id="datepicker2" name="trip_Board_End" required="required">
+					</td>
+				</tr>
+				<tr>
+					<th style="padding: 20px;" class="info">여행 동행모집</th>
 					<td style="padding: 20px;">
 						<select id="Trip_Board_Together" name="Trip_Board_Together" class="form-control" style="width: 200px;">
 							<option value="0">0</option>
@@ -112,12 +168,14 @@ th {
 				<tr>
 					<th style="padding: 20px;" class="info">여행 소개</th>
 					<td style="padding: 20px;">
-						<textarea rows="3" style="width: 500px;" name="trip_Board_Content" required="required"></textarea>
+						<textarea rows="5" cols="10" name="trip_Board_Content"  required="required" style="width: 500px; font-size: 14pt;" ></textarea>
 					</td>
 				</tr>
 				<tr>
 					<th>
+						<input type="button" value="취소하기" class="btn btn-success" onclick="location.href='list'">
 						<input type="submit" value="다음 단계로" class="btn btn-success">
+						
 					</th>
 				</tr>
 
@@ -127,7 +185,11 @@ th {
 		</form>
 
 	</div>
-	
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
 <%--달력 스크립트 부분 헤드로 올리면 달력 뻑남 --%>	
 <script type="text/javascript">
 $(function() {

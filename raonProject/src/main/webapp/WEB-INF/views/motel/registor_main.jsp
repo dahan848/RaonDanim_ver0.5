@@ -1,12 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<%	request.setAttribute("contextPath", request.getContextPath()); %>	    
+<%	request.setAttribute("contextPath", request.getContextPath()); %>	  
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<sec:authorize access="isAuthenticated()">
+   <sec:authentication property="principal.user_num" var="user_num"/>
+</sec:authorize>  
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
 <title>111333</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+function login_Check(){
+	var tmpUser_num = "${user_num}";
+	//alert("tmpUser_num : " + tmpUser_num);
+	if(tmpUser_num == ""){
+
+		location.href = "${contextPath}/accounts/loginForm";	
+	}else{
+		
+		location.href = "${contextPath}/motel/write_registor_type_style";
+		
+	}
+	
+}
+
+</script>
 <style type="text/css">
 .registor_main{
 	background-repeat : no-reapt; 
@@ -51,11 +73,13 @@
 				<div class="registor_main">
 					<h3 class="regisor_main_contents" >
 					숙소를 등록하고 새로운 다양한 친구를 만들며<br>부가적인 수입을 획득하세요2222.<br>
-					<a class="a_tag" href = "${contextPath}/motel/write_registor_type_style" >숙소 등록하러 가기</a></h3>
+<%-- 					href = "${contextPath}/motel/write_registor_type_style"  --%>
+					<a class="a_tag" onclick="login_Check()">숙소 등록하러 가기</a></h3>
 				</div>
 			</div>
 		</section>
 	</div>
+		
 	<!-- 본문 END-->
 
 	<!-- 인클루드-푸터 -->

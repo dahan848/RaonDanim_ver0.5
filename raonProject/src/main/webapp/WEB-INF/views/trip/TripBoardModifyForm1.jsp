@@ -15,7 +15,7 @@
 	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 	crossorigin="anonymous"></script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>여행일정수정</title>
 <style type="text/css">
 #con {
 	height: 900px;
@@ -95,26 +95,59 @@ $(function() {
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="warning">나의 관심사</th>
-					<td style="padding: 20px;">Default</td>
+					<td style="padding: 20px;">
+						<c:choose>
+							<c:when test="${userInfo.UserInterest != null}">			
+								<c:forEach items="${userInfo.UserInterest}" var="i">
+									<span class="label label-mint label-lg"><b>${i.INTEREST_NAME}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>			
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
+					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="info">나의 여행희망도시</th>
-					<td style="padding: 20px;">Default</td>
+					<td style="padding: 20px;">
+						<c:choose>
+							<c:when test="${userInfo.UserTravleHope != null}">
+								<c:forEach items="${userInfo.UserTravleHope}" var="th">
+									<span class="label label-mint label-lg"><b>${th.HOPE_CITY}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>
+									<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
+					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="warning">나의 여행 스타일</th>
-					<td style="padding: 20px;">Default</td>
+					<td style="padding: 20px;">
+						<c:choose>
+							<c:when test="${userInfo.UserTrStyle != null}">
+								<c:forEach items="${userInfo.UserTrStyle}" var="tr">
+									<span class="label label-mint label-lg"><b>${tr.TR_STYLE}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
+					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="danger">여행출발일</th>
 					<td style="padding: 20px;">
-						<input type="date" id="datepicker"  name="trip_Board_Start" value="${boardInfo.TRIP_BOARD_START}">
+						<input type="date" id="datepicker"  name="trip_Board_Start" value="${boardInfo.TRIP_BOARD_START}" required="required">
 					</td>
 				</tr>
 				<tr>
 					<th style="padding: 20px;" class="success">여행 종료일</th>
 					<td style="padding: 20px;">
-						<input type="date" id="datepicker2" name="trip_Board_End" value="${boardInfo.TRIP_BOARD_END}">
+						<input type="date" id="datepicker2" name="trip_Board_End" value="${boardInfo.TRIP_BOARD_END}" required="required">
 					</td>
 				</tr>
 				<tr>
@@ -133,13 +166,13 @@ $(function() {
 				<tr>
 					<th style="padding: 20px;" class="info">여행 소개</th>
 					<td style="padding: 20px;">
-						<textarea rows="5" style="width: 500px;" id="boardContent" name="trip_Board_Content">${boardInfo.TRIP_BOARD_COUNTENT}</textarea>
+						<textarea rows="5" cols="10" style="width: 500px; font-size: 14pt;" id="boardContent" name="trip_Board_Content">${boardInfo.TRIP_BOARD_COUNTENT}</textarea>
 					</td>
 				</tr>
 				<tr>
 					<th>
+						<input type="button" value="취소하기" class="btn btn-success" onclick="location.href='view?boardKey=${boardInfo.TRIP_BOARD_KEY}'">
 						<input type="submit" value="다음 단계로" class="btn btn-success">
-						<input type="button" value="취소하기" class="btn btn-success">
 					</th>
 				</tr>
 

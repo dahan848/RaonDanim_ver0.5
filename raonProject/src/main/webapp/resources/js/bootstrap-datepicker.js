@@ -75,7 +75,7 @@
 					break;
 			}
 		}
-		this.color = options.color||'red';
+		this.color = options.color||'blue';
 		this.startViewMode = this.viewMode;
 		this.weekStart = options.weekStart||this.element.data('date-weekstart')||0;
 		this.weekEnd = this.weekStart === 0 ? 6 : this.weekStart - 1;

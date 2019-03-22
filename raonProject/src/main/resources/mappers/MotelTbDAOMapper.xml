@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from motel_tb
 	</select>	
 	
-	<select id="motelList" resultType="Map" parameterType="Map">
+<!-- 	<select id="motelList" resultType="Map" parameterType="Map">
 		select *
 		from(
 			select rownum as rnum, USER_NUM, USER_ID, USER_FNM, USER_LNM, MOTEL_NUM, MOTEL_TYPE, MOTEL_CATEGORY, MOTEL_PEOPLE, MOTEL_ROOM, MOTEL_BATHROOM, MOTEL_NATION_EN, MOTEL_NATION_KO, MOTEL_CITY_EN, MOTEL_CITY_KO, MOTEL_ADDRESS, MOTEL_INTRO, MOTEL_TITLE, MOTEL_PRICE, Motel_WriteDate, Motel_ReadCount, MOTEL_AVG
@@ -34,26 +34,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 			)
 		where rnum between #{firstRow} and #{endRow}
-	</select>
+	</select> -->
 	
-	<!-- <select id="motelList" resultType="Map" parameterType="Map">
+	<select id="motelList" resultType="Map" parameterType="Map">
     select *
     from(
-		select rownum rnum, motel_num, motel_user_num, motel_people, motel_room, motel_bathroom, motel_title, c, user_fnm, user_lnm
+		select rownum rnum, motel_num, motel_user_num, motel_people, motel_room, motel_bathroom, motel_title, c, user_fnm, user_lnm, motel_price
 		from(
-			select m.motel_num, m.motel_user_num, m.motel_people, m.motel_room, m.motel_bathroom, m.motel_title, m.c, user_tb.user_fnm, user_tb.user_lnm
+			select m.motel_num, m.motel_user_num, m.motel_people, m.motel_room, m.motel_bathroom, m.motel_title, m.c, user_tb.user_fnm, user_tb.user_lnm, m.motel_price
 			from(
-				select motel.MOTEL_NUM, motel.USER_NUM as motel_user_num, motel.MOTEL_PEOPLE, motel.MOTEL_ROOM, motel.MOTEL_BATHROOM, motel.MOTEL_TITLE, count(*) as c
+				select motel.MOTEL_NUM, motel.USER_NUM as motel_user_num, motel.MOTEL_PEOPLE, motel.MOTEL_ROOM, motel.MOTEL_BATHROOM, motel.MOTEL_TITLE, count(*) as c , motel.motel_price
 				from motel_tb motel, motel_date_tb date_tb
 				where date_tb.motel_ready = 'Y'
 				and motel.motel_num = date_tb.motel_num
-				
+				and motel.motel_st = 0
 				<if test="startDate != null">
-				and date_tb.motel_date between '19/03/20' and '19/03/22'
+				and date_tb.motel_date between to_Date(#{startDate},'RR-MM-dd') and to_Date(#{endDate},'RR-MM-dd')
 				</if>
 				
 				<if test="city != null">
-				and (motel.motel_city_ko = '%${city}%' OR motel.motel_city_en = '%${city}%')	
+				and (motel.motel_city_ko = #{city} OR motel.motel_city_en = #{city})	
 				</if>
 				
 				<if test="motel_people != 0">
@@ -69,11 +69,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				</if>
 				
 				<if test="motel_price1 != 0">
-				and motel_price between #{motel_price1} and {motel_price2}
+				and motel_price between #{motel_price1} and #{motel_price2}
 				</if>
 				
-				having count(*) = to_Date('%${startDate}%','RR/MM/dd') - to_Date('%${endDate}%','RR/MM/dd') + 1
-				group by motel.MOTEL_NUM, motel.USER_NUM, motel.MOTEL_PEOPLE, motel.MOTEL_ROOM, motel.MOTEL_BATHROOM, motel.MOTEL_TITLE
+				having count(*) = to_Date(#{endDate},'RR-MM-dd') - to_Date(#{startDate},'RR-MM-dd') + 1
+				group by motel.MOTEL_NUM, motel.USER_NUM, motel.MOTEL_PEOPLE, motel.MOTEL_ROOM, motel.MOTEL_BATHROOM, motel.MOTEL_TITLE, motel.motel_price
 				order by motel.motel_num
 			)m ,user_tb
 			where m.motel_user_num = user_tb.user_num
@@ -82,7 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by rnum
         )
 		where rnum between #{firstRow} and #{endRow}
-	</select> -->
+	</select>
 	
 	
 	<select id="viewSelect" resultType="Map" parameterType="int">
@@ -118,11 +118,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="viewReply" parameterType="Map" resultType="Map">
 		select *
 		from(
-			select rownum as rnum, MOTEL_NUM, USER_NUM, CONTENT, user_id, motel_reply_date, user_fnm, user_lnm
+			select rownum as rnum, MOTEL_NUM, USER_NUM, CONTENT, user_id, motel_reply_date, user_fnm, user_lnm, motel_reply_sq
 			from(
-				select reply.motel_num, reply.user_num, reply.content, user_tb.user_id, reply.motel_reply_date, user_tb.user_fnm, user_tb.user_lnm
+				select reply.motel_num, reply.user_num, reply.content, user_tb.user_id, reply.motel_reply_date, user_tb.user_fnm, user_tb.user_lnm, reply.motel_reply_sq
 				from motel_reply reply, user_tb user_tb
 				where user_tb.user_num = reply.user_num
+				and reply.motel_reply_st = 0
 				order by MOTEL_REPLY_SQ desc
 			)
 			where motel_num = #{num}
@@ -135,11 +136,112 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		(motel_num, user_num, motel_reply_sq, content)
 		values(#{motel_num},#{user_num},mote_reply_seq.nextval,#{content})
 	</insert>
-	
+	<!-- 별점인서트 -->
 	<insert id="starAvg" parameterType="Map">
 		insert into motel_avg_tb
 		(motel_num, user_key, avg)
 		values(#{motel_num},#{user_num},#{star-input})
+	</insert>
+	<!-- 별점업데이트 -->
+	<update id="starUpdate" parameterType="Map">
+		update motel_avg_tb
+			set avg = #{star-input}
+			where user_key = #{user_num}
+	</update>
+	<!-- 별점 달았는지 체크 위해 select -->
+	<select id="starCheck" resultType="Map" parameterType="Map">
+		select * from motel_avg_tb
+		where user_key = #{user_num} and motel_num = #{motel_num}
+	</select>
+	
+	<!-- 숙소 예약시 motel_date_tb 상태값 N으로 변경 -->
+	<update id="date_tb_update" parameterType="Map">
+		update 
+		(
+			select * from motel_date_tb
+			where motel_num = #{num} and
+			(motel_date between to_Date(#{checkIn},'RR/MM/dd') and to_Date(#{checkOut},'RR/MM/dd')-1)
+		)
+		set motel_ready = 'N'
+	</update>
+	
+	<!-- motel_date_tb 업데이트 후 중복 예약 방지 체크 -->
+	<select id="checkDate" parameterType="Map" resultType="Int">
+		select  count(motel_date)as y
+		from motel_date_tb
+		where motel_ready like 'Y' and motel_num = #{motel_num}
+			  and motel_date between to_Date(#{motel_checkin},'RR/MM/dd') and to_Date(#{motel_checkout},'RR/MM/dd')-1
+	</select>
+	
+	<!-- 댓글 상태값 삭제로 변경 -->
+	<update id="deleteReply" parameterType="Map">
+		update motel_reply
+		set motel_reply_st = 1
+		where user_num = #{user_num}
+			  and motel_reply_sq = #{reply}
+	</update>
+	
+	<!-- 신고 모달 내용 가져오기 -->
+	<select id="declaration" resultType="Map">
+		select * from DECLARATION_DTB
+	</select>
+	
+	<!-- 댓글신고 insert -->
+	<insert id="insertDeclaration" parameterType="Map">
+		insert into DECLARATION_TB
+		(D_KEY, MOTEL_REPLY_NUM, D_USER_NUM, USER_NUM, DECLARATION_KEY, TRIP_D_DETAILCONTENT)
+		values(DECLARATION_TB_SEQ.nextval, #{reply_num}, #{duser_num}, #{user_num}, #{DECLARATION_KEY}, #{content})
+	</insert>
+	
+	<!-- 숙박글신고 insert -->
+	<insert id="insert_motel_Declaration" parameterType="Map">
+		insert into DECLARATION_TB
+		(D_KEY, MOTEL_NUM, D_USER_NUM, USER_NUM, DECLARATION_KEY, TRIP_D_DETAILCONTENT)
+		values(DECLARATION_TB_SEQ.nextval, #{num}, #{host}, #{user_num}, #{DECLARATION_KEY}, #{content})
+	</insert>
+	
+	<!-- 댓글 신고 중복 방지 체크 -->
+	<select id="insertDeclaration_check" resultType="Map" parameterType="Map">
+		select * from DECLARATION_TB
+		where motel_reply_num = #{reply_num}
+      		  and d_user_num = #{duser_num}
+      		  and user_num = #{user_num}
+	</select>
+	
+	<!-- 숙박글 신고 중복 방지 체크 -->
+	<select id="insert_motel_Declaration_check" parameterType="Map" resultType="Map">
+		select * from DECLARATION_TB
+		where motel_num = #{num}
+      		  and d_user_num = #{host}
+      		  and user_num = #{user_num}
+	</select>
+	
+	<!-- 숙박글 삭제 -->
+	<update id="delete_motel">
+		update motel_tb
+		set motel_st = 1
+		where user_num = #{user_num}
+		and motel_num = #{motel_num}
+	</update>
+	
+	<!-- 이미지 가져오기  -->
+	<select id="getImage" resultType="Map" parameterType="Int">
+		select * from MOTEL_PIC_TB
+		where motel_num = #{motel_num}
+	</select>
+	
+	<!-- 숙소 결제시 host user 포인트 적립 -->
+	<update id="add_point" parameterType="Map">
+		update user_tb
+		set USER_POINT = user_point+#{price}
+		where user_num = #{host}
+	</update>
+	
+	<!-- 숙소 결제시 결제 내역 insert -->
+	<insert id="pay_history_insert" parameterType="Map">
+		insert into motel_pay_tb
+		(pay_num,payment_user_num,host_user_num,motel_num,pay_price)
+		values(Motel_pay_tb_SEQ.nextval,#{user_num},#{host},#{num},#{price})
 	</insert>
 	
 	
@@ -184,7 +286,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    
    </insert>
 
+	<insert id="insertMotel_Photo" parameterType="map">
+		insert into 
+			MOTEL_PIC_TB (MOTEL_NUM,
+						MOTEL_PIC_1,
+						MOTEL_PIC_2,
+						MOTEL_PIC_3,
+						MOTEL_PIC_4,
+						MOTEL_PIC_5)
+			values (#{MOTEL_NUM},
+					#{motel_photo_1},
+					#{motel_photo_2},
+					#{motel_photo_3},
+					#{motel_photo_4},
+					#{motel_photo_5})			
+			
+	</insert>
 
+	<select id="motel_Date_procedure" statementType="CALLABLE" parameterType="map">
+		{ call trip_date(
+				#{start_number, mode=IN},
+				#{end_number, mode=IN},
+				#{insert_motel_number, mode=IN},
+				#{start_date, mode=IN}
+		)}
+	</select>
+	
+	
    <select id="National_selectAll" resultType="map">
       select * from nationality_dtb
    </select>
@@ -192,6 +320,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    <select id="City_selectAll" resultType="map">
       select * from CITY_COUNTRY_DTB
    </select>
+	
 	
 	
 </mapper>

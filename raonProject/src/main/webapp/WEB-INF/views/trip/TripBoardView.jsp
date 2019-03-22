@@ -2,11 +2,14 @@
    pageEncoding="UTF-8"%>
    <% request.setAttribute("contextPath", request.getContextPath()); %>
    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+   <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>여행상세</title>
 
 <script type="text/javascript">
 var locations = ${cityInfo};
@@ -73,7 +76,7 @@ function toggleDisplay() {
 
 
 function drawCityTable() {
-   //일단 이 펑션 보류
+  // 동기로 도시 리스트 그리는 부분 화면 좌하단
    var cityNames = ${cityInfo};
    var leftDiv12 = $("#leftDiv-1-2");
    var j = 1;
@@ -120,7 +123,16 @@ function moveToMakerLocation(i) {
 }
 
 
-function createReplyTable() {
+function createReplyTable(pageNum) {
+	//댓글 리스트 그리는 펑션
+	if(pageNum){
+		//pageNum 이 undefined면 false 있으면 true 로 계속 진행하면 된다
+	}else{
+		//undefined시 페이지 번호를 1로 설정
+		pageNum = 1;
+	}
+	
+	
 	var boardKey = "${boardInfo.TRIP_BOARD_KEY}";
 	var replyTable = $("#replyTable");
 	replyTable.html("");
@@ -128,31 +140,62 @@ function createReplyTable() {
 	$.ajax({
 		url:"${contextPath}/tripReply/replyList",
 		type:"get",
-		data:{"boardKey":boardKey},
+		data:{"boardKey":boardKey,"pageNum":pageNum},
 		dataType:"json",
-		success:function(list){
+		success:function(result){
 	
+			var list = result.replyList;
+			
+			
 			for(var i in list){
+	
+				var parentReply = "   <input type='hidden' id='replyBoardKey"+i+"' name='trip_Board_Key' value='"+list[i].TRIP_BOARD_KEY+"'>" + 
+				"                 <input type='hidden' id='replyUserNum"+i+"' name='user_Num' value='"+list[i].USER_NUM+"'>" + 
+				"                 <input type='hidden' id='replyGid"+i+"' name='trip_Reply_Gid' value='"+list[i].TRIP_REPLY_GID+"'>" + 
+				"                 <input type='hidden' id='replyDepth"+i+"' name='trip_Reply_Depth' value='"+list[i].TRIP_REPLY_DEPTH+"'>" + 
+				"                 <input type='hidden' id='replySorts"+i+"' name='trip_Reply_Sorts' value='"+list[i].TRIP_REPLY_SORTS+"'>"+
+				" 				  <input type='hidden' id='replyKey"+i+"' name='Trip_Reply_Key' value='"+list[i].TRIP_REPLY_KEY+"'>";
 
-//  				var row = $(" <div class='row' id='row"+i+"' style='border:1px solid blue;'>");
-//  				var colName = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  				var colContent = $("<div class='col-lg-8' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  				var colDate = $("<div class='col-lg-2' style='border: 1px solid #cccccc; min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  				var colBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' data-toggle='collapse' data-target='#reRow"+i+"' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
-//  				colName.text(list[i].USER_LNM+list[i].USER_FNM).appendTo(row);
-//  				colContent.text(list[i].TRIP_REPLY_CONTENT).append("<br>").append(colBtn).appendTo(row);
-//  				colDate.text(list[i].TRIP_REPLY_WRITEDATE).appendTo(row);
-//  				row.appendTo(replyTable);
- 				
- 				var tr = $("<tr id='row"+i+"' style=''>");
+ 				var tr = $("<tr id='row"+i+"' style='border:1px dotted #cccccc;'>");
  				var reBtn = $("<input type='button' class='btn btn-primary' id='colBtn"+i+"' onclick='togglerereply("+i+")' value='답글' style='height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;'>");
- 				$("<th>").html("<p>"+list[i].USER_LNM+list[i].USER_FNM+"</p>").appendTo(tr);
- 				$("<th>").html(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
- 				$("<th>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").appendTo(tr);
+ 				
+ 				$("<th class='tableft'>").html("<p>"+list[i].USER_LNM+list[i].USER_FNM+"</p>").appendTo(tr);
+ 				if(list[i].TRIP_REPLY_DEPTH==0){
+ 					$("<th>").html(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
+ 				}else{
+ 					$("<th>").html("<img src='${contextPath}/img/trip_arrowimg2.jpg' style='height:20px; width:20px;'>").append(list[i].TRIP_REPLY_CONTENT+"&nbsp;").append(reBtn).appendTo(tr);
+ 				}
+
+ 				$("<th class='tabright'>").html("<p>"+list[i].TRIP_REPLY_WRITEDATE+"</p>").append(parentReply).appendTo(tr);
+ 				$("<th class='tabright'>").html("<img onclick='checkReply("+i+")'  src='${contextPath}/img/trip_x_Img.jpg' style='height:20px; width:20px;'>").appendTo(tr);
  				tr.appendTo(replyTable);
 			
+ 				if(list[i].TRIP_REPLY_DEPTH>0){
+ 					//대댓글 용 css 밑에 밑으로 내려갈수록 padding으로 구분
+ 					var padding = 20*list[i].TRIP_REPLY_DEPTH;
+ 					$("#row"+i+"> th").css("padding-left",padding+"px");
+ 					//$(".tab").css("padding-left",padding+"px");
+ 				}
+ 				$(".tableft").css("padding-left","0px;");
+ 				$(".tabright").css("text-align","right");
+ 				
+
+			}// 댓글 리스트 그리는 반복문 끝
+			
+			//페이저 부분
+				var start = result.start;
+				var end =result.end;
+				var total = result.total;
+				var currentPage = result.page;
 				
-			}
+				
+				//var replyModalFooter = $("#replyModalFooter");
+				var replyPager = $("#replyPager");
+				replyPager.html("");
+				for(start;start<=total;start++){
+					$("<a onclick='replyPager("+start+")'>"+start+"</a>").append("&nbsp;&nbsp;").appendTo(replyPager);
+				}
+				
 			
 		}
 		
@@ -160,48 +203,155 @@ function createReplyTable() {
 	
 }
 
-function togglerereply(i) {
+function replyPager(start) {
+	// 페이지 버튼 클릭시 펑션
+	var pageNum = start;
+	var boardKey = "${boardInfo.TRIP_BOARD_KEY}";
+	// 클릭시 페이지 넘 받아서 createReplyTable 에 파라메터 집어넣고 실행
+	createReplyTable(pageNum);
 
+}
 
-// div 로 추가하는 부분 - css맞추기 힘들어서 아웃	
-//  	var reRow = $("<div class='row collapse' id='reRow"+i+"' style=' width:80%; margin-left:20px;'>");
-//  	var reName = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  	var reContent = $("<div class='col-lg-8' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  	var reDate = $("<div class='col-lg-2' style=' min-height: 40px; max-height: 40px; overflow: hidden;'>");
-//  	var row = $("#row"+i);
-//  	reName.html("&nbsp;<small><b>ㄴ</b></small>").appendTo(reRow);
-//  	reContent.html("<input type='text' style='margin-top: 5px;' class='form-control' id='reReContent"+i+"' name=''>").appendTo(reRow);
-//  	reDate.html("<a style='margin-top: 5px;'>입력</a>").appendTo(reRow);
-//  	reRow.appendTo(row);
+function checkReply(i) {
+	//댓글 삭제 펑션
+	var replyKey = $("#replyKey"+i).val();
+
+	//취소 alert
+	swal( {
+		  title: "비밀번호 체크",
+		  text:"원글 삭제시 댓글도 같이 삭제되니 유의해주세요.",
+		  content: {
+			    element: "input",
+			    attributes: {
+			      placeholder: "비밀번호를 입력해주세요.",
+			      type: "password",
+			    },
+			  },
+		  buttons: true,
+		  buttons: ["취소", "확인"],
+		  closeOnClickOutside: false,
+		})
+		.then((value) =>  {
+			 
+			if(!value){
+				//value== null 이나 value =="" 안먹음 
+				swal({
+					text:"비밀번호를 입력해주세요",
+					icon:"warning",
+				});
+				return false;
+			}
+			
+		 	$.ajax({
+		 		url:"${contextPath}/tripReply/checkPw",
+		 		type:"post",
+		 		data:{"replyKey":replyKey,"checkReplyPw":value,"${_csrf.parameterName}":'${_csrf.token}'},
+		 		dataType:"json",
+		 		success:function(result){
+		 			// 이걸로 비번체크를 해서 갔다온담에 if로 걸러서 true 일때 다른 펑션을 실행해서 삭제한다 
+		 			// 403에러 ajax 는 동작하는듯?
+		 			// 원인은 토큰의 문제? 
+		 			if(result){
+		 				swal({
+		 					icon:"success",
+		 					text:"비밀번호 일치",
+		 				});		
+		 				deleteReply(replyKey);
+				
+		 			}else{
+		 				swal({
+		 					icon:"warning",
+		 					text:"비밀번호 불일치 다시 시도해 주세요",
+		 				});
+		 			} 			
+		 		}	 		
+		 	});		
+		});
+	
 	
 
+}
 
- 	var reRowTr = $("<tr class='collapse in' id='reRow"+i+"'>");
+function deleteReply(replyKey) {
+	//alert(replyKey);
+	
+	$.ajax({
+		url:"${contextPath}/tripReply/deleteReply",
+		type:"get",
+		data:{"replyKey":replyKey},
+		dataType:"json",
+		success:function(result){
+			if(result){
+				swal({
+ 					icon:"success",
+ 					text:"삭제 성공하였습니다.",
+ 				});
+				createReplyTable();
+			}else{
+				swal({
+ 					icon:"warning",
+ 					text:"삭제 실패하였습니다. 다시시도해 주세요",
+ 				});
+			}
+		}
+		
+	});
+	
+	
+	
+	
+}
+
+
+
+function togglerereply(i) {
+//대댓글 입력 펑션 댓글에 달린 답글 클릭시 요소를 새로 생성해 추가한다 
+
+ 	var reRowTr = $("<tr id='reRow"+i+"' style='border:1px dotted #cccccc;'>");
  	var tr = $("#row"+i);
  	
-	var str = "<form id='rereForm'>"
-		+ " <input type='text' class='form-control' name='trip_Reply_Content' id='rereContent' style='border: 1px solid #8eb7f9;'>"
-		+ " <input type='hidden' id='rereBoardKey' name='trip_Board_Key' value=''>" + 
-		"   <input type='hidden' id='rereUserNum' name='user_Num' value=''>" + 
-		"   <input type='hidden' id='rereGid' name='trip_Reply_Gid' value=''>" + 
-		"   <input type='hidden' id='rereDepth' name='trip_Reply_Depth' value=''>" + 
-		"   <input type='hidden' id='rereSorts' name='trip_Reply_Sorts' value=''>"
+ 	var rereBoardKey = $("#replyBoardKey"+i).val();
+ 	var rereGid= $("#replyGid"+i).val();
+ 	var rereDepth= $("#replyDepth"+i).val();
+ 	var rerSorts= $("#replySorts"+i).val();
+ 	
+ 	
+	var str = "<form id='rereForm"+i+"'>"
+		+ " <input type='text' class='form-control' name='trip_Reply_Content' id='rereContent"+i+"' style='border: 1px solid #8eb7f9;'>"
+		+ " <input type='hidden' id='rereBoardKey"+i+"' name='trip_Board_Key' value='"+rereBoardKey+"'>" + 
+		"   <input type='hidden' id='rereUserNum"+i+"' name='user_Num' value='${userNum}'>" + 
+		"   <input type='hidden' id='rereGid"+i+"' name='trip_Reply_Gid' value='"+rereGid+"'>" + 
+		"   <input type='hidden' id='rereDepth"+i+"' name='trip_Reply_Depth' value='"+rereDepth+"'>" + 
+		"   <input type='hidden' id='rereSorts"+i+"' name='trip_Reply_Sorts' value='"+rerSorts+"'>"
+		+"<input type='hidden' name='${_csrf.parameterName}' value='${_csrf.token}'>"
 		+ "</form>";
  	
  	
  	$("<td>").html("<img src='${contextPath}/img/trip_arrowimg2.jpg' style='height:30px; width:30px;'>").appendTo(reRowTr);
  	$("<td>").append(str).appendTo(reRowTr);
- 	$("<td>").html("<input type='button' class='btn btn-info' value='작성' id='rereBtn"+i+"' name=''>").appendTo(reRowTr);
+ 	$("<td>").html("<input type='button' class='btn btn-info' value='작성' onclick='reReplyWrite("+i+")' id='rereBtn"+i+"' name=''>").appendTo(reRowTr);
  	tr.after(reRowTr);
 	
  	
+ 	
+ 	//인풋태그의 엔터 입력시 submit 을 막기
+ 	// onload 밑 에있을시는 아직 요소가 생성이 안된 상태기 때문에 이 요소를 선택할수 없다 그러니 그려줄때 넣어주니 해결
+    $('input[type="text"]').keydown(function(event) {
+ 	   
+ 	   if (event.keyCode === 13) {
+ 		   //preventDefault() 서브밋 막는 녀석
+ 	        event.preventDefault();      
+ 		    return false;
+ 		   	
+ 	    }
+ 	});
  	
 //콜렙스가 아니라 tr을 추가하는 방식으로 진행해보기	- 요소  추가는 되지만 눈에 안보임 - 폐기
 	
 //  	var reRowTr = ("<tr id='reRow"+i+"' style='z-index:99; border:5px solid blue; '>");
 //  	var tr = $("#row"+i);
 //  	$("<td>").html("<img src='${contextPath}/img/trip_arrowImg.jpg'>").appendTo(reRowTr);
-//  	$("<td>").html("<input type='text' class='form-control' name='1' id='1' style='border: 1px solid purple;'>").appendTo(reRowTr);
+//  	$("<td>").html("<input type='text' class='form-control' name='1' id='1' style='border: 1px solid #cccccc;'>").appendTo(reRowTr);
 //  	$("<td>").html("<input type='button' class='btn btn-info' value='작성' id='12' name=''>").appendTo(reRowTr);
 //  	tr.after(reRowTr);
 	
@@ -209,6 +359,54 @@ function togglerereply(i) {
 	
 	
 }
+
+
+function reReplyWrite(i) {
+	//대댓글 입력 펑션
+	var rere = $("#rereForm"+i).serialize();
+	
+	
+	$.ajax({
+		url:"${contextPath}/tripReply/writeReReply",
+		type:"post",
+		data:rere,
+		dataType:"json",
+		success:function(result){
+			
+			if(result){
+				
+				createReplyTable();
+				
+			}else{
+				swal({
+	                  icon:"warning",
+	                  text:"댓글 입력실패 다시 시도해주세요.",
+	               });
+			}
+
+			
+			
+		}
+
+		
+		
+	});
+	
+}
+
+
+function goToProfile() {
+
+	/* 	$(".profile").mousedown(function() {
+			(".profile").css("background-color", "#ef2d4d");
+		})
+		
+		$(".profile").mouseup(function() {
+			location.href = "${contextPath}/accounts/profile?user=${user_Num}";
+		}) */
+		//location.href = "${contextPath}/accounts/profile?user=${userNum}";
+	}
+
 
 
 window.onload = function() {
@@ -297,6 +495,13 @@ window.onload = function() {
          return false;
       }
       
+      
+      
+     
+      
+      
+      
+      
    })
    
    $("#replyForm").on("submit", function() {
@@ -314,6 +519,7 @@ window.onload = function() {
                   icon:"success",
                });
                createReplyTable();
+               $("#replyContent").val("");
             }else{
                swal({
                   icon:"warning",
@@ -327,6 +533,100 @@ window.onload = function() {
       
    })
    
+
+   $("#declarationBtn").on("click", function() {
+   		
+	    var dModal = $("#declarationModalBody");
+	   
+   		dModal.html("");
+   		
+   		$.ajax({
+		   url:"getDeclaration",
+		   type:"post",
+		   data:{"${_csrf.parameterName}":"${_csrf.token}"},
+		   dataType:"json",
+		   success:function(data){
+	   
+			   var str = "	<select class='form-control' name='DECLARATION_KEY' id='searchType' style='width: 100%;'>" + 
+				"							<option value='"+data[0].DECLARATION_KEY+"'>"+data[0].DECLARATION_CONTENT+"</option>" + 
+				"							<option value='"+data[1].DECLARATION_KEY+"'>"+data[1].DECLARATION_CONTENT+"</option>" + 
+				"							<option value='"+data[2].DECLARATION_KEY+"'>"+data[2].DECLARATION_CONTENT+"</option>" + 
+				"							<option value='"+data[3].DECLARATION_KEY+"'>"+data[3].DECLARATION_CONTENT+"</option>" + 
+				"							<option value='"+data[4].DECLARATION_KEY+"'>"+data[4].DECLARATION_CONTENT+"</option>" + 
+				"							<option value='"+data[5].DECLARATION_KEY+"'>"+data[5].DECLARATION_CONTENT+"</option>" +
+				"							<option value='"+data[6].DECLARATION_KEY+"'>"+data[6].DECLARATION_CONTENT+"</option>" +
+				"		</select>";
+			   
+			   dModal.html(str);
+			   var dContent = $("#dContent");
+			   dContent.css("display","none");
+		  	   $("#dp").css("display", "none");
+			   
+			   
+			    $("#searchType").on("change", function() {
+			  	  
+			       
+			  	   var TypeVal = $("#searchType option:selected").val();
+			  	   if(TypeVal==7){
+			  		  dContent.css("display","block");
+			  		  $("#dp").css("display", "block");
+			  	   }else{
+			  		  dContent.css("display","none");
+			  		 $("#dp").css("display", "none");
+			  	   }
+			 	   
+			 	   
+			     })
+				
+	   
+				
+		   }
+		   
+		   
+		   
+	   });
+	   
+	   
+	   
+   })
+   
+   
+   $("#dSubmit").on("click", function() {
+   
+	   var dSerialize = $("#declarationForm").serialize();
+	   
+	   $.ajax({
+		   url:"insertDeclaration",
+		   type:"post",
+		   data:dSerialize,
+		   dataType:"json",
+		   success:function(result){
+			   if(result){
+				   
+				   swal({
+					   icon:"success",
+					   text:"신고 접수 완료하였습니다.",
+				   });
+				   $("#dContent").val("");
+			   }else{
+				   swal({
+					   icon:"warning",
+					   text:"게시글당 신고는 한번만 가능합니다.",
+				   });
+				   $("#dContent").val("");
+			   }
+		   }
+		   
+		   
+		   
+		   
+	   });
+	   
+   })
+   
+
+   
+  
    
    
    
@@ -362,7 +662,7 @@ window.onload = function() {
    max-height: 200px;
    height:20%;
    width: 100%;
-   border-right:1px solid purple;
+   border-right:1px solid #cccccc;
    margin:0px;
    overflow: hidden;
 }
@@ -371,7 +671,7 @@ window.onload = function() {
    max-height: 800px;
    height:800%;
    width: 100%;
-   border: 1px solid purple;
+   border: 1px solid #cccccc;
    margin:0px;
    overflow: auto;
 }
@@ -386,7 +686,7 @@ window.onload = function() {
    max-height: 1000px;
    height:100%;
    width: 50%;
-   border: 1px solid purple;
+   border: 1px solid #cccccc;
    padding: 0px;
    overflow: auto;
    display: none;
@@ -451,6 +751,31 @@ th{
 }
 
 
+.swal-text {
+  background-color: #FEFAE3;
+  padding: 17px;
+  border: 1px solid #F0E1A1;
+  display: block;
+  margin: 22px;
+  text-align: center;
+  color: #f94563;
+  font-size: 12pt;
+}
+#sogaeTable > tr th td{
+	width: 500px;
+}
+#boardInfoContent{
+    min-height: 520px;
+    max-height: 520px;
+    min-width : 330px;
+    max-width : 330px;
+    width: 100%;
+	height : 100%;
+    word-wrap: break-word;
+    overflow: auto;
+    white-space: pre-wrap;
+
+}
 
 </style>
 </head>
@@ -467,12 +792,6 @@ th{
 <script
    src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">   
 </script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-   crossorigin="anonymous"></script>
- 
- 
- <!--  -->  
    
    <div class="container-fluid" id="con1">
       <div class="row" id="mainRow">
@@ -491,7 +810,22 @@ th{
                       </tr>
                       <tr>
                          <th>
-                            <img src="${contextPath}/img/trip_Profile.png" width="30px;">
+                            <c:choose>
+									<c:when test="${boardInfo.USER_PROFILE_PIC eq 'n'}">
+										<a href="#" rel="popover" data-placement="bottom"
+											data-popover-content="#userInfo"> <img
+											src="${contextPath}/img/trip_Profile.png">
+										</a>
+
+									</c:when>
+									<c:otherwise>
+										<a href="#" rel="popover" data-placement="bottom"
+											data-popover-content="#userInfo"> <img
+											src="${contextPath}/image?fileName=${boardInfo.USER_PROFILE_PIC}"
+											style="width: 40px; height: 40px;">
+										</a>
+									</c:otherwise>
+								</c:choose>
                             &nbsp;&nbsp;
                             <span>${boardInfo.USER_LNM}${boardInfo.USER_FNM}</span>
                             
@@ -500,7 +834,7 @@ th{
                       <tr>
                          <td><input  type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#replyModal" value="동행">
                          <input type="button" onclick="toggleDisplay()" class="btn btn-primary btn-xs" value="소개">
-                         <input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#declarationModal" value="신고">
+                         <input type="button" id="declarationBtn"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#declarationModal" value="신고">
                          <input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modifyModal"value="수정">
                          <input type="button"  class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deleteModal" value="삭제">
 <!--                           <input type="button" class="btn btn-primary" value="답글" id="" onclick="" style="height: 25px; width: 25px; font-size: 4pt; text-align: center; padding: 0px;" >  -->
@@ -517,9 +851,9 @@ th{
             </div>
             
             <!--중앙 div 콜렙스 될부분  -->
-            <div class="col-lg-6" id="leftDiv-2">
+            <div class="col-lg-6 container-fluid"  id="leftDiv-2">
                 
-                   <table class="table" id="sogaeTable">
+                   <table class="table" id="sogaeTable" >
                       <tr>
                          <th>
                             <h2><b><small><mark>관심사</mark></small></b></h2>
@@ -528,7 +862,16 @@ th{
                       </tr>
                       <tr>
                          <td>
-                            default
+                         <c:choose>
+							<c:when test="${userInfo.UserInterest != null}">			
+								<c:forEach items="${userInfo.UserInterest}" var="i">
+									<span class="label label-mint label-lg"><b>${i.INTEREST_NAME}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>			
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
                          </td>
                       </tr>
                       <tr>
@@ -538,7 +881,16 @@ th{
                       </tr>
                       <tr>
                          <td>
-                            default
+                         <c:choose>
+							<c:when test="${userInfo.UserTrStyle != null}">
+								<c:forEach items="${userInfo.UserTrStyle}" var="tr">
+									<span class="label label-mint label-lg"><b>${tr.TR_STYLE}</b></span>
+								</c:forEach>	
+							</c:when>
+							<c:otherwise>
+								<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span>
+							</c:otherwise>
+						</c:choose>
                          </td>
                       </tr>
                       
@@ -553,10 +905,11 @@ th{
                       </tr>
                       <tr>
                          <td id="tripsogae">
-                            <div>
-                               <pre>${boardInfo.TRIP_BOARD_COUNTENT}</pre>
-                            </div>          
-                            
+                         		<%-- <div id="boardInfoContent">
+                         			${boardInfo.TRIP_BOARD_COUNTENT}
+                         		</div> --%>
+                         		<pre id="boardInfoContent">${boardInfo.TRIP_BOARD_COUNTENT}</pre>
+                               
                          </td>
                       </tr>
                    </table>
@@ -570,7 +923,7 @@ th{
          <div class="col-lg-8" id="rightDiv">
             <div id="map">지도</div> 
          <%--   
-            우측 div를 상하단으로 8/2비뷸로 나눌때 
+            우측 div를 상하단으로 8/2비율로 나눌때 
          <div class="row" id="rightRow1">
                
             </div>
@@ -604,7 +957,7 @@ th{
         <div class="modal-body" id="replyModalBody">
             <form action="#" method="post" id="replyForm">
                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                 <textarea class="form-control" rows="2" id="replyContent" name="trip_reply_Content" ></textarea>
+                 <textarea class="form-control" rows="2" id="replyContent" name="trip_Reply_Content" required="required"></textarea>
                  <input type="hidden" id="replyBoardKey" name="trip_Board_Key" value="${boardInfo.TRIP_BOARD_KEY}">
                  <input type="hidden" id="replyUserNum" name="user_Num" value="${userNum}">
                  <input type="hidden" id="replyGid" name="trip_Reply_Gid" value="0">
@@ -628,13 +981,27 @@ th{
 <!--            </div>  -->
          
 <!--             </div> -->
-         <table class="table" id="replyTable">
-
+  <div class="table-responsive">   
+  		<table class="table">
+  			<tr>
+  				<th><mark>동행신청</mark></th>
+  				
+  			</tr>
+  		</table>
   
-         </table>
+  	 <table class="table" id="replyTable" ></table>
+  </div>
+        
+        <div id="replyPager">
+        
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+ 
+         
+         
+        </div>
+        <div class="modal-footer" >
+        
+<!--           <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button> -->
         </div>
       </div>
     </div>
@@ -653,14 +1020,27 @@ th{
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">
+				<b>게시글 신고</b>
+			</h4>
         </div>
-        <div class="modal-body" id="declarationModalBody">
-          <p>신고모달</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+       <form action="#" id="declarationForm" method="post">
+	       	 <div class="modal-body" id="declarationModalBody">
+<!-- 	         	신고데이터 테이블에서 데이터 끌고와 넣는곳 -->
+
+	        </div>
+	        <div class="modal-footer" id="dForm">
+	       	    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+	       	 	<input type="hidden" name="TRIP_BOARD_KEY" value="${boardInfo.TRIP_BOARD_KEY}">
+	         	<input type="hidden" name="D_USER_NUM" value="${boardInfo.USER_NUM}">
+	         	<input type="hidden" name="USER_NUM" value="${userNum}">   	
+	         	<p style="text-align: left;" id="dp" >상세 신고내용</p>
+	         	<textarea rows="10" cols="30" style="width: 100%;" id="dContent"  name="TRIP_D_DETAILCONTENT"></textarea>
+	         	<input type="button" id="dSubmit" class="btn btn-info" value="신고작성">
+	         
+	
+	        </div>
+       </form>
       </div>
       
     </div>
@@ -693,8 +1073,8 @@ th{
           
         </div>
         <div class="modal-footer">
-          <input type="submit" class="btn btn-danger" value="확인">
           <input type="button" class="btn btn-info" data-dismiss="modal" value="닫기">
+          <input type="submit" class="btn btn-danger" value="확인">
         </div>
            
     </form>
@@ -730,6 +1110,42 @@ th{
           
         </div>
         <div class="modal-footer">
+          <input type="button" class="btn btn-info" data-dismiss="modal" value="닫기">
+          <input type="submit" class="btn btn-danger" value="확인">
+        </div>
+           
+    </form>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>      
+   <!--댓글 삭제 모달  -->
+   <div class="container">
+  
+  <div class="modal fade" id="deleteReplyModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">비밀번호 확인</h4>
+        </div>
+        <form action="#" method="post" id="deleteReplyForm">
+        <div class="modal-body" id="deleteReplyModalBody">
+           
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+              <input type="hidden" value="" name="userNum">
+             <div class="form-group">
+               <label for="pwd">비밀번호:</label>
+               <input type="password" class="form-control" id="deleteReplyPw" placeholder="비밀번호를 입력해주세요." name="user_pwCheck">
+             </div>
+         
+          
+        </div>
+        <div class="modal-footer">
           <input type="submit" class="btn btn-danger" value="확인">
           <input type="button" class="btn btn-info" data-dismiss="modal" value="닫기">
         </div>
@@ -740,8 +1156,27 @@ th{
     </div>
   </div>
   
-</div>      
-   
+</div> 
+
+<!--팝오버  -->
+ <div id="userInfo" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
+									${boardInfo.USER_LNM} ${boardInfo.USER_FNM} <br>
+									<a href="${contextPath}/accounts/profile?user=${boardInfo.USER_NUM}">프로필보기</a><br>
+									<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->
+									<a href="#">대화하기</a>
+									</sec:authorize>
+										   
+								</div> 
+
+	<!--팝오버 끝  -->
+
+
+  
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
    <!-- 인클루드-푸터 -->
    <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
    <!-- 인클루드-푸터 END -->

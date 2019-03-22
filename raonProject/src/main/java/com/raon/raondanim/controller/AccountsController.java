@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.raon.raondanim.model.User;
 import com.raon.raondanim.model.customUserDetails;
@@ -39,15 +40,24 @@ public class AccountsController {
 	
 	//로그인 화면 요청
 	@RequestMapping(value = "/loginForm")
-	public String loginForm() {
+	public String loginForm(@RequestParam(value = "error", defaultValue = "defalutValue") String error, Model model) {
+		if(!error.equals("defalutValue")) {
+			model.addAttribute("msg", error);			
+		}
+		//System.out.println("받은거 : " + error);
 		logger.info("");
 		return"accounts/loginForm";
 	}
 	
 	//로그인 실패 
 	@RequestMapping(value = "/loginError")
-	public String loginError() {
+	public String loginError(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		String msg = (String) request.getAttribute("errormsgname");
+		redirectAttributes.addAttribute("error", msg);
+		//redirectAttributes.addFlashAttribute("error", msg);
+		//System.out.println("실패 핸들러가 보낸 놈 : " + msg);
 		return "redirect:/accounts/loginForm";
+		//return "accounts/loginError";
 	}
 	
 	//회원가입 화면 요청
@@ -96,7 +106,7 @@ public class AccountsController {
 		//System.out.println("==============프로필 데이터==============");
 		//System.out.println(userData);
 		model.addAttribute("user", userData);
-		model.addAttribute("userNum", userNum);
+		model.addAttribute("profileUser", userNum);
 		return "accounts/profile";
 	}
 	
@@ -118,15 +128,14 @@ public class AccountsController {
 	
 	@ResponseBody
 	@RequestMapping(value="/deletePic")
-	public String deleteGalleryPic(@RequestParam String data) {
+	public boolean deleteGalleryPic(@RequestParam String data) {
 		//String [] data = request.getParameterValues("data[]");
-		System.out.println(data);
-		
+		//System.out.println(data);
 		if(data == null) {
 			System.out.println("널이다!");
-			return "0";
+			return false;
 		}
-		return "1";
+		return service.deleteGalleryPic(data);
 	}
 	
 	//프로필 수정 화면 1
@@ -145,6 +154,13 @@ public class AccountsController {
 	public String update2Form() {
 		return "accounts/profile-update2";
 	}
+	
+	//프로필 수정 화면 3
+	@RequestMapping(value = "/update3Form")
+	public String update3Form() {
+		return "accounts/profile-update3";
+	}
+	
 	
 	//프로필 수정 화면 3
 	@RequestMapping(value = "/gallerySettings")
@@ -229,6 +245,39 @@ public class AccountsController {
 	public String dnmmyData() {
 		service.setDnmmyData();
 		System.out.println("=============더미데이터 생성완료============");
-		return "";
+		return "accounts/setDnmmy";
 	}
+	
+	//회원가입 이메일 중복 검사 
+	@ResponseBody
+	@RequestMapping(value = "/emailCheck")
+	public boolean emailChange(@RequestParam String check) {
+		return service.emailCheck(check);
+	}
+	
+	//비밀번호 변경 요청 시 
+	@ResponseBody
+	@RequestMapping(value = "/passwordCheck")
+	public boolean passwordCheck(@RequestParam String check, Authentication authentication) {
+		//현재 로그인 한 사용자의 usernum을 변수에 참조하기 위해 Authentication 객체를 사용 필요한 데이터를 가져온다.
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		String usernum = Integer.toString(user.getUser_num());
+		//System.out.println(check);
+		return service.passwordCheck(check, usernum);
+	}
+	
+	//비밀번호 찾기 화면 요청 
+	@RequestMapping("/passwordresetform")
+	public String passwordreset() {
+		return "accounts/password-reset";
+	}
+	
+	//비밀번호 찾기 Ajax 요청 
+	@ResponseBody
+	@RequestMapping(value = "/passwordreset")
+	public boolean resetPw(@RequestParam Map<String, Object> param) {
+		//System.out.println(param);
+		return service.passwordReset((String)param.get("email"));
+	}
+	
 }

@@ -14,12 +14,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.mail.Session;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,14 +46,8 @@ public class MotelController {
 	@Autowired
 	private MotelTbService service;
 	
-	private static final String FILE_PATH = "c:/tmp/";
-	
-	/*@RequestMapping("/motelList")
-	public String motelList() {
-		System.out.println("motel : 숙박 리스트 요청");
-		System.out.println(service.getBoardByNum(261));
-		return "";
-	}*/
+	private static final String FILE_PATH = "d:/project_img/";
+
 	
 	public int startEnd(String checkin, String checkout) {
 		if(checkin.equals("") && checkout.equals("")) {
@@ -89,13 +90,19 @@ public class MotelController {
 	
 	@RequestMapping("/searchList")
 	public String boardList(@RequestParam(value="page",defaultValue="1")int page,
-			Model model,String location, String checkin, @RequestParam(required=false)String checkout, @RequestParam(required=false)int adults) {
+			Model model,String city, String startDate, @RequestParam(required=false)String endDate, @RequestParam(required=false)int adults) {
+		
 		System.out.println("리스트 요청");
-		System.out.println(checkin);
-		System.out.println(checkout);
-		System.out.println(adults);
-		System.out.println("여행 일수 : "+startEnd(checkin,checkout));
-		model.addAttribute("date",startEnd(checkin,checkout));
+		System.out.println("체크인 : "+startDate);
+		System.out.println("체크아웃 : "+endDate);
+		System.out.println("인원 : "+adults);
+		System.out.println("도시 : "+city);
+		System.out.println("여행 일수 : "+startEnd(startDate,endDate));
+		model.addAttribute("date",startEnd(startDate,endDate));
+		model.addAttribute("startDate",startDate);
+		model.addAttribute("endDate",endDate);
+		model.addAttribute("adults",adults);
+		model.addAttribute("city",city);
 		
 		
 		return "motel/motelList";
@@ -104,14 +111,22 @@ public class MotelController {
 	@RequestMapping(value="/replyList",method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> replyList(@RequestParam(value="page",defaultValue="1")int page,
-			Model model, int num) {
+			Model model, int num, HttpSession session, HttpServletRequest req) {
 		System.out.println("댓글 요청");
+		CsrfToken _csrf1 = (CsrfToken) req.getAttribute("CsrfToken");
+		CsrfToken _csrf2 = (CsrfToken) req.getAttribute("_csrf");
+		
+		System.out.println("token1 : " + _csrf1);
+		System.out.println("token2 :" + _csrf2);
+		
+		
 		Map<String, Object>params = new HashMap<String, Object>();
 		params.put("page", page);
 		params.put("num", num);
 		System.out.println(params);
 		Map<String, Object>result = new HashMap<String, Object>();
 		result.put("board", service.getReplyData(params));
+		System.out.println("댓글이 뭘 가지고 있지");
 		System.out.println(result);
 		return result;
 	}
@@ -119,14 +134,38 @@ public class MotelController {
 	@ResponseBody
 	@RequestMapping(value="/list", method=RequestMethod.POST)
 	public Map<String, Object> test1(@RequestParam(value="page",defaultValue="1")int page,
-			@RequestParam(required=false)String keyword,
-			@RequestParam(defaultValue="0")int type,
+			@RequestParam(defaultValue="0")int motel_type,
+			@RequestParam(defaultValue="0")int motel_category,
+			@RequestParam(defaultValue="1")int motel_people,
+			@RequestParam(defaultValue="0")int motel_price1,
+			@RequestParam(defaultValue="0")int motel_price2,
+			String startDate,
+			String endDate,
+			String city,
 			Model model) {
 		System.out.println("ajax 요청");
+		System.out.println("motel_type : "+motel_type);
+		System.out.println("motel_category : "+motel_category);
+		System.out.println("motel_people : "+motel_people);
+		System.out.println("motel_price1 : "+motel_price1);
+		System.out.println("motel_price2 : "+motel_price2);
+		System.out.println("startDate : "+startDate);
+		System.out.println("endDate : "+endDate);
+		System.out.println("city : "+city);
+		String tmpStartDate = startDate.substring(2,10);
+		System.out.println("tmpStartDate : "+tmpStartDate);
+		String tmpendDate = endDate.substring(2, 10);
+		System.out.println(tmpendDate);
 		Map<String, Object>params = new HashMap<String, Object>();
 		params.put("page", page);
-		params.put("keyword", keyword);
-		params.put("type", type);
+		params.put("motel_type", motel_type);
+		params.put("motel_category", motel_category);
+		params.put("motel_people", motel_people);
+		params.put("motel_price1", motel_price1);
+		params.put("motel_price2", motel_price2);
+		params.put("startDate", tmpStartDate);
+		params.put("endDate", tmpendDate);
+		params.put("city", city);
 		Map<String, Object>result = new HashMap<String, Object>();
 		result.put("board", service.getViewData(params));
 		System.out.println(result);
@@ -138,8 +177,27 @@ public class MotelController {
 	   public String writeReply(@RequestParam Map<String, Object> params, Model model) {
 	      System.out.println("댓글작성");
 	      System.out.println(params);
-	      String tmpUserNum = (String)params.get("user_num");
+	      String tmpUserNum = (String)params.get("host");
 	      String tmpNum = (String)params.get("motel_num");
+	      
+	      //별점 남긴적이 있는지 확인
+	      if(service.starCheck(params)) {
+	    	  System.out.println(service.starCheck(params));
+	    	  //params에 star-input key가 있는지 확인
+	    	  if(params.containsKey("star-input")) {
+		    	  service.starAvg(params);
+		      }
+	      }else {
+	    	  System.out.println(service.starCheck(params));
+	    	  if(params.containsKey("star-input")) {
+		    	  service.starUpdate(params);
+		    	  System.out.println(service.starUpdate(params));
+		      }
+	      }
+	      
+    	  
+	      
+	      
 	      
 	      int userNum = Integer.parseInt(tmpUserNum);
 	      int num = Integer.parseInt(tmpNum);
@@ -148,42 +206,16 @@ public class MotelController {
 	      if(service.write_reply(params)) {
 	         model.addAttribute("result",true);
 	         model.addAttribute("msg","댓글을 등록했습니다.");
-	         model.addAttribute("url","/motel/view?num="+num+"&host="+userNum);
+	         model.addAttribute("url","/motel/view?num="+num+"&host="+userNum+"&checkIn="+params.get("checkIn")+"&checkOut="+params.get("checkOut")+"&tripDate="+params.get("tripDate")+"&people="+params.get("people"));
+	         
 	      }else {
 	         model.addAttribute("result",false);
 	         model.addAttribute("msg","댓글 등록에 실패하였습니다.");
-	         model.addAttribute("url","/motel/view?num="+num+"&host="+userNum);
+	         model.addAttribute("url","/motel/view?num="+num+"&host="+userNum+"&checkIn="+params.get("checkIn")+"&checkOut="+params.get("checkOut")+"&tripDate="+params.get("tripDate")+"&people="+params.get("people"));
 	      }
 	      
 	      return "motel/result";
 	   }
-	
-	//이미지를 가져오는 메서드
-	@ResponseBody
-	@RequestMapping("/image")
-	public byte[] getImage(String fileName) {
-		System.out.println("/image 요청 : "+fileName);
-		File file = new File(FILE_PATH+fileName);
-		InputStream in = null;
-		try {
-			in = new FileInputStream(file);
-			return IOUtils.toByteArray(in);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//해당 이미지를 byte[]의 형태로 반환
- catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-		return null;
-	}
-	
-
 
 	@RequestMapping("/search")
 	public String aaaaaaaaaaaa() {
@@ -191,16 +223,62 @@ public class MotelController {
 		return "motel/search";
 	}
 	
+	
+	
+	
 	@RequestMapping("/view")
-	public String view(int num,int host, Model model) {
-		
+	public String view(int num, int host,@RequestParam(required=false, value="checkIn") String checkIn, @RequestParam(required=false,value="checkOut") String checkOut, @RequestParam(required=false,value="tripDate") int tripDate,@RequestParam(required=false,value="people") int people, Model model) {
+		System.out.println("뷰 요청");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("num", num);
 		params.put("host", host);
+		System.out.println("상세페이지 넘어가는 파라미터");
 		
-		/*System.out.println(service.viewSelect(num));*/
+		
 		Map<String, Object> motel = new HashMap<String, Object>();
 		motel=service.viewSelect(params);
+		motel.put("checkIn", checkIn);
+		motel.put("checkOut", checkOut);
+		motel.put("tripDate", tripDate);
+		motel.put("people", people);
+		motel.put("image", service.getImage(num));
+		int motelType=Integer.parseInt(String.valueOf(service.viewSelect(params).get("MOTEL_TYPE")));
+		int motelCategory = Integer.parseInt(String.valueOf(service.viewSelect(params).get("MOTEL_CATEGORY")));
+		if(motelType==1) {
+			motel.put("MOTEL_TYPE", "아파트");
+			System.out.println(motel.get("MOTEL_TYPE"));
+		}else if(motelType==2){
+			motel.put("MOTEL_TYPE", "주택");
+			System.out.println(motel.get("MOTEL_TYPE"));
+		}else if(motelType==3) {
+			motel.put("MOTEL_TYPE", "빌라");
+			System.out.println(motel.get("MOTEL_TYPE"));
+		}
+		if(motelCategory==1) {
+			motel.put("MOTEL_CATEGORY", "집 전체");
+			System.out.println(motel.get("MOTEL_CATEGORY"));
+		}else {
+			motel.put("MOTEL_CATEGORY", "개인실");
+			System.out.println(motel.get("MOTEL_CATEGORY"));
+		}
+		System.out.println(motel);
+		model.addAllAttributes(motel);
+		
+		return "motel/view";
+	}
+	
+	@RequestMapping("/view_host")
+	public String view(int num, int host, Model model) {
+		System.out.println("뷰 요청");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("num", num);
+		params.put("host", host);
+		System.out.println("상세페이지 넘어가는 파라미터");
+		
+		
+		Map<String, Object> motel = new HashMap<String, Object>();
+		motel=service.viewSelect(params);
+		motel.put("image", service.getImage(num));
 		
 		int motelType=Integer.parseInt(String.valueOf(service.viewSelect(params).get("MOTEL_TYPE")));
 		int motelCategory = Integer.parseInt(String.valueOf(service.viewSelect(params).get("MOTEL_CATEGORY")));
@@ -223,21 +301,35 @@ public class MotelController {
 		}
 		System.out.println(motel);
 		model.addAllAttributes(motel);
+		
 		return "motel/view";
 	}
-	/*@RequestMapping(value="/replyList",method=RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> replyList(@RequestParam(value="page",defaultValue="1")int page){
-		System.out.println("ajax 댓글 요청");
-		return null;
-	}*/
+
 	
 	
 	
-	@RequestMapping("/checkout")
-	public String checkoutPage(@RequestParam Map<String,Object> paramMap, Model model) {
-		model.addAllAttributes(paramMap);
-		return "motel/pay_checkout";
+	@RequestMapping(value="/checkout",method=RequestMethod.POST)
+	public String checkoutPage(@RequestParam Map<String,Object> paramMap, Model model,HttpSession session, HttpServletRequest req) {
+		System.out.println(paramMap);
+		CsrfToken _csrf1 = (CsrfToken) req.getAttribute("CsrfToken");
+		CsrfToken _csrf2 = (CsrfToken) req.getAttribute("_csrf");
+		
+		System.out.println("token1 : " + _csrf1);
+		System.out.println("token2 :" + _csrf2.getParameterName() + " " + _csrf2.getToken());
+		model.addAttribute("_csrf", _csrf2);
+		if(service.checkDate(paramMap)) {
+			model.addAllAttributes(paramMap);
+			System.out.println("체크아웃 파라미터 확인");
+			System.out.println(paramMap);
+			return "motel/pay_checkout";
+		}else {
+		model.addAttribute("msg","이미 예약된 숙소 입니다.");
+		model.addAttribute("doubleResult","false");
+		model.addAttribute("url","/motel/search");
+		
+		return "motel/pay_result";
+		}
+		
 	}
 	
 	@RequestMapping(value="/pay_paypal", method=RequestMethod.POST)
@@ -247,46 +339,148 @@ public class MotelController {
 		model.addAllAttributes(paramMap);
 		return "motel/pay_paypal";
 	}
+	@RequestMapping(value="/pay_result",method=RequestMethod.POST)
+	public String pay_result_free(@RequestParam Map<String, Object>params,Model model) {
+		System.out.println("무료 숙소 파라미터");
+		System.out.println(params);
+		int num = Integer.parseInt((String)params.get("motel_num"));
+		int host = Integer.parseInt((String)params.get("host"));
+		String checkIn = params.get("checkIn").toString();
+		String checkOut = params.get("checkOut").toString();
+		int tripDate = Integer.parseInt((String)params.get("tripDate"));
+		int people = Integer.parseInt((String)params.get("people"));
+		params.remove("motel_num");
+		params.put("num", num);
+		if(date_tb_update(params)) {
+			if(service.add_point(params)&&service.pay_history_insert(params)) {
+				model.addAttribute("msg","결제가 완료 되었습니다.");
+				model.addAttribute("result_free","true");
+				model.addAttribute("url","/motel/view?num="+num+"&host="+host+"&checkIn="+checkIn+"&checkOut="+checkOut+"&tripDate="+tripDate+"&people="+people);
+			}
+		}
+		return "motel/pay_result";
+	}
 	
 	@RequestMapping("/pay_result")
-	public String paypal(@RequestParam Map<String,Object> paramMap, Model model) {
+	public String paypal(@RequestParam Map<String, Object> paramMap, Model model) {
+		/*System.out.println(paramMap);*/
+		int num = Integer.parseInt((String)paramMap.get("num"));
+		int host = Integer.parseInt((String)paramMap.get("host"));
+		String checkIn = paramMap.get("checkIn").toString();
+		String checkOut = paramMap.get("checkOut").toString();
+		int tripDate = Integer.parseInt((String)paramMap.get("tripDate"));
+		int people = Integer.parseInt((String)paramMap.get("people"));
+		boolean imp_success;
+		System.out.println("페이 리절트 파라미터 체크");
 		System.out.println(paramMap);
-		if(paramMap.get("imp_success").equals("true")) {
-			System.out.println("결제 성공");
-			model.addAttribute("result","true");
-			model.addAttribute("msg","결제에 성공했습니다.");
-			System.out.println(paramMap.get("num"));
-			model.addAttribute("num",paramMap.get("num"));
-		}else {
-			model.addAttribute("result","false");
-			model.addAttribute("msg","잔액이 부족합니다");
-		}
+		
+		
+			if(paramMap.get("imp_success").equals("true")&&date_tb_update(paramMap)) {
+				if(service.add_point(paramMap)&&service.pay_history_insert(paramMap)) {
+					model.addAttribute("msg","결제가 완료 되었습니다.");
+					model.addAttribute("result","true");
+					model.addAttribute("url","/motel/view?num="+num+"&host="+host+"&checkIn="+checkIn+"&checkOut="+checkOut+"&tripDate="+tripDate+"&people="+people);
+				}
+			}else {
+				model.addAttribute("msg","잔액이 부족합니다.");
+				model.addAttribute("result","false");
+				model.addAttribute("url","/motel/view?num="+num+"&host="+host+"&checkIn="+checkIn+"&checkOut="+checkOut+"&tripDate="+tripDate+"&people="+people);
+			}
+		
+		
 		model.addAllAttributes(paramMap);
 		return "motel/pay_result";
 	}
-	@RequestMapping(value="/write_star",method=RequestMethod.POST)
+	
+	//숙소 예약시 motel_date_tb 상태값 N으로 변경 
+	public boolean date_tb_update(Map<String, Object>params) {
+		if(service.date_tb_update(params)) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	//댓글 상태값 삭제로 변경
+	@RequestMapping(value="/deleteReply",method=RequestMethod.POST)
 	@ResponseBody
-	public double star(@RequestParam Map<String, Object>params, Model model) {
-		System.out.println("평점 입장");
-		System.out.println("데이터 : "+params);
-		String tmpNum = (String)params.get("motel_num");
-		
-		int num = Integer.parseInt(tmpNum);
-		service.starAvg(params);
-		
-		
-		return 0;
+	public boolean deleteReply(@RequestParam Map<String, Object>param) {
+		System.out.println("댓글 삭제요청(ajax)");
+		System.out.println(param);
+		return service.deleteReply(param);	
 	}
-	@RequestMapping("/mapTest1")
-	public String mapTest1() {
-		return "motel/mapTest1";
+	
+	//댓글 신고 데이터 불러오기
+	@RequestMapping(value="/getDeclaration", method=RequestMethod.POST)
+	@ResponseBody
+	public List<Map<String, Object>> declaration(){
+		System.out.println("신고 데이터 가져와");
+		return service.declaration();
 	}
-	@RequestMapping("/mapTest2")
-	public String MapTest2(Model model) {
-		model.addAttribute("ko","https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc&callback=initMap&language=ko");
-		model.addAttribute("en","https://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc&callback=initMap&language=en");
-		return "motel/mapTest2";
+	//댓글 신고
+	@RequestMapping(value="/declaration", method=RequestMethod.POST)
+	@ResponseBody
+	public boolean declarationSubmit(@RequestParam Map<String, Object>params) {
+		String tmpReply_num = (String) params.get("type");
+		if(tmpReply_num.equals("reply")) {
+			System.out.println("신고페이지 진입");
+			System.out.println(params);
+			if(service.insertDeclaration_check(params)) {
+				System.out.println("중복신고 체크 - 중복 신고 없음");
+				return service.insertDeclaration(params);
+			}else {
+				System.out.println("중봏ㄱ신고 체크 - 중복 신고 있음");
+				return false;
+			}
+			
+			
+		}else {
+			System.out.println("게시글 신고 파라미터 체크");
+			System.out.println(params);
+			if(service.insert_motel_Declaration_check(params)) {
+				System.out.println("숙박글 중복신고 체크 - 중복신고 없음");
+				return service.insert_motel_Declaration(params);
+			}else {
+				System.out.println("숙박글 중복신고 체크 - 중복신고 있음");
+				return false;
+			}
+		}
 	}
+	
+	//숙박글 삭제
+	@RequestMapping(value="/delete_motel",method=RequestMethod.POST)
+	@ResponseBody
+	public boolean delete_motel(@RequestParam Map<String, Object>params) {
+		System.out.println("삭제요청 파라미터 확인");
+		System.out.println(params);
+		
+		return service.delete_motel(params);
+	}
+	
+	//이미지 가져오기 테스트
+	@RequestMapping("/image")
+	@ResponseBody
+	public byte[] getImage(String fileName) {
+		System.out.println("이미지 요청 받음");
+		
+		File file = new File(FILE_PATH+fileName);
+		InputStream in = null;
+		try {
+			in = new FileInputStream(file);
+			return IOUtils.toByteArray(in);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//해당 이미지를 byte[]의 형태로 반환
+ catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+	}
+	
 	
 	
 	
@@ -305,8 +499,9 @@ public class MotelController {
 	}
 	
 	@RequestMapping(value = "/write_registor_type_style", method = RequestMethod.GET)
-	public String registor_step1() {
+	public String registor_step1(HttpSession session) {
 		System.out.println("숙소 등록 진입 ");
+		System.out.println("session motel_photo : " + session.getAttribute("motel_photo"));
 		return "motel/registor_type_style";
 	}
 	
@@ -384,9 +579,9 @@ public class MotelController {
 		return "motel/registor_photo";
 	}
 	
-	@RequestMapping(value="/registor_intro", method = RequestMethod.GET)
+	@RequestMapping(value="/registor_intro", method = RequestMethod.POST)
 	public String registor_step4(@RequestParam Map<String, Object> param, Model model, 
-			List<MultipartFile> files) {
+			List<MultipartFile> files, HttpSession session) {
 			//MultipartFile cma_file,MultipartFile cma_file1,MultipartFile cma_file2,MultipartFile cma_file3,MultipartFile cma_file4
 
 		System.out.println("step4 진입");
@@ -406,6 +601,13 @@ public class MotelController {
 		model.addAttribute("motel_address", param.get("motel_address"));
 		model.addAttribute("motel_photoFiles", files);
 		
+		
+		session.setAttribute("motel_photo", files);
+//		System.out.println("=======================================================");
+//		System.out.println(session.getAttributeNames());
+//		
+//		System.out.println(session.getAttribute("motel_photo"));
+		
 		model.addAttribute("registor", param);
 //		System.out.println("cma_file : " + cma_file);
 //		System.out.println("cma_file1 : " + cma_file1);
@@ -417,10 +619,13 @@ public class MotelController {
 	}
 	
 	@RequestMapping(value="/registor_complete", method = RequestMethod.POST)
-	public String registor_complete(@RequestParam Map<String, Object> param, Model model) {
+	public String registor_complete(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
 		System.out.println("registor_complete 진입");
 		System.out.println("complete : " + param);
-		int motel_num = service.write_Motel(param);
+		System.out.println("complete motel_photo : " + session.getAttribute("motel_photo"));
+		System.out.println("complete motel_photo : " + session.getAttribute("motel_photo").getClass());
+		List<MultipartFile> files = (List<MultipartFile>) session.getAttribute("motel_photo");
+		int motel_num = service.write_Motel1(param, files);
 		if(motel_num!=0) {
 			//숙박 글 정상 등록
 			System.out.println("숙박글 등록 성공");
@@ -431,10 +636,23 @@ public class MotelController {
 			
 		}
 		
-		return "redirect:/motel/view?num="+motel_num+"&host="+param.get("user_num");
+		return "redirect:/motel/view_host?num="+motel_num+"&host="+param.get("user_num");
 	}
 	
-	
+	//ajax로 DB에서 국가목록 데이터 화면단으로 전송
+	@ResponseBody
+	@RequestMapping(value = "/DB_nation", method = RequestMethod.GET)
+	public List<Map<String, Object>> DB_nation(){
+		System.out.println("DB_nation 입장!!!");
+		//System.out.println("DB_nation 입장!!!" + service.getAllNational());
+		return service.getAllNational();
+	}
+	@ResponseBody
+	@RequestMapping(value = "/DB_city", method = RequestMethod.GET)
+	public List<Map<String, Object>> DB_city(){
+		//System.out.println("DB_city 입장 !! : " + service.getAllCity());
+		return service.getAllCity();
+	}
 	
 
 }
