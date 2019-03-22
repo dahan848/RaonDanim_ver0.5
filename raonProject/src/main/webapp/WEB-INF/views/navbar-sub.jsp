@@ -15,17 +15,10 @@
         <sec:authorize access="isAuthenticated()">
             <li><a href="${contextPath}/accounts/update1Form">나의 정보</a></li>
         </sec:authorize>
-<<<<<<< HEAD
-            <li><a href="${contextPath}/search/home">회원 검색</a></li>
-            <li><a href="${contextPath}/trip/list">여행</a></li>
-            <li><a href="${contextPath}/motel/search">숙박</a></li>
-            <li><a href="${contextPath}/review/test">후기</a></li>
-=======
-	         <li><a href="${contextPath}/search/test">회원 검색</a></li>
+	         <li><a href="${contextPath}/search/home">회원 검색</a></li>
 	         <li><a href="${contextPath}/trip/list">여행</a></li>
 	         <li><a href="${contextPath}/motel/search">숙박</a></li>
 	         <li><a href="${contextPath}/review/reviewMain">후기</a></li>
->>>>>>> origin/0334
         </ul>
     </div>
 </div>

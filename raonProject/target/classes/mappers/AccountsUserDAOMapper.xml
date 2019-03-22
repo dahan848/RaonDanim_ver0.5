@@ -3,117 +3,6 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.raon.raondanim.dao.AccountsUserDAO">
-<<<<<<< HEAD
-   <insert id="setDnmmyData" parameterType="User">
-   INSERT INTO USER_TB
-            (USER_NUM, USER_ID, USER_PW, USER_FNM, USER_LNM, USER_EMAIL_VERIFY , USER_REG_DATE)
-      VALUES (
-            USER_TB001_SEQ.nextval,
-            #{user_id},
-            #{user_pw},
-            #{user_fnm},
-            #{user_lnm},
-            1,
-            sysdate
-            )
-   </insert>
-   <insert id="joinUser" parameterType="User">
-      INSERT INTO USER_TB
-            (USER_NUM, USER_ID, USER_PW, USER_FNM, USER_LNM, USER_VERIFY_CODE, USER_REG_DATE)
-      VALUES (
-            USER_TB001_SEQ.nextval,
-            #{user_id},
-            #{user_pw},
-            #{user_fnm},
-            #{user_lnm},
-            #{user_verify_code},
-            sysdate
-            )
-   </insert>
-   <select id="selectByUserId" resultType="User" parameterType="string">
-      SELECT *
-        FROM user_tb
-       WHERE user_id = #{userid}
-   </select>
-   <select id="selectByUserNum" resultType="User" parameterType="string">
-      SELECT *
-        FROM user_tb
-       WHERE user_num = #{usernum}
-   </select>
-   <update id="email_verify" parameterType="User">
-      UPDATE user_tb
-         SET user_email_verify = 1
-       WHERE user_id = #{user_id}
-         AND user_verify_code = #{user_verify_code}
-   </update>
-   <update id="updatePersonal" parameterType="map">
-      UPDATE user_tb
-      
-         SET user_fnm       = #{user_fnm},
-               user_lnm         = #{user_lnm},
-               user_gender       = #{user_gender},
-               user_birth_date    = #{user_birth_date}
-               
-       WHERE user_num       = #{user_num}
-   </update>
-   <update id="passwordChange" parameterType="map">
-      UPDATE user_tb
-      
-         SET user_pw       = #{new_user_pw1}
-               
-       WHERE user_num    = #{user_num}
-   </update>
-   <select id="getUserInterest" parameterType="string" resultType="map">
-      select *
-        from INTEREST_DTB
-       where INTEREST_NUM in (select INTEREST_NUM
-                                 from INTEREST_TB
-                               where USER_NUM = #{usernum})
-   </select>
-   <select id="getUserLanguage" parameterType="string" resultType="map">
-      select *
-         from LANGUAGE_DTB
-        where LANGUAGE_NUM in (select LANGUAGE_NUM
-                                 from LANGUAGE_TB
-                                 where USER_NUM = #{usernum})
-   </select>
-   <select id="getUserNationality" parameterType="string" resultType="string">
-      select NATIONALITY_NAME
-        from NATIONALITY_DTB
-       where NATIONALITY_NUM = (select USER_NATIONALITY
-                                    from user_tb
-                                   where user_num = #{usernum})
-   </select>
-   <select id="getUserGallery" parameterType="string" resultType="map">
-      SELECT GALLERY_FILE_NUM, GALLERY_FILE_NAME, GALLERY_PIC_REG_DATE 
-        FROM GALLERY_TB
-        WHERE user_num = #{usernum}
-   </select>
-   <select id="getHomeUserList" resultType="map">
-      select user_num, user_profile_pic, user_lnm, user_fnm
-          from user_tb
-   </select>
-   <update id="setProfilePic" parameterType="map">
-      UPDATE user_tb
-         SET USER_PROFILE_PIC   = #{filename}
-       WHERE user_num       = #{user_num}
-   </update>
-   <insert id="setGalleryPic" parameterType="map">
-      INSERT INTO GALLERY_TB
-            (USER_NUM, GALLERY_FILE_NUM, GALLERY_FILE_NAME, GALLERY_PIC_REG_DATE)
-      VALUES (
-            #{user_num},
-            GALLERY_TB_SEQ.nextval,
-            #{filename},
-            sysdate
-            )
-   </insert>
-   <delete id="deleteGalleryPic" parameterType="string">
-      DELETE
-        FROM gallery_tb
-       WHERE GALLERY_FILE_NUM = #{num} 
-   </delete>
-=======
 	<insert id="setDnmmyData" parameterType="User">
 	INSERT INTO USER_TB
 			   (USER_NUM, USER_ID, USER_PW, USER_FNM, USER_LNM, USER_EMAIL_VERIFY , USER_REG_DATE)
@@ -228,34 +117,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM gallery_tb
 		 WHERE GALLERY_FILE_NUM = #{num} 
 	</delete>
-<!-- 	여행파트 dao추가 -->
-<select id="getTrStyle" parameterType="String" resultType="map">
-select *
-from user_tb u join TRAVLE_STYLE_TB t
-on u.user_num = t.user_num
-where u.user_num = #{userNum}
-</select>	
+	
+	<!-- 여행파트 dao추가 -->
+	<select id="getTrStyle" parameterType="String" resultType="map">
+		select *
+		from user_tb u join TRAVLE_STYLE_TB t
+		on u.user_num = t.user_num
+		where u.user_num = #{userNum}
+	</select>	
 
-<select id="getTravleHope" parameterType="String" resultType="map">
-select *
-from user_tb u join TRAVLE_HOPE h
-on u.user_num = h.user_num
-where u.user_num = #{userNum}
-</select>	
+	<select id="getTravleHope" parameterType="String" resultType="map">
+		select *
+		from user_tb u join TRAVLE_HOPE h
+		on u.user_num = h.user_num
+		where u.user_num = #{userNum}
+	</select>	
 	
-<select id="getUserRegDate" resultType="map">
-<!-- 데이터가 충분치 않아 정렬에 오류가 있을수 있음 -->
-SELECT TO_CHAR(USER_REG_DATE,'MM')||'월' as USER_REG_DATE,count(TO_CHAR(USER_REG_DATE,'MM')) as monthCount
-FROM user_tb
-group by TO_CHAR(USER_REG_DATE,'MM')
-order by USER_REG_DATE
-</select>	
+	<select id="getUserRegDate" resultType="map">
+		<!-- 데이터가 충분치 않아 정렬에 오류가 있을수 있음 -->
+		SELECT TO_CHAR(USER_REG_DATE,'MM')||'월' as USER_REG_DATE,count(TO_CHAR(USER_REG_DATE,'MM')) as monthCount
+		FROM user_tb
+		group by TO_CHAR(USER_REG_DATE,'MM')
+		order by USER_REG_DATE
+	</select>	
 	
-<!-- 	여행파트 dao추가 -->
+	<!-- 여행파트 dao추가 -->
 	<update id="passwordReset" parameterType="map">
 		UPDATE user_tb
 		   SET user_pw 		= #{reset_pw}
 		 WHERE user_id		= #{userid}
 	</update>
->>>>>>> origin/0334
 </mapper>

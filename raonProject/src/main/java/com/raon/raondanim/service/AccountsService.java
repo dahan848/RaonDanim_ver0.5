@@ -461,8 +461,6 @@ public class AccountsService {
 	
 	}
 	
-<<<<<<< HEAD
-=======
 	//이메일 중복여부 
 	public boolean emailCheck(String email) {
 		if(dao.selectByUserId(email) != null) {
@@ -555,7 +553,4 @@ public class AccountsService {
 	public List<Map<String, Object>> getUserRegDate(){
 		return dao.getUserRegDate();	
 	};
-	
-	
->>>>>>> origin/0334
 }

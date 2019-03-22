@@ -1,40 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
-<<<<<<< HEAD
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xmlns:beans="http://www.springframework.org/schema/beans"
-   xmlns:context="http://www.springframework.org/schema/context"
-   xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-   <!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
-   <!-- Enables the Spring MVC @Controller programming model -->
-   <annotation-driven />
-
-   <!-- resources 파일 (img,css 등) 경로 설정 -->
-   <resources mapping="/css/**" location="/resources/css/" /> 
-   <resources mapping="/img/**" location="/resources/img/" /> 
-   <resources mapping="/js/**" location="/resources/js/" />
-   <resources mapping="/json/**" location="/resources/json/" />
-   <resources mapping="/fonts/**" location="/resources/fonts/" /> 
-   <resources mapping="/resources/**" location="/resources/" />
-
-   <!-- .jsp 파일 경로설정 : ViewResolver -->
-   <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-      <beans:property name="prefix" value="/WEB-INF/views/" />
-      <beans:property name="suffix" value=".jsp" />
-   </beans:bean>
-   
-   <!-- 컨틑롤로 패키지 스캔 -->
-   <context:component-scan base-package="com.raon.raondanim" />
-   
-   <!-- 파일 업로드를 위한 bean 추가 : multipartResolver -->
-   <beans:bean id ="multipartResolver" 
-   class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
-   </beans:bean>
-   
-</beans:beans>
-=======
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -43,6 +8,7 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
@@ -52,6 +18,7 @@
 	<resources mapping="/css/**" location="/resources/css/" /> 
 	<resources mapping="/img/**" location="/resources/img/" /> 
 	<resources mapping="/js/**" location="/resources/js/" />
+	<resources mapping="/json/**" location="/resources/json/" />
 	<resources mapping="/fonts/**" location="/resources/fonts/" /> 
 	<resources mapping="/resources/**" location="/resources/" />
 
@@ -83,9 +50,5 @@
 		</websocket:stomp-endpoint>
 		<websocket:simple-broker prefix="/category"/>
 	</websocket:message-broker>
-	 
-	
-	
-	
+
 </beans:beans>
->>>>>>> origin/0334
