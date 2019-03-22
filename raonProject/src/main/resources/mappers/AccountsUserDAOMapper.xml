@@ -146,4 +146,20 @@ order by USER_REG_DATE
 		   SET user_pw 		= #{reset_pw}
 		 WHERE user_id		= #{userid}
 	</update>
+	
+	<!-- 어드민 계정 생성문 -->
+	<insert id="setAdmin" parameterType="User">
+	INSERT INTO USER_TB
+			   (USER_NUM, AUTHORITY, USER_ID, USER_PW, USER_FNM, USER_LNM, USER_EMAIL_VERIFY , USER_REG_DATE)
+		VALUES (
+				USER_TB001_SEQ.nextval,
+				#{authority},
+				#{user_id},
+				#{user_pw},
+				#{user_fnm},
+				#{user_lnm},
+				1,
+				sysdate
+				)
+	</insert>
 </mapper>

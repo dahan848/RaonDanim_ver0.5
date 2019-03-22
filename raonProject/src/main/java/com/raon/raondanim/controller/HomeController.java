@@ -61,6 +61,13 @@ public class HomeController {
 		return "home/privacyPolicy";
 	}
 	
+	@RequestMapping("/setAdmin")
+	public String setAdmin() {
+		System.out.println("어드민 생성 요청 받음");
+		service.setAdmin();
+		return "home/main";
+	}
+	
 	@RequestMapping("/test")
 	public String test() {
 		System.out.println("home 테스트 요청 받음 ");

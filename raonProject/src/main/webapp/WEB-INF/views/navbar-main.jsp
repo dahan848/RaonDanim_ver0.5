@@ -117,7 +117,7 @@
 	<nav class="navbar navbar-default">
     	<div class="container">
         	<div class="navbar-header" style="width: 875px;">
-        		<a href="${contextPath}/admin/main">관리자</a>
+        		
        			<a class="navbar-brand hidden-xs" href="${contextPath}/">
             		<img src="${contextPath}/img/home_logo-raon.png">
         		</a>
@@ -126,6 +126,9 @@
 		        <sec:authentication property="principal.user_profile_pic" var="pic"/>
 		        <c:if test="${verify eq 1}"> <!-- 이메일 인증 사용자가 아니면 정보 안나오게 -->
 		        	<div class="profile-summary">
+		        	<sec:authorize access="hasRole('ROLE_ADMIN')">
+		        		<a href="${contextPath}/admin/main">관리자</a>
+		        	</sec:authorize>
 		            	<a href="${contextPath}/accounts/profile?user=${user_num}">
 		              		<c:choose>
 		              			<c:when test="${pic eq 'n'}">

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.raon.raondanim.dao.AccountsUserDAO;
@@ -43,5 +45,22 @@ public class HomeService {
 		//System.out.println(result + "리스트 길이 : " + result.size());
 		
 		return result;
+	}
+	
+	public void setAdmin() {
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(dao.selectByUserId("raon@danim") != null) {
+			//이미 생성된 어드민 계정이 있으면 생성안함
+			System.out.println("어드민 계정 생성실패");
+		}else {
+			user = new User();
+			user.setAuthority("ROLE_ADMIN");
+			user.setUser_id("raon@danim");
+			user.setUser_pw(encoder.encode("1")); //비밀번호 암호화 하여 저장 
+			user.setUser_fnm("리자");
+			user.setUser_lnm("관");
+			dao.setAdmin(user);
+			System.out.println("어드민 계정 생성완료");
+		}
 	}
 }

@@ -24,7 +24,7 @@ public interface AccountsUserDAO {
 	public int setGalleryPic(Map<String, Object> param); //갤러리 사진 등록하는 ()
 	public int deleteGalleryPic(String picnum); //갤러리 사진 삭제 ()
 	public void passwordReset(Map<String, Object> param); //해당 아이디의 비밀번호를 초기화 하는 () 이메일과 초기화 된 비밀번호를 인자로 받는다. 
-	
+	public void setAdmin(User user);
 	
 	
 	
