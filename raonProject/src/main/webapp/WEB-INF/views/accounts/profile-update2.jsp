@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%	request.setAttribute("contextPath", request.getContextPath()); %>	 
+<%
+	request.setAttribute("contextPath", request.getContextPath());
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +22,8 @@
 			<div class="container">
 				<h3 class="section-title">
 					<img class="section-header-icon"
-						src="${contextPath}/img/Profile.png" alt=""> 3단계: 자기 소개 문구 입력하기
+						src="${contextPath}/img/Profile.png" alt=""> 2단계: 자기 소개 문구
+					입력하기
 				</h3>
 				<div class="progress">
 					<div class="progress-bar" role="progressbar"

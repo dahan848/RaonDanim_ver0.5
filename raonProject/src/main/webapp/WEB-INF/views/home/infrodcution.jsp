@@ -75,7 +75,7 @@
 				</div>
 			</div>
 			<div class="row mt-30 mb-30">
-				<a class="btn btn-mint center-block" href="home">라온다님
+				<a class="btn btn-mint center-block" style="margin-left: 400px;" href="home">라온다님
 					시작하기</a>
 			</div>
 		</div>

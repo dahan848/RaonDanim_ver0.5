@@ -18,15 +18,18 @@
 <link href="${contextPath}/css/bootstrap-social.css" rel="stylesheet"> <!-- 부트스트랩 소셜 -->
 <link href="${contextPath}/css/font-awesome.css" rel="stylesheet"> <!-- 폰트어썸 -->
 <link href="${contextPath}/css/chatList.css" rel="stylesheet"> <!-- 채팅목록 창  -->
-<!-- CSS END -->  
+<link href="${contextPath}/css/chatBox.css" rel="stylesheet"> <!-- 채팅창 CSS -->
 <!-- JS -->
-<script type='text/javascript' src="${contextPath}/js/chat.js" ></script>
+<script src="${contextPath}/js/sockjs.js" ></script> <!-- 웹 소켓 통신 -->
+<script src="${contextPath}/js/stomp.js" ></script>	<!-- 웹 소켓 통신 -->
+<script src="${contextPath}/js/chatBox.js" ></script>
+<script src="${contextPath}/js/commonness.js" ></script>
 <!-- 스프링 시큐리티 설정 -->
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="org.springframework.security.core.Authentication" %>
 
-<!--trip파트  cdn  -->
+<!-- trip파트  cdn  -->
 
 <!-- 제이쿼리 충돌 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -46,7 +49,7 @@
 	<sec:authentication property="principal.user_num" var="user_num"/>
 </sec:authorize>
 <script type="text/javascript">
-	var check = ${verify}
+	var check = ${verify};
 	if(check == 0){
 		logout();
 		swal({
@@ -63,6 +66,49 @@
 			url:"/accounts/logout"
 		});
 	}
+	
+	//문자 아이콘 클릭 시 나올 채팅 방 목록 그려주는 () 
+	function getChatRoomList() {
+		var path = "http://localhost:8081";
+		var usernum = ${user_num}
+		//alert(path);
+		//alert(usernum);
+		
+		//이전에 그려졌던 목록을 지우고 ajax로 받아온 리스트만 그릴 수 있도록 
+		$(".user").remove();
+		
+		$.ajax({
+			url: path + "/chatList/" + usernum,
+			type: "get",
+			dateType : "json",
+			success : function(data){
+				//화면을 한 번만 그릴 수 있도록 조건문 
+
+				for(var i in data){
+					//partnerInfo
+					//프로필 사진 설정 
+					if(data[i].USER_PROFILE_PIC != 'n'){
+						//등록된 프로필 사진이 있으면
+						var profile_pic = path + "/image?fileName=" + data[i].USER_PROFILE_PIC;
+					}else{
+						//등록된 프로필 사진이 없으면 (기본 프로필)
+						var profile_pic = path + "/img/home_profile_2.jpg";						
+					}
+					var name = data[i].USER_LNM +" "+data[i].USER_FNM;
+					var user_num = data[i].USER_NUM;
+					var room_num = data[i].CHAT_ROOM_NUM;
+					//roomList
+					var content = data[i].CONTENT;
+					 //화면 그리기  
+					 $(".chat_body").append("<div class='user' onclick='chatClickbyRoom("+room_num+")'> <img src='"+profile_pic+"'/><div class='namechat'>"+name+"</div><div class='chat_msg'>"+content+"</div><hr></div");
+				}//반복문 종료
+			}
+		});
+	}
+	
+	$(document).ready(function() {
+// 		getChatRoomList(); //화면이 그려지면 메시지 리스트를 그려줌
+	});//onLoad END
 </script>
 
 <!-- navbar-main -->
@@ -112,7 +158,8 @@
 					<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 O -->
 						<c:if test="${verify eq 1}"> <!-- 이메일 인증 사용자가 아니면 탭 안나오게 -->
 							<li><span class="vertical-separator"></span>
-								<a href="#" rel="popover" data-placement="bottom" data-popover-content="#chatList">
+								<!-- 메시지List 버튼 -->
+								<a onclick="getChatRoomList()" id="btn_msg" href="#" rel="popover" data-trigger="focus" data-placement="bottom" data-popover-content="#chatList">
 										<i class="fa fa-envelope fa-lg"></i>
 								</a>
 							</li>
@@ -138,13 +185,11 @@
 	        </div>
 	    </div>
 <div id="chatList" class="hide">
-	This is a popover list:
-	<ul>
-		<li>List item 1</li>
-		<li>List item 2</li>
-		<li>List item 3</li>
-	</ul>
+  <div class="chat_box2">
+	<div class="chat_body"> 
+	</div>
+  </div>
 </div>
-	</nav>
+</nav>
 </header>
 <!-- navbar-main END -->

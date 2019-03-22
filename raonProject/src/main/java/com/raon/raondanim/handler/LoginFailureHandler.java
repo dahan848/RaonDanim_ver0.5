@@ -50,20 +50,26 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 		//시큐리티 뻑나서 결국 서비스 사용.
 		user = userService.selectByUserId(userId);
 		
-		//조건문으로 에러메시지 구분
-        if(user != null && exception instanceof BadCredentialsException) { //비밀번호가 일치하지 않음
-        	loginFailureCount(userId); //비밀번호가 틀리면 사용자가 입력한 아이디를 해당 메서드로 넘겨줌 
-            errormsg = MessageUtils.getMessage("error.BadCredentials");
-        } else if((user != null && user.getUser_pw().equals(userPw)) || exception instanceof InternalAuthenticationServiceException) { //아이디 존재 하지 않음.
-        	errormsg = MessageUtils.getMessage("error.BadCredentials");
-        } else if(exception instanceof DisabledException) { //비활성화 계정
-            errormsg = MessageUtils.getMessage("error.Disaled");
-        } else if(exception instanceof CredentialsExpiredException) { //비밀번호 유효기간 만료 
-            errormsg = MessageUtils.getMessage("error.CredentialsExpired");
-        }
+    	//계정이 잠긴 상태라면
+    	if(user!=null && user.getEnabled() == 0) {
+    		errormsg = MessageUtils.getMessage("error.Disaled");
+    	}else {
+    		//조건문으로 에러메시지 구분
+    		if(user != null && exception instanceof BadCredentialsException) { //비밀번호가 일치하지 않음
+    			loginFailureCount(userId); //비밀번호가 틀리면 사용자가 입력한 아이디를 해당 메서드로 넘겨줌 
+    			errormsg = MessageUtils.getMessage("error.BadCredentials");    
+    		} else if(user== null || exception instanceof InternalAuthenticationServiceException) { //아이디 존재 하지 않음.
+    			errormsg = MessageUtils.getMessage("error.BadCredentials");
+    		} else if(exception instanceof DisabledException) { //비활성화 계정
+    			errormsg = MessageUtils.getMessage("error.Disaled");
+    		} else if(exception instanceof CredentialsExpiredException) { //비밀번호 유효기간 만료 
+    			errormsg = MessageUtils.getMessage("error.CredentialsExpired");
+    		}    		
+    	}
 		//에러 메시지 담기
 		request.setAttribute("errormsgname", errormsg);
-		System.out.println(errormsg);
+		System.out.println("로그인 실패 핸들러 : "+errormsg);
+		//System.out.println(defaultFailureUrl);
 		//보내기
 		request.getRequestDispatcher(defaultFailureUrl).forward(request, response);
 	}

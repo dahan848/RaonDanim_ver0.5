@@ -6,19 +6,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
 @Controller
 public class ImageController {
-
-	private static final String FILE_PATH = "C:\\JAVAEX4\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\raonProject\\resources/upload/";
+	@Resource(name = "uploadPath")
+	private String FILE_PATH;
 	//private static final String FILE_PATH = "c:\\temp";
-
 	
 	@ResponseBody
 	@RequestMapping("/image")

@@ -19,6 +19,9 @@
 	<!--  <security:http pattern="/profilePicUpload" security="none"/> -->
 	<security:http pattern="/picInfo" security="none"/>
 	<security:http pattern="/galleryPicUpload" security="none"/>
+	
+	<!-- bcrypt (패스워드 암호화) -->
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
 	<!-- <security:http pattern="/motel/registor_city_address" security="none"/>
 	<security:http pattern="/motel/registor_photo" security="none"/>
@@ -66,10 +69,13 @@
 	
 	<!-- 시큐리티 Provider 등록 -->
 	<security:authentication-manager>
-		<security:authentication-provider 
-		user-service-ref="userService"/>
+	    <security:authentication-provider ref="userAuthProvider"> </security:authentication-provider> 
+	    <security:authentication-provider user-service-ref="userService"> 
+	    	<security:password-encoder ref="bcryptPasswordEncoder"/>
+	    </security:authentication-provider>
 	</security:authentication-manager>
 	
 	<bean id="userService" class="com.raon.raondanim.service.CustomUserDetailsService"/>
+	<bean id="userAuthProvider" class="com.raon.raondanim.service.CustomAuthenticationProvider"/>
 
 </beans>
