@@ -33,18 +33,24 @@ public class WithReviewController {
 			@RequestParam(required = false) String keyword) {
 		System.out.println("동행후기 메인");
 		
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("keyword", keyword);
 		
-//		model.addAttribute("with", wiService.selectAll());
 		
-		System.out.println("==========================================");
-		System.out.println("동행후기 검색 : " + params);
-		System.out.println(wiService.getViewData(params));
-		System.out.println("==========================================");
-		
-		model.addAllAttributes(wiService.getViewData(params));
-		
+		if(keyword == null) {
+			
+			model.addAttribute("with", wiService.selectAll());
+			
+		} else {
+			
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("keyword", keyword);
+			model.addAttribute("with", wiService.getViewData(params));
+			
+//			System.out.println("==========================================");
+//			System.out.println("동행후기 검색 : " + params);
+			System.out.println(wiService.getViewData(params));
+//			System.out.println("==========================================");
+			
+		}
 		return "review/withMain";
 	}
 	
@@ -60,7 +66,7 @@ public class WithReviewController {
 		
 		System.out.println(num + "번 회원의 타임라인");
 		
-		System.out.println("withList param : " + param);
+//		System.out.println("withList param : " + param);
 		
 		
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
@@ -119,7 +125,7 @@ public class WithReviewController {
 		
 		System.out.println("동행후기 저장 중...");
 	
-		System.out.println("param : " + param);		
+//		System.out.println("param : " + param);		
 		//WR_USER_NUM -> 현재 로그인 되어있는 user_num
 		//TL_USER_NUM이 필요 -> url에 num 으로 받아오는 애
 		
@@ -144,7 +150,7 @@ public class WithReviewController {
 			@RequestParam Map<String, Object> param) {
 		
 		System.out.println("동행 후기 상세 보기");
-		System.out.println("param : " + param);
+//		System.out.println("param : " + param);
 		
 //		String num = request.getParameter("wrUser");
 //		int WR_USER_NUM = Integer.parseInt(num);

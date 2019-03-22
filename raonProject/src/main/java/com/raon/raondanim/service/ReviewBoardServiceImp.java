@@ -64,8 +64,8 @@ public class ReviewBoardServiceImp implements ReviewBoardService{
 	@Override
 	public boolean deleteReview(Map<String, Object> param) {
 		
-//		System.out.println("서비스 -> 여행후기 삭제");
-//		System.out.println("서비스 삭제 param : " + param);
+		System.out.println("서비스 -> 여행후기 삭제");
+		System.out.println("서비스 삭제 param : " + param);
 		
 		String input_pass = String.valueOf(param.get("input_pass"));
 		
@@ -77,32 +77,32 @@ public class ReviewBoardServiceImp implements ReviewBoardService{
 		Map<String, Object> review = dao.selectReviewOne(num);
 //		System.out.println("서비스 삭제 Map : " + review);
 		
-//		System.out.println("userNum : " + userNum);
-//		System.out.println("USER_NUM : " + review.get("USER_NUM"));
-//		System.out.println("USER_PW : " + review.get("USER_PW"));
-//		System.out.println("input_pass : " + input_pass);
+		System.out.println("userNum : " + userNum);
+		System.out.println("USER_NUM : " + review.get("USER_NUM"));
+		System.out.println("USER_PW : " + review.get("USER_PW"));
+		System.out.println("input_pass : " + input_pass);
 		
 		String user_Num =  String.valueOf(review.get("USER_NUM"));
 		String user_Pw =  String.valueOf(review.get("USER_PW"));
 		
 		
 		if(user_Num.equals(userNum)) {
-//			System.out.println("num 같음");
+			System.out.println("num 같음");
 			if(user_Pw.equals(input_pass)){
-//				System.out.println("서비스 -> 비밀번호 같음");
+				System.out.println("서비스 -> 비밀번호 같음");
 				if(dao.deleteReview(num)>0) {
-//					System.out.println("서비스 -> 여행후기 삭제 성공");
+					System.out.println("서비스 -> 여행후기 삭제 성공");
 					return true;
 				} else {
-//					System.out.println("서비스 -> 여행후기 삭제 실패");
+					System.out.println("서비스 -> 여행후기 삭제 실패");
 					return false;
 				}
 			} else {
-//				System.out.println("서비스 -> 비밀번호 다름");
+				System.out.println("서비스 -> 비밀번호 다름");
 				return false;
 			}
 		} else {
-//			System.out.println("num 다름");
+			System.out.println("num 다름");
 			return false;
 		}
 	}

@@ -73,6 +73,9 @@
 /* 		margin-left: 10px; */
 /* 		border-radius: 50%; */
 /* 	} */
+
+
+/*
 input[type=text] {
   width: 130px;
   box-sizing: border-box;
@@ -91,6 +94,8 @@ input[type=text] {
 input[type=text]:focus {
   width: 50%;
 }
+*/
+
 </style>
 
 </head>
@@ -120,14 +125,21 @@ input[type=text]:focus {
 <!--   						</button> -->
 <!--   					</div> -->
 <!-- 				</div> -->
+
+
+
+<!-- 				<div style="display: inline;"> -->
+<!-- 					<select name="type"> -->
+<!-- 						<option value="1">이름</option> -->
+<!-- 						<option value="2">아이디</option> -->
+<!-- 					</select> -->
+<!-- 				</div> -->
+
+
+
 				<div style="display: inline;">
-					<select name="type">
-						<option value="1">이름</option>
-						<option value="2">아이디</option>
-					</select>
-				</div>
-				<div style="display: inline;">
-					<input type="text" name="search" placeholder="Search..">
+<!-- 				<input type="text" name="keyword" placeholder="Search.."> -->
+					<input type="text" name="keyword" placeholder="검색어를 입력하세요">
 				</div>
 				<div style="display: inline;">
 					<input type="submit">

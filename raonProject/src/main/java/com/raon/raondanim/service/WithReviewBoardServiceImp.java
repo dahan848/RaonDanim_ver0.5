@@ -123,7 +123,7 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 		return userDao.selectByUserNum(num);
 	}
 	
-	//유저 검색
+	//-------------------------------유저 검색-----------------------------------------//
 	@Override
 	public List<Map<String, Object>> getSearchUser(Map<String, Object> params) {
 		return dao.searchUser(params);
@@ -132,20 +132,19 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 	@Override
 	public Map<String, Object> getViewData(Map<String, Object> params) {
 		
-		String keyword = (String)params.get("keyword");
+//		System.out.println("검색 params : " + params);
 		
-		int type = (int)params.get("type");
+		String keyword = (String)params.get("keyword");
+		System.out.println("검색 keyword : " + keyword);
+		
 		
 		Map<String, Object> daoParam = new HashMap<String, Object>();
 		
-		daoParam.put("type", type);
 		
-		if(type == 1) {
-			daoParam.put("USER_LNM", keyword);
-			daoParam.put("USER_FNM", keyword);
-		} else if(type == 2) {
-			daoParam.put("USER_ID", keyword);
-		}
+		daoParam.put("USER_LNM", keyword);
+		daoParam.put("USER_FNM", keyword);
+		daoParam.put("USER_ID", keyword);
+		
 		
 		Map<String, Object> viewData = new HashMap<String, Object>();
 		
