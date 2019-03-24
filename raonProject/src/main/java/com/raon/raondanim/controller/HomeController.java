@@ -11,9 +11,13 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.raon.raondanim.service.AdminService;
 import com.raon.raondanim.service.HomeService;
 
 
@@ -24,6 +28,9 @@ public class HomeController {
 	
 	@Autowired
 	private HomeService service;
+	
+	@Autowired
+	AdminService adminService;
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -85,6 +92,15 @@ public class HomeController {
 		System.out.println("home 테스트 요청 받음 ");
 		return "select2";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/writeInquiry", method=RequestMethod.POST )
+	public boolean userUnlock(@RequestParam Map<String, Object> param) {
+		//System.out.println("문의 게시판 요청 받음 : " + param);
+		return adminService.insertInquiry(param);
+	}
+	
+	
 	
 	
 }

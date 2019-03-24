@@ -80,6 +80,12 @@
                         	<p>결제</p>
                     </a>
                 </li> -->
+				 <li>
+                    <a href="inquiry">
+                        <i class="pe-7s-note2"></i>
+                        <p>회원문의</p>
+                    </a>
+                </li>
 
             </ul>
     	</div>

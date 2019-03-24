@@ -33,7 +33,11 @@
 <!-- 차트 js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-
+<style type="text/css">
+	th,td{
+		text-align: center;
+	}
+</style>
 </head>
 <body>
 
@@ -54,7 +58,6 @@
                     Raon Danim
                 </a>
             </div>
-			
             <ul class="nav">
                 <li class="active">
                     <a href="main">
@@ -91,7 +94,6 @@
     	</div>
     </div>
  <!-- 좌측 메뉴바부분 끝 -->
- 
     <div class="main-panel">
 <!--     네비바 좌측 시작 -->
         <nav class="navbar navbar-default navbar-fixed">
@@ -105,9 +107,7 @@
                     </button>
                     <a class="navbar-brand" href="#">Dashboard</a>
                 </div>
-
                 <div class="collapse navbar-collapse">
-
 <!-- 					네비바 우측 -->
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -144,130 +144,57 @@
             </div>
         </nav>
 <!-- 네비바 우측 끝 -->
-
               <div class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">게시글 신고 관리</h4>
-                                <p class="category">신고접수된 게시글 목록입니다.</p>
-                                <ul class="nav navbar-nav navbar-right">
-                                <li class="dropdown"> 
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
-                                     <p> 
- 										게시글 선택
- 										<b class="caret"></b>
- 									</p> 
-
-                               </a> 
-                               <ul class="dropdown-menu">
-                                 <li><a href="board">여행게시글</a></li> 
-                                 <li><a href="motelBoard">숙박게시글</a></li> 
-                               </ul> 
-                         </li> 
-                         </ul>
+                                <h4 class="title">회원 문의</h4>
+                                <p class="category">접수 된 문의 목록입니다.</p>
                             </div>
                             <div class="content table-responsive table-full-width">
-                                <table id="deleteTable" class="table table-striped">
+                                <table class="table table-hover table-striped">
                                     <thead>
-                                    	<tr>
-	                                    	<th>회원번호</th>
-	                                    	<th>아이디</th>
-	                                    	<th>이름</th>
-	                                    	<th>신고게시글 제목</th>
-	                                    	<th>신고 사유</th>
-	                                    	<th></th>
-                                    	</tr>                                   
+                                        <th>문의번호</th>
+                                    	<th>문의종류</th>
+                                    	<th>회원여부</th>
+                                    	<th>작성자</th>
+                                    	<th>제목</th>
+                                    	<th>작성일</th>
+                                    	<th>답변상태</th>
+                                    	<th>답변번호</th>
                                     </thead>
                                     <tbody>
-                                       <c:forEach items="${dBoardList}" var="list" varStatus="status">
-                                       		<tr id="boardDelete${status.index}">
-                                       			<td>${list.USER_NUM}번</td>
-                                       			<td>${list.USER_ID}</td>
-                                       			<td>${list.USER_LNM}${list.USER_FNM}</td>
-                                       			<td>${list.TRIP_BOARD_TITLE}</td>
-                                       			<td>${list.DECLARATION_CONTENT}</td>
-                                       			<td> <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal${status.index}">상세내용</button></td>
-                                       		</tr>
-
-                                       
-                                       </c:forEach>
-                                       
-
+                                    	<!-- 반복문으로 그려야 하는 부분 -->
+                                    	<c:forEach items="${InquiryList}" var="inquiry">
+	                              		    <tr>
+	                                        	<td>${inquiry.INQUIRY_NUM}</td>
+	                                        	<c:if test="${inquiry.INQUIRY_TYPE eq 0}"><td>일반문의</td></c:if>
+	                                        	<c:if test="${inquiry.INQUIRY_TYPE eq 1}"><td>회원문의</td></c:if>
+	                                        	<c:if test="${inquiry.INQUIRY_TYPE eq 2}"><td>탈퇴문의</td></c:if>
+	                                        	<c:if test="${inquiry.INQUIRY_RGE_TYPE eq 0}"><td>비회원</td></c:if>
+	                                        	<c:if test="${inquiry.INQUIRY_RGE_TYPE eq 1}"><td>회원</td></c:if>
+	                                        	<td>${inquiry.INQUIRY_REG_ID}</td>
+	                                        	<td>${inquiry.INQUIRY_SUBJECT}</td>
+	                                        	<td>${inquiry.INQUIRY_REG_DATE}</td>
+	                                        	<c:if test="${inquiry.ANSWER_ST eq 0}"><td>X</td></c:if>
+	                                        	<c:if test="${inquiry.ANSWER_ST ne 0}"><td>O</td></c:if>
+	                                        	<td>${inquiry.ANSWER_NUM}</td>
+	                                        </tr>
+                                    	</c:forEach>
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
-
-
-
-
                 </div>
             </div>
         </div>
-
 </div>
 </div>
-
-
-<c:forEach items="${dBoardList}" var="list" varStatus="status">
-  								<div class="container">
-										  <!-- Trigger the modal with a button -->
-										 
-										  <!-- Modal -->
-										  <div class="modal fade" id="myModal${status.index}" role="dialog">
-										    <div class="modal-dialog modal-lg">
-										      <div class="modal-content">
-										        <div class="modal-header">
-										        
-										       <button type="button" class="close" data-dismiss="modal">&times;</button>
-									          <h4 class="modal-title navbar-brand">신고 게시글 상세내용</h4> 
-										        </div>
-										        <div class="modal-body">
-										      
-										         	<table class="table">
-										         		<tr>
-										         			<td>
-										         			<label> 글 제목:</label> 
-										         		 <h5>${list.TRIP_BOARD_TITLE}</h5>
-										         		 <input type="hidden" id="boardKey${status.index}" value="${list.TRIP_BOARD_KEY}">
-										         		 </td>
-										         		</tr>
-										         		<tr>
-										         			<td><label> 글 제목:</label> 
-										         		 <h5>${list.TRIP_BOARD_COUNTENT}</h5></td>
-										         		</tr>
-										         		<tr>
-										         			<td>
-										          		<input type="button" id="delete${status.index}" onclick="dummyDelete(${status.index})" class="btn btn-danger"  value="삭제"/>
-										          		<input type="button" data-dismiss="modal" id="cancel${status.index}" class="btn btn-danger" value="삭제취소"/></td>
-										         		</tr>
-		         	
-										         	</table>
-										         						       
-										        </div>
-										        <div class="modal-footer">
-										          
-										          
-										        </div>
-										      </div>
-										    </div>
-										  </div>
-										</div>
-
-
-</c:forEach>
-
-
-
-
 
 </body>
-
 
     <!--   Core JS Files   -->
 <%--     <script src="${contextPath}/js/jquery.3.2.1.min.js" type="text/javascript"></script> --%>
@@ -290,18 +217,19 @@
 
 	<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
 	<script src="${contextPath}/js/demo.js"></script>
-
+	
+	<!-- 스윗얼랏 -->
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
 
 	<script type="text/javascript">
     	$(document).ready(function(){
+    		alert("테스트중4");
 
         	demo.initChartist();
 
         	$.notify({
             	icon: 'pe-7s-gift',
-            	message: "<b>게시글 관리 화면에 오신걸 환영합니다.</b>"
+            	message: "<b>회원문의 관리 화면에 오신걸 환영합니다.</b>"
 
             },{
                 type: 'info',
@@ -309,35 +237,6 @@
             });
 
     	});
-    	
-    	function dummyDelete(i) {
-			
-			var boardKey = $("#boardKey"+i).val();
-			
-			$.ajax({
-				url:"tripBoardDelete",
-				type:"get",
-				data:{"boardKey":boardKey},
-				dataType:"json",
-				success:function(result){
-					if(result){
-						location.href="board";
-		
-					}else{
-						swal({
-							icon:"warning",
-							text:"삭제 처리 실패",
-						});
-					}
-				}
-				
-				
-			});
-		
-    		
-		}
-    	
-    	
     	
 	</script>
 

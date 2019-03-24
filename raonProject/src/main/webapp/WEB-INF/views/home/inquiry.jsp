@@ -20,8 +20,7 @@
 					<img class="section-header-icon"
 						src="${contextPath}/img/home_Message.png" alt=""> 문의하기 
 				</h3>
-				<form method="post">
-					<!-- 시큐리티 사용하기 위한 파라미터 (토큰) -->
+				<form id="inquiryForm">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 					<div class="panel panel-default">
 						<div class="panel-heading">
@@ -32,7 +31,7 @@
 								<div class="col-sm-8 col-sm-offset-2">
 									<div class="form-group">
 										<label class="control-label" for="id_category">카테고리</label><select
-											class="form-control" id="id_category" name="category"
+											class="form-control" id="id_category" name="inquiry_type"
 											title="" required>
 											<option value="0">일반문의</option>
 											<option value="1">계정문의</option>
@@ -42,17 +41,17 @@
 									<div class="form-group">
 										<label class="control-label" for="id_email">이메일</label><input
 											class="form-control" id="id_email" maxlength="200"
-											name="email" placeholder="이메일" title="" type="email" />
+											name="inquiry_reg_id" placeholder="이메일" title="" type="email" />
 									</div>
 									<div class="form-group">
 										<label class="control-label" for="id_subject">제목</label><input
 											class="form-control" id="id_subject" maxlength="200"
-											name="subject" placeholder="제목" title="" type="text" required />
+											name="inquiry_subject" placeholder="제목" title="" type="text" required />
 									</div>
 									<div class="form-group">
 										<label class="control-label" for="id_content">문의내용</label>
 										<textarea class="form-control" cols="40" id="id_content"
-											name="content" placeholder="문의내용" rows="10" title=""></textarea>
+											name="inquiry_content" placeholder="문의내용" rows="10" title=""></textarea>
 									</div>
 									<button class="btn btn-potluck btn-block">보내기</button>
 								</div>
@@ -67,4 +66,41 @@
 	<jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 	<!-- 인클루드-푸터 END -->
 </body>
+	<script type="text/javascript">
+	$("#inquiryForm").on("submit", function() {
+		var data = $(this).serialize();
+		//alert(data);
+		
+		$.ajax({
+			url:"${contextPath}/writeInquiry",
+			type:"POST",
+			data: data,
+			dataType:"json",
+			success:function(result){
+				if(result){
+	            	swal({
+						  text: "문의글 등록이 완료되었습니다.",
+						  button: "확인",
+						}).then(function() {
+	  						location.reload(); //화면 새로고침
+	  					});	
+				}else{
+					swal({
+						icon:"warning",
+						text:"문의글 등록에 실패했습니다.",
+					});
+				}
+			},
+			 error : function(error) {
+                	swal({text: "글 등록 중 오류가 발생했습니다.", button: "확인",});
+    	            console.log(error);
+    	            console.log(error.status);
+	        }
+		});//ajaxEND
+		
+		return false;
+	});
+	
+
+	</script>
 </html>

@@ -1,9 +1,13 @@
 package com.raon.raondanim.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.raon.raondanim.service.AccountsService;
@@ -86,6 +90,26 @@ public class AdminController {
 		System.out.println("유저 잠금해제 요청" + usernum);
 		return adminService.userUnlock(usernum); 
 	}
+	
+	@RequestMapping("/inquiry")
+	 public String inquiry
+	 		(Model model, 
+			@RequestParam(required = false) String keyword,
+	        @RequestParam(defaultValue = "0") int type, 
+	        @RequestParam(value = "page", defaultValue = "1") int page) 
+	{
+			System.out.println("문의 게시판 요청 받음 : " + keyword + type + page);
+	        Map<String, Object> params = new HashMap<String, Object>();
+	        params.put("keyword", keyword);
+	        params.put("page", page);
+	        params.put("type", type);
+	 
+	        model.addAllAttributes(adminService.getInquiryViewData(params));
+		return "admin/inquiry";
+		
+	}
+	
+	
 	
 	
 }
