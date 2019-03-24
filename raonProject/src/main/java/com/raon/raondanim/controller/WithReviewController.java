@@ -251,7 +251,20 @@ public class WithReviewController {
 	public String modify(
 			@RequestParam Map<String, Object> param,
 			RedirectAttributes ra) {
-		return null;
+		
+		System.out.println("동행후기 수정 중...");
+		
+		int num = Integer.parseInt(String.valueOf(param.get("num")));
+		
+		if(wiService.updateWith(param)) {
+			ra.addFlashAttribute("msg","수정성공 했습니다.");
+		} else {
+			ra.addFlashAttribute("msg", "수정 실패 했습니다. 다시 시도해주세요.");
+		}
+		
+		System.out.println("여행후기 수정 성공");
+		
+		return "redirect:withView?num="+num;
 	}
 	
 }
