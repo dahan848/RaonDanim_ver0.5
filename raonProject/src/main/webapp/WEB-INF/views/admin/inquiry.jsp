@@ -150,7 +150,13 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">회원 문의</h4>
+                                <h4 class="title">
+                                	<c:if test="${param.type eq 0}">전체 문의</c:if>
+									<c:if test="${param.type eq 1}">일반 문의</c:if>
+									<c:if test="${param.type eq 2}">회원 문의</c:if>
+									<c:if test="${param.type eq 3}">탈퇴 문의</c:if>
+									<c:if test="${param.type eq 4}">미답변 문의</c:if>
+                               	</h4>
                                 <p class="category">
                                 	<c:if test="${param.type eq 0}">전체 문의 목록입니다.</c:if>
 									<c:if test="${param.type eq 1}">일반 문의 목록입니다.</c:if>
@@ -202,12 +208,68 @@
 	                                        	<c:if test="${inquiry.INQUIRY_RGE_TYPE eq 0}"><td>비회원</td></c:if>
 	                                        	<c:if test="${inquiry.INQUIRY_RGE_TYPE eq 1}"><td>회원</td></c:if>
 	                                        	<td>${inquiry.INQUIRY_REG_ID}</td>
-	                                        	<td>${inquiry.INQUIRY_SUBJECT}</td>
+	                                        	<td><a class="btn btn-primary" data-toggle="modal" data-target="#modalPoll-${inquiry.INQUIRY_NUM}">${inquiry.INQUIRY_SUBJECT}</a></td>
 	                                        	<td>${inquiry.INQUIRY_REG_DATE}</td>
 	                                        	<c:if test="${inquiry.ANSWER_ST eq 0}"><td>X</td></c:if>
 	                                        	<c:if test="${inquiry.ANSWER_ST ne 0}"><td>O</td></c:if>
 	                                        	<td>${inquiry.ANSWER_NUM}</td>
 	                                        </tr>
+	                                        <!-- 답변 모달창 -->
+											<!-- Modal: modalPoll -->
+											<div class="modal fade right" id="modalPoll-${inquiry.INQUIRY_NUM}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+											  aria-hidden="true" data-backdrop="false">
+											  <div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document">
+											    <div class="modal-content">
+											      <!--Header-->
+											      <div class="modal-header">
+											        <p class="heading lead">문의내용 확인 및 답변작성
+											        </p>
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											          <span aria-hidden="true" class="white-text">×</span>
+											        </button>
+											      </div>
+											      <!--Body-->
+											      <div class="modal-body">
+											        <div class="text-center">
+											          <i class="far fa-file-alt fa-4x mb-3 animated rotateIn"></i>
+											          <p>
+											            <strong>분류</strong>
+											            <c:if test="${inquiry.INQUIRY_TYPE eq 0}">일반문의</c:if>
+											            <c:if test="${inquiry.INQUIRY_TYPE eq 1}">회원문의</c:if>
+											            <c:if test="${inquiry.INQUIRY_TYPE eq 2}">탈퇴문의</c:if>
+											          </p>
+											          <p>
+											            <strong>작성자</strong> ${inquiry.INQUIRY_REG_ID}
+											          </p>
+											          <p>
+											            <strong>작성일</strong> ${inquiry.INQUIRY_REG_DATE}
+											          </p>
+											        </div>
+											        <hr>
+											        <p class="text-center">
+											          <strong>제목</strong> ${inquiry.INQUIRY_SUBJECT}
+											        </p>
+											        <div class="form-check mb-4">
+														<p style="text-align: center;">${inquiry.INQUIRY_CONTENT}</p>
+											        </div>
+											        <p class="text-center">
+											          <strong>답변작성</strong>
+											        </p>
+											        <!--Basic textarea-->
+											        <div class="md-form">
+											          <textarea type="text" id="form79textarea" class="md-textarea form-control" rows="3"></textarea>
+											        </div>
+											      </div>
+											      <!--Footer-->
+											      <div class="modal-footer justify-content-center">
+											        <a type="button" class="btn btn-primary waves-effect waves-light">답변완료
+											          <i class="fa fa-paper-plane ml-1"></i>
+											        </a>
+											        <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">돌아가기</a>
+											      </div>
+											    </div>
+											  </div>
+											</div>
                                     	</c:forEach>
                                     	<!-- 페이징 처리 -->
                                     	<tr>
@@ -247,7 +309,6 @@
         </div>
 </div>
 </div>
-
 </body>
 
     <!--   Core JS Files   -->
@@ -277,7 +338,7 @@
 
 	<script type="text/javascript">
     	$(document).ready(function(){
-    		alert("테스트중7");
+    		alert("테스트중8");
 
         	demo.initChartist();
 
@@ -299,6 +360,11 @@
     		$("#in_type").val(typenum);
 			//그 이후 해당 form의 submit 이벤트를 발생 시킴.
     		$("#inquiryType").submit();
+		}
+    	
+    	//답변 모달 창()
+    	function answer_modal() {
+			
 		}
 	</script>
 

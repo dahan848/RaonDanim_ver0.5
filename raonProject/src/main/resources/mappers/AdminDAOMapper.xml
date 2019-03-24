@@ -54,8 +54,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 조건에 따른 문의글 목록 반환 -->
 	<select id="InquiryList" parameterType="map" resultType="map">
 	  SELECT *
-        FROM (SELECT ROWNUM as RNUM,INQUIRY_NUM,INQUIRY_TYPE,INQUIRY_REG_ID,INQUIRY_SUBJECT,INQUIRY_REG_DATE,INQUIRY_RGE_TYPE,ANSWER_ST, ANSWER_NUM
-                FROM (SELECT i.INQUIRY_NUM,i.INQUIRY_TYPE,i.INQUIRY_REG_ID,i.INQUIRY_SUBJECT,i.INQUIRY_REG_DATE,i.INQUIRY_RGE_TYPE, a.ANSWER_NUM ,count(a.ANSWER_NUM) as ANSWER_ST
+        FROM (SELECT ROWNUM as RNUM,INQUIRY_NUM,INQUIRY_TYPE,INQUIRY_REG_ID,INQUIRY_SUBJECT,INQUIRY_CONTENT,INQUIRY_REG_DATE,INQUIRY_RGE_TYPE,ANSWER_ST, ANSWER_NUM
+                FROM (SELECT i.INQUIRY_NUM,i.INQUIRY_TYPE,i.INQUIRY_REG_ID,i.INQUIRY_SUBJECT,i.INQUIRY_CONTENT,i.INQUIRY_REG_DATE,i.INQUIRY_RGE_TYPE, a.ANSWER_NUM ,count(a.ANSWER_NUM) as ANSWER_ST
                         FROM INQUIRY_TB i left outer join ANSWER_TB a
                           ON i.INQUIRY_NUM = a.INQUIRY_NUM
                        WHERE 1 = 0
@@ -74,7 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
        						<if test="type == 4">
             					OR a.ANSWER_NUM is null
         					</if>
-                        GROUP BY i.INQUIRY_NUM,i.INQUIRY_TYPE,i.INQUIRY_REG_ID,i.INQUIRY_SUBJECT,i.INQUIRY_REG_DATE,i.INQUIRY_RGE_TYPE,a.ANSWER_NUM
+                        GROUP BY i.INQUIRY_NUM,i.INQUIRY_TYPE,i.INQUIRY_REG_ID,i.INQUIRY_SUBJECT,i.INQUIRY_CONTENT,i.INQUIRY_REG_DATE,i.INQUIRY_RGE_TYPE,a.ANSWER_NUM
                         ORDER BY i.INQUIRY_NUM))
         WHERE RNUM between #{firstRow} and #{endRow}
 	</select>
