@@ -110,8 +110,8 @@ input[type=text]:focus {
 	<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
-				<h3 id="h3" style="font-family: 'Nanum Pen Script', cursive; font-size: 50px;"><b>동행후기</b></h3>
-				<h5 style="font-family: 'Nanum Pen Script', cursive;  font-size: 30px;">함께 여행한 친구의 타임라인에 후기를 남겨주세요</h5>
+				<h3 id="h3" style="font-family: 'Nanum Gothic Coding', monospace;  font-size: 40px;"><b>동행후기</b></h3>
+				<h5 style="font-family: 'Nanum Gothic Coding', monospace;  font-size: 20px;">함께 여행한 친구의 타임라인에 후기를 남겨주세요</h5>
 				
 				<br>
 				
@@ -142,7 +142,7 @@ input[type=text]:focus {
 					<input type="text" name="keyword" placeholder="검색어를 입력하세요">
 				</div>
 				<div style="display: inline;">
-					<input type="submit">
+					<input type="submit" value="검색">
 				</div>
             	<!------------ 검색 끝 ------------>
             
@@ -150,12 +150,12 @@ input[type=text]:focus {
             
             <!------------ 회원 프로필 화면 시작 ------------>
             <c:forEach items="${with}" var="with" varStatus="status"> 
-            <input type="hidden" name="num" value="${with.USER_NUM }">
+            <input type="hidden" name="TL_USER_NUM" value="${with.USER_NUM }">
                <div class="box" id="box">
                   <div id="backimg"></div>
                   <div id="userimg"></div>  
                   <div id="profile">
-                     	<a href="withList?num=${with.USER_NUM}" style="text-align: center; display: inline-block;">${with.USER_LNM}${with.USER_FNM}</a>
+                     	<a href="withList?TL_USER_NUM=${with.USER_NUM}" style="text-align: center; display: inline-block;">${with.USER_LNM}${with.USER_FNM}</a>
                      	<br>
                     	 <i class="fas fa-home">
                         	<br>

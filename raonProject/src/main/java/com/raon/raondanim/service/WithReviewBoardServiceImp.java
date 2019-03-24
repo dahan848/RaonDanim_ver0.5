@@ -22,13 +22,13 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 	
 	@Override
 	public boolean insertWith(Map<String, Object> param) {
-		System.out.println("서비스 -> 동행후기 작성");
-		System.out.println(param);
+//		System.out.println("서비스 -> 동행후기 작성");
+//		System.out.println(param);
 		if(dao.insertWith(param)>0) {
-			System.out.println("서비스 -> 동행후기 작성 성공");
+//			System.out.println("서비스 -> 동행후기 작성 성공");
 			return true;
 		} else {
-			System.out.println("서비스 -> 동행후기 작성 실패");
+//			System.out.println("서비스 -> 동행후기 작성 실패");
 			return false;
 		}
 	}
@@ -96,6 +96,11 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 	public Map<String, Object> selectOne(int num) {
 		return dao.selectOne(num);
 	}
+	
+	@Override
+	public Map<String, Object> selectOneByWrUserNum(int num) {
+		return dao.selectOneByWrUserNum(num);
+	}
 
 	@Override
 	public Map<String, Object> selectWithOne(int num) {
@@ -153,6 +158,73 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 		
 		return viewData;
 	}
+	
+	
+	//---------------- 페이징 부분 ----------------//
+	
+	//한 페이지에 표시될 게시글의 갯수 
+	private static final int NUM_OF_BOARD_PER_PAGE=10;
+	//한 번에 표시될 네비게이션 갯수
+	private static final int NUM_OF_NAVI_PAGE=10;
+	
+	
+	@Override
+	public List<Map<String, Object>> getBoardList(Map<String, Object> params) {
+		return dao.boardList(params);
+	}
+	
+	private int getFirstRow(int page) {
+		int result = (page-1)*NUM_OF_BOARD_PER_PAGE+1;
+		return result;
+	}
+	
+	private int getEndRow(int page) {
+		int result = ((page-1)+1)*NUM_OF_BOARD_PER_PAGE;
+		return result;
+	}
+	
+	private int getStartPage(int page) {
+		int result = ((page-1)/NUM_OF_BOARD_PER_PAGE)*NUM_OF_BOARD_PER_PAGE+1;
+		return result;
+	}
+	
+	private int getEndPage(int page) {
+		int result = getStartPage(page) + 9;
+		return result;
+	}
+	
+	private int getTotalPage() {
+		int totalCount = dao.selectTotalCount();
+		int totalPage = (totalCount-1)/NUM_OF_BOARD_PER_PAGE+1;
+		return totalPage;
+	}
+	
+	@Override
+	public Map<String, Object> getViewPagingData(Map<String, Object> params) {
+		int page = Integer.parseInt(String.valueOf(params.get("page")));
+		
+		Map<String, Object> daoParam = new HashMap<String, Object>();
+		daoParam.put("firstRow", getFirstRow(page));
+		daoParam.put("endRow", getEndRow(page));
+		
+		Map<String, Object> viewData = new HashMap<String, Object>();
+		List<Map<String, Object>> boardList = getBoardList(daoParam);
+		
+		viewData.put("boardList", boardList);
+		viewData.put("startPage", getStartPage(page));
+		viewData.put("endPage", getEndPage(page));
+		viewData.put("totalPage", getTotalPage());
+		viewData.put("page", page);
+		
+		return viewData;
+	}
+
+	@Override
+	public Map<String, Object> getBoardByNum(int num) {
+		return dao.selectOneByWithNum(num);
+	}
+
+	
 	
 	
 

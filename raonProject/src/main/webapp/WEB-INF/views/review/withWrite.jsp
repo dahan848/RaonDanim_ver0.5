@@ -105,7 +105,7 @@
 	
 	<form id="withWrite" action="withWrite" method="post">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-	TL : <input type="text" name="TL_USER_NUM" value="${param.num }">
+	TL : <input type="text" name="TL_USER_NUM" value="${param.TL_USER_NUM}">
 	WR : <input type="text" name="WR_USER_NUM" value="${userNum}">
 		<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">

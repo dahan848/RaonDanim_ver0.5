@@ -86,8 +86,8 @@
 	<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
-				<h3 id="h3" style="font-family: 'Nanum Pen Script', cursive; font-size: 50px;"><b>여행후기</b></h3>
-				<h5 style="font-family: 'Nanum Pen Script', cursive;  font-size: 30px;">다른 회원들에게 여행지 정보를 공유해주세요</h5>
+				<h3 id="h3" style="font-family: 'Nanum Gothic Coding', monospace; font-size: 40px;"><b>여행후기</b></h3>
+				<h5 style="font-family: 'Nanum Gothic Coding', monospace;  font-size: 20px;">다른 회원들에게 여행지 정보를 공유해주세요</h5>
 				<input type="button" onclick="location.href='writeForm'" class="btn btn-primary" id="upload" value="후기 올리기">
 				<br><br>			
 				

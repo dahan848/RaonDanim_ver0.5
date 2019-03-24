@@ -81,6 +81,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<!-- 타임라인에 글쓴 사람 WR_USER_NUM 으로 select -->
+	<select id="selectOneByWrUserNum" parameterType="int" resultMap="reviewMap" resultType="map">
+		SELECT 	r.WITH_NUM,
+				r.TL_USER_NUM,
+				r.WR_USER_NUM,
+				r.WITH_CONTENT,
+				r.WITH_GPA,
+				r.WITH_COUNT,
+				r.WITH_REG_DATE,
+				r.WITH_ST,
+				r.WITH_AVG,
+				u.USER_NUM,
+				u.USER_ID,
+				u.USER_FNM,
+				u.USER_LNM,
+				u.USER_NATIONALITY,
+				u.USER_CITY_COUNTRY,
+				u.USER_GENDER,
+				u.USER_PROFILE_PIC,
+				u.USER_WITH_AVG,
+				u.USER_MOTEL_AVG,
+				u.USER_ID,
+				u.USER_PW
+		  FROM 	USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r  
+		    ON  r.WR_USER_NUM = u.USER_NUM
+		 WHERE  r.WR_USER_NUM = #{WR_USER_NUM}
+	</select>
+	<resultMap type="HashMap" id="reviewMap">
+		<result property="WITH_CONTENT" column="WITH_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
+	</resultMap>
+	
+	<!-- 게시글 번호 WITH_NUM 으로 select -->
 	<select id="selectWithOne" parameterType="int" resultMap="reviewViewMap">
 		SELECT 	r.WITH_NUM,
 				r.TL_USER_NUM,
@@ -148,6 +179,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	
+	<!-- ===========================검색=========================== -->
 	<!-- 조인해서 다시 해보기 -->
 	<select id="searchUser" parameterType="map" resultType="map">
 		SELECT       *
@@ -187,4 +219,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--   		 </if> -->
 		ORDER BY USER_NUM DESC
 	</select>
+	
+	
+	<!-- ===========================페이징=========================== -->
+	<select id="selectTotalCount" resultType="int">
+		SELECT 		count(*)
+		FROM 		WITH_BOARD_TB
+	</select>
+	
+	<select id="boardList" parameterType="map" resultType="map">
+		SELECT *          
+		  FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_ID, USER_PW, USER_LNM, USER_FNM, wcount,
+                    		WITH_NUM, TL_USER_NUM, WR_USER_NUM, WITH_GPA, WITH_REG_DATE, WITH_ST, WITH_AVG
+        		  FROM (SELECT u.USER_NUM, u.USER_ID, u.USER_PW, u.USER_LNM, u.USER_FNM,
+                     			count(w.with_num) as wcount, w.WITH_NUM, w.TL_USER_NUM, w.WR_USER_NUM,
+                     			w.WITH_GPA, w.WITH_REG_DATE, w.WITH_ST, w.WITH_AVG
+                		  FROM WITH_BOARD_TB w left outer join USER_TB u
+                  			ON w.WR_USER_NUM = u.USER_NUM
+               			 GROUP BY u.USER_NUM, u.USER_ID, u.USER_PW, u.USER_LNM, u.USER_FNM,
+                        			w.WITH_NUM, w.TL_USER_NUM, w.WR_USER_NUM,
+                        				w.WITH_GPA, w.WITH_REG_DATE, w.WITH_ST, w.WITH_AVG
+               			 ORDER BY    w.WITH_REG_DATE DESC)
+      			)
+		 WHERE RNUM between #{firstRow} and #{endRow}
+	</select>
+	
+	<select id="selectOneByWithNum" parameterType="int" resultType="map">
+		SELECT *
+		  FROM WITH_BOARD_TB
+		 WHERE WITH_NUM = #{WITH_NUM}
+	</select>
+	
 </mapper>

@@ -370,8 +370,8 @@ $(function(){
 			
 			<br><br>
 			
-			<button type="button" class="btn btn-primary" id="List" onclick="location.href='#'">후기 목록</button>
-			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?num=${withBoard.REVIEW_NUM}'">수정하기</button>
+			<button type="button" class="btn btn-primary" id="List" onclick="location.href='withList?TL_USER_NUM=${withBoard.TL_USER_NUM}'">후기 목록</button>
+			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?WR_USER_NUM=${withBoard.WR_USER_NUM}'">수정하기</button>
 			
 			<!------- 삭제 버튼, 모달  시작------->
 			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="Delete">삭제하기</button>

@@ -18,6 +18,7 @@ public interface WithReplyDao {
 	//WITH_NUM 으로  select
 	public List<Map<String, Object>> selectByWithNum(int num);
 	
+	//페이징
 	public List<Map<String, Object>> replyList(Map<String, Object> param);
 	public int selectTotalCount();	
 }

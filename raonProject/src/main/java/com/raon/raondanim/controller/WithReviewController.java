@@ -60,24 +60,24 @@ public class WithReviewController {
 			Model model,
 			Authentication authentication,
 			HttpServletRequest req,
-			@RequestParam(value="num") int num,		//num = TL_USER_NUM
-			@RequestParam Map<String, Object> param
+			@RequestParam(value="TL_USER_NUM") int TL_USER_NUM,		//num = TL_USER_NUM
+			@RequestParam Map<String, Object> param,
+			@RequestParam(value = "page", defaultValue = "1") int page
 			) {
 		
-		System.out.println(num + "번 회원의 타임라인");
+		System.out.println(TL_USER_NUM + "번 회원의 타임라인");
+		System.out.println("withList param : " + param);
 		
-//		System.out.println("withList param : " + param);
-		
-		
+		//로그인한 USER_NUM
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
-		int userNum = user.getUser_num();	//로그인한 USER_NUM
+		int userNum = user.getUser_num();	
 
 //		System.out.println("WITH_NUM : " + req.getParameter("WITH_NUM"));
 //		String withNum = req.getParameter("WITH_NUM");
 //		int WITH_NUM = Integer.parseInt(withNum);
 		
 		//타임라인 USER 정보 
-		String strNum = String.valueOf(num);
+		String strNum = String.valueOf(TL_USER_NUM);
 		User rev = wiService.selectByUserNum(strNum);
 		Map<String, Object> revrev = new HashMap<>();
 		revrev.put("User", rev);
@@ -87,8 +87,14 @@ public class WithReviewController {
 //		System.out.println("revrev : " + revrev);
 		
 		//리스트 부분
-		List<Map<String, Object>> rev2 = wiService.getWithBoard(num);
+		List<Map<String, Object>> rev2 = wiService.getWithBoard(TL_USER_NUM);
 		model.addAttribute("withList", rev2);
+		
+		//페이징 부분
+		Map<String, Object> paging = new HashMap<String, Object>();
+		paging.put("page", page);
+		
+		model.addAllAttributes(wiService.getViewPagingData(paging));
 		
 		return "review/withList";
 	}
@@ -97,7 +103,7 @@ public class WithReviewController {
 	public String withWriteForm(
 			Model model,
 			Authentication authentication,
-			@RequestParam(value="num") int num
+			@RequestParam(value="TL_USER_NUM") int TL_USER_NUM
 			) {
 		
 		System.out.println("동행 후기 작성");
@@ -107,11 +113,11 @@ public class WithReviewController {
 		model.addAttribute("userNum", WR_USER_NUM);
 //		System.out.println("로그인한 USER_NUM : " + WR_USER_NUM);
 		
-		String strNum = String.valueOf(num);
+		String strNum = String.valueOf(TL_USER_NUM);
 		User rev = wiService.selectByUserNum(strNum);
-//		Map<String, Object> rev = wiService.selectOne(num);		//num = 타임라인 주인 USER_NUM
+//		Map<String, Object> rev = wiService.selectOne(TL_USER_NUM);		//num = 타임라인 주인 USER_NUM
 		model.addAttribute("withBoard", rev);
-//		System.out.println("writeForm 타임라인 주인 : " + num);
+//		System.out.println("writeForm 타임라인 주인 : " + TL_USER_NUM);
 		
 		return "review/withWrite";
 	}
@@ -190,6 +196,62 @@ public class WithReviewController {
 			@RequestParam Map<String, Object> param) {
 		System.out.println("동행 후기 삭제");
 		return wiService.deleteWith(param);
+	}
+	
+	@RequestMapping("/updateForm")
+	public String updateForm(
+			Model model,
+			HttpServletRequest request,
+			Authentication authentication) {
+		System.out.println("여행후기 수정");
+		
+		//게시글 작성한 WR_USER_NUM
+		String WR_USER_NUM = request.getParameter("WR_USER_NUM");
+		
+		//로그인한 USER_NUM
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		String userNum = String.valueOf(user.getUser_num());
+		model.addAttribute("userNum", userNum);
+		
+		System.out.println("여행후기 수정 WR_USER_NUM " + WR_USER_NUM);
+		System.out.println("여행후기 수정 로그인 한 USER_NUM : " + userNum);
+		
+		//WR_USER_NUM으로 게시글 정보 뽑기
+		int wr_user_num = Integer.parseInt(WR_USER_NUM);
+		Map<String, Object> rev = wiService.selectOneByWrUserNum(wr_user_num);
+		model.addAttribute("with",rev);
+		
+		System.out.println("여행 후기 수정 rev : " + rev);
+		
+		
+		
+		
+//		String user_Num = String.valueOf(WR_USER_NUM);
+		
+		
+//		System.out.println("user_Num ? " + user_Num);
+		
+		
+		//WR_USER_NUM이 같으면 수정화면으로 넘어가고 다르면 리스트로 튕겨냄
+		if(userNum.equals(WR_USER_NUM)) {
+			System.out.println("수정 FORM으로 이동");
+			return "with/withUpdate";
+		} else {
+			System.out.println("수정권한 없음");
+			return "redirect:withMain";
+		}
+		
+		
+
+		
+		
+	}
+	
+	@RequestMapping("update")
+	public String modify(
+			@RequestParam Map<String, Object> param,
+			RedirectAttributes ra) {
+		return null;
 	}
 	
 }

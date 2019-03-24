@@ -104,7 +104,7 @@ $(function(){
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
             	<div class="tab-content">
- 
+ 				<input type="text" name="TL_USER_NUM" value="${param.TL_USER_NUM}">
                 <h3>
                     <i class="fas fa-cloud" style="font-size: 38px; color: aqua;"></i>
                     ${withBoard.User.user_lnm}${withBoard.User.user_fnm}님의 후기 게시판
@@ -122,9 +122,9 @@ $(function(){
                     </i>
                 </div>
                 <!----------------------------------------- 프로필 끝 -------------------------------------->
- 				<input type="hidden" name="num" value="${param.num}">
+ 				<input type="hidden" name="TL_USER_NUM" value="${param.TL_USER_NUM}">
                 <input type="button" class="btn btn-primary" id="upload"
-                    style="float: right;" onclick="location.href='withWriteForm?num=${param.num}'" value="후기올리기">
+                    style="float: right;" onclick="location.href='withWriteForm?TL_USER_NUM=${param.TL_USER_NUM}'" value="후기올리기">
                     
                 <button type="button" class="btn btn-primary" id="btnMain"
                     style="float: right; margin-right: 20px;" onclick="location.href='withMain'">메인화면</button>
@@ -202,20 +202,37 @@ $(function(){
             <!---------------------------------- 동행후기 리스트 페이징 시작 ---------------------------------->
             <div style="margin-top: 50px; text-align: center;">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">Previous</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">1</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">2</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">3</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">4</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">5</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">Next</a></li>
+                    
+                    <li class="page-item">
+                    	<c:if test="${startPage != 1}">
+                    		<a class="page-link" href="withList?page=1">                        
+                        		START
+                    		</a>
+                   		</c:if>
+                   	</li>
+                    <li class="page-item">
+                    	<c:forEach var="pageNum" begin="${startPage}" end="${endPage < totalPage ? endPage : totalPage}">
+                    		<c:choose>
+                    			<c:when test="${pageNum == page}">
+                    				<a class="page-link">
+                    					${pageNum}
+                    				</a>	
+                    			</c:when>
+                    			<c:otherwise>
+                    				<a class="page-link" href="withList?page=${pageNum}">
+                    					${pageNum}	
+                    				</a>	
+                    			</c:otherwise>
+                    		</c:choose>
+                    	</c:forEach>
+                    </li>
+                    <li class="page-item">
+                    	<c:if test="${totalPage > endPage}">
+                    		<a class="page-link" href="withList?page=${totalPage}">
+                    			END
+                    		</a>
+                    	</c:if>
+                    </li>
                 </ul>
             </div>
             <!---------------------------------- 동행후기 리스트 페이징 끝 ---------------------------------->

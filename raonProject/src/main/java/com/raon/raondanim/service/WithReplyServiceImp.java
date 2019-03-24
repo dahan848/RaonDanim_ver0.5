@@ -156,7 +156,7 @@ public class WithReplyServiceImp implements WithReplyService{
 		viewData.put("endPage", getEndPage(page));
 		viewData.put("totalPage", getTotalPage());
 		viewData.put("page", page);
-		
+	
 		//System.out.println("서비스/댓글 페이징 데이터"+viewData);
 //		System.out.println("서비스/댓글 페이징 startPage"+getStartPage(page));
 //		System.out.println("서비스/댓글 페이징 endPage"+getEndPage(page));
