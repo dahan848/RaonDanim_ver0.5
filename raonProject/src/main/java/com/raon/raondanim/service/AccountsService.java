@@ -64,15 +64,25 @@ public class AccountsService {
 	//더미 사용자 데이터 생성 서비스
 	public void setDnmmyData() {
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
+
+		//생성된 계정 수를 저장 할 변수
+		int count = 0;
 		
 		for(int i = 0 ; i<50 ; i++) {
-			user = new User();
-			user.setUser_id("test@" + i);
-			user.setUser_pw(encoder.encode("1")); //비밀번호 암호화 하여 저장 
-			user.setUser_fnm("저" + i);
-			user.setUser_lnm("유");
-			dao.setDnmmyData(user);
+			//조건문으로 중복 아이디 생성 방지 
+			if(dao.selectByUserId("test@" +i) != null) {
+				//이미 생성 된 아이디 
+			}else {
+				user = new User();
+				user.setUser_id("test@" + i);
+				user.setUser_pw(encoder.encode("1")); //비밀번호 암호화 하여 저장 
+				user.setUser_fnm("저" + i);
+				user.setUser_lnm("유");
+				dao.setDnmmyData(user);
+				count ++;
+			}
 		}
+		System.out.println("더미 데이터 " +count + "개 생성 완료");
 	}
 	
 	//프로필 사진 등록 ()

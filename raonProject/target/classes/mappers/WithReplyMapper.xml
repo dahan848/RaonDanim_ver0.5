@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.raon.raondanim.dao.WithReplyDao">
+	
+	<insert id="insertReply" parameterType="map">
+		INSERT
+		  INTO WITH_REPLY_TB
+		  		(WI_REPLY_NUM, WITH_NUM, USER_NUM, WI_REP_CONTENT, WI_REPLY_DATE, WI_REPLY_ST)
+		VALUES (WITH_REPLY_TB_SEQ.nextval, #{WITH_NUM}, #{USER_NUM}, #{WI_REP_CONTENT}, SYSDATE, 0)
+	</insert>
+	 
+	<update id="updateReply" parameterType="map">
+		UPDATE 		WITH_REPLY_TB
+		   SET 		WI_REPLY_DATE = #{WI_REPLY_DATE}
+		WHERE 		WI_REPLY_NUM = #{WI_REPLY_NUM}
+	</update>
+	
+	<delete id="deleteReply" parameterType="int">
+		DELETE
+		  FROM 	WITH_REPLY_TB
+		 WHERE 	WI_REPLY_NUM = #{WI_REPLY_NUM}
+	</delete>
+
+	<select id="selectAll" resultType="map">
+		SELECT 	*  
+		  FROM  WITH_REPLY_TB	
+	</select>
+	
+	<select id="selectOne" parameterType="int" resultType="map">
+		SELECT *
+		  FROM WITH_REPLY_TB
+		 WHERE WI_REPLY_NUM = #{WI_REPLY_NUM}
+	</select>
+	
+	<select id="selectByWithNum" parameterType="int" resultType="map">
+		SELECT r.WI_REPLY_NUM,
+			   r.WITH_NUM,
+			   r.USER_NUM,
+			   r.WI_REP_CONTENT,
+			   r.WI_REPLY_DATE,
+			   r.WI_REPLY_ST,
+			   u.USER_FNM,
+			   u.USER_LNM,
+			   u.USER_PW
+		  FROM WITH_REPLY_TB r left outer join USER_TB u
+		    ON  r.USER_NUM = u.USER_NUM
+		 WHERE WITH_NUM = #{WITH_NUM} 
+	</select>
+	
+	<select id="selectByUserNum" parameterType="int" resultType="map">
+		SELECT *
+		  FROM WITH_REPLY_TB
+		 WHERE USER_NUM = #{USER_NUM}
+	</select>
+	
+	<select id="selectTotalCount" resultType="int">
+		SELECT count(*)
+		  FROM WITH_REPLY_TB
+	</select>
+	
+	<select id="replyList" parameterType="map" resultType="map">
+		SELECT *         
+  		  FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_ID, USER_PW, USER_LNM, USER_FNM, rcount,
+                            		WI_REPLY_NUM, WITH_NUM,  WI_REP_CONTENT, WI_REPLY_DATE
+          		  FROM (SELECT u.USER_NUM, u.USER_ID, u.USER_PW, u.USER_LNM, u.USER_FNM, 
+                        			count(r.WI_REPLY_NUM) as rcount, r.WI_REPLY_NUM, r.WITH_NUM, 
+                        				r.WI_REP_CONTENT, r.WI_REPLY_DATE
+                  		  FROM WITH_REPLY_TB r left outer join USER_TB u
+                    		ON u.USER_NUM = r.USER_NUM
+                 		 GROUP BY u.USER_NUM, u.USER_ID, u.USER_PW, u.USER_LNM, u.USER_FNM, 
+                            			r.WI_REPLY_NUM, r.WITH_NUM, r.WI_REP_CONTENT, r.WI_REPLY_DATE
+                 		 ORDER BY r.WI_REPLY_DATE DESC)
+        		)
+ 		 WHERE RNUM between #{firstRow} and #{endRow}
+	</select>
+</mapper>

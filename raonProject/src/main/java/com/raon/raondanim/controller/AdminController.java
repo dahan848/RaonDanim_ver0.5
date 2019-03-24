@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.raon.raondanim.service.AccountsService;
+import com.raon.raondanim.service.AdminService;
 import com.raon.raondanim.service.TripBoardService;
 
 @RequestMapping("/admin")
@@ -18,6 +19,9 @@ public class AdminController {
 	
 	@Autowired
 	AccountsService accountsService;
+	
+	@Autowired
+	AdminService adminService;
 	
 	@RequestMapping("/main")
 	public String main(Model model) {
@@ -36,9 +40,9 @@ public class AdminController {
 		
 	}
 	@RequestMapping("/user")
-	public String user() {
+	public String user(Model model) {
 		System.out.println("유저 관리 화면 요청");
-		
+		model.addAttribute("userList", adminService.getLockoutUserList());
 		return "admin/user";
 		
 	}
@@ -70,5 +74,18 @@ public class AdminController {
 		return tripService.totalDelete(boardKey);
 		
 	}
+	
+	
+	
+	
+	
+	//다한 유저 관련 Ajax처리 
+	@ResponseBody
+	@RequestMapping("/userUnlock")
+	public boolean userUnlock(int usernum) {
+		System.out.println("유저 잠금해제 요청" + usernum);
+		return adminService.userUnlock(usernum); 
+	}
+	
 	
 }
