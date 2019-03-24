@@ -151,7 +151,33 @@
                         <div class="card">
                             <div class="header">
                                 <h4 class="title">회원 문의</h4>
-                                <p class="category">접수 된 문의 목록입니다.</p>
+                                <p class="category">
+                                	<c:if test="${param.type eq 0}">전체 문의 목록입니다.</c:if>
+									<c:if test="${param.type eq 1}">일반 문의 목록입니다.</c:if>
+									<c:if test="${param.type eq 2}">회원 문의 목록입니다.</c:if>
+									<c:if test="${param.type eq 3}">탈퇴 문의 목록입니다.</c:if>
+									<c:if test="${param.type eq 4}">미답변 문의 목록입니다.</c:if>
+                                </p>
+                                <ul class="nav navbar-nav navbar-right">
+	                                <li class="dropdown"> 
+	                             		<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+		                                     <p> 
+		 										분류
+		 										<b class="caret"></b>
+		 									</p> 
+	                               		</a>
+	                               		<form id="inquiryType" action="inquiry">
+	                               			<input id="in_type" type="hidden" name="type" value=""> 
+		                               		<ul class="dropdown-menu">
+		                               			<li><a onclick="inquiryType(0)">전체보기</a></li> 	                               		
+				                                <li><a onclick="inquiryType(1)">일반문의</a></li> 
+				                                <li><a onclick="inquiryType(2)">회원문의</a></li>
+				                                <li><a onclick="inquiryType(3)">탈퇴문의</a></li>
+				                                <li><a onclick="inquiryType(4)">미답변 문의</a></li> 
+		                               		</ul>
+	                               		</form> 
+	                         		</li> 
+                         		</ul>
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-hover table-striped">
@@ -183,6 +209,34 @@
 	                                        	<td>${inquiry.ANSWER_NUM}</td>
 	                                        </tr>
                                     	</c:forEach>
+                                    	<!-- 페이징 처리 -->
+                                    	<tr>
+											<td colspan="8">
+											<c:if test="${startPage !=1}">
+												<a href="inquiry?page=1&type=${param.type}">[처음]</a>
+												<a href="inquiry?page=${startPage-1}&type=${param.type}">[이전]</a>
+											</c:if> 
+											<c:forEach var="pageNum" begin="${startPage}"
+												end="${endPage < totalPage ? endPage : totalPage}">
+												<c:choose>
+													<c:when test="${pageNum == page}">
+														<b>[${pageNum}]</b>
+													</c:when>
+													<c:otherwise>
+														<a href="inquiry?page=${pageNum}
+															<c:if test="${param.type != null}">
+																&type=${param.type}
+															</c:if>
+														">[${pageNum}]</a>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach> 
+											<c:if test="${totalPage > endPage }">
+												<a href="inquiry?page=${endPage+1}&type=${param.type}">[다음]</a>
+												<a href="inquiry?page=${totalPage}&type=${param.type}">[마지막]</a>
+											</c:if>
+											</td>
+										</tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -223,7 +277,7 @@
 
 	<script type="text/javascript">
     	$(document).ready(function(){
-    		alert("테스트중4");
+    		alert("테스트중7");
 
         	demo.initChartist();
 
@@ -237,7 +291,15 @@
             });
 
     	});
-    	
+    
+    	//각 게시물 타입 별 열람 (그려지는 목록이 달라지는)
+    	function inquiryType(type) {
+			var typenum = type;
+			//form 요소의 hidden 값으로 전달 받은 type을 넣어준다.
+    		$("#in_type").val(typenum);
+			//그 이후 해당 form의 submit 이벤트를 발생 시킴.
+    		$("#inquiryType").submit();
+		}
 	</script>
 
 </html>

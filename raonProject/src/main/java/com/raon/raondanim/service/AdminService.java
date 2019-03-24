@@ -3,6 +3,7 @@ package com.raon.raondanim.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,17 +63,14 @@ public class AdminService {
         String keyword = (String)params.get("keyword");
         Map<String, Object> daoParam = new HashMap<String,Object>();
         
+        /*
+			전체검색 	type 0 
+			일반문의 	type 1
+			회원문의	type 2
+			탈퇴문의	type 3
+			미답변 문의 	type 4
+         */        
         daoParam.put("type", type);
-        if(type == 1) {
-            daoParam.put("title", keyword); //제목검사
-        }else if(type == 2) {
-            daoParam.put("name", keyword); //작성자
-        }else if(type == 3) {
-            daoParam.put("title", keyword); //제목 작성자
-            daoParam.put("name", keyword);
-        }else if(type == 4) {
-            daoParam.put("content", keyword); // 내용
-        }
         
         daoParam.put("firstRow", getInquiryFirstRow(page));
         daoParam.put("endRow", getInquiryEndRow(page));
@@ -122,6 +120,27 @@ public class AdminService {
 		}else {
 			return false;			
 		}
+	}
+	
+	//문의글 더미 데이터 생성()
+	public void insertDummyInquiry() {
+		//반복문을 통한 더미 데이터 작성 
+		int count = 0;
+		for(int i=0 ; i < 50 ; i++) {
+			//반복문이 돌 때 마다 새로운 MAP을 생성하고 데이터를 넣어준다
+			Map<String, Object> param = new HashMap<String, Object>();
+			//각 종 타입값의 랜덤성을 위해 랜덤함수 선언 
+			Random ran = new Random();
+			param.put("inquiry_type", ran.nextInt(3));
+			param.put("inquiry_rge_type", ran.nextInt(2));
+			param.put("inquiry_reg_id", "dummy"+i+"@inquiry.com");
+			param.put("inquiry_subject", "문의 더미 데이터" + i);
+			param.put("inquiry_content", "문의 더미 데이터" + i);
+			if(dao.insertDummyInquiry(param) > 0) {
+				count ++;
+			}
+		}
+		System.out.println("문의 게시글 더미데이터 " + count + "개 생성 완료");
 	}
 
 }

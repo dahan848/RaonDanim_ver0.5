@@ -35,18 +35,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select count(*)
         from INQUIRY_TB
         WHERE 1 = 0
-        <if test="title !=null">
-            OR title LIKE ('%${title}%')
-        </if>
-        <if test="name !=null">
-            OR name LIKE ('%${name}%')
-        </if>
-        <if test="content != null">
-            OR content LIKE ('%${content}%')
-        </if>
-        <if test="type == 0">
-            OR 1=1
-        </if>
+		        		<if test="type == 0">
+           					OR 1=1
+       					</if>
+						<if test="type == 1">
+           					OR INQUIRY_TYPE = 0
+       					</if>
+  							<if test="type == 2">
+           					OR INQUIRY_TYPE = 1
+       					</if>
+       					<if test="type == 3">
+           					OR INQUIRY_TYPE = 2
+       					</if>
+      						<if test="type == 4">
+           					OR INQUIRY_ANSWER_ST = 0 
+       					</if>
     </select>
     <!-- 조건에 따른 문의글 목록 반환 -->
 	<select id="InquiryList" parameterType="map" resultType="map">
@@ -56,9 +59,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                         FROM INQUIRY_TB i left outer join ANSWER_TB a
                           ON i.INQUIRY_NUM = a.INQUIRY_NUM
                        WHERE 1 = 0
-			              OR 1 = 1
+			        		<if test="type == 0">
+            					OR 1=1
+        					</if>
+							<if test="type == 1">
+            					OR i.INQUIRY_TYPE = 0
+        					</if>
+   							<if test="type == 2">
+            					OR i.INQUIRY_TYPE = 1
+        					</if>
+        					<if test="type == 3">
+            					OR i.INQUIRY_TYPE = 2
+        					</if>
+       						<if test="type == 4">
+            					OR a.ANSWER_NUM is null
+        					</if>
                         GROUP BY i.INQUIRY_NUM,i.INQUIRY_TYPE,i.INQUIRY_REG_ID,i.INQUIRY_SUBJECT,i.INQUIRY_REG_DATE,i.INQUIRY_RGE_TYPE,a.ANSWER_NUM
                         ORDER BY i.INQUIRY_NUM))
         WHERE RNUM between #{firstRow} and #{endRow}
 	</select>
+	<!-- 문의글 더미 데이터 생성 -->
+		<insert id="insertDummyInquiry" parameterType="map">
+		INSERT INTO INQUIRY_TB
+			   (INQUIRY_NUM, INQUIRY_TYPE, INQUIRY_RGE_TYPE, INQUIRY_REG_ID, INQUIRY_SUBJECT, INQUIRY_CONTENT)
+		VALUES (
+				INQUIRY_TB_SEQ.nextval,
+				#{inquiry_type},
+				#{inquiry_rge_type},
+				#{inquiry_reg_id},
+				#{inquiry_subject},
+				#{inquiry_content}
+				)
+	</insert>
 </mapper>

@@ -100,6 +100,12 @@ public class HomeController {
 		return adminService.insertInquiry(param);
 	}
 	
+	@RequestMapping("/setInquiry")
+	public String setInquiry() {
+		adminService.insertDummyInquiry();
+		return "select2";
+	}
+	
 	
 	
 	

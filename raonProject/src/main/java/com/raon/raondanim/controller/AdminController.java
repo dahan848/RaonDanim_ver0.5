@@ -94,19 +94,17 @@ public class AdminController {
 	@RequestMapping("/inquiry")
 	 public String inquiry
 	 		(Model model, 
-			@RequestParam(required = false) String keyword,
 	        @RequestParam(defaultValue = "0") int type, 
 	        @RequestParam(value = "page", defaultValue = "1") int page) 
 	{
-			System.out.println("문의 게시판 요청 받음 : " + keyword + type + page);
+			//System.out.println("문의 게시판 요청 받음 : " + type);
 	        Map<String, Object> params = new HashMap<String, Object>();
-	        params.put("keyword", keyword);
 	        params.put("page", page);
 	        params.put("type", type);
-	 
+	        System.out.println("관리자 페이지 테스트 타입 : " + type);
+	        System.out.println("관리자 페이지 테스트 페이지 : " + page);
 	        model.addAllAttributes(adminService.getInquiryViewData(params));
 		return "admin/inquiry";
-		
 	}
 	
 	
