@@ -224,7 +224,7 @@
 											      <div class="modal-header">
 											        <p class="heading lead">문의내용 확인 및 답변작성
 											        </p>
-											        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											        <button id="modalClose" type="button" class="close" data-dismiss="modal" aria-label="Close">
 											          <span aria-hidden="true" class="white-text">×</span>
 											        </button>
 											      </div>
@@ -255,14 +255,20 @@
 											        <p class="text-center">
 											          <strong>답변작성</strong>
 											        </p>
-											        <!--Basic textarea-->
-											        <div class="md-form">
-											          <textarea type="text" id="form79textarea" class="md-textarea form-control" rows="3"></textarea>
-											        </div>
+											        <!-- 답변이 미등록인 경우 -->
+											        <c:if test="${inquiry.ANSWER_ST eq 0}">
+												        <div class="md-form">
+												          <textarea type="text" id="answer_content" class="md-textarea form-control" rows="3"></textarea>
+												        </div>
+											        </c:if>
+											        <!-- 답변이 등력 된 경우 -->
+											        <c:if test="${inquiry.ANSWER_ST ne 0}">
+											        	
+											        </c:if>
 											      </div>
 											      <!--Footer-->
 											      <div class="modal-footer justify-content-center">
-											        <a type="button" class="btn btn-primary waves-effect waves-light">답변완료
+											        <a type="button" class="btn btn-primary waves-effect waves-light" onclick="answer(${inquiry.INQUIRY_NUM})">답변완료
 											          <i class="fa fa-paper-plane ml-1"></i>
 											        </a>
 											        <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">돌아가기</a>
@@ -338,7 +344,7 @@
 
 	<script type="text/javascript">
     	$(document).ready(function(){
-    		alert("테스트중8");
+    		alert("테스트중10");
 
         	demo.initChartist();
 
@@ -362,8 +368,48 @@
     		$("#inquiryType").submit();
 		}
     	
-    	//답변 모달 창()
-    	function answer_modal() {
+    	//답변완료 버튼 클릭
+    	function answer(inquiry_num) {
+    		//각 모달 창 마다 id가 다르기 때문에 변수에 참조 시킴
+    		var modal_id = '#modalPoll-' + inquiry_num;
+    		//해당 모달 창의 자식 요소로 있는 text를 변수에 담는다
+			var content = $(modal_id).find('#answer_content').val();
+    		
+    		//데이터 담기
+			var answer = {"inquiry_num": inquiry_num,"content": content};
+
+    		//Ajax로 비동기 처리 
+			$.ajax({
+			url:"${contextPath}/admin/writeAnswer",
+			type:"POST",
+			data: answer,
+			async : false, //ajax 동기 선언
+			dataType:"json",
+            beforeSend : function(xhr)
+            {   /*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+            },
+			success:function(result){
+				if(result){
+	            	swal({
+						  text: "문의글 등록이 완료되었습니다.",
+						  button: "확인",
+						}).then(function() {
+	  						location.reload(); //화면 새로고침
+	  					});	
+				}else{
+					swal({
+						icon:"warning",
+						text:"문의글 등록에 실패했습니다.",
+					});
+				}
+			},
+			 error : function(error) {
+                	swal({text: "글 등록 중 오류가 발생했습니다.", button: "확인",});
+    	            console.log(error);
+    	            console.log(error.status);
+	        }
+		});//ajaxEND
 			
 		}
 	</script>

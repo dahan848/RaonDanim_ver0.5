@@ -79,7 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE RNUM between #{firstRow} and #{endRow}
 	</select>
 	<!-- 문의글 더미 데이터 생성 -->
-		<insert id="insertDummyInquiry" parameterType="map">
+	<insert id="insertDummyInquiry" parameterType="map">
 		INSERT INTO INQUIRY_TB
 			   (INQUIRY_NUM, INQUIRY_TYPE, INQUIRY_RGE_TYPE, INQUIRY_REG_ID, INQUIRY_SUBJECT, INQUIRY_CONTENT)
 		VALUES (
@@ -91,4 +91,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{inquiry_content}
 				)
 	</insert>
+	<!-- DB에 답변 집어넣기 -->
+		<insert id="insertAnswer" parameterType="map">
+		INSERT INTO ANSWER_TB
+			   (ANSWER_NUM, INQUIRY_NUM, ANSWER_CONTENT)
+		VALUES (
+				ANSWER_TB_SEQ.nextval,
+				#{inquiry_num},
+				#{content}
+				)
+	</insert>
+	<!-- 답변 상태 업데이트 -->
+	<update id="updateInquiryAnswer" parameterType="string">
+		UPDATE INQUIRY_TB
+  		   SET INQUIRY_ANSWER_ST = 1
+  		 WHERE INQUIRY_NUM = #{INQUIRY_NUM}
+	</update>
+	
 </mapper>

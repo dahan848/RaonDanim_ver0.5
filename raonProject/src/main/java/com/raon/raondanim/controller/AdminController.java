@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -105,6 +106,13 @@ public class AdminController {
 	        System.out.println("관리자 페이지 테스트 페이지 : " + page);
 	        model.addAllAttributes(adminService.getInquiryViewData(params));
 		return "admin/inquiry";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/writeAnswer", method=RequestMethod.POST )
+	public boolean userUnlock(@RequestParam Map<String, Object> param) {
+		//System.out.println("답변 요청 받음 : " + param);
+		return adminService.insertAnswer(param);
 	}
 	
 	

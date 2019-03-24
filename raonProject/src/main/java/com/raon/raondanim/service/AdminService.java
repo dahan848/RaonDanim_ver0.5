@@ -142,5 +142,15 @@ public class AdminService {
 		}
 		System.out.println("문의 게시글 더미데이터 " + count + "개 생성 완료");
 	}
-
+	
+	//특정 문의글에 대한 답변 DB 저장 
+	public boolean insertAnswer(Map<String, Object> param) {
+		if(dao.insertAnswer(param) > 0) {
+			//등록에 성공하면 해당 문의글의 답변 상태도 업데이트 해준다.
+			dao.updateInquiryAnswer((String)param.get("inquiry_num"));
+			return true;
+		}else {
+			return false;			
+		}
+	}
 }
