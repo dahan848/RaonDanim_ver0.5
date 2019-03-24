@@ -256,15 +256,15 @@
 											          <strong>답변작성</strong>
 											        </p>
 											        <!-- 답변이 미등록인 경우 -->
-											        <c:if test="${inquiry.ANSWER_ST eq 0}">
+<%-- 											        <c:if test="${inquiry.ANSWER_ST eq 0}"> --%>
 												        <div class="md-form">
 												          <textarea type="text" id="answer_content" class="md-textarea form-control" rows="3"></textarea>
 												        </div>
-											        </c:if>
+<%-- 											        </c:if> --%>
 											        <!-- 답변이 등력 된 경우 -->
-											        <c:if test="${inquiry.ANSWER_ST ne 0}">
+<%-- 											        <c:if test="${inquiry.ANSWER_ST ne 0}"> --%>
 											        	
-											        </c:if>
+<%-- 											        </c:if> --%>
 											      </div>
 											      <!--Footer-->
 											      <div class="modal-footer justify-content-center">

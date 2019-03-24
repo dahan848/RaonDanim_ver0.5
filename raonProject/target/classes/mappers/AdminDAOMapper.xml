@@ -107,5 +107,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		   SET INQUIRY_ANSWER_ST = 1
   		 WHERE INQUIRY_NUM = #{INQUIRY_NUM}
 	</update>
-	
+	<!-- 문의글 선택 -->
+	<select id="selectInquiry" parameterType="string" resultType="map">
+		SELECT INQUIRY_REG_ID, INQUIRY_SUBJECT, INQUIRY_CONTENT, INQUIRY_REG_DATE
+  		  FROM INQUIRY_TB
+  		 WHERE INQUIRY_NUM = #{INQUIRY_NUM}
+	</select>
 </mapper>

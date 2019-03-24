@@ -11,5 +11,6 @@ public interface AdminDAO {
 	public List<Map<String, Object>> InquiryList(Map<String, Object> param); //페이징 처리와 검색 처리가 완료된 List()
 	public int insertDummyInquiry(Map<String, Object> param); //문의글 더미데이터 생성
 	public int insertAnswer (Map<String, Object>param); //특정 문의 글에 답변 넣기
-	public int updateInquiryAnswer(String INQUIRY_NUM);
+	public int updateInquiryAnswer(String INQUIRY_NUM); //문의글 답변 상태 업데이트 
+	public Map<String, Object> selectInquiry(String INQUIRY_NUM); //문의글 번호로 해당 글 정보 얻기 (메일 발송을 위한)
 }
