@@ -344,7 +344,7 @@
 
 	<script type="text/javascript">
     	$(document).ready(function(){
-    		alert("테스트중10");
+    		//alert("테스트중10");
 
         	demo.initChartist();
 

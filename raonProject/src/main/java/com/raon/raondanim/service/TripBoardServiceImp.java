@@ -525,7 +525,7 @@ public class TripBoardServiceImp implements TripBoardService {
 		
 		try {
 			
-			for(int i =0;i<(int)(Math.random()*50)+10;i++) {
+			for(int i =1;i<(int)(Math.random()*50)+10;i++) {
 				Map<String, Object> tripBoard = new HashMap<>();
 				tripBoard.put("user_Num", i);
 				tripBoard.put("trip_Board_Title", "dummy"+i);
