@@ -154,5 +154,10 @@ public class ChatService {
 //		System.out.println(data.toString());
 		return data;
 	}
+	
+	//채팅방이 열렸을 떄 읽은 시간을 DB에 넣는 ()
+	public void updateReadMessage(Map<String, Object> data) {
+		dao.setReadTime(data);
+	}
 }
 	

@@ -173,23 +173,5 @@
     
     <jsp:include page="/WEB-INF/views/test.jsp"></jsp:include> <!-- 채팅방 모달창 -->
     <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
-    
-<script type="text/javascript">
-	
-$(function(){
-    $('[rel="popover"]').popover({
-        container: 'body',
-        html: true,
-        content: function () {
-            var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
-            return clone;
-        }
-    }).click(function(e) {
-        e.preventDefault();
-    });
-});
-
-
-</script>
 </body>
 </html>
