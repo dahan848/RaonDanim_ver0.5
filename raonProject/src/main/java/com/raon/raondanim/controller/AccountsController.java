@@ -24,6 +24,7 @@ import com.raon.raondanim.service.AccountsService;
 import com.raon.raondanim.service.MotelTbService;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AccountsController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+
 	@Autowired
 	private AccountsService service;
 	@Autowired
@@ -263,4 +265,56 @@ public class AccountsController {
 		System.out.println("=============더미데이터 생성완료============");
 		return "";
 	}
+	
+	//대시보드 작성 - 조현길
+	//대시보드 페이지 호출
+	@RequestMapping("/dashboard")
+	public String viewDashboard() {
+		System.out.println("왜왜왜");
+		return "accounts/dashboard";
+	}
+	//대시보드 ajax(여행활동 탭)
+	@RequestMapping(value="trip_list",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> trip_list(@RequestParam(value="page",defaultValue="1")int page,
+			Model model, int num){
+		System.out.println("ajax 요청 받았다(여행활동 - 여행 작성글");
+		Map<String, Object>params = new HashMap<String, Object>();
+		params.put("num", num);
+		params.put("page", page);
+		System.out.println(params);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("board", service.getViewData(params));
+		System.out.println("보드 리스트 결과");
+		System.out.println(result);
+		return result;
+	}
+	
+	//대시보드 ajax(여행활동 탭 여행 댓글)
+		@RequestMapping(value="trip_reply_list",method=RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> trip_reply_list(@RequestParam(value="page",defaultValue="1")int page,
+				Model model, int num){
+			System.out.println("ajax 요청 받았다(여행활동 - 여행 댓글");
+			Map<String, Object>params = new HashMap<String, Object>();
+			params.put("num", num);
+			params.put("page", page);
+			System.out.println(params);
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("board", service.getReplyViewData(params));
+			System.out.println("댓글 보드 리스트 결과");
+			System.out.println(result);
+			return result;
+		}
+		
+		//대시보드 댓글 삭제
+		@RequestMapping(value="/replyDelete",method=RequestMethod.POST)
+		public int reply_delete (@RequestParam Map<String, Object>params) {
+			System.out.println("재미없다~~~~~~");
+			System.out.println(params);
+			return 0;
+		}
+	
+
+	
 }

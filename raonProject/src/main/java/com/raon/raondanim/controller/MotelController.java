@@ -115,11 +115,7 @@ public class MotelController {
 		System.out.println("댓글 요청");
 		CsrfToken _csrf1 = (CsrfToken) req.getAttribute("CsrfToken");
 		CsrfToken _csrf2 = (CsrfToken) req.getAttribute("_csrf");
-		
-		System.out.println("token1 : " + _csrf1);
-		System.out.println("token2 :" + _csrf2);
-		
-		
+
 		Map<String, Object>params = new HashMap<String, Object>();
 		params.put("page", page);
 		params.put("num", num);

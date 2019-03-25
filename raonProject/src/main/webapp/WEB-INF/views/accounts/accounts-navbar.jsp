@@ -32,7 +32,7 @@ function update1Form(){
 				<li><a href="${contextPath}/accounts/update1Form">프로필 수정</a></li>
 <!-- 				<li><a id="update1Form" href="javascript:update1Form();">프로필 수정</a></li> -->
 				<li><a href="${contextPath}/accounts/personalForm">계정설정</a></li>
-				<li><a href="#">대시보드</a></li>
+				<li><a href="${contextPath}/accounts/dashboard">대시보드</a></li>
 				<li><a href="${contextPath}/accounts/gallerySettings">갤러리 관리</a></li>
 			</ul>
 		</div>

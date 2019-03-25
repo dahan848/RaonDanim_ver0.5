@@ -73,24 +73,6 @@ function initialize() {
           }
         });
       }
-	
-	
-	
-	
-	
-/* 	var mapProp = {
-		center : myCenter,
-		zoom : 12,
-		mapTypeId : google.maps.MapTypeId.ROADMAP
-	};
-
-	var map = new google.maps.Map(document.getElementById("googleMap"),
-			mapProp);
-
-	var marker = new google.maps.Marker({
-		position : myCenter,
-	});
-	marker.setMap(map); */
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
@@ -220,22 +202,22 @@ function replyList(){
 			for(var i in data.board.boardList){
 				
 				var fileName = getOriginFilename(data.board.boardList[i].FILENAME);
-				if(fileName){
+				
 					
-					$("#con").append('<div class="card" id="card'+n+'"></div>');
-					var id = "#card"+n;
-					$("#con").append('<hr>');
-					$(id).append('<div class="card-body" id="profile'+n+'" style="border-radius:50%; width:50px; height:50px; border:1px solid black; display:inline-block; background-size:cover; background-image:url(\'${contextPath}/motel/image?fileName='
-							+ data.board.boardList[i].FILENAME
-							+ '\');"></div>');
-					$(id).append('<div id="name'+n+'" style="display:inline-block;"></div>');
-					var name="#name"+n;
+// 					$("#con").append('<div class="card" id="card'+n+'"></div>');
+// 					var id = "#card"+n;
+// 					$("#con").append('<hr>');
+// 					$(id).append('<div class="card-body" id="profile'+n+'" style="border-radius:50%; width:50px; height:50px; border:1px solid black; display:inline-block; background-size:cover; background-image:url(\'${contextPath}/motel/image?fileName='
+// 							+ data.board.boardList[i].FILENAME
+// 							+ '\');"></div>');
+// 					$(id).append('<div id="name'+n+'" style="display:inline-block;"></div>');
+// 					var name="#name"+n;
 					
-					$(name).append('<div>'+data.board.boardList[i].USER_ID+'</div>');
-					$(name).append('<div>'+data.board.boardList[i].WRITE_DATE+'</div>');
-					$(id).append('<div>아무말대잔치다ㅏㅏㅏ</div>');
-					n++;
-				}else{
+// 					$(name).append('<div>'+data.board.boardList[i].USER_ID+'</div>');
+// 					$(name).append('<div>'+data.board.boardList[i].WRITE_DATE+'</div>');
+// 					$(id).append('<div>아무말대잔치다ㅏㅏㅏ</div>');
+// 					n++;
+				
 					
 					$("#con").append('<div class="card" id="card'+n+'"></div>');
 					var id = "#card"+n;
@@ -416,7 +398,7 @@ function replyList(){
 						})
 					})(n)
 					n++;
-				}
+				
 				
 			}
 		}
@@ -876,7 +858,7 @@ function replyList(){
 		  	</div>
 		  	<div style="float: left; padding-right: 15px; padding-top: 30px;">
 		  		<i class="fa fa-bed fa-lg"></i>
-		  		<b style="font-size: 30px;">침실 ${MOTEL_BED }개</b>
+		  		<b style="font-size: 30px;">침실 ${MOTEL_BATHROOM}개</b>
 		  	</div>
 		  	<div style=" padding-right: 15px; padding-top: 30px;">
 		  		

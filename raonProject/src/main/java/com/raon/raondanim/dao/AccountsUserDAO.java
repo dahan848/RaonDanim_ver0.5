@@ -22,6 +22,7 @@ public interface AccountsUserDAO {
 	public int setProfilePic(Map<String, Object> param); //프로필 사진 등록하는 ()
 	public int setGalleryPic(Map<String, Object> param); //갤러리 사진 등록하는 ()
 	public int deleteGalleryPic(String picnum);
+<<<<<<< HEAD
 	
 	
 	//======추가 프로필 관련 =======
@@ -30,5 +31,12 @@ public interface AccountsUserDAO {
 	
 	//사용가능 언어 DB 불러오기 
 	public List<Map<String, Object>> selectAllLanuage();
+=======
+	//dashboard 작성 - 조현길
+	public List<Map<String, Object>> trip_list(Map<String, Object>params);//dashboard 여행활동 탭 - 여행 작성글 리스트
+	public int selectTotalCount(int num);//여행 게시글 토탈카운트
+	public List<Map<String, Object>> trip_reply_list(Map<String, Object>params);//여행탭 여행 댓글 리스트 호출 
+	public int selectReplyTotalCount(int num);//여행 댓글 토탈카운트
+>>>>>>> origin/ver2.Motel
 
 }
