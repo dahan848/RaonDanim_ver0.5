@@ -110,11 +110,7 @@
 
 <!-- 					네비바 우측 -->
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                           <a href="">
-                               <p>Account</p>
-                            </a>
-                        </li>
+                        
 <!--                         <li class="dropdown"> -->
 <!--                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"> -->
 <!--                                     <p> -->
@@ -134,7 +130,7 @@
 <!--                               </ul> -->
 <!--                         </li> -->
                         <li>
-                            <a href="">
+                            <a href="${contextPath}/accounts/logout">
                                 <p>Log out</p>
                             </a>
                         </li>
@@ -198,6 +194,24 @@
 
                                     </tbody>
                                 </table>
+                                
+                                <div class="container" style="text-align: center;">
+										
+										<ul class="pager" style="display: inline-block;">
+											<c:if test="${motelData.page!=1}">
+												<li><a
+													href="motelBoard?page=${param.pageNum-1}">Previous</a></li>
+											</c:if>
+											<c:forEach var="pageNum" begin="${motelData.start}"
+												end="${motelData.end < motelData.total ? motelData.end: motelData.total}">
+												<a href="motelBoard?page=${pageNum}">${pageNum}&nbsp;&nbsp;&nbsp;</a>
+											</c:forEach>
+											<c:if test="${motelData.page!=motelData.total}">
+												<li><a href="motelBoard?page=${param.pageNum+1}">Next</a></li>
+											</c:if>
+										</ul>
+									</div>
+                                
 
                             </div>
                         </div>

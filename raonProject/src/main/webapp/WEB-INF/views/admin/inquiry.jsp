@@ -110,11 +110,7 @@
                 <div class="collapse navbar-collapse">
 <!-- 					네비바 우측 -->
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                           <a href="">
-                               <p>Account</p>
-                            </a>
-                        </li>
+                       
 <!--                         <li class="dropdown"> -->
 <!--                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"> -->
 <!--                                     <p> -->
@@ -134,7 +130,7 @@
 <!--                               </ul> -->
 <!--                         </li> -->
                         <li>
-                            <a href="">
+                            <a href="${contextPath}/accounts/logout">
                                 <p>Log out</p>
                             </a>
                         </li>

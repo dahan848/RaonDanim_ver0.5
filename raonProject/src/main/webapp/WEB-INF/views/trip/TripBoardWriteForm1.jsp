@@ -107,23 +107,23 @@ function goToProfile() {
 						</c:choose>
 					</td>
 				</tr>
-				<tr>
-					<th style="padding: 20px;" class="info">나의 여행희망도시</th>
-					<td style="padding: 20px;">
+<!-- 				<tr> -->
+<!-- 					<th style="padding: 20px;" class="info">나의 여행희망도시</th> -->
+<!-- 					<td style="padding: 20px;"> -->
 						
-						<c:choose>
-							<c:when test="${userInfo.UserTravleHope != null}">
-								<c:forEach items="${userInfo.UserTravleHope}" var="th">
-									<span class="label label-mint label-lg"><b>${th.HOPE_CITY}</b></span>
-								</c:forEach>	
-							</c:when>
-							<c:otherwise>
-									<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="클릭시 프로필 설정으로 이동합니다.">미등록</span>
-							</c:otherwise>
-						</c:choose>
+<%-- 						<c:choose> --%>
+<%-- 							<c:when test="${userInfo.UserTravleHope != null}"> --%>
+<%-- 								<c:forEach items="${userInfo.UserTravleHope}" var="th"> --%>
+<%-- 									<span class="label label-mint label-lg"><b>${th.HOPE_CITY}</b></span> --%>
+<%-- 								</c:forEach>	 --%>
+<%-- 							</c:when> --%>
+<%-- 							<c:otherwise> --%>
+<!-- 									<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="클릭시 프로필 설정으로 이동합니다.">미등록</span> -->
+<%-- 							</c:otherwise> --%>
+<%-- 						</c:choose> --%>
 
-					</td>
-				</tr>
+<!-- 					</td> -->
+<!-- 				</tr> -->
 				<tr>
 					<th style="padding: 20px;" class="info">나의 여행 스타일</th>
 					<td style="padding: 20px;">

@@ -487,11 +487,11 @@ public class TripBoardServiceImp implements TripBoardService {
 		return userDao.getTrStyle(usernum);
 	}
 
-	@Override
-	public List<Map<String, Object>> getTravleHope(String usernum) {
-		
-		return userDao.getTravleHope(usernum);
-	}
+//	@Override
+//	public List<Map<String, Object>> getTravleHope(String usernum) {
+//		
+//		return userDao.getTravleHope(usernum);
+//	}
 
 	@Override
 	public List<Map<String, Object>> getDeclaration() {

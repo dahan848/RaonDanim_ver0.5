@@ -125,12 +125,6 @@ on u.user_num = t.user_num
 where u.user_num = #{userNum}
 </select>	
 
-<select id="getTravleHope" parameterType="String" resultType="map">
-select *
-from user_tb u join TRAVLE_HOPE h
-on u.user_num = h.user_num
-where u.user_num = #{userNum}
-</select>	
 	
 <select id="getUserRegDate" resultType="map">
 <!-- 데이터가 충분치 않아 정렬에 오류가 있을수 있음 -->
