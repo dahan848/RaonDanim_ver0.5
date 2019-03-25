@@ -31,8 +31,8 @@
 			name="driverClassName" />
 		<property
 			value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
-		<property value="manzza" name="username" />
-		<property value="1099" name="password" />
+		<property value="pr" name="username" />
+		<property value="123" name="password" />
 
 	</bean>
 

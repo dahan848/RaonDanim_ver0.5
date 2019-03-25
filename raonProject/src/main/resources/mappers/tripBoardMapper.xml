@@ -373,16 +373,16 @@ values(TRIP_BOARD_TB_SEQ.nextval,
 <select id="getMonthWriteData" resultType="int">
 SELECT count(TO_CHAR(TRIP_WRITEDATE,'MM') ) as monthCount
 FROM TRIP_BOARD_TB
-group by TRIP_WRITEDATE
-order by TRIP_WRITEDATE
+group by TO_CHAR(TRIP_WRITEDATE,'MM')
+order by TO_CHAR(TRIP_WRITEDATE,'MM')
 </select>
 
 
 <select id="getMotelMonthWriteData" resultType="int">
 SELECT count(TO_CHAR(MOTEL_WRITEDATE,'MM') ) as monthCount
 FROM motel_tb
-group by MOTEL_WRITEDATE
-order by MOTEL_WRITEDATE
+group by TO_CHAR(MOTEL_WRITEDATE,'MM')
+order by TO_CHAR(MOTEL_WRITEDATE,'MM')
 </select>
 
 
