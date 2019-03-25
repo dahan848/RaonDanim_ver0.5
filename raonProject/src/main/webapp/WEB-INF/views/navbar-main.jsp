@@ -144,17 +144,26 @@
 					var name = data[i].USER_LNM +" "+data[i].USER_FNM;
 					var user_num = data[i].USER_NUM;
 					var room_num = data[i].CHAT_ROOM_NUM;
-					var unread = "미확인 메시지 : "+data[i].MCOUNT; //채팅 방의 읽지 않은 메시지의 개수 
+					var unread = "미확인 메시지 : "+data[i].UNREAD; //채팅 방의 읽지 않은 메시지의 개수 
+					var check = data[i].UNREAD;
 					//roomList
 					var content = data[i].CONTENT;
-					 //화면 그리기  
-					 $(".chat_body").append("<div class='user' style='padding-bottom: 0px; padding-top: 0px;' onclick='chatClickbyRoom("+room_num+colon+usernum+")'> <img src='"+profile_pic+"'/><div class='namechat' style='padding-bottom: 0px;'>"+name+"</div><div class='chat_msg'>"+content+"</div><strong class='text-potluck' style='margin-left: 10px;'>"+unread+"</strong><hr style='margin-top: 5px; margin-bottom: 10px;'></div>");
+					 //화면 그리기
+					 alert(check);
+					 if(typeof check != "undefined"){
+						 //미확인 메시지가 있는 경우
+						 $(".chat_body").append("<div class='user' style='padding-bottom: 0px; padding-top: 0px;' onclick='chatClickbyRoom("+room_num+colon+usernum+")'> <img src='"+profile_pic+"'/><div class='namechat' style='padding-bottom: 0px;'>"+name+"</div><div class='chat_msg'>"+content+"</div><strong class='text-potluck' style='margin-left: 10px;'>"+unread+"</strong><hr style='margin-top: 5px; margin-bottom: 10px;'></div>");
+					 }else{
+						 //미확인 메시지가 없는 경우
+						 $(".chat_body").append("<div class='user' style='padding-bottom: 0px; padding-top: 0px;' onclick='chatClickbyRoom("+room_num+colon+usernum+")'> <img src='"+profile_pic+"'/><div class='namechat' style='padding-bottom: 0px;'>"+name+"</div><div class='chat_msg'>"+content+"</div><hr style='margin-top: 5px; margin-bottom: 10px;'></div>");
+					 }
+					 
 				}//반복문 종료
 			}
 		});
 	}	
 	$(document).ready(function() {
-		alert("악!7");
+		//alert("악!14");
 	});//onLoad END
 </script>
 <!-- navbar-main -->
