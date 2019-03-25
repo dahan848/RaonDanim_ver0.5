@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.raon.raondanim.dao.AccountsUserDAO;
@@ -27,9 +29,15 @@ public class ReviewReplyServiceImp implements ReviewReplyService{
 
 	@Override
 	public boolean insertReply(Map<String, Object> param) {
+		
+		System.out.println("서비스 -> 여행후기 댓글 입력");
+		System.out.println("서비스 -> 여행후기 댓글 입력 param : " + param);
+		
 		if(dao.insertReply(param) > 0) {
+			System.out.println("서비스 -> 여행후기 댓글 입력 성공");
 			return true;
 		} else {
+			System.out.println("서비스 -> 여행후기 댓글 입력 실패");
 			return false;
 		}
 	}
@@ -45,6 +53,9 @@ public class ReviewReplyServiceImp implements ReviewReplyService{
 
 	@Override
 	public boolean deleteReply(Map<String, Object> params) {
+		
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
 		//입력한 비밀번호
 		String input_reply_pass = String.valueOf(params.get("input_reply_pass"));
 		//게시글 번호(REVIEW_NUM)
@@ -61,9 +72,9 @@ public class ReviewReplyServiceImp implements ReviewReplyService{
 		//유저한테 뽑아온 인트 유저넘
 		String uNum = String.valueOf(user.getUser_num());
 		// 뽑은 유저 넘하고 로그인한 유저넘 비교
-		// 뽑은 유저 비밀번호 == 가져온 비번 비교
+		// 뽑은 유저 비밀번호 == 가져온 비번 비교					
 		if(userNum.equals(uNum)) {
-			if(user.getUser_pw().equals(input_reply_pass)) {
+			if(encoder.matches(input_reply_pass, user.getUser_pw())) {
 				if(dao.deleteReply(re_Reply_Num)>0) {
 					return true;
 				} else {
@@ -159,8 +170,6 @@ public class ReviewReplyServiceImp implements ReviewReplyService{
 //		System.out.println("서비스/댓글 페이징 totalPage"+getTotalPage());
 //		System.out.println("서비스/댓글 페이징 firstRow"+getFirstRow(page));
 //		System.out.println("서비스/댓글 페이징 endRow"+getEndRow(page));
-
-		
 		
 		return viewData;
 	}

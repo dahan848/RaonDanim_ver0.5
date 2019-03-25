@@ -65,7 +65,7 @@
 				
 				
 			</script>
-			<input type="submit" class="btn btn-primary" id="save" value="저장">
+			<input type="submit" class="btn btn-primary" id="save" value="저장" style="margin-left: 48%">
 		</div>
 		</section>
 		</div>

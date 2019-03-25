@@ -35,9 +35,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<update id="updateWith" parameterType="map">
 		UPDATE 		WITH_BOARD_TB
-		   SET 		WITH_CONTENT = #{REV_TITLE},
-					WITH_GPA = #{REV_DESTINATION}
-		WHERE 		WITH_NUM = #{NUM}
+		   SET 		WITH_CONTENT = #{WITH_CONTENT},
+					WITH_GPA = #{WITH_GPA}
+		WHERE 		WITH_NUM = #{num}
 	</update>
 	
 	
@@ -74,14 +74,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_PW
 		  FROM 	USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r  
 		    ON  r.TL_USER_NUM = u.USER_NUM
+		 
 		 WHERE  r.TL_USER_NUM = #{TL_USER_NUM}
 	</select>
-	<resultMap type="HashMap" id="reviewMap">
-		<result property="WITH_CONTENT" column="WITH_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
-	</resultMap>
+	
+	
 	
 	<!-- 타임라인에 글쓴 사람 WR_USER_NUM 으로 select -->
-	<select id="selectWithOne" parameterType="int" resultMap="reviewViewMap">
+	<select id="selectOneByWrUserNum" parameterType="int" resultMap="reviewMap" resultType="map">
 		SELECT 	r.WITH_NUM,
 				r.TL_USER_NUM,
 				r.WR_USER_NUM,
@@ -103,11 +103,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_MOTEL_AVG,
 				u.USER_ID,
 				u.USER_PW
-		  FROM 	USER_TB u left outer join WITH_BOARD_TB r
+		  FROM 	USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r  
+		    ON  r.WR_USER_NUM = u.USER_NUM
+		 WHERE  r.WR_USER_NUM = #{WR_USER_NUM}
+	</select>
+	
+	
+	
+	<!-- 게시글 번호 WITH_NUM 으로 select -->
+	<select id="selectWithOne" parameterType="int" resultMap="reviewMap" resultType="map">
+		SELECT 	r.WITH_NUM,
+				r.TL_USER_NUM,
+				r.WR_USER_NUM,
+				r.WITH_CONTENT,
+				r.WITH_GPA,
+				r.WITH_COUNT,
+				r.WITH_REG_DATE,
+				r.WITH_ST,
+				r.WITH_AVG,
+				u.USER_NUM,
+				u.USER_ID,
+				u.USER_FNM,
+				u.USER_LNM,
+				u.USER_NATIONALITY,
+				u.USER_CITY_COUNTRY,
+				u.USER_GENDER,
+				u.USER_PROFILE_PIC,
+				u.USER_WITH_AVG,
+				u.USER_MOTEL_AVG,
+				u.USER_ID,
+				u.USER_PW
+		  FROM 	USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r
 		    ON  r.WR_USER_NUM = u.USER_NUM
 		 WHERE  r.WITH_NUM = #{WITH_NUM}
 	</select>
-	<resultMap type="HashMap" id="reviewViewMap">
+	
+	
+	<resultMap type="HashMap" id="reviewMap">
 		<result property="WITH_CONTENT" column="WITH_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
 	</resultMap>
 	
@@ -150,22 +182,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 조인해서 다시 해보기 -->
 	<select id="searchUser" parameterType="map" resultType="map">
-		SELECT       *
-		  FROM       USER_TB
-  		 WHERE 	     
-<!--   		 <if test="USER_LNM != null"> -->
-  		 			 USER_LNM   like   ('%${USER_LNM}%') 
-<!--   		 </if> -->
-<!--   		 <if test="USER_FNM != null">  -->
-  		        and   USER_FNM   like   ('%${USER_FNM}%') 
-<!--   		 </if> -->
-<!--   		 <if test="USER_ID != null"> -->
-  		        and   USER_ID    like   ('%${USER_ID}%')
-<!--   		 </if> -->
-<!--   		 <if test="type == 0"> -->
-<!--   		 		or   1=1 -->
-<!--   		 </if> -->
-		ORDER BY USER_NUM DESC
+		SELECT        *
+		  FROM        USER_TB
+  		 WHERE		  1=0		  
+  		 <if test="USER_ID != null">
+  		 	OR USER_ID    like   ('%${USER_ID}%')
+  		 </if>
+  		 <if test="USER_ID == null">
+  		 	OR 1=1
+  		 </if>
+  		 ORDER BY USER_NUM DESC 
+  		 		  
+<!--   		 		 or	  USER_LNM   like   ('%${USER_LNM}%')  -->
+<!--   		         or   USER_FNM   like   ('%${USER_FNM}%')  -->
+  		        
+		
   		 
 	</select>
 	

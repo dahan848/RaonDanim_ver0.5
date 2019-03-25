@@ -113,10 +113,15 @@
 				
 				
 				//게시판키랑 댓글이 가지고 있는 게시판 키가 같을 때  다 그리기
+				var boardList = data.boardList;
 				
-				if("${review.REVIEW_NUM}" == "${reply.REVIEW_NUM}") {
+				
+			
 					//console.log(data.boardList);
 					for(var i in data.boardList) {
+						
+					if("${review.REVIEW_NUM}" == boardList[i].REVIEW_NUM) {
+						
 						var tr = $("<tr>");
 						var href = $("<a href='#' style='text-decoration: none;'>신고</a>");	
 						var btnDelete = $("<button class='far fa-trash-alt' id='btnDelete' data-toggle='modal' data-target='#replyModal'></button>");	
@@ -127,6 +132,10 @@
 						$("<td style='border: white;'>").append("<input type='hidden' name='RE_REPLY_NUM' id='RE_REPLY_NUM"+i+"' value='"+data.boardList[i].RE_REPLY_NUM+"'>").appendTo(tr);
 						tr.appendTo(replyTable);
 					
+						
+					
+						
+						
 						//-------페이저 부분-------//
 						var start = data.startPage;		                
 						var end =data.endPage;			                
@@ -178,11 +187,12 @@
 								})
 							});
 						})(i);
+						
+					}
+						
 					}
 				
-				} else {
-					alert("댓글 리스트 실패");
-				}	
+			 
 				
 				
 				

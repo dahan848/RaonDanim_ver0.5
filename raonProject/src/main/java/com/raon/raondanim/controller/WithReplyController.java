@@ -31,13 +31,13 @@ public class WithReplyController {
 	public boolean insertReply(Model model,
 			@RequestParam Map<String, Object> params,
 			Authentication authentication) {
-//		System.out.println(params);
+
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		int loginUserNum = user.getUser_num();
 		model.addAttribute("loginUserNum", loginUserNum);
 		params.put("USER_NUM", loginUserNum);
-//		System.out.println("loginUserNum : " + loginUserNum);
-//		System.out.println("param : " + params);
+
+
 		return wiService.insertReply(params);
 	}
 	
@@ -48,23 +48,18 @@ public class WithReplyController {
 			@RequestParam(value="page", defaultValue="1")int page) {
 		System.out.println("댓글 리스트 출력");
 		
-//		System.out.println("start page : " + page);
-		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("page", page);
 		Map<String, Object> viewData = wiService.getViewData(params);
 		
+//		System.out.println("동행후기 viewData: " + viewData);
 		
-		ResponseEntity <Map<String, Object>> entity = null;
-		try {
-			List<Map<String, Object>> replyList = wiService.getWithReply(num);
+		
+		ResponseEntity <Map<String, Object>> entity = new ResponseEntity<Map<String,Object>>(viewData,HttpStatus.OK);
+		
+//		System.out.println("동행후기 댓글 entity : " + entity);
 			
-//			System.out.println("댓글 replyList : " + replyList);
-			//entity = new ResponseEntity<Map<String,Object>>(viewDate, HttpStatus.OK);
-			entity = new ResponseEntity<Map<String,Object>>(viewData,HttpStatus.OK);
-		} catch (Exception e) {
-			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+		
 		return entity;
 	}
 
@@ -78,10 +73,10 @@ public class WithReplyController {
 			) {
 		System.out.println("댓글 삭제 컨트롤러 진입");
 
-		System.out.println("입력한 비밀번호 : " + input_reply_pass);
-		System.out.println("로그인된 USER_NUM : " + userNum);
-		System.out.println("게시글 번호 : " + num);
-		System.out.println("댓글 번호 : "+wi_Reply_Num);
+//		System.out.println("입력한 비밀번호 : " + input_reply_pass);
+//		System.out.println("로그인된 USER_NUM : " + userNum);
+//		System.out.println("게시글 번호 : " + num);
+//		System.out.println("댓글 번호 : "+wi_Reply_Num);
 		
 		Map<String, Object> replyDelete = new HashMap<>();
 		replyDelete.put("input_reply_pass", input_reply_pass);

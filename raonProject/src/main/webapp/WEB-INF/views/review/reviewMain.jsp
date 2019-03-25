@@ -17,6 +17,7 @@
   crossorigin="anonymous"></script>
 
 <script type="text/javascript">
+//-------------- 무한 스크롤 --------------//	
 	$(window).on("scroll",function() {
 		var scrollHeight = $(document).height();
 		var scrollPosition = $(window).height() + $(window).scrollTop();
@@ -25,6 +26,11 @@
 			$("#scroll").append('<div class="box" id="box"></div>');
 		}
 	});
+
+
+
+	
+	
 </script>
 
 <style type="text/css">
@@ -33,7 +39,6 @@
 		margin-right: 40px;
 		background-color: #eeeeee;
 		color: green;
-		border: 1px solid #cccccc;
 	}
 	#box {
  		float: left; 
@@ -86,8 +91,8 @@
 	<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
-				<h3 id="h3" style="font-family: 'Nanum Pen Script', cursive; font-size: 50px;"><b>여행후기</b></h3>
-				<h5 style="font-family: 'Nanum Pen Script', cursive;  font-size: 30px;">다른 회원들에게 여행지 정보를 공유해주세요</h5>
+				<h3 id="h3" style="font-family: 'Jua', sans-serif; font-size: 50px;"><b>여행후기</b></h3>
+				<h5 style="font-family: font-family: 'Jua', sans-serif;  font-size: 30px;">다른 회원들에게 여행지 정보를 공유해주세요</h5>
 				<input type="button" onclick="location.href='writeForm'" class="btn btn-primary" id="upload" value="후기 올리기">
 				<br><br>			
 				

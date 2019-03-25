@@ -113,21 +113,23 @@ $(function(){
                 <!----------------------------------------- 프로필 시작 -------------------------------------->
                 <div class="box" id="box">
                     <div id="userimg"></div>
-                    <br> <a>${withBoard.User.user_lnm}${withBoard.User.user_fnm}</a> <br>
-                    <br> <a>여행지 : <b>${withBoard.User.user_gender}</b></a> <br>
+                    <br> <span>${withBoard.User.user_lnm}${withBoard.User.user_fnm}</span> <br>
+                    
+                    <br> 
+                    <span>여행지 : <b>${withBoard.User.user_gender}</b></span> <br>
                     <br> <i class="fas fa-home"> <br> <a>숙소 평점</a> <br>
-                        <a><i style="color: blue;">4.2</i> / 5</a>
+                        <span><i style="color: blue;">4.2</i> / 5</span>
                     </i> <i class="fas fa-camera" style="margin-left: 20px;"> <br>
-                        <a>후기 평점</a> <br> <a><i style="color: blue;">4.8</i> / 5</a>
+                        <span>후기 평점</span> <br> <span><i style="color: blue;">4.8</i> / 5</span>
                     </i>
                 </div>
                 <!----------------------------------------- 프로필 끝 -------------------------------------->
  				<input type="hidden" name="num" value="${param.num}">
                 <input type="button" class="btn btn-primary" id="upload"
-                    style="float: right;" onclick="location.href='withWriteForm?num=${param.num}'" value="후기올리기">
+                    style="float: right; background-color: #eeeeee; color: green;" onclick="location.href='withWriteForm?num=${param.num}'" value="후기올리기">
                     
                 <button type="button" class="btn btn-primary" id="btnMain"
-                    style="float: right; margin-right: 20px;" onclick="location.href='withMain'">메인화면</button>
+                    style="float: right; background-color: #eeeeee; color: green; margin-right: 20px;" onclick="location.href='withMain'">메인화면</button>
                     
             </div>
  
@@ -146,9 +148,9 @@ $(function(){
                 <c:forEach items="${withList}" var="withList" varStatus="status">
                     <tr style="border: 1px solid #cccccc;">
                         <td style="border: 1px solid #cccccc; text-align: center;">
-                            <a style="font-size: 20px; vertical-align: middle;">
+                            <span style="font-size: 20px; vertical-align: middle;">
                                 ${withList.USER_LNM}${withList.USER_FNM}
-                            </a>
+                            </span>
                         </td>
 <!--                         <td style="border: 1px solid #cccccc; text-align: center;"> -->
 <!--                             <a style="font-size: 20px;"> -->
@@ -179,11 +181,6 @@ $(function(){
 							</div>
 						<!----------------------------------------- 별점 끝 -------------------------------------->
                    	 	</td>
-                        
-                        
-                        
-                        
-                        
                         <td style="border: 1px solid #cccccc; text-align: center;">
                         	<input type="hidden" name="WR_USER_NUM" value="${withList.WR_USER_NUM }">
                         	<input type="hidden" name="WITH_NUM" value="${withList.WITH_NUM}">

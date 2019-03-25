@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.raon.raondanim.dao.AccountsUserDAO;
@@ -22,31 +24,59 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 	
 	@Override
 	public boolean insertWith(Map<String, Object> param) {
-		System.out.println("서비스 -> 동행후기 작성");
-		System.out.println(param);
+//		System.out.println("서비스 -> 동행후기 작성");
+//		System.out.println(param);
 		if(dao.insertWith(param)>0) {
-			System.out.println("서비스 -> 동행후기 작성 성공");
+//			System.out.println("서비스 -> 동행후기 작성 성공");
 			return true;
 		} else {
-			System.out.println("서비스 -> 동행후기 작성 실패");
+//			System.out.println("서비스 -> 동행후기 작성 실패");
 			return false;
 		}
 	}
 
 	@Override
 	public boolean updateWith(Map<String, Object> params) {
+		
 		System.out.println("서비스 -> 동행후기 수정");
-		if(dao.updateWith(params)>0) {
-			System.out.println("서비스 -> 동행후기 수정 성공");
-			return true;
-		} else {		
-			System.out.println("서비스 -> 동행후기 수정 실패");
+		
+		//parmas ==>> userNum(로그인한 USER_NUM), WITH_GPA, WITH_CONTENT, num(WITH_NUM)
+		System.out.println("서비스 -> 동행 후기 수정 params : " + params);
+		
+		//WITH_NUM
+		String numStr = String.valueOf(params.get("num"));
+		int with_Num = Integer.parseInt(numStr);
+		
+		//로그인 한 USER_NUM
+		String userNum = String.valueOf(params.get("userNum"));
+		
+		//WITH_NUM 으로 게시글 정보 뽑기
+		Map<String, Object> with = dao.selectWithOne(with_Num);
+		
+		//Map<String, Object> with에 들어있는 WR_USER_NUM
+		String user_Num = String.valueOf(with.get("WR_USER_NUM"));
+		
+		if(user_Num.equals(userNum)) {
+			System.out.println("USER_NUM 같음");
+			if(dao.updateWith(params)>0) {
+				System.out.println("서비스 -> 동행후기 수정 성공");
+				return true;
+			} else {		
+				System.out.println("서비스 -> 동행후기 수정 실패");
+				return false;
+			}
+		} else {
+			System.out.println("USER_NUM 다름");
 			return false;
 		}
+		
+		
 	}
 
 	@Override
 	public boolean deleteWith(Map<String, Object> param) {
+		
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		
 //		System.out.println("서비스 -> 여행후기 삭제");
 //		System.out.println("서비스 삭제 param : " + param);
@@ -73,7 +103,7 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 		
 		if(user_Num.equals(userNum)) {
 //			System.out.println("num 같음");
-			if(user_Pw.equals(input_pass)){
+			if(encoder.matches(input_pass, user_Pw)){
 //				System.out.println("서비스 -> 비밀번호 같음");
 				if(dao.deleteWith(num)>0) {
 //					System.out.println("서비스 -> 여행후기 삭제 성공");
@@ -96,7 +126,12 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 	public Map<String, Object> selectOne(int num) {
 		return dao.selectOne(num);
 	}
-
+	
+	@Override
+	public Map<String, Object> selectOneByWrUserNum(int num) {
+		return dao.selectOneByWrUserNum(num);
+	}
+	
 	@Override
 	public Map<String, Object> selectWithOne(int num) {
 		return dao.selectWithOne(num);
@@ -135,24 +170,29 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 //		System.out.println("검색 params : " + params);
 		
 		String keyword = (String)params.get("keyword");
-		System.out.println("검색 keyword : " + keyword);
+		System.out.println("서비스 -> 검색 keyword : " + keyword);
 		
 		
 		Map<String, Object> daoParam = new HashMap<String, Object>();
 		
-		
-		daoParam.put("USER_LNM", keyword);
-		daoParam.put("USER_FNM", keyword);
+//		daoParam.put("USER_LNM", keyword);
+//		daoParam.put("USER_FNM", keyword);
 		daoParam.put("USER_ID", keyword);
 		
-		
+		System.out.println("서비스 -> 검색 daoParam : " + daoParam);
+	
 		Map<String, Object> viewData = new HashMap<String, Object>();
-		
 		List<Map<String, Object>> searchList = getSearchUser(daoParam);
 		viewData.put("searchList", searchList);
 		
+		System.out.println("서비스 -> 검색 searchList : " + searchList);
+		System.out.println("서비스 -> 검색 viewData : " + viewData);
+		
 		return viewData;
+		
 	}
+
+	
 	
 	
 

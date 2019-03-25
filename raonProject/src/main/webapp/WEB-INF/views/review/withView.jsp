@@ -76,7 +76,7 @@ $(function(){
 					   "input_pass" : input_pass,				//입력한 비밀번호
 					   "${_csrf.parameterName}":'${_csrf.token}', 
 					   "userNum":userNum},				//로그인한 USER_NUM
-				type: "post",
+				type: "get",
 				dataType: "json",
 				success: function(data) {
 					if(data){
@@ -85,14 +85,14 @@ $(function(){
 // 							text:"삭제 되었습니다",
 // 						});
 						alert("삭제 되었습니다");
-						location.href="withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}&userNum=${withBoard.userNum}";
+						location.href="withMain";
 					} else {
 // 						swal({
 // 							icon:"fail",
 // 							text:"비밀번호가 틀렸습니다",
 // 						});
 						alert("비밀번호가 일치하지 않습니다");
-						location.href="withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}&userNum=${withBoard.userNum}";	
+						location.href="withMain";	
 					}
 				}
 			});
@@ -135,6 +135,9 @@ $(function(){
 				
 				//console.log(data.boardList);
 				for(var i in data.boardList) {
+					
+					if("${withBoard.WITH_NUM}" == boardList[i].WITH_NUM){
+						
 					var tr = $("<tr>");
 					var href = $("<a href='#' style='text-decoration: none;'>신고</a>");	
 					var btnDelete = $("<button class='far fa-trash-alt' id='btnDelete' data-toggle='modal' data-target='#replyModal'></button>");	
@@ -196,7 +199,13 @@ $(function(){
 							})
 						});
 					})(i);
+				
+					
+					
+					}
+				
 				}
+				
 			}
 		});
 	}
@@ -370,8 +379,8 @@ $(function(){
 			
 			<br><br>
 			
-			<button type="button" class="btn btn-primary" id="List" onclick="location.href='#'">후기 목록</button>
-			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?num=${withBoard.REVIEW_NUM}'">수정하기</button>
+			<button type="button" class="btn btn-primary" id="List" onclick="location.href='withList?num=${withBoard.TL_USER_NUM}'">후기 목록</button>
+			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?withNum=${withBoard.WITH_NUM}'">수정하기</button>
 			
 			<!------- 삭제 버튼, 모달  시작------->
 			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="Delete">삭제하기</button>

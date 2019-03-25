@@ -31,26 +31,36 @@ public class WithReviewController {
 	public String main(
 			Model model,
 			@RequestParam(required = false) String keyword) {
+		
 		System.out.println("동행후기 메인");
 		
-		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("keyword", keyword);
 		
 		if(keyword == null) {
-			
+			//keyword가 입력 되지 않을 때 selectAll 
 			model.addAttribute("with", wiService.selectAll());
-			
-		} else {
-			
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("keyword", keyword);
-			model.addAttribute("with", wiService.getViewData(params));
-			
-//			System.out.println("==========================================");
-//			System.out.println("동행후기 검색 : " + params);
-			System.out.println(wiService.getViewData(params));
-//			System.out.println("==========================================");
-			
+		} else if(keyword != null){
+//			model.addAttribute("with",wiService.getViewData(params));
+			model.addAllAttributes(wiService.getViewData(params));
 		}
+		
+		
+//		if(keyword == null) {
+//			//keyword가 입력 되지 않을 때 selectAll 
+//			model.addAttribute("with", wiService.selectAll());
+//		} else {
+//			//keyword가 입력 되었을 때 
+//			Map<String, Object> params = new HashMap<String, Object>();
+//			params.put("keyword", keyword);
+//			model.addAttribute("with", wiService.getViewData(params));
+//			model.addAllAttributes(wiService.getViewData(params));
+			
+//			System.out.println("---------------------------------------------------------------------");
+//			System.out.println("동행후기 검색 params: " + params);
+//			System.out.println("동행후기 검색 wiService.getViewData(params): " + wiService.getViewData(params));
+//			System.out.println("---------------------------------------------------------------------");
+//		}
 		return "review/withMain";
 	}
 	
@@ -64,7 +74,7 @@ public class WithReviewController {
 			@RequestParam Map<String, Object> param
 			) {
 		
-		System.out.println(num + "번 회원의 타임라인");
+//		System.out.println(num + "번 회원의 타임라인");
 		
 //		System.out.println("withList param : " + param);
 		
@@ -100,7 +110,7 @@ public class WithReviewController {
 			@RequestParam(value="num") int num
 			) {
 		
-		System.out.println("동행 후기 작성");
+//		System.out.println("동행 후기 작성");
 		
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		int WR_USER_NUM = user.getUser_num();
@@ -123,7 +133,7 @@ public class WithReviewController {
 			RedirectAttributes ra,
 			@RequestParam(value="TL_USER_NUM") int TL_USER_NUM) {
 		
-		System.out.println("동행후기 저장 중...");
+//		System.out.println("동행후기 저장 중...");
 	
 //		System.out.println("param : " + param);		
 		//WR_USER_NUM -> 현재 로그인 되어있는 user_num
@@ -132,14 +142,14 @@ public class WithReviewController {
 		
 //		Map<String, Object> rev = wiService.selectOne(TL_USER_NUM);		//num = TL_USER_NUM
 //		model.addAttribute("withBoard", rev);
-//		System.out.println("write 타임라인 주인 : " + TL_USER_NUM);
+		System.out.println("write 타임라인 주인 : " + TL_USER_NUM);
 		
 		if(wiService.insertWith(param)) {
 			System.out.println("동행후기 작성 성공");
 		} else {
 			System.out.println("동행후기 작성 실패");
 		}
-		return "redirect:withList";
+		return "redirect:withList?num="+TL_USER_NUM;
 	}
 	
 	@RequestMapping("/withView")
@@ -159,7 +169,7 @@ public class WithReviewController {
 		
 		String withNum = request.getParameter("withNum");
 		int WITH_NUM = Integer.parseInt(withNum);
-		
+				
 		String loginUserNum = request.getParameter("userNum");
 		int userNum = Integer.parseInt(loginUserNum);
 		model.addAttribute("userNum", userNum);
@@ -190,6 +200,63 @@ public class WithReviewController {
 			@RequestParam Map<String, Object> param) {
 		System.out.println("동행 후기 삭제");
 		return wiService.deleteWith(param);
+	}
+	
+	@RequestMapping("/updateForm")
+	public String updateForm(Model model,
+			HttpServletRequest request,
+			Authentication authentication) {
+		
+		System.out.println("여행 후기 수정");
+		
+		//intNum = WITH_NUM
+		String withNum = request.getParameter("withNum");
+		int intNum = Integer.parseInt(withNum);
+		
+		//WITH_NUM으로 게시글 내용 select
+		Map<String, Object> rev = wiService.selectWithOne(intNum);
+		model.addAttribute("withModify", rev);
+		
+		//로그인한 USER_NUM
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		String userNum = String.valueOf(user.getUser_num());
+		model.addAttribute("userNum", userNum);
+		
+		//글 쓴 사람 WR_USER_NUM
+		String user_Num = String.valueOf(rev.get("WR_USER_NUM"));
+		
+		if(user_Num.equals(userNum)) {
+			System.out.println("동행 후기 수정 FORM 으로 이동");
+			return "review/withUpdate";
+		} else {
+			System.out.println("동행 후기 수정 권한 없음");
+			return "redirect:withMain";
+		}
+	}
+	
+	@RequestMapping("/update")
+	public String modify(
+			@RequestParam Map<String, Object> param,
+			RedirectAttributes ra
+			) {
+		
+		System.out.println("동행 후기 수정 중...");
+		//param ==>> userNum(로그인 한 USER_NUM), WITH_GPA(별점), WITH_CONTENT
+		System.out.println("동행 후기 수정 : " + param);
+		
+		int userNum = Integer.parseInt(String.valueOf(param.get("userNum")));
+		int withNum = Integer.parseInt(String.valueOf(param.get("num")));
+		
+		
+		if(wiService.updateWith(param)) {
+			ra.addFlashAttribute("msg", "수정 성공 했습니다.");
+		} else {
+			ra.addFlashAttribute("msg", "수정 실패 했습니다. 다시 시도해 주세요.");
+		}
+		
+		System.out.println("동행 후기 수정 성공");
+		
+		return "redirect:withView?withNum="+withNum;
 	}
 	
 }

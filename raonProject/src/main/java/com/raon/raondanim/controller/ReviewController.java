@@ -37,9 +37,9 @@ public class ReviewController {
 		System.out.println("여행후기 메인");
 		model.addAttribute("review", reService.selectAll());
 		
-		System.out.println("==========================");
-		System.out.println(reService.selectAll());
-		System.out.println("==========================");
+//		System.out.println("==========================");
+//		System.out.println(reService.selectAll());
+//		System.out.println("==========================");
 		logger.info("");
 		return "review/reviewMain";
 	}

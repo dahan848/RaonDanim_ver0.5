@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.raon.raondanim.dao.AccountsUserDAO;
@@ -49,6 +51,9 @@ public class WithReplyServiceImp implements WithReplyService{
 
 	@Override
 	public boolean deleteReply(Map<String, Object> params) {
+		
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
 		//입력한 비밀번호
 		String input_reply_pass = String.valueOf(params.get("input_reply_pass"));
 		//게시글 번호(WITH_NUM)
@@ -65,9 +70,9 @@ public class WithReplyServiceImp implements WithReplyService{
 		//유저한테 뽑아온 인트 유저넘
 		String uNum = String.valueOf(user.getUser_num());
 		// 뽑은 유저 넘하고 로그인한 유저넘 비교
-		// 뽑은 유저 비밀번호 == 가져온 비번 비교
+		// 뽑은 유저 비밀번호 == 가져온 비번 비교		
 		if(userNum.equals(uNum)) {
-			if(user.getUser_pw().equals(input_reply_pass)) {
+			if(encoder.matches(input_reply_pass, user.getUser_pw())) {
 				if(dao.deleteReply(wi_Reply_Num)>0) {
 					return true;
 				} else {
