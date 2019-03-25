@@ -113,4 +113,120 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		  FROM INQUIRY_TB
   		 WHERE INQUIRY_NUM = #{INQUIRY_NUM}
 	</select>
+	
+	
+	<select id="getDeclarationBoard" parameterType="map" resultType="map">
+select *
+from(select  rownum as r,
+             TRIP_BOARD_KEY,
+             USER_NUM,
+             USER_ID,
+             USER_FNM,
+             USER_LNM,
+             USER_PW,
+             TRIP_BOARD_TITLE,
+             TRIP_BOARD_COUNTENT,
+             TRIP_BOARD_START,
+             TRIP_BOARD_END,
+             TRIP_BOARD_TOGETHER,
+             TRIP_BOARD_READCOUNT,
+             TRIP_BOARD_ST,
+             TRIP_WRITEDATE,
+             D_KEY,
+             TRIP_D_DETAILCONTENT,
+             DECLARATION_CONTENT
+        from(select  b.TRIP_BOARD_KEY,
+                b.USER_NUM,
+                u.USER_ID,
+                u.USER_FNM,
+                u.USER_LNM,
+                u.USER_PW,
+                b.TRIP_BOARD_TITLE,
+                b.TRIP_BOARD_COUNTENT,
+                b.TRIP_BOARD_START,
+                b.TRIP_BOARD_END,
+                b.TRIP_BOARD_TOGETHER,
+                b.TRIP_BOARD_READCOUNT,
+                b.TRIP_BOARD_ST,
+                b.TRIP_WRITEDATE,
+                d.D_KEY,
+                d.TRIP_D_DETAILCONTENT,
+                dt.DECLARATION_CONTENT
+                from trip_board_tb b join user_tb u
+                on b.user_num =  u.user_num
+                join DECLARATION_TB d
+                on b.TRIP_BOARD_KEY = d.TRIP_BOARD_KEY
+                join DECLARATION_DTB dt
+                on d.DECLARATION_KEY = dt.DECLARATION_KEY
+                where b.TRIP_BOARD_KEY in (select distinct TRIP_BOARD_KEY
+                                           from DECLARATION_TB)
+                and b.TRIP_BOARD_ST = 0
+                order by trip_board_key desc))
+where r between #{start} and #{end}
+	
+	
+	</select>
+	
+	
+	<select id="getTripboardTotalCount" resultType="int">
+	select count(b.trip_board_key)
+	from declaration_tb d join trip_board_tb b
+	on d.TRIP_BOARD_KEY = b.TRIP_BOARD_KEY
+	where b.TRIP_BOARD_ST = 0
+	
+	</select>
+	
+	
+	<select id="getMotelDeclarationList" parameterType="map" resultType="map">
+<!-- 	총신고횟수 3이상만 끌고옴 -->
+select *
+from (select    rownum as r,
+				motel_num,
+				dCount,
+				USER_NUM,
+				MOTEL_TYPE,
+				MOTEL_TITLE,
+				MOTEL_INTRO,
+				MOTEL_WRITEDATE,
+                USER_ID,
+                USER_FNM,
+                USER_LNM,
+                DECLARATION_CONTENT
+      from (  select nvl(d.motel_num,0) as motel_num,
+        count(d.motel_num) as dCount,
+					      m.USER_NUM,
+					      m.MOTEL_TYPE,
+					      m.MOTEL_TITLE,
+					      m.MOTEL_INTRO,
+					      m.MOTEL_WRITEDATE,
+                          u.USER_ID,
+                          u.USER_FNM,
+                          u.USER_LNM,
+                          dt.DECLARATION_CONTENT
+                from DECLARATION_TB d left outer join DECLARATION_DTB dt
+                on d.DECLARATION_KEY = dt.DECLARATION_KEY
+                join motel_tb m
+                on d.MOTEL_NUM = m.MOTEL_NUM
+                join user_tb u
+                on d.D_USER_NUM = u.user_num
+                where m.MOTEL_ST = 0
+                group by d.motel_num,m.USER_NUM,m.MOTEL_TYPE,m.MOTEL_TITLE,m.MOTEL_INTRO,m.MOTEL_WRITEDATE,u.USER_ID, u.USER_FNM,u.USER_LNM,  dt.DECLARATION_CONTENT
+                having count(d.motel_num) <![CDATA[>=]]> 3
+                order by d.motel_num desc))
+where r between #{start} and #{end}   
+  
+	</select>
+	
+	<select id="getMotelTotalCount" resultType="int">
+	select count(*)
+	from (  select nvl(d.motel_num,0),count(d.motel_num),m.USER_NUM,m.MOTEL_TYPE,m.MOTEL_TITLE,m.MOTEL_INTRO,m.MOTEL_WRITEDATE
+        from DECLARATION_TB d left outer join DECLARATION_DTB dt
+        on d.DECLARATION_KEY = dt.DECLARATION_KEY
+        join motel_tb m
+        on d.MOTEL_NUM = m.MOTEL_NUM
+        where m.MOTEL_ST = 0
+        group by d.motel_num,m.USER_NUM,m.MOTEL_TYPE,m.MOTEL_TITLE,m.MOTEL_INTRO,m.MOTEL_WRITEDATE
+        having count(d.motel_num) <![CDATA[>=]]> 3)
+	</select>
+	
 </mapper>

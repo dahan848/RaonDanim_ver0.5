@@ -53,20 +53,31 @@ public class AdminController {
 	}
 	
 	@RequestMapping("/board")
-	public String tripBoard(Model model) {
+	public String tripBoard(Model model,
+			@RequestParam(defaultValue="1")int page) {
 		System.out.println("여행 게시글 관리 화면 요청");
 		
 		//System.out.println("관리자/컨트롤러/ 신고당한 게시글 목록 데이터 확인 : "+model.addAttribute("dBoardList", tripService.getDeclarationBoard()));
-		model.addAttribute("dBoardList", tripService.getDeclarationBoard());
+		//model.addAttribute("dBoardList", tripService.getDeclarationBoard());
+		Map<String, Object> params = new HashMap<>();
+		params.put("page", page);
+		
+		
+		model.addAttribute("tripData", adminService.getTripDeclarationData(params));
+		
 		return "admin/board";
 		
 	}
 	
 	@RequestMapping("/motelBoard")
-	public String motelBoard(Model model) {
+	public String motelBoard(Model model,
+			@RequestParam(defaultValue="1")int page) {
 		System.out.println("숙박 게시글 관리 화면 요청");
 		
+		Map<String, Object> params = new HashMap<>();
 		
+		params.put("page", page);
+		model.addAttribute("motelData", adminService.getMotelDeclarationList(params));
 
 		return "admin/motelBoard";
 		
@@ -77,6 +88,22 @@ public class AdminController {
 		System.out.println("관리자 여행게시글 삭제 요청");
 		
 		return tripService.totalDelete(boardKey);
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/MotelDelete")
+	public boolean MotelDelete(Model model,
+			int user_num,
+			int motel_num) {
+		System.out.println("관리자 숙박글 삭제 요청 받음");
+		Map<String, Object> params = new HashMap<>();
+		params.put("user_num", user_num);
+		params.put("motel_num", motel_num);
+		
+		
+		
+		return adminService.deleteMotel(params);
 		
 	}
 	

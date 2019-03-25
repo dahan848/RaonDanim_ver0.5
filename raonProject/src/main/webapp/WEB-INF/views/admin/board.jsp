@@ -182,7 +182,7 @@
                                     	</tr>                                   
                                     </thead>
                                     <tbody>
-                                       <c:forEach items="${dBoardList}" var="list" varStatus="status">
+                                       <c:forEach items="${tripData.dBoardList}" var="list" varStatus="status">
                                        		<tr id="boardDelete${status.index}">
                                        			<td>${list.USER_NUM}번</td>
                                        			<td>${list.USER_ID}</td>
@@ -198,6 +198,25 @@
 
                                     </tbody>
                                 </table>
+                                
+                                	<div class="container" style="text-align: center;">
+										
+										<ul class="pager" style="display: inline-block;">
+											<c:if test="${tripData.page!=1}">
+												<li><a
+													href="board?page=${param.pageNum-1}">Previous</a></li>
+											</c:if>
+											<c:forEach var="pageNum" begin="${tripData.start}"
+												end="${tripData.end < tripData.total ? tripData.end: tripData.total}">
+												<a href="board?page=${pageNum}&type=${param.type}&keyword=${param.keyword}&lName=${param.lName}&fName=${param.fName}">${pageNum}&nbsp;&nbsp;&nbsp;</a>
+											</c:forEach>
+											<c:if test="${tripData.page!=tripData.total}">
+												<li><a href="board?page=${param.pageNum+1}&type=${param.type}&keyword=${param.keyword}">Next</a></li>
+											</c:if>
+										</ul>
+									</div>
+
+
 
                             </div>
                         </div>
@@ -214,7 +233,7 @@
 </div>
 
 
-<c:forEach items="${dBoardList}" var="list" varStatus="status">
+<c:forEach items="${tripData.dBoardList}" var="list" varStatus="status">
   								<div class="container">
 										  <!-- Trigger the modal with a button -->
 										 
@@ -240,6 +259,13 @@
 										         		<tr>
 										         			<td><label> 글 제목:</label> 
 										         		 <h5>${list.TRIP_BOARD_COUNTENT}</h5></td>
+										         		</tr>
+										         		<tr>
+										         			<td>
+										         			<label> 신고 사유:</label> 
+										         			 <h5>${list.DECLARATION_CONTENT}</h5>
+										         			
+										         			</td>
 										         		</tr>
 										         		<tr>
 										         			<td>

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.raon.raondanim.dao.AccountsUserDAO;
 import com.raon.raondanim.dao.AdminDAO;
+import com.raon.raondanim.dao.MotelTbDAO;
 import com.raon.raondanim.model.User;
 
 @Service
@@ -23,6 +24,9 @@ public class AdminService {
 	
 	@Autowired
 	private AccountsUserDAO userDao;
+	
+	@Autowired
+	private MotelTbDAO motelDao;
 	
 	/*
 	 	문의글 페이징 처리를 위한 변수 및 () 선언
@@ -211,4 +215,85 @@ public class AdminService {
 			System.out.println("메일발송 실패 : " + e);
 		}
 	}
+	
+	public Map<String, Object> getTripDeclarationData(Map<String, Object> params){
+		//여행 게시글 신고 데이터
+		int page = Integer.parseInt(String.valueOf(params.get("page")));
+		
+		params.put("start", getInquiryFirstRow(page));
+		params.put("end", getInquiryEndRow(page));
+		
+		Map<String, Object>tripData = new HashMap<>();
+		
+		
+		tripData.put("dBoardList", dao.getDeclarationBoard(params));
+		tripData.put("start", getInquiryStartPage(page));
+		tripData.put("end", getInquiryEndPage(page));
+		tripData.put("total", getTripBoardTotalCount());
+		tripData.put("page", page);
+		
+		
+		return tripData;
+	
+		
+		
+	}
+	public int getTripBoardTotalCount() {
+		//여행게시글 신고 글 토탈 
+		int totalPage = 0;
+		int boardCount = dao.getTripboardTotalCount();
+
+		totalPage = (boardCount - 1) / NUM_OF_INQUIRY_PER_PAGE + 1;
+
+		return totalPage;
+		
+	}
+	
+	public Map<String, Object> getMotelDeclarationList(Map<String, Object> params){
+		
+		int page = Integer.parseInt(String.valueOf(params.get("page")));
+		
+		params.put("start", getInquiryFirstRow(page));
+		params.put("end", getInquiryEndRow(page));
+		
+		Map<String, Object>motelData = new HashMap<>();
+		
+		
+		motelData.put("dMotelList", dao.getMotelDeclarationList(params));
+		motelData.put("start", getInquiryStartPage(page));
+		motelData.put("end", getInquiryEndPage(page));
+		motelData.put("total",getMotelTotalCount());
+		motelData.put("page", page);
+		
+		
+		return motelData;
+	}
+	
+	public int getMotelTotalCount() {
+		
+		int totalPage = 0;
+		int boardCount = dao.getMotelTotalCount();
+
+		totalPage = (boardCount - 1) / NUM_OF_INQUIRY_PER_PAGE + 1;
+
+		return totalPage;
+		
+	}
+	
+	
+	public boolean deleteMotel(Map<String, Object> params) {
+		
+		if(motelDao.delete_motel(params)>0) {
+			return true;
+		}else {
+			return false;
+		}
+		
+		
+		
+		
+	}
+	
+	
+	
 }

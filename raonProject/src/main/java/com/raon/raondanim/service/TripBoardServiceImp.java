@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -362,13 +364,20 @@ public class TripBoardServiceImp implements TripBoardService {
 		String userNum = tripDao.selectOneByBoardKey(boardKey).getUser_Num()+"";
 		//System.out.println("서비스  유저 넘 int->String : "+userNum);
 		String userPw = userDao.selectByUserNum(userNum).getUser_pw();
-		if(userPw.equals(user_pwCheck)) {
+		
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		
+		if(encoder.matches(user_pwCheck, userPw)) {
 			//비번 일치
 			return true;
 		}else {
 			//비번 불일치
 			return false;
 		}
+		
+		
+		
 		
 		
 	}

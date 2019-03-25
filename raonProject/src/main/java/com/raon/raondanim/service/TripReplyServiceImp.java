@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.raon.raondanim.dao.AccountsUserDAO;
@@ -234,7 +236,11 @@ public class TripReplyServiceImp implements TripReplyService {
 		
 		String userPw = userDao.selectByUserNum(userNum).getUser_pw();
 		
-		if(userPw.equals(checkPw)) {
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		
+		
+		if(encoder.matches(checkPw, userPw)) {
 			//비번같음
 			return true;
 		}else {
