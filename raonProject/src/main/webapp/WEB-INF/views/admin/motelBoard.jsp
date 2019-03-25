@@ -240,6 +240,10 @@
 										         		 <h5>${list.MOTEL_INTRO}</h5></td>
 										         		</tr>
 										         		<tr>
+										         			<td><label> 신고사유:</label> 
+										         		 <h5>${list.DECLARATION_CONTENT}</h5></td>
+										         		</tr>
+										         		<tr>
 										         			<td>
 										         		<input type="hidden" id="user_num${status.index}" name="user_num" value="${list.USER_NUM}">
 										         		<input type="hidden" id="motel_num${status.index}" name="motel_num" value="${list.MOTEL_NUM}">

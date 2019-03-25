@@ -812,14 +812,14 @@ th{
                          <th>
                             <c:choose>
 									<c:when test="${boardInfo.USER_PROFILE_PIC eq 'n'}">
-										<a href="#" rel="popover" data-placement="bottom"
+										<a href="" rel="popover" class="img-circle" data-placement="bottom"
 											data-popover-content="#userInfo"> <img
 											src="${contextPath}/img/trip_Profile.png">
 										</a>
 
 									</c:when>
 									<c:otherwise>
-										<a href="#" rel="popover" data-placement="bottom"
+										<a href="" rel="popover" class="img-circle" data-placement="bottom"
 											data-popover-content="#userInfo"> <img
 											src="${contextPath}/image?fileName=${boardInfo.USER_PROFILE_PIC}"
 											style="width: 40px; height: 40px;">
@@ -1172,10 +1172,22 @@ th{
 
 
   
-<script>
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip();   
+<script type="text/javascript">
+	
+$(function(){
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+            return clone;
+        }
+    }).click(function(e) {
+        e.preventDefault();
+    });
 });
+
+
 </script>
    <!-- 인클루드-푸터 -->
    <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
