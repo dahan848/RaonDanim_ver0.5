@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.raon.raondanim.model.User;
 import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.AccountsService;
+import com.raon.raondanim.service.MotelTbService;
 
 import java.security.Principal;
 import java.util.List;
@@ -36,6 +37,8 @@ public class AccountsController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	@Autowired
 	private AccountsService service;
+	@Autowired
+	private MotelTbService motelService;
 	
 	//로그인 화면 요청
 	@RequestMapping(value = "/loginForm")
@@ -131,7 +134,7 @@ public class AccountsController {
 	
 	//프로필 수정 화면 1
 	@RequestMapping(value = "/update1Form")
-	public String update1Form(Authentication authentication) {
+	public String update1Form(Authentication authentication, Model model) {
 		//나의 정보를 클릭하면, 추가 프로필 등록 1단계 화면이 나옴.
 		//사용자의 정보를 추가 프로필 1단계 화면으로 넘겨주어야 한다.
 		//1. 수정(입력)된 정보 발생
@@ -139,19 +142,43 @@ public class AccountsController {
 		//'다른 탭'을 클릭 하려고 하면 수정된 정보가 있는데 저장 할 것인가를 물음.
 		
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
-		String usernum = Integer.toString(user.getUser_num());
-		System.out.println("update1Form : " + user);
+		//String usernum = Integer.toString(user.getUser_num());
+		//System.out.println("update1Form : " + user);
+		int userNum = user.getUser_num();
+		service.getProfileData(userNum);
+		service.userUseLanguage(userNum);
+		System.out.println("service allLanguage : " + service.allLanguage());
+		
+		model.addAttribute("allLanguage", service.allLanguage());
+		model.addAttribute("national", motelService.getAllNational());
 		
 		return "accounts/profile-update1";
 	}
 	
 	//프로필 수정 화면 2
 	@RequestMapping(value = "/update2Form")
-	public String update2Form() {
+	public String update2Form(@RequestParam Map<String, Object> params) {
+		System.out.println("update2Form param: " + params);
 		return "accounts/profile-update2";
 	}
 	
-	//프로필 수정 화면 3
+	//레알 프로필 수정 화면3
+	@RequestMapping(value = "/update3Form")
+	public String update3Form(@RequestParam Map<String, Object> params, Model model) {
+		model.addAttribute("national", motelService.getAllNational());
+		model.addAttribute("city", motelService.getAllCity());
+		return "accounts/profile-update3";
+	}
+	
+	//프로필 업데이트 최종 후 메인으로 보내기
+	@RequestMapping(value="/update_complete")
+	public String update_complete() {
+		
+		
+		return "home/main";
+	}
+	
+	//프로필 수정 화면 3 ==== 갤러리 수정
 	@RequestMapping(value = "/gallerySettings")
 	public String gallerySettings(Authentication authentication, Model model) {
 		//현재 로그인 한 유저 (시큐리티 세션 이용)의 유저넘을 가지고 온다.

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -104,6 +105,25 @@ public class AccountsService {
 			return false;
 		}
 	}
+	//userNum 으로 사용가능 언어 불러오는 메서드
+	public List<Map<String, Object>> userUseLanguage(int userNum){
+		//System.out.println("userUserLanguageNum : " + dao.selectUserLanguageNum(userNum));
+		List<String> userLanguageNum = dao.selectUserLanguageNum(userNum);
+		System.out.println("userLanguageNum : " + userLanguageNum);
+		//List<Integer> languageNum = new ArrayList<Integer>();
+		for(int i=0;i<userLanguageNum.size();i++) {
+			
+			//Map<String, Object> userUserLange = dao.userUseLanguage(Integer.parseInt(userLanguageNum[i]));
+		}
+		return null;
+	}	
+	
+	// 언어DB에서 전부 불러오기
+	public List<Map<String, Object>> allLanguage(){
+		return dao.selectAllLanuage();
+		
+	}
+	
 	
 	//프로필 화면에 넘길 데이터 (Map) 반환하는 서비스
 	public Map<String, Object> getProfileData(int usernum){
@@ -113,7 +133,7 @@ public class AccountsService {
 		String userNum = Integer.toString(usernum);
 		//Dao를 이용 한 해당 유저 선택 
 		user = dao.selectByUserNum(userNum);
-		
+		//System.out.println("service user : " + user);
 		//name 만들기 
 		String user_name = user.getUser_lnm() + user.getUser_fnm(); 
 		//마지막 로그인 시간 구하기 및 변수에 참조 : 로그인 기록이 없으면 null 포인트 뜸 = 조건문으로 예외처리 

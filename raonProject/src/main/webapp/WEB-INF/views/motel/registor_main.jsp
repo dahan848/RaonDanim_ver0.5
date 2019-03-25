@@ -72,7 +72,7 @@ function login_Check(){
 			<!-- 이 부분에 자신의 페이지 넣기 -->
 				<div class="registor_main">
 					<h3 class="regisor_main_contents" >
-					숙소를 등록하고 새로운 다양한 친구를 만들며<br>부가적인 수입을 획득하세요2222.<br>
+					숙소를 등록하고 새로운 다양한 친구를 만들며<br>부가적인 수입을 획득하세요.<br>
 <%-- 					href = "${contextPath}/motel/write_registor_type_style"  --%>
 					<a class="a_tag" onclick="login_Check()">숙소 등록하러 가기</a></h3>
 				</div>

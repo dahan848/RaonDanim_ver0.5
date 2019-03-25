@@ -110,4 +110,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteGalleryPic" parameterType="string">
 		delete 
 	</delete>
+	
+	<!-- userNum 으로 사용가능언어 num 불러오기 -->
+	<select id="selectUserLanguageNum" parameterType="int" resultType="map">
+		select LANGUAGE_NUM from LANGUAGE_TB
+    		where user_num = #{userNum}
+	</select>
+	
+	<!-- 사용가능언어를  사용가능언어 num 으로 불러오기  -->
+	<select id="userUseLanguage" parameterType="int" resultType="map">
+		select LANGUAGE_KO_NAME, LANGUAGE_EN_NAME from LANGUAGE_DTB
+			where = #{userLanguageNum}
+	</select>
+	
+	<select id="selectAllLanuage" resultType="map">
+		select * from LANGUAGE_DTB
+	
+	</select>
+
 </mapper>

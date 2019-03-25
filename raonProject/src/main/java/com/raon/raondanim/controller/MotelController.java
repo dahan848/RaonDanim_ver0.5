@@ -512,7 +512,7 @@ public class MotelController {
 		System.out.println("step2 진입");
 		//System.out.println(param);
 		//System.out.println(service.getAllNational());
-		//System.out.println("도시 : " + service.getAllCity());
+		System.out.println("도시 : " + service.getAllCity());
 		model.addAttribute("city", service.getAllCity());
 		model.addAttribute("national", service.getAllNational());
 		model.addAttribute("motel_type", param.get("motel_type"));

@@ -23,5 +23,12 @@ public interface AccountsUserDAO {
 	public int setGalleryPic(Map<String, Object> param); //갤러리 사진 등록하는 ()
 	public int deleteGalleryPic(String picnum);
 	
+	
+	//======추가 프로필 관련 =======
+	public List<String> selectUserLanguageNum(int userNum);
+	public List<Map<String, Object>> userUseLanguage(int languageNum);
+	
+	//사용가능 언어 DB 불러오기 
+	public List<Map<String, Object>> selectAllLanuage();
 
 }
