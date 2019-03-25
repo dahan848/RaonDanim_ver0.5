@@ -33,9 +33,11 @@ function chatClickbyUser(user, targetid) {
 }
 
 //채팅창이 오픈되는 함수
-function chatClickbyRoom(roomnum,usernum) {	
+function chatClickbyRoom(roomnum,usernum,check) {	
 	var path = "http://localhost:8081";
 	var conveyRoomNum = roomnum; //인자로 전달 받은 ROOMNUM
+	
+	updateUnread(check);
 	
 	//Ajax로 전송 할 데이터 생성 
 	var data = {

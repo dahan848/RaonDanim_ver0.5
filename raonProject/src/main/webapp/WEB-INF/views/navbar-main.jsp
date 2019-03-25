@@ -86,8 +86,8 @@
 		
 	    function onError(evt) {
 	    }
-
 	    
+		
 	    //사용자가 로그인을 하고 화면이 온로드 되면 소켓 연결을 실행한다.
 	    $(document).ready(function(){
 	    		send_message();
@@ -149,22 +149,40 @@
 					//roomList
 					var content = data[i].CONTENT;
 					 //화면 그리기
-					 alert(check);
 					 if(typeof check != "undefined"){
 						 //미확인 메시지가 있는 경우
-						 $(".chat_body").append("<div class='user' style='padding-bottom: 0px; padding-top: 0px;' onclick='chatClickbyRoom("+room_num+colon+usernum+")'> <img src='"+profile_pic+"'/><div class='namechat' style='padding-bottom: 0px;'>"+name+"</div><div class='chat_msg'>"+content+"</div><strong class='text-potluck' style='margin-left: 10px;'>"+unread+"</strong><hr style='margin-top: 5px; margin-bottom: 10px;'></div>");
+						 $(".chat_body").append("<div class='user' style='padding-bottom: 0px; padding-top: 0px;' onclick='chatClickbyRoom("+room_num+colon+usernum+colon+check+")'> <img src='"+profile_pic+"'/><div class='namechat' style='padding-bottom: 0px;'>"+name+"</div><div class='chat_msg'>"+content+"</div><strong class='text-potluck' style='margin-left: 10px;'>"+unread+"</strong><hr style='margin-top: 5px; margin-bottom: 10px;'></div>");
 					 }else{
 						 //미확인 메시지가 없는 경우
 						 $(".chat_body").append("<div class='user' style='padding-bottom: 0px; padding-top: 0px;' onclick='chatClickbyRoom("+room_num+colon+usernum+")'> <img src='"+profile_pic+"'/><div class='namechat' style='padding-bottom: 0px;'>"+name+"</div><div class='chat_msg'>"+content+"</div><hr style='margin-top: 5px; margin-bottom: 10px;'></div>");
 					 }
-					 
 				}//반복문 종료
 			}
 		});
 	}	
 	$(document).ready(function() {
-		//alert("악!14");
+		alert("악!15");
 	});//onLoad END
+	
+	//메시지를 읽은 경우 읽은 수 만큼 개수 수정
+   function updateUnread(check) {
+		//현재 그려져 있는 카운트 개수를 변수에 담는다 
+		var count = $("#mCount").text();
+		if(typeof check != "undefined"){
+			//인자로 받은 해당 채팅방의 미확인 메시지 개수가 값이 있는 경우 실행
+			//총 미확인 메시지 - 현재 채팅방 미확인 메시지 = 현재 미확인 메시지 개수 
+			var update = count - check;
+			if(update != 0){
+				//적혀있는 값 지워주기
+				$('#mCount').text("");
+				//현재 메시지 개수를 화면에 그려주기
+				$('#mCount').append(update);						
+			}else{
+				//결과 값이 0인 경우 그냥 적혀있는 값만 지워준다.
+				$('#mCount').text("");
+			}
+		}
+	}
 </script>
 <!-- navbar-main -->
 <header>
@@ -218,9 +236,7 @@
 							<li>
 								<span class="vertical-separator" style="margin-bottom: 5px;"></span>
 								<!-- 메시지List 버튼 -->
-<!-- 								<span id="count" class="badge bg-theme"></span> -->
-<!-- data-trigger="focus" -->
-								<a onclick="getChatRoomList()" id="btn_msg" href="#" rel="popover"   data-placement="bottom" data-popover-content="#chatList">
+								<a onclick="getChatRoomList()" id="btn_msg" href="#" rel="popover" data-trigger="focus" data-placement="bottom" data-popover-content="#chatList">
 										<i class="fa fa-envelope fa-lg icon-red"></i>
 										<strong id="mCount" class="text-potluck"></strong>
 								</a>
