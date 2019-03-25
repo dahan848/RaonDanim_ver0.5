@@ -1,8 +1,6 @@
 package com.raon.raondanim.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,25 +18,12 @@ public class SearchService {
 	private static final int NUM_OF_USER_PER_PAGE = 15;
 	private static final int NUM_OF_NAVI_PAGE = 10;
 	
-	public List<Map<String, Object>> getInterestList(){
-		return dao.interestList();
-	}
-	
-	public List<Map<String, Object>> getNationalityList(){
-		List<Map<String, Object>> params = dao.nationalityList();
-		List<Map<String, Object>> nationalityList = new ArrayList<>();
-		
-		for(Map<String, Object> a : params) {
-			Map<String, Object> nationality = new LinkedHashMap<>();
-			nationality.put("id", a.get("NATIONALITY_NUM"));
-			nationality.put("text", a.get("NATIONALITY_EN_NAME"));
-			nationalityList.add(nationality);
-		}
-		return nationalityList;
-	}
-	
 	public List<Map<String, Object>> getUserList(Map<String, Object> params){
 		return dao.userList(params);
+	}
+	
+	public List<Map<String, Object>> getInterestList(){
+		return dao.interestList();
 	}
 	
 	private int getFirstRow(int page) {

@@ -31,19 +31,7 @@ public class SearchController {
 		
 		model.addAllAttributes(service.getViewData(params));
 		
-		Gson gson = new Gson();
-		String nationality = gson.toJson(service.getNationalityList());
-		model.addAttribute("nationality", nationality);
-		
 		logger.info("search : 화면 요청받음");
 		return "search/main";
-	}
-
-	@RequestMapping("/nationality")
-	@ResponseBody
-	public String nationality() {
-		Gson gson = new Gson();
-		String nationality = gson.toJson(service.getNationalityList());
-		return nationality;
 	}
 }

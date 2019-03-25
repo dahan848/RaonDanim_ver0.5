@@ -101,21 +101,19 @@
 											<div class="form-group">
 												<label class="col-sm-3 control-label" for="id_city">거주 도시</label>
 												<div class="col-sm-9">
-													<select class="form-control select-city select-city2" name="city" id="city">
-													<!-- placeholder 사용을 위한 option blank -->
-													<option></option>
+													<select class="form-control select-city" name="city">
+														<!-- placeholder 사용을 위한 option blank -->
+														<option></option>
 													</select>
 													<script>
 													$(document).ready(function(){
 														$(".select-city").select2({
 															placeholder: "선택",
 															allowClear: true,
+															language: "ko",
 															ajax: {
 																url: function(params){
-																	
-																	console.log(params);
 																	var url = "http://localhost:8000/api/cities/";
-																	
 																	if(params.term == null || params.term == ""){
 																		if(params.page > 1){
 																			url = url + "?page=" + params.page;
@@ -133,7 +131,7 @@
 																		}
 																	}
 																},
-																delay: 250,
+																delay: 500,
 																dataType: 'json',
 																data: function(params){
 																	
@@ -150,7 +148,6 @@
 															}
 														});
 													});
-													// 병합용
 													</script>
 												</div>
 											</div>
@@ -160,13 +157,52 @@
 											<div class="form-group">
 												<label class="col-sm-3 control-label" for="id_languages">사용 언어</label>
 												<div class="col-sm-9">
-													<input class="form-control" id="select-language" type="text" multiple="multiple" data-url="${contextPath}/json/language.json" name="language"/>
+													<select class="form-control select-language" name="language">
+														<!-- placeholder 사용을 위한 option blank -->
+														<option></option>
+													</select>
 													<script>
-														$('#select-language').fastselect({
-															maxItems: 3,
-															onMaxItemsReached: function(){
-																swal("","3개까지만 입력할 수 있습니다.","warning");
-															},
+														$(document).ready(function(){
+															$(".select-language").select2({
+																placeholder: "선택",
+																allowClear: true,
+																language: "ko",
+																ajax: {
+																	url: function(params){
+																		var url = "http://localhost:8000/api/languages/";
+																		if(params.term == null || params.term == ""){
+																			if(params.page > 1){
+																				url = url + "?page=" + params.page;
+																				return url
+																			}else{
+																				return url
+																			}
+																		}else{
+																			if(params.page > 1){
+																				url = url + "?page=" + params.page + "&?search=" + params.term;
+																				return url
+																			}else{
+																				url = url + "?search=" + params.term;
+																				return url
+																			}
+																		}
+																	},
+																	delay: 500,
+																	dataType: 'json',
+																	data: function(params){
+																		
+																	},
+																	processResults: function(data,params){
+																		params.page = params.page || 1;
+																		return{
+																			results: data.results,
+																			pagination: {																		
+																				more: (params.page * 30) < data.count
+																			}
+																		};
+																	}
+																}
+															});
 														});
 													</script>
 												</div>
@@ -175,15 +211,54 @@
 											
 											<!-- 상세 검색 - 여행스타일 -->
 											<div class="form-group">
-												<label class="col-sm-3 control-label" for="id_tour_styles">여행 스타일</label>
+												<label class="col-sm-3 control-label" for="id_travlestyles">여행 스타일</label>
 												<div class="col-sm-9">
-													<input class="form-control" id="select-tourstyles" type="text" multiple="multiple" data-url="${contextPath}/json/tourstyles.json" name="language"/>
+													<select class="form-control select-travlestyles" name="travlestyles">
+														<!-- placeholder 사용을 위한 option blank -->
+														<option></option>
+													</select>
 													<script>
-														$('#select-tourstyles').fastselect({
-															maxItems: 5,
-															onMaxItemsReached: function(){
-																swal("","5개까지만 입력할 수 있습니다.","warning");
-															},
+														$(document).ready(function(){
+															$(".select-travlestyles").select2({
+																placeholder: "선택",
+																allowClear: true,
+																language: "ko",
+																ajax: {
+																	url: function(params){
+																		var url = "http://localhost:8000/api/travlestyles/";
+																		if(params.term == null || params.term == ""){
+																			if(params.page > 1){
+																				url = url + "?page=" + params.page;
+																				return url
+																			}else{
+																				return url
+																			}
+																		}else{
+																			if(params.page > 1){
+																				url = url + "?page=" + params.page + "&?search=" + params.term;
+																				return url
+																			}else{
+																				url = url + "?search=" + params.term;
+																				return url
+																			}
+																		}
+																	},
+																	delay: 500,
+																	dataType: 'json',
+																	data: function(params){
+																		
+																	},
+																	processResults: function(data,params){
+																		params.page = params.page || 1;
+																		return{
+																			results: data.results,
+																			pagination: {																		
+																				more: (params.page * 30) < data.count
+																			}
+																		};
+																	}
+																}
+															});
 														});
 													</script>
 												</div>
@@ -200,18 +275,85 @@
 											<div class="form-group">
 												<label class="col-sm-3 control-label" for="id_search_name">이름 </label>
 												<div class="col-sm-9">
-													<input class="form-control" id="id_search_name" name="search_name" placeholder="이름" title="" type="text"/>
+													<input class="form-control" name="search_name" placeholder="이름" type="text"/>
 												</div>
 											</div>
 											<!-- 상세 검색 - 이름 END -->
+											
+											<!-- 상세 검색 - 국적 START -->
+											<div class="form-group">
+												<label class="col-sm-3 control-label" for="id_nationalities">국적</label>
+												<div class="col-sm-9">
+													<select class="form-control select-nationalities" name="nationalities">
+														<!-- placeholder 사용을 위한 option blank -->
+														<option></option>
+													</select>
+													<script>
+														$(document).ready(function(){
+															$(".select-nationalities").select2({
+																placeholder: "선택",
+																allowClear: true,
+																language: "ko",
+																ajax: {
+																	url: function(params){
+																		var url = "http://localhost:8000/api/nationalities/";
+																		if(params.term == null || params.term == ""){
+																			if(params.page > 1){
+																				url = url + "?page=" + params.page;
+																				return url
+																			}else{
+																				return url
+																			}
+																		}else{
+																			if(params.page > 1){
+																				url = url + "?page=" + params.page + "&?search=" + params.term;
+																				return url
+																			}else{
+																				url = url + "?search=" + params.term;
+																				return url
+																			}
+																		}
+																	},
+																	delay: 500,
+																	dataType: 'json',
+																	data: function(params){
+																		
+																	},
+																	processResults: function(data,params){
+																		params.page = params.page || 1;
+																		return{
+																			results: data.results,
+																			pagination: {																		
+																				more: (params.page * 30) < data.count
+																			}
+																		};
+																	}
+																}
+															});
+														});
+													</script>
+												</div>
+											</div>
+											<!-- 상세 검색 - 국적 END -->
 											
 											<!-- 상세 검색 - 성별 -->
 											<div class="form-group">
 												<label class="col-sm-3 control-label" for="id_gender">성별</label>
 												<div class="col-sm-9">
-													 <input class="form-control" id ="select-gender" type="text" multiple="multiple" data-url="${contextPath}/json/gender.json"name="gender"/>
+													 <select class="form-control select-gender" name="gender">
+													 	<!-- placeholder 사용을 위한 option blank -->
+													 	<option></option>
+													 	<option value="1">남</option>
+													 	<option value="2">여</option>
+													 </select>
 													 <script>
-														 $('#select-gender').fastselect();
+														$(document).ready(function(){
+													 		$('.select-gender').select2({
+													 			placeholder: "선택",
+																allowClear: true,
+													 			minimumResultsForSearch: Infinity
+													 		});													
+														});
 													 </script>
 												</div>
 											</div>
@@ -221,18 +363,58 @@
 											<div class="form-group">
 												<label class="col-sm-3 control-label" for="id_interests">관심</label>
 												<div class="col-sm-9">
-													 <input class="form-control" id="select-interest" type="text" multiple="multiple" data-url="${contextPath}/json/interest.json" name="interest"/>
-													 <script>
-														$('#select-interest').fastselect({
-															maxItems: 5,
-															onMaxItemsReached: function(){
-																swal("","5개까지만 입력할 수 있습니다.","warning");
-															}
+													<select class="form-control select-interests" name="interests">
+														<!-- placeholder 사용을 위한 option blank -->
+														<option></option>
+													</select>
+													<script>
+														$(document).ready(function(){
+															$(".select-interests").select2({
+																placeholder: "선택",
+																allowClear: true,
+																language: "ko",
+																ajax: {
+																	url: function(params){
+																		var url = "http://localhost:8000/api/interests/";
+																		if(params.term == null || params.term == ""){
+																			if(params.page > 1){
+																				url = url + "?page=" + params.page;
+																				return url
+																			}else{
+																				return url
+																			}
+																		}else{
+																			if(params.page > 1){
+																				url = url + "?page=" + params.page + "&?search=" + params.term;
+																				return url
+																			}else{
+																				url = url + "?search=" + params.term;
+																				return url
+																			}
+																		}
+																	},
+																	delay: 500,
+																	dataType: 'json',
+																	data: function(params){
+																		
+																	},
+																	processResults: function(data,params){
+																		params.page = params.page || 1;
+																		return{
+																			results: data.results,
+																			pagination: {																		
+																				more: (params.page * 30) < data.count
+																			}
+																		};
+																	}
+																}
+															});
 														});
-													 </script>
+													</script>
 												</div>
 											</div>
 											<!-- 상세 검색 - 관심사 END -->
+											
 										</div>
 									</div>
 								</div>
