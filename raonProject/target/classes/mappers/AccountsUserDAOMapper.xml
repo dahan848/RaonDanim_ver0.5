@@ -110,4 +110,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteGalleryPic" parameterType="string">
 		delete 
 	</delete>
+	
+	<!-- 대시보드 mapper 작성 - 조현길 -->
+	<!-- 여행탭 여행 작성글 리스트 호출 -->
+	<select id="trip_list" resultType="Map" parameterType="Map">
+		select *
+		from(
+			select rownum as rnum, trip_board_title,trip_board_countent ,trip_writedate, trip_board_readcount, trip_board_key
+			from(
+				select * from TRIP_BOARD_TB
+				where user_num = #{num}
+				and trip_board_st = 0
+				order by trip_board_key desc
+			)
+		)
+		where rnum between #{firstRow} and #{endRow}
+	</select>
+	<!-- 토탈 카운트 -->
+	<select id="selectTotalCount" resultType="int" parameterType="int">
+		select count(*) from TRIP_BOARD_TB
+		where user_num = #{num}
+	</select>	
+	<!-- 여행탭 여행 댓글 리스트 호출 -->
+	<select id="trip_reply_list" parameterType="Map" resultType="Map">
+<!-- 		select * -->
+<!-- 		from( -->
+<!-- 			select rownum as rnum, trip_reply_content, trip_reply_writedate -->
+<!-- 				from( -->
+<!-- 				select * from TRIP_REPLY_TB -->
+<!-- 				where user_num = #{num} -->
+<!-- 				order by trip_reply_key desc -->
+<!-- 			) -->
+<!-- 		) -->
+<!-- 		where rnum between #{firstRow} and #{endRow} -->
+		
+		
+		select *
+		from(
+			select rownum as rnum, trip_reply_content, trip_reply_writedate, trip_reply_key, trip_board_key, trip_board_st
+			from(
+				select reply.trip_reply_content, reply.trip_reply_writedate, reply.trip_reply_key, reply.trip_board_key , board.trip_board_st
+				from TRIP_REPLY_TB reply, TRIP_BOARD_TB board
+				where reply.trip_board_key = board.trip_board_key
+				and reply.user_num = #{num}
+				and reply.trip_reply_st = 0
+				order by reply.trip_reply_key desc
+				)
+		)
+		where rnum between #{firstRow} and #{endRow}
+	</select>
+	<select id="selectReplyTotalCount" resultType="int" parameterType="int">
+		select count(*) from TRIP_REPLY_TB
+		where user_num = #{num}
+	</select>	
 </mapper>

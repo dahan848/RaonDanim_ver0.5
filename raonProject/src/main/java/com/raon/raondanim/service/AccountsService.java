@@ -32,7 +32,14 @@ public class AccountsService {
 	@Autowired
 	private AccountsUserDAO dao;
 	private User user;
-	
+	//dashboard 리스트를 위한 멤버변수 - 조현길
+	// 댓글 가져올 개수
+	private static final int REPLY_NUM = 5;
+	// 한 페이지에 표시될 게시글의 개수
+	private static final int NUM_OF_BOARD_PER_PAGE = 5;
+	// 한 번에 표시될 네비게이션 개수
+	private static final int NUM_OF_NAVI_PAGE = 10;
+	//dashboard 멤버변수 end
 	//갤러리 사진 삭제 ()
 	public boolean deleteGalleryPic(String param) {
 		StringTokenizer tokens = new StringTokenizer(param, ",");
@@ -416,6 +423,129 @@ public class AccountsService {
 			System.out.println("회원 인증 실패 : " + e);
 		}
 	
+	}
+	
+	private int getFirstRow(int page) {
+		int result = (page - 1) * NUM_OF_BOARD_PER_PAGE + 1;
+//		System.out.println("firstrow : " + result);
+		return result;
+	}
+	private int getEndRow(int page) {
+		int result = ((page - 1) + 1) * NUM_OF_BOARD_PER_PAGE;
+		return result;
+	}
+	private int getStartPage(int page) {
+		int result = ((page - 1) / NUM_OF_NAVI_PAGE) * NUM_OF_NAVI_PAGE + 1;
+		System.out.println("getStartPage result : "+result);
+		return result;
+	}
+
+	private int getEndPage(int page) {
+		int result = getStartPage(page) + 9;
+		return result;
+	}
+	//여행 게시글 total count
+	private int getTotalPage(Map<String, Object> params) {
+		// 총 페이지수 반환
+		// 전체 게시글 개수 /페이지당 게시글 수 >>> 올림해서 반환
+		int totalCount = dao.selectTotalCount(Integer.parseInt(params.get("num").toString()));
+		int totalPage = (totalCount - 1) / NUM_OF_BOARD_PER_PAGE + 1;
+		return totalPage;
+	}
+	
+	//여행글 작성 리스트 불러올 메소드
+	public Map<String, Object> getViewData(Map<String, Object> params) {
+		// startPage, endPage, totalPage, boardList 반환
+		System.out.println("서비스 호출");
+		System.out.println(params);
+
+		int page = (int) params.get("page");
+
+		Map<String, Object> daoParam = new HashMap<String, Object>();
+
+//		daoParam.put("firstRow", getFirstRow(page));
+//		daoParam.put("endRow", getEndRow(page));
+		Map<String, Object> viewData = new HashMap<String, Object>();
+		
+
+
+		
+		/*Map<String, Object> daoParam = new HashMap<String,Object>();*/
+		System.out.println(getFirstRow(page));
+		System.out.println(getEndRow(page));
+		daoParam.put("firstRow", getFirstRow(page));
+		daoParam.put("endRow", getEndRow(page));
+		daoParam.put("num", params.get("num"));
+//		daoParam.put("startDate", params.get("startDate"));
+//		daoParam.put("endDate", params.get("endDate"));
+
+		
+
+		
+		
+		/*Map<String, Object> viewData = new HashMap<String,Object>();*/
+		
+		System.out.println("service 파라미터 : "+daoParam);
+		viewData.put("boardList", getBoardList(daoParam));
+		viewData.put("startPage", getStartPage(page));
+		viewData.put("endPage", getEndPage(page));
+		viewData.put("totalPage", getTotalPage(daoParam));
+		viewData.put("page", page);
+
+		return viewData;
+	}
+	
+	//여행 댓글 리스트 불러올 메소드
+	public Map<String, Object> getReplyViewData(Map<String, Object> params) {
+		// startPage, endPage, totalPage, boardList 반환
+		System.out.println("서비스 호출");
+		System.out.println(params);
+
+		int page = (int) params.get("page");
+
+		Map<String, Object> daoParam = new HashMap<String, Object>();
+		Map<String, Object> viewData = new HashMap<String, Object>();
+
+		System.out.println(getFirstRow(page));
+		System.out.println(getEndRow(page));
+		daoParam.put("firstRow", getFirstRow(page));
+		daoParam.put("endRow", getEndRow(page));
+		daoParam.put("num", params.get("num"));
+
+		System.out.println("service 파라미터 : "+daoParam);
+		viewData.put("boardList", getReplyBoardList(daoParam));
+		viewData.put("startPage", getStartPage(page));
+		viewData.put("endPage", getEndPage(page));
+		viewData.put("totalPage", getReplyTotalPage(daoParam));
+		viewData.put("page", page);
+
+		return viewData;
+	}
+	//여행 게시글 리스트 불러올 메소드
+	public List<Map<String, Object>> getBoardList(Map<String, Object> params) {
+		// 페이지 번호 받아와서 해당하는 목록만 가져오기
+		// 1. 페이지 번호에 해당하는 firstRow, endRow 구하기
+		// 2. firstRow, endRow에 해당하는 목록 얻어오기
+		// 3. 반환
+		System.out.println(params);
+		return dao.trip_list(params);
+	}
+	//여행 댓글 리스트 불러올 메소드
+	public List<Map<String, Object>> getReplyBoardList(Map<String, Object> params) {
+		// 페이지 번호 받아와서 해당하는 목록만 가져오기
+		// 1. 페이지 번호에 해당하는 firstRow, endRow 구하기
+		// 2. firstRow, endRow에 해당하는 목록 얻어오기
+		// 3. 반환
+		System.out.println(params);
+		return dao.trip_reply_list(params);
+	}
+	private int getReplyTotalPage(Map<String, Object> params) {
+		// 총 페이지수 반환
+		// 전체 게시글 개수 /페이지당 게시글 수 >>> 올림해서 반환
+		System.out.println("getReplyTotalPage : "+params);
+		int totalCount = dao.selectReplyTotalCount(Integer.parseInt(params.get("num").toString()));
+		int totalPage = (totalCount - 1) / NUM_OF_BOARD_PER_PAGE + 1;
+		return totalPage;
 	}
 	
 	

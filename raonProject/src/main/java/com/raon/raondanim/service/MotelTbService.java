@@ -184,24 +184,9 @@ public class MotelTbService {
 		System.out.println(params);
 
 		int page = (int) params.get("page");
-//		int type = (int) params.get("type");
-//		String keyword = (String) params.get("keyword");
+
 		Map<String, Object> daoParam = new HashMap<String, Object>();
-//		daoParam.put("type", type);
-//		if (type == 1) {
-//			// 제목검사
-//			daoParam.put("title", keyword);
-//		} else if (type == 2) {
-//			// 작성자
-//			daoParam.put("name", keyword);
-//		} else if (type == 3) {
-//			// 제목 작성자
-//			daoParam.put("title", keyword);
-//			daoParam.put("name", keyword);
-//		} else if (type == 4) {
-//			// 내용
-//			daoParam.put("content", keyword);
-//		}
+
 		daoParam.put("firstRow", getFirstRow(page));
 		daoParam.put("endRow", getEndRow(page));
 		Map<String, Object> viewData = new HashMap<String, Object>();
