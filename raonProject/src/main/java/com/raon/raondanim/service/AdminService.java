@@ -295,5 +295,51 @@ public class AdminService {
 	}
 	
 	
+	public Map<String, Object> getMotelReplyDeclarationList(Map<String, Object> params){
+		
+		int page = Integer.parseInt(String.valueOf(params.get("page")));
+		
+		params.put("start", getInquiryFirstRow(page));
+		params.put("end", getInquiryEndRow(page));
+		
+		Map<String, Object>motelReplyData = new HashMap<>();
+		
+		
+		motelReplyData.put("dreplyList", dao.getMotelReplyDeclarationList(params));
+		motelReplyData.put("start", getInquiryStartPage(page));
+		motelReplyData.put("end", getInquiryEndPage(page));
+		motelReplyData.put("total",getMotelTotalCount());
+		motelReplyData.put("page", page);
+		
+		
+		return motelReplyData;
+		
+	}
+	public int getMotelReplyTotalCount() {
+		int totalPage = 0;
+		int boardCount = dao.getMotelReplyTotalCount();
+
+		totalPage = (boardCount - 1) / NUM_OF_INQUIRY_PER_PAGE + 1;
+
+		return totalPage;
+		
+		
+	}
+	
+	
+	
+	public boolean motelReplyDelete(Map<String, Object> params) {
+		
+		if(motelDao.deleteReply(params)>0) {
+			return true;
+		}else {
+			return false;
+		}
+		
+		
+		
+	}
+	
+	
 	
 }

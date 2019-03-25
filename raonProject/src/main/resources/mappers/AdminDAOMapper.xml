@@ -229,4 +229,68 @@ where r between #{start} and #{end}
         having count(d.motel_num) <![CDATA[>=]]> 3)
 	</select>
 	
+	
+	<select id="getMotelReplyDeclarationList" parameterType="map" resultType="map" >
+select * 
+from (select  rownum as r,
+        MOTEL_REPLY_NUM,
+        dreplyCount,
+        USER_NUM,
+        CONTENT,
+        MOTEL_REPLY_DATE,
+        DECLARATION_CONTENT,
+        USER_ID,
+        USER_FNM,USER_LNM
+      from (select nvl(d.MOTEL_REPLY_NUM,0) as MOTEL_REPLY_NUM,
+                 count(d.MOTEL_REPLY_NUM) as dreplyCount,
+                 m.USER_NUM,
+                 m.CONTENT,
+                 m.MOTEL_REPLY_DATE,
+                 dt.DECLARATION_CONTENT,
+                 u.USER_ID,
+                 u.USER_FNM,
+                 u.USER_LNM
+            from DECLARATION_TB d left outer join DECLARATION_DTB dt
+            on d.DECLARATION_KEY = dt.DECLARATION_KEY
+            join motel_reply m
+            on d.MOTEL_REPLY_NUM = m.MOTEL_REPLY_SQ
+            join user_tb u
+            on d.D_USER_NUM = u.user_num
+            where m.MOTEL_REPLY_ST =0
+            group by d.MOTEL_REPLY_NUM,
+                     m.USER_NUM,
+                     m.CONTENT,
+                     m.MOTEL_REPLY_DATE,
+                     dt.DECLARATION_CONTENT,
+                     u.USER_ID,
+                     u.USER_FNM,
+                     u.USER_LNM
+            having count(d.MOTEL_REPLY_NUM) <![CDATA[>=]]> 3
+            order by d.MOTEL_REPLY_NUM desc))
+where r between #{start} and #{end}            
+	
+	</select>
+	
+	<select id="getMotelReplyTotalCount" resultType="int">
+select count(*)
+from (  select nvl(d.MOTEL_REPLY_NUM,0),
+        count(d.MOTEL_REPLY_NUM),
+        m.USER_NUM,
+        m.CONTENT,
+        m.MOTEL_REPLY_DATE,
+        m.MOTEL_REPLY_ST
+        from DECLARATION_TB d left outer join DECLARATION_DTB dt
+        on d.DECLARATION_KEY = dt.DECLARATION_KEY
+        join motel_reply m
+        on d.MOTEL_REPLY_NUM = m.MOTEL_REPLY_SQ
+        group by d.MOTEL_REPLY_NUM,
+                 m.USER_NUM,
+                 m.CONTENT,
+                 m.MOTEL_REPLY_DATE,
+                 m.MOTEL_REPLY_ST
+        having count(d.MOTEL_REPLY_NUM) >=3)
+where MOTEL_REPLY_ST = 0
+	</select>
+	
+	
 </mapper>

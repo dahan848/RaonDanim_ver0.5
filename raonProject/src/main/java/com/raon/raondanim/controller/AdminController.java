@@ -93,7 +93,7 @@ public class AdminController {
 	
 	@ResponseBody
 	@RequestMapping("/MotelDelete")
-	public boolean MotelDelete(Model model,
+	public boolean motelDelete(Model model,
 			int user_num,
 			int motel_num) {
 		System.out.println("관리자 숙박글 삭제 요청 받음");
@@ -104,6 +104,35 @@ public class AdminController {
 		
 		
 		return adminService.deleteMotel(params);
+		
+	}
+	
+	@RequestMapping("/motelReply")
+	public String motelReply(Model model,
+			@RequestParam(defaultValue="1")int page) {
+		System.out.println("관리자 숙박 댓글 관리 화면 요청");
+		Map<String, Object> params = new HashMap<>();
+		params.put("page", page);
+		
+		model.addAttribute("replyData", adminService.getMotelReplyDeclarationList(params));
+		
+		
+		return "admin/motelReply";
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/motelReplyDelete")
+	public boolean motelReplyDelete(int user_num,
+			int reply) {
+		System.out.println("관리자 숙박 댓글 삭제 요청 받음");
+		Map<String, Object> params = new HashMap<>();
+		params.put("user_num", user_num);
+		params.put("reply", reply);
+		
+		
+		
+		return adminService.motelReplyDelete(params);
 		
 	}
 	

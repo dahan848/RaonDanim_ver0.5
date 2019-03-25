@@ -161,6 +161,7 @@
                                <ul class="dropdown-menu">
                                  <li><a href="board">여행게시글</a></li> 
                                  <li><a href="motelBoard">숙박게시글</a></li> 
+                                 <li><a href="motelReply">숙박댓글</a></li>
                                </ul> 
                          </li> 
                          </ul>
@@ -250,7 +251,7 @@
 										         		 </td>
 										         		</tr>
 										         		<tr>
-										         			<td><label> 글 제목:</label> 
+										         			<td><label> 글 내용:</label> 
 										         		 <h5>${list.MOTEL_INTRO}</h5></td>
 										         		</tr>
 										         		<tr>

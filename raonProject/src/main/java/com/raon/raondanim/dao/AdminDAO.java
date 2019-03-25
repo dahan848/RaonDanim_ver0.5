@@ -22,4 +22,8 @@ public interface AdminDAO {
 	public List<Map<String, Object>> getMotelDeclarationList(Map<String, Object> params);
 	public int getMotelTotalCount();
 
+	//숙박 신고 댓글 출력
+	public List<Map<String, Object>> getMotelReplyDeclarationList(Map<String, Object> params);
+	public int getMotelReplyTotalCount();
+	
 }
