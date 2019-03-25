@@ -111,7 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete 
 	</delete>
 	
-<<<<<<< HEAD
+
 	<!-- userNum 으로 사용가능언어 num 불러오기 -->
 	<select id="selectUserLanguageNum" parameterType="int" resultType="map">
 		select LANGUAGE_NUM from LANGUAGE_TB
@@ -129,7 +129,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</select>
 
-=======
+
 	<!-- 대시보드 mapper 작성 - 조현길 -->
 	<!-- 여행탭 여행 작성글 리스트 호출 -->
 	<select id="trip_list" resultType="Map" parameterType="Map">
@@ -182,5 +182,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from TRIP_REPLY_TB
 		where user_num = #{num}
 	</select>	
->>>>>>> origin/ver2.Motel
+
 </mapper>
