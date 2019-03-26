@@ -534,14 +534,14 @@ public class TripBoardServiceImp implements TripBoardService {
 		
 		try {
 			
-			for(int i =0;i<(int)(Math.random()*50)+10;i++) {
+			for(int i =1;i<(int)(Math.random()*50)+10;i++) {
 				Map<String, Object> tripBoard = new HashMap<>();
 				tripBoard.put("user_Num", i);
-				tripBoard.put("trip_Board_Title", "dummy"+i);
-				tripBoard.put("trip_Board_Content", "dummy"+i);
+				tripBoard.put("trip_Board_Title", i+"번째 여행 갑니다.");
+				tripBoard.put("trip_Board_Content", i+"번째 여행은 즐겁네요");
 				tripBoard.put("trip_Board_Start", "2019-01-01");
-				tripBoard.put("trip_Board_End", "2019-01-01");
-				tripBoard.put("trip_Board_Together", 0);
+				tripBoard.put("trip_Board_End", "2019-02-01");
+				tripBoard.put("trip_Board_Together", 1);
 				tripBoard.put("trip_WriteDate", writeDate);
 				tripDao.insertDummyData(tripBoard);
 				

@@ -50,7 +50,7 @@
 
 /* 콜렙스 css  */
 #demo {
-	-webkit-transition: width 0.5s ease;
+	-webkit-kansition: width 0.5s ease;
 	-moz-transition: width 0.5s ease;
 	-o-transition: width 0.5s ease;
 	transition: width 0.5s ease;
@@ -430,7 +430,7 @@ html, body {
 
 					</div>
 					<div class="col-lg-8" id="ff">
-						<div class="row" style="border: 1px dotted grey;">
+						<div class="row" style="border-bottom: 1px dotted gray; border-right:1px dotted gray;">
 							<div class="col-sm-12">
 								<table class="table">
 									<tr>

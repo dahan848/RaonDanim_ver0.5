@@ -432,7 +432,7 @@ html, body {
 
 					</div>
 					<div class="col-lg-8" id="ff">
-						<div class="row" style="border: 1px dotted grey;">
+						<div class="row" style="border-bottom: 1px dotted gray; border-right:1px dotted gray;">
 							<div class="col-sm-12">
 								<table class="table">
 									<tr>

@@ -407,7 +407,17 @@
 						  							  	<label for="checkbox3"></label>
 					  						  		</div>
                                                 </td>
-                                                <td>현재 계정이 잠긴 유저가 존재합니다.
+                                                <td>
+                                                	<c:choose>
+                                                		<c:when test="${empty userList}">
+                                                			현재 계정이 잠긴 유저가 존재하지 않습니다.
+                                                		</c:when>
+                                                		<c:otherwise>
+                                                			현재 계정이 잠긴 유저가 존재합니다.
+                                                		</c:otherwise>
+                                                	</c:choose>
+                                                
+                                                
 												</td>
                                                 <td class="td-actions text-right">
                                                     <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">

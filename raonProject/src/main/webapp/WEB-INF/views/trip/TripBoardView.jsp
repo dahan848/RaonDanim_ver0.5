@@ -862,6 +862,7 @@ th{
                       </tr>
                       <tr>
                          <td>
+                         <!-- 잘안돌아갈 가능성 있음  -->
                          <c:choose>
 							<c:when test="${userInfo.UserInterest != null}">			
 								<c:forEach items="${userInfo.UserInterest}" var="i">

@@ -119,9 +119,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 <!-- 	여행파트 dao추가 -->
 <select id="getTrStyle" parameterType="String" resultType="map">
-select *
+select  u.USER_NUM,
+		td.TRAVLE_STYLE_NUM,
+		td.TRAVLE_STYLE_NAME as UserTrStyle
 from user_tb u join TRAVLE_STYLE_TB t
 on u.user_num = t.user_num
+join TRAVLE_STYLE_DTB td
+on t.TRAVLE_STYLE_NUM = td.TRAVLE_STYLE_NUM
 where u.user_num = #{userNum}
 </select>	
 

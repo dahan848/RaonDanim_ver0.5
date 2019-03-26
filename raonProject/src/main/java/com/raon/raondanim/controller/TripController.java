@@ -46,21 +46,21 @@ public class TripController {
 		System.out.println("list 요청받음");
 		Map<String, Object> params = new HashMap<>();
 
-		System.out.println("페이지 번호 : " + pageNum);
-		System.out.println("타입 : " + type);
-		System.out.println("키워드 : " + keyword);
-		System.out.println("성 : " + lName);
-		System.out.println("이름 : " + fName);
+//		System.out.println("페이지 번호 : " + pageNum);
+//		System.out.println("타입 : " + type);
+//		System.out.println("키워드 : " + keyword);
+//		System.out.println("성 : " + lName);
+//		System.out.println("이름 : " + fName);
 
 		params.put("pageNum", pageNum);
 		params.put("type", type);
 		params.put("keyword", keyword);
 		if (lName != "") {
-			System.out.println("컨트롤러/리스트/검색테스트1");
+			//System.out.println("컨트롤러/리스트/검색테스트1");
 			params.put("lName", lName);
 		}
 		if (fName != "") {
-			System.out.println("컨트롤러/리스트/검색테스트2");
+			//System.out.println("컨트롤러/리스트/검색테스트2");
 			params.put("fName", fName);
 		}
 

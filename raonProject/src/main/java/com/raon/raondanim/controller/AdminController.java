@@ -1,6 +1,7 @@
 package com.raon.raondanim.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,13 @@ public class AdminController {
 		model.addAttribute("boardAndDeclaration", tripService.getBoardAndDeclatation());
 		model.addAttribute("userRegList", accountsService.getUserRegDate());
 		model.addAttribute("motelList", tripService.getMotelMonthWriteData());
+		
+		List<Map<String, Object>> userList = adminService.getLockoutUserList();
+		if(!userList.isEmpty()) {
+			model.addAttribute("userList", userList);
+		}
+	
+		
 		return "admin/main";
 		
 	}
