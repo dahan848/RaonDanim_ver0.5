@@ -117,6 +117,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  FROM gallery_tb
 		 WHERE GALLERY_FILE_NUM = #{num} 
 	</delete>
+	
+	<select id="getMotelAvg" parameterType="string" resultType="double">
+		select avg(motel_avg)
+		from motel_tb
+		where user_num = #{usernum}
+	</select>
+	
 <!-- 	여행파트 dao추가 -->
 <select id="getTrStyle" parameterType="String" resultType="map">
 select *

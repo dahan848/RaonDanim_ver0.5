@@ -185,7 +185,7 @@ public class AccountsService {
 		result.put("gender", user.getUser_gender()); 					//성별
 		result.put("lastLogin", lastLogin);								//마지막 로그인 시간
 		result.put("with_avg", user.getUser_with_avg());				//후기 평점
-		result.put("motel_avg", user.getUser_motel_avg());				//숙소 평점
+		result.put("motel_avg", Math.round(dao.getMotelAvg(userNum)*10)/10.0);				//숙소 평점
 		result.put("intro", user.getUser_intro());						//자기소개
 		result.put("age", age);											//나이 : 따로 메서드로 구해야 됨.
 		result.put("interest", interest);								//좋아하는 것 : 테이블 조인 해서 얻어와야 함
