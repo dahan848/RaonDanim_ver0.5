@@ -12,6 +12,16 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 <script type="text/javascript">
+//-------------- 무한 스크롤 --------------//	
+$(window).on("scroll",function() {
+	var scrollHeight = $(document).height();
+	var scrollPosition = $(window).height() + $(window).scrollTop();
+	
+	if(scrollPosition > scrollHeight - 300) {
+		$("#scroll").append('<div class="box" id="box"></div>');
+	}
+});
+
 //-------------- 프로필 팝오버 --------------//		
 $(function(){ 
     $('[rel="popover"]').popover({
@@ -24,16 +34,6 @@ $(function(){
     }).click(function(e) {
         e.preventDefault();
     });
-});
-
-//-------------- 무한 스크롤 --------------//	
-$(window).on("scroll",function() {
-	var scrollHeight = $(document).height();
-	var scrollPosition = $(window).height() + $(window).scrollTop();
-	
-	if(scrollPosition > scrollHeight - 300) {
-		$("#scroll").append('<div class="box" id="box"></div>');
-	}
 });
 </script>
 
@@ -182,18 +182,19 @@ input[type=text]:focus {
 							</c:otherwise>
 				  		 </c:choose>
                   
-                  <div id="userInfo${status.index}" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
+                 <div id="userInfo${status.index}" class="hide" style=" text-align: center;">
 						${with.USER_LNM} ${with.USER_FNM} <br>
 						<a href="${contextPath}/accounts/profile?user=${with.USER_NUM}">프로필보기</a><br>
 						<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->
 <%-- 							<a onclick="chatClickbyUser(${user_num},${with.USER_NUM})">대화하기</a> --%>
+								<a>대화하기</a>
 						</sec:authorize>
-				 </div>
+				 </div> 
 				 <br>
                   <div id="profile">
                      	<a href="withList?num=${with.USER_NUM}" style="text-align: center; display: inline-block;">${with.USER_LNM}${with.USER_FNM}</a>
                      	<br>
-                     	<span style="text-align: center; display: inline-block; font-size: 18px;">${with.USER_ID}</span>
+                     	<span style="text-align: center; display: inline-block; font-size: 18px;">-${with.USER_ID}-</span>
                      	<br>
                      	<span style="text-align: center; display: inline-block; font-size: 15px;">NATIONALITY : ${with.USER_NATIONALITY}</span>
                      	<br><br>

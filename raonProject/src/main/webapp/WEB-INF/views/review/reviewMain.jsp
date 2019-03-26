@@ -133,7 +133,7 @@
 							</c:otherwise>
 				  		 </c:choose>
                   
-                  <div id="userInfo${status.index}" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
+                  <div id="userInfo${status.index}" class="hide" style=" text-align: center;">
 						${with.USER_LNM} ${with.USER_FNM} <br>
 						<a href="${contextPath}/accounts/profile?user=${review.USER_NUM}">프로필보기</a><br>
 						<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->

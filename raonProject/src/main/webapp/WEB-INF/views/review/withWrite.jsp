@@ -43,35 +43,7 @@
 	</script>
 	
 	<style type="text/css">
-    	#box {
-          float: left;
-        	margin: 30px;
-        	border: 1px solid #cccccc;
-        	width: 250px;
-        	height: 350px;
-        	text-align: center;
-        	font-size: 20px;
-        	background: #eeeeee;
-        	width: 250px;
-        	height: 350px;
-    	}
-    	#userimg {
-        	background-image: url("${contextPath}/img/user.jpg");  
-        	background-repeat: no-repeat;
-        	background-position: bottom;
-        	background-size: cover;
-        	border-radius: 50%;
-        	z-index: 2;
-         	border: 1px solid black;
-         	margin: 0 auto;
-         	margin-top: 20px;
-        	width: 100px;
-        	height: 100px;
-    	}
-    	#btnSave {
-        	width: 100px;
-        	margin-left: 9%;
-    	}
+ 
     	.starR{
         	background: url('http://miuu227.godohosting.com/images/icon/ico_review.png') no-repeat right 0;
           	background-size: auto 100%;
@@ -91,8 +63,9 @@
       		border: 1px solid #cccccc;
       		background-color: #eeeeee;
       		width: 800px;
-      		float: right;
-      		margin-bottom: 10px;
+/*       	float: right; */
+			margin:0 auto;
+/*       		margin-bottom: 10px; */
     	}
     </style>
 </head>
@@ -105,42 +78,17 @@
 	
 	<form id="withWrite" action="withWrite" method="post">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-	TL : <input type="text" name="TL_USER_NUM" value="${param.num }">
-	WR : <input type="text" name="WR_USER_NUM" value="${userNum}">
+	<input type="hidden" name="TL_USER_NUM" value="${param.num }">
+	<input type="hidden" name="WR_USER_NUM" value="${userNum}">
 		<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
 			<div class="tab-content">
-				<h3>
-					<i class="fas fa-cloud" style="font-size: 38px; color: aqua;"></i>
-					${with.USER_LNM}${with.USER_FNM}님에게 후기를 남겨주세요
-				</h3>
-				<!----------------------------------------- 프로필 시작 -------------------------------------->
-				<div class="box" id="box">
-					<div id="userimg"></div>
-					<br> 
-					<a>${with.USER_LNM}${with.USER_FNM}</a> 
-					<br><br> 
-					<a>아이디 : <b>${with.USER_ID}</b></a> 
-					<br><br> 
-					<i class="fas fa-home"> 
-						<br> 
-						<a>숙소 평점</a> 
-						<br>
-						<a>
-							<i style="color: blue;">4.2</i> / 5
-						</a>
-					</i> 
-					<i class="fas fa-camera" style="margin-left: 20px;"> 
-					<br>
-						<a>후기 평점</a> 
-						<br> 
-						<a>
-							<i style="color: blue;">4.8</i> / 5
-						</a>
-					</i>
-				</div>
-				<!----------------------------------------- 프로필 끝 -------------------------------------->
+				<h1 style="margin-left: 170px;">
+					<i class="fas fa-cloud" style="font-size:38px;color:aqua;"></i>
+					후기 작성
+				</h1>
+				
 				<br>
 				<!----------------------------------------- 별점 시작 -------------------------------------->
 				<div id="starCase">
@@ -158,8 +106,10 @@
 				</div>
 				<!----------------------------------------- 별점 끝 -------------------------------------->
 				
+				<br>
+				
 				<!---------------------- 섬머노트 시작 ---------------------->
-				<div style="float: right;">
+				<div style="margin-left: 170px;">
 					<textarea rows="10" id="summernote" name="WITH_CONTENT"></textarea>
 				</div>
 				
@@ -183,7 +133,16 @@
 					});
 				</script>
 				<!---------------------- 섬머노트 끝 ---------------------->
-				<input type="submit" class="btn btn-primary" id="btnSave" value="등록">
+				
+				<br>
+				
+				<button type="submit" class="btn btn-primary" id="btnSave"
+						style="margin-left: 48%; background-color: #eeeeee; color: green; border: 0.5px solid #cccccc;">
+					<i class="far fa-edit"></i> 저장
+				</button>
+				
+				<br><br><br>	
+				
 			</div>
 		</div>
 		</section>

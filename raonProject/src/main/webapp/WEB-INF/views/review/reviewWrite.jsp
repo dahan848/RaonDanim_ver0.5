@@ -146,7 +146,7 @@
 			
 			<br>
 			
-			<button type="submit" class="btn btn-primary" id="save" value="저장" 
+			<button type="submit" class="btn btn-primary" id="save"
 						style="margin-left: 48%; background-color: #eeeeee; color: green; border: 0.5px solid #cccccc;">
 				<i class="far fa-edit"></i> 저장
 			</button>

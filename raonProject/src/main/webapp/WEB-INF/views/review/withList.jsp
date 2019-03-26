@@ -112,11 +112,20 @@ $(function(){
  
                 <!----------------------------------------- 프로필 시작 -------------------------------------->
                 <div class="box" id="box">
-                    <div id="userimg"></div>
+                    <c:choose>
+				  			<c:when test="${withBoard.User.user_profile_pic eq 'n'}">
+									<img id="userimg"  class="img-circle" src="${contextPath}/img/home_profile_2.jpg">
+							</c:when>
+							<c:otherwise> 
+									<img id="userimg" class="img-circle" src="${contextPath}/image?fileName=${withBoar.User.user_profile_pic}">
+							</c:otherwise>
+				  		 </c:choose>
                     <br> <span>${withBoard.User.user_lnm}${withBoard.User.user_fnm}</span> <br>
                     
-                    <br> 
-                    <span>여행지 : <b>${withBoard.User.user_gender}</b></span> <br>
+                    <span style="text-align: center; display: inline-block; font-size: 18px;">-${withBoard.User.user_id}-</span>
+                    <br>
+                    <span style="text-align: center; display: inline-block; font-size: 15px;">NATIONALITY : ${withBoard.User.user_nationality}</span>
+                    <br>
                     <br> <i class="fas fa-home"> <br> <a>숙소 평점</a> <br>
                         <span><i style="color: blue;">4.2</i> / 5</span>
                     </i> <i class="fas fa-camera" style="margin-left: 20px;"> <br>

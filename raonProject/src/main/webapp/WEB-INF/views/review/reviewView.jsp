@@ -314,25 +314,23 @@
 		<div class="tab-content">
 			<!----------------------------------------- 프로필 시작 -------------------------------------->
 			<div class="box" id="box">
-				<div id="userimg"></div>
-				<br>
+				<c:choose>
+				  			<c:when test="${review.USER_PROFILE_PIC eq 'n'}">
+									<img id="userimg"  class="img-circle" src="${contextPath}/img/home_profile_2.jpg">
+							</c:when>
+							<c:otherwise> 
+									<img id="userimg" class="img-circle" src="${contextPath}/image?fileName=${review.USER_PROFILE_PIC}">
+							</c:otherwise>
+				</c:choose>
+				<br><br>
 				<span>${review.USER_LNM}${review.USER_FNM}</span>
+				<br>
+				<span>-${review.USER_ID}-</span>
+				<br>
+				<span><b>${review.REV_DESTINATION}</b></span>
 				<br><br>
-				<span>여행지 : <b>${review.REV_DESTINATION}</b></span>
-				<br><br>
-				<i class="fas fa-home">
-					<br>
-					<span>숙소 평점</span>
-					<br>
-					<span><i style="color: blue;">4.2</i> / 5</span>
-				</i>
-				<i class="fas fa-camera" style="margin-left: 20px;">
-					<br>
-					<span>후기 평점</span>
-					<br>
-					<span><i style="color: blue;">4.8</i> / 5</span>
-				</i>
-				<br><br>
+				
+				
 			</div>
 			<!----------------------------------------- 프로필 끝 -------------------------------------->
 			
