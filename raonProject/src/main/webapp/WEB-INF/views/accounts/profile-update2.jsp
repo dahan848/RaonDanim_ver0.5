@@ -68,7 +68,7 @@
                                  for="id_description">자기소개</label>
                               <div class="col-xs-12">
                                  <textarea class="form-control" cols="40"
-                                    data-points-given="0" id="id_description" name="description"
+                                    data-points-given="0" id="id_description" name="self_introduce"
                                     placeholder="자기소개를 입력해주세요." rows="8" title=""></textarea>
                               </div>
                            </div>
@@ -85,17 +85,21 @@
 
    <!-- 인클루드-푸터 -->
    <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
-   <!-- 인클루드-푸터 END -->
+   <!-- 인클루드-푸터 END --> 
 </body>
 <script type="text/javascript">
+
 function form_Check(){
-//		swal({
-//         text:"변경사항을 저장하시겠습니까??",
-//         icon:"warning",
-//         buttons:[true,"확인"],[false,"취소"]
+	var intro = $("#id_description").val()
+	if(intro < 20){
+		swal({
+         text:"자기소개를 작성해주세요.",
+         icon:"warning",
+         buttons:[false,"확인"]
 		
-//      })
-//		return false;
+      })
+		return false;
+	}
 	var up;
 	up = confirm("저장하시겠습니까 ??");
 

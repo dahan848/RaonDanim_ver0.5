@@ -9,126 +9,8 @@
 <head>
 <meta charset="UTF-8">
 <title>라온다님</title>
-<script type="text/javascript">
-
-	function form_Check() {
-		//	swal({
-		//     text:"변경사항을 저장하시겠습니까??",
-		//     icon:"warning",
-		//     buttons:[true,"확인"],[false,"취소"]
-
-		//  })
-		//	return false;
-		var up;
-		up = confirm("저장하시겠습니까 ??");
-
-		if (up) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	$(function() {
-
-		//국가입력 스크립트
-		$(".national").click(function() {
-			$(this).next().show();
-			$(this).next().hide();
-		});
-		//도시입력 스크립트
-		$(".city").click(function() {
-			$(this).next().show();
-			$(this).next().hide();
-		});
-
-		//서밋 이벤트실행 시 유효성 검사
-		$("#register_form")
-				.on(
-						"submit",
-						function() {
-
-							var nation = $('#nation').val();
-							var city = $('#city').val();
-							var address = $('#address').val();
-
-							var city_split = city.split(', ');
-							var city_en = city_split[0];
-							var city_ko = city_split[1];
-							//			alert(city);
-							//			alert(city_en);
-							//			alert(city_ko);
-
-							var nation_split = nation.split(', ');
-							var nation_en = nation_split[0];
-							var nation_ko = nation_split[1];
-							//var isFind = false;
-							var checkNum = 0;
-
-							$
-									.ajax({
-										url : "${contextPath}/motel/DB_nation",
-										type : "get",
-										async : false,
-										dataType : "json",
-										success : function(data) {
-											//alert("나라  : " + nation_ko);
-											//	 				console.log("나라  : " + nation_ko);
-											//	 				console.log("nation : " + nation_en);
-
-											//console.log(data[i].NATIONALITY_KOR_NAME);
-											//console.log(data[i].NATIONALITY_NAME);
-
-											for ( var i in data) {
-
-												if (data[i].NATIONALITY_KOR_NAME == nation_ko
-														&& data[i].NATIONALITY_NAME == nation_en) {
-													//서밋
-													//console.log("같다!!!12312312")
-													checkNum++;
-													break;
-												}
-
-											}
-										}
-									});
-
-							$.ajax({
-								url : "${contextPath}/motel/DB_city",
-								type : "get",
-								async : false,
-								dataType : "json",
-								success : function(data) {
-									for ( var i in data) {
-
-										if (data[i].KO_CITY == city_ko
-												&& data[i].CITY == city_en) {
-											checkNum++
-
-										}
-
-									}
-								}
-							});
-							debugger;
-							if (checkNum == 2) {
-								//console.log("같다!!!");
-
-							} else {
-								//console.log("다르다");
-								swal({
-									text : "숙소의 국가/도시를 정확히 선택해 주세요.",
-									icon : "warning",
-									buttons : [ false, "확인" ]
-								})
-								return false;
-							}
-
-						});
-
-	});
-</script>
 <style type="text/css">
-#input_AllForm{
+.input_AllForm{
 	width : 532px;
 	height: 35px;
 }
@@ -142,12 +24,15 @@
 }
 </style>
 </head>
-<body>
    <!-- 인클루드 심플 헤더 -->
    <jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
    <jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>
    <jsp:include page="/WEB-INF/views/accounts/accounts-navbar.jsp"></jsp:include>
    <!-- 인클루드 심플 헤더 END -->
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+<body>
 
 
    <div class="main-container">
@@ -163,13 +48,10 @@
                   aria-valuemax="100" style="width: 100%;"></div>
             </div>
             <form id="form-profile-update" method="post" action="update_complete" class="form-horizontal"
-               enctype="multipart/form-data" novalidate onsubmit="return form_Check();">
+               enctype="multipart/form-data" novalidate >
                <input type="hidden" value="${_csrf.token}"
 							name="${_csrf.parameterName}">
-               <input type='hidden' name='csrfmiddlewaretoken'
-                  value='JxkZuD5jke0rLfciMHrQOIWCxejvVi73I8FrT7UOmYwujiFJo9fypydbb3ikZ3w8' />
-               <input type="hidden" name="step" value="1">
-               <div class="row">
+		     <div class="row">
                   <div class="col-sm-4">
                      <div class="border-box border-box-tips">
                         <h4>
@@ -191,8 +73,8 @@
                               <label class="col-sm-3 control-label" for="id_nationality">국적</label>
                               <div class="col-sm-9">
 								<c:if test="${!empty national}">
-									<input list="brow" id="input_AllForm" class="national" 
-										name="motel_nation" value = "">
+									<input list="brow" id="nation" class="input_AllForm" 
+										name="profile_nation" value = "">
 									<datalist id="brow">
 
 										<c:forEach var="national" items="${national}" varStatus="i">
@@ -207,27 +89,37 @@
 								</c:if>
                               </div>
                            </div>
+      
                            <div class="form-group">	
      
 									<label class="col-sm-3 control-label" for="id_city">나의 거주도시</label>
-										<div class="col-sm-9">									<c:if test="${!empty city}">
-										<input list="brow1" id="input_AllForm" class="city" name="motel_city">
+										<div class="col-sm-9">									
+										<c:if test="${!empty city}">
+										<input list="brow1" id="city" class="input_AllForm" name="profile_city">
 										<datalist id="brow1">
 
 											<c:forEach var="city" items="${city}" varStatus="i">
 
-												<option value="${city.CITY}, ${city.KO_CITY}"></option>
-
+<%-- 												<option value="${city.CITY_COUNTRY_NUM}. ${city.CITY}, ${city.KO_CITY}"></option> --%>
+													<option  value="${city.CITY}, ${city.KO_CITY}"/>
 											</c:forEach>
 
 										</datalist>
 									</c:if>
                               </div>
+                           </div>    
+                                <div class="form-group">
+                              <label class="col-sm-3 control-label">전화번호</label>
+                              <div class="col-sm-4">
+                                 <div class="input-group">
+                                    <input class="form-control" value="" name="USER_PHONE_NUM">
+                                 </div>
+                              </div>
                            </div>
 
                         </div>
                      </div>
-                     <input type="submit" value="완료" class="btn btn-potluck btn-submit" id="btn_next" onclick="">
+                     <input type="submit" value="완료" class="btn btn-potluck btn-submit" id="btn_next" >
                      <input type="button" value="이전" class="btn btn-potluck btn-submit" id="btn_back"
 									onclick="history.back(-1);">
 <!--                      <button class="btn btn-potluck btn-submit" id="btn_back" data-step="-1">이전</button> -->
@@ -242,4 +134,138 @@
    <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
    <!-- 인클루드-푸터 END -->
 </body>
+<script type="text/javascript">
+
+//서밋 이벤트실행 시 유효성 검사
+
+$("#form-profile-update")
+			.on("submit",
+					function() {
+
+						var nation = $('#nation').val();
+						var city = $('#city').val();
+						var address = $('#address').val();
+						//alert("nation : " + nation);
+						//alert("city : " + city);
+						var city_split = city.split(', ');
+						var city_en = city_split[0];
+						var city_ko = city_split[1];
+						//			alert(city);
+						//			alert(city_en);
+						//			alert(city_ko);
+
+						var nation_split = nation.split(', ');
+						var nation_en = nation_split[0];
+						var nation_ko = nation_split[1];
+						//var isFind = false;
+						var checkNum = 0;
+
+						$.ajax({
+									url : "${contextPath}/motel/DB_nation",
+									type : "get",
+									async : false,
+									dataType : "json",
+									success : function(data) {
+										//alert("나라  : " + nation_ko);
+										//	 				console.log("나라  : " + nation_ko);
+										//	 				console.log("nation : " + nation_en);
+
+										//console.log(data[i].NATIONALITY_KOR_NAME);
+										//console.log(data[i].NATIONALITY_NAME);
+
+										for ( var i in data) {
+
+											if (data[i].NATIONALITY_KOR_NAME == nation_ko
+													&& data[i].NATIONALITY_NAME == nation_en) {
+												//서밋
+												//console.log("같다!!!12312312")
+												$("#nation").val(i);
+													//alert($("#nation"))
+												checkNum++;
+												break;
+											}
+
+										}
+									}
+								});
+
+						$.ajax({
+							url : "${contextPath}/motel/DB_city",
+							type : "get",
+							async : false,
+							dataType : "json",
+							success : function(data) {
+								for ( var i in data) {
+
+									if (data[i].KO_CITY == city_ko
+											&& data[i].CITY == city_en) {
+										$("#city").val(i);
+										checkNum++
+
+									}
+
+								}
+							}
+						
+						});
+//							var profile_nation = $("#nation").attr("name");
+//						alert("profile_nation : " + profile_nation);
+						
+						if (checkNum == 2) {
+							//console.log("같다!!!");
+
+						} else {
+							//console.log("다르다");
+							swal({
+								text : "숙소의 국가/도시를 정확히 선택해 주세요.",
+								icon : "warning",
+								buttons : [ false, "확인" ]
+							})
+							return false;
+						}
+					//$("#profile_city").attr();
+					
+					var phoneNumber = $("#USER_PHONE_NUM").val()
+					var regExp = /^[0-9]+$/;
+						if(!regExp.test(phoneNumber)){
+							swal({
+					         text:"전화번호를 정확히 입력하여 주세요.",
+					         icon:"warning",
+					         buttons:[false,"확인"]
+							
+					      })
+							return false;
+						}
+					
+					var up;
+					up = confirm("저장하시겠습니까 ??");
+				
+					if (up) {
+						return true;
+					} else {
+						return false;
+					}
+					});
+	//국적 거주도시 검색시 언테키로 서밋실행 막기
+	function captureReturnKey(e) {
+   	 	if(e.keyCode==13 && e.srcElement.type != 'textarea')
+   	 	return false;
+	}
+	$(function() {
+
+		//국가입력 스크립트
+		$(".national").click(function() {
+			$(this).next().show();
+			$(this).next().hide();
+		});
+		//도시입력 스크립트
+		$(".city").click(function() {
+			$(this).next().show();
+			$(this).next().hide();
+		});
+
+
+
+	});
+</script>
 </html>

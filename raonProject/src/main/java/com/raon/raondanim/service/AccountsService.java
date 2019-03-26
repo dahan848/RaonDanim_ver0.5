@@ -112,7 +112,140 @@ public class AccountsService {
 			return false;
 		}
 	}
-	//userNum 으로 사용가능 언어 불러오는 메서드
+	
+// 언어DB에서 전부 불러오기
+	public List<Map<String, Object>> allLanguage(){
+		return dao.selectAllLanuage();
+		
+	}
+	// 좋아하는 것 DB에서 전부 불러오기
+	public List<Map<String, Object>> allInterest(){
+		return dao.getAll_Interest();
+	}
+	
+	//여행 스타일 DB에서 전부 불러오기 
+	public List<Map<String, Object>> allTripStyle(){
+		return dao.getAll_TripStyle();
+		
+	}
+	
+		
+	//사용가능언어 profile 로직
+	public void profileUpdate_Language(Map<String, Object> params, int userNum) {
+		String userLanguage = (String) params.get("user_allLanguage");
+		String[] arrayLanguage = userLanguage.split(",");
+	
+		//System.out.println(dao.selectUserLanguageNum(userNum));
+		//System.out.println("profileUpdate_Language : "+ userNum);
+		if(dao.selectUserLanguageNum(userNum).size() <= 0) {
+			//사용가능언어 등록 안되있으므로 insert
+			for(int i=0;i<arrayLanguage.length;i++) {
+				//System.out.println("service arrayLanguage : " + arrayLanguage[i]);
+				String languageNum = arrayLanguage[i];
+				dao.insert_Language_tb(languageNum, userNum);
+			}
+		
+		}else {
+			//사용가능언어 이미 등록되어 있으므로 삭제 후 다시 insert 
+			dao.delete_Language_tb(userNum);
+			for(int i=0;i<arrayLanguage.length;i++) {
+				//System.out.println("service arrayLanguage : " + arrayLanguage[i]);
+				String languageNum = arrayLanguage[i];
+				dao.insert_Language_tb(languageNum, userNum);
+			}
+		
+		}
+	
+	}
+	//좋아하는 것 profile 로직
+	public void profileUpdate_Interest(Map<String, Object> params, int userNum) {
+		String userInterest = (String) params.get("user_allInterest");
+		String[] arrayInterest = userInterest.split(",");
+
+		if(dao.selectUserInterestNum(userNum).size() <= 0) {
+			//사용가능언어 등록 안되있으므로 insert
+			for(int i=0;i<arrayInterest.length;i++) {
+				//System.out.println("service arrayInterest : " + arrayInterest[i]);
+				String InterestNum = arrayInterest[i];
+				dao.insert_Interest_tb(InterestNum, userNum);
+			}
+		
+		}else {
+			//사용가능언어 이미 등록되어 있으므로 삭제 후 다시 insert 
+			dao.delete_Interest_tb(userNum);
+			for(int i=0;i<arrayInterest.length;i++) {
+				//System.out.println("service arrayInterest : " + arrayInterest[i]);
+				String InterestNum = arrayInterest[i];
+				dao.insert_Interest_tb(InterestNum, userNum);
+			}
+		
+		}
+	
+	}
+	//여행 스타일 profile 로직
+	public void profileUpdate_TripStyle(Map<String, Object> params, int userNum) {
+		String userTripStyle = (String) params.get("user_allTripStyle");
+		String[] arrayTripStyle = userTripStyle.split(",");
+		
+		if(dao.selectUserTripStyleNum(userNum).size() <= 0) {
+			//사용가능언어 등록 안되있으므로 insert
+			for(int i=0;i<arrayTripStyle.length;i++) {
+				//System.out.println("service arrayInterest : " + arrayInterest[i]);
+				String trip_StyleNum = arrayTripStyle[i];
+				dao.insert_trip_style_tb(trip_StyleNum, userNum);
+			}
+		
+		}else {
+			//사용가능언어 이미 등록되어 있으므로 삭제 후 다시 insert 
+			dao.delete_trip_style_tb(userNum);
+			for(int i=0;i<arrayTripStyle.length;i++) {
+				//System.out.println("service arrayInterest : " + arrayInterest[i]);
+				String trip_StyleNum = arrayTripStyle[i];
+				dao.insert_trip_style_tb(trip_StyleNum, userNum);
+			}
+		
+		}
+	
+		
+	}
+	//self_introduce user_tb 에 저장
+	public void self_introduce_update(Map<String, Object> param, int userNum) {
+		System.out.println(param.get("self_introduce"));
+		String self_introduce = (String) param.get("self_introduce");
+		System.out.println("userIntro : " + self_introduce);
+		System.out.println("userNum : " + userNum);
+		
+		
+		
+		Map<String, Object> userIntro = new HashMap<String, Object>();
+		userIntro.put("userNum", userNum);
+		userIntro.put("userIntro", self_introduce);
+		dao.user_intro_update(userIntro);
+		
+	}
+	// user_tb 테이블에 거주 국가/도시 번호 폰 번호 등록
+	public void live_city_nation_phoneNumber(Map<String, Object> param, int userNum) {
+		System.out.println("service live : " + param);
+		Map<String, Object> userInfo = new HashMap<String, Object>();
+		
+		// 화면에서 받아오는 나라/도시 num과 DTB num과 1씩 차이가 남 
+		int userNation = Integer.parseInt(param.get("profile_nation").toString());
+		int user_nationlity = userNation+1;
+		int userCity = Integer.parseInt(param.get("profile_city").toString());
+		int user_city = userCity+1;
+
+		
+		userInfo.put("USER_NATIONALITY", user_nationlity);
+		userInfo.put("USER_CITY_COUNTRY", user_city);
+		userInfo.put("USER_PHONE_NUM", param.get("USER_PHONE_NUM"));
+		userInfo.put("userNum", userNum);
+		
+		System.out.println("userInfo : " + userInfo);
+		dao.user_city_nation_phoneNumber(userInfo);
+	}
+	
+	
+	//userNum 으로 사용가능 언어 불러오는 메서드 (화면에 뿌려줄 데이터 미완성)
 	public List<Map<String, Object>> userUseLanguage(int userNum){
 		//System.out.println("userUserLanguageNum : " + dao.selectUserLanguageNum(userNum));
 		List<String> userLanguageNum = dao.selectUserLanguageNum(userNum);
@@ -124,13 +257,6 @@ public class AccountsService {
 		}
 		return null;
 	}	
-	
-	// 언어DB에서 전부 불러오기
-	public List<Map<String, Object>> allLanguage(){
-		return dao.selectAllLanuage();
-		
-	}
-	
 	
 	//프로필 화면에 넘길 데이터 (Map) 반환하는 서비스
 	public Map<String, Object> getProfileData(int usernum){

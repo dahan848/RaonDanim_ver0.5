@@ -106,7 +106,7 @@
 					}		
 				}
 			});
- 			debugger;
+ 			
 			if(checkNum == 2){
 				//console.log("같다!!!");
 				

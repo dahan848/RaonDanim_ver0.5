@@ -11,14 +11,6 @@
 <!-- contextPath 설정 -->
 <%	request.setAttribute("contextPath", request.getContextPath()); %>	  
 <script type="text/javascript">
-function update1Form(){
-	alert("update1Form");
-	var url = "${contextPath}/accounts/update1Form";
-	var user_num = "${user_num}";
-	
-	$("#update1Form").attr("href", "${contextPath}/accounts/update1Form")
-	
-}
 
 </script>
 
@@ -28,9 +20,10 @@ function update1Form(){
 	<div
 		class="navbar navbar-inverse navbar-sub navbar-sub-light hidden-xs">
 		<div class="container">
+
 			<ul class="nav navbar-nav navbar-core">
 				<li><a href="${contextPath}/accounts/update1Form">프로필 수정</a></li>
-<!-- 				<li><a id="update1Form" href="javascript:update1Form();">프로필 수정</a></li> -->
+<!-- 				<li><a href="javascript:update1Form();" id="update1Form">프로필 수정</a></li> -->
 				<li><a href="${contextPath}/accounts/personalForm">계정설정</a></li>
 				<li><a href="${contextPath}/accounts/dashboard">대시보드</a></li>
 				<li><a href="${contextPath}/accounts/gallerySettings">갤러리 관리</a></li>

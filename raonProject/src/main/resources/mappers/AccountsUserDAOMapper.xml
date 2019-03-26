@@ -117,18 +117,82 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select LANGUAGE_NUM from LANGUAGE_TB
     		where user_num = #{userNum}
 	</select>
-	
-	<!-- 사용가능언어를  사용가능언어 num 으로 불러오기  -->
+	<!-- userNum 으로  interest num 불러오기-->
+	<select id="selectUserInterestNum" parameterType="int" resultType="map">
+		select INTEREST_NUM from INTEREST_TB
+    		where user_num = #{userNum}
+	</select>
+	<!-- userNum 으로  tripStyle num 불러오기 -->
+	<select id="selectUserTripStyleNum" parameterType="int" resultType="map">
+		select TRAVLE_STYLE_NUM from TRAVLE_STYLE_TB
+    		where user_num = #{userNum}
+	</select>
+	<!-- 사용가능언어를  사용가능언어 num 으로 불러오기  화면에 뿌려줄 데이터 미완성-->
 	<select id="userUseLanguage" parameterType="int" resultType="map">
 		select LANGUAGE_KO_NAME, LANGUAGE_EN_NAME from LANGUAGE_DTB
 			where = #{userLanguageNum}
 	</select>
 	
+		<!-- Interest_DTB에서 전부 가져오기 -->
+	<select id="getAll_Interest" resultType="map">
+		select * from INTEREST_DTB
+	</select>
+	<select id="getAll_TripStyle" resultType="map">
+		select * from TRAVLE_STYLE_DTB
+	
+	</select>
 	<select id="selectAllLanuage" resultType="map">
 		select * from LANGUAGE_DTB
 	
 	</select>
-
+	
+	<!-- 사용가능언어 insert/update 하기 -->
+	<insert id="insert_Language_tb">
+		insert into language_tb (USER_NUM, LANGUAGE_NUM)
+			values(#{param2},
+					#{param1})
+	</insert>
+	<delete id="delete_Language_tb" parameterType="int">
+		delete language_tb
+		 WHERE USER_NUM = #{userNum}
+	</delete>
+	
+	<!-- 좋아하는 것 insert/update 하기 -->
+	<insert id="insert_Interest_tb">
+		insert into INTEREST_TB (USER_NUM, INTEREST_NUM)
+			values(#{param2},
+					#{param1})
+	</insert>
+	<delete id="delete_Interest_tb" parameterType="int">
+		delete INTEREST_TB
+		 WHERE USER_NUM = #{userNum}
+	</delete>
+	
+	<!-- 여행스타일 insert/update 하기 -->
+	<insert id="insert_trip_style_tb">
+		insert into TRAVLE_STYLE_TB (USER_NUM, TRAVLE_STYLE_NUM)
+			values(#{param2},
+					#{param1})
+	</insert>
+	<delete id="delete_trip_style_tb" parameterType="int">
+		delete TRAVLE_STYLE_TB
+		 WHERE USER_NUM = #{userNum}
+	</delete>
+	
+	<!-- userIntro update -->
+	<update id="user_intro_update" parameterType="map">
+		UPDATE user_tb
+		   SET USER_INTRO	= #{userIntro}
+		WHERE user_num 		= #{userNum} 
+	</update>
+	<!-- 거주도시 국가 전화번호 업데이트  -->
+	<update id="user_city_nation_phoneNumber" parameterType="map">
+		UPDATE user_tb
+		   SET USER_PHONE_NUM	= #{USER_PHONE_NUM},
+		   		USER_NATIONALITY	= #{USER_NATIONALITY},
+		   		USER_CITY_COUNTRY	= #{USER_CITY_COUNTRY}
+		WHERE user_num 		= #{userNum} 		
+	</update>
 
 	<!-- 대시보드 mapper 작성 - 조현길 -->
 	<!-- 여행탭 여행 작성글 리스트 호출 -->

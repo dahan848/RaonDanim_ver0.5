@@ -26,12 +26,37 @@ public interface AccountsUserDAO {
 	
 	
 	//======추가 프로필 관련 =======
+	//userNum 기준으로 사용가능 언어 취미 여행스타일 출력
 	public List<String> selectUserLanguageNum(int userNum);
+	public List<String> selectUserInterestNum(int userNum);
+	public List<String> selectUserTripStyleNum(int userNum);
+	
 	public List<Map<String, Object>> userUseLanguage(int languageNum);
 	
-	//사용가능 언어 DB 불러오기 
+	//interest DBT 전부 가져오기
+	public List<Map<String, Object>> getAll_Interest();
+	//언어 DTB 불러오기 
 	public List<Map<String, Object>> selectAllLanuage();
-
+	//여행스타일 DTB 불러오기
+	public List<Map<String, Object>> getAll_TripStyle();
+	
+	
+	//사용가능 언어 Language_tb 테이블에 insert/delete 하기 
+	public int insert_Language_tb(String languageNum, int userNum);
+	public int delete_Language_tb(int userNum);
+	//좋아하는 것 INTEREST_TB 테이블에 insert/delete 하기 
+	public int insert_Interest_tb(String InterestNum, int userNum);
+	public int delete_Interest_tb(int userNum);
+	//여행스타일 TRAVLE_STYLE_TB 테이블에 insert/delete 하기 
+	public int insert_trip_style_tb(String tripStyleNum, int userNum);
+	public int delete_trip_style_tb(int userNum);
+	
+	//user_tb 에 USER_INTRO update 하기 
+	public int user_intro_update(Map<String, Object> param);
+	
+	//user_tb 에 국적/나의 거주도시/ 전화번호 업데이트 하기
+	public int user_city_nation_phoneNumber(Map<String, Object>param);
+	
 	//dashboard 작성 - 조현길
 	public List<Map<String, Object>> trip_list(Map<String, Object>params);//dashboard 여행활동 탭 - 여행 작성글 리스트
 	public int selectTotalCount(int num);//여행 게시글 토탈카운트

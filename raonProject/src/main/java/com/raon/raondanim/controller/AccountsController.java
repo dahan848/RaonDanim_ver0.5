@@ -149,24 +149,43 @@ public class AccountsController {
 		int userNum = user.getUser_num();
 		service.getProfileData(userNum);
 		service.userUseLanguage(userNum);
-		System.out.println("service allLanguage : " + service.allLanguage());
-		
+		//System.out.println("service allLanguage : " + service.allLanguage());
+		//System.out.println(service.allInterest());
+		System.out.println("getAll_TripStyle : " + service.allTripStyle());
+		model.addAttribute("allInterest", service.allInterest());
 		model.addAttribute("allLanguage", service.allLanguage());
-		model.addAttribute("national", motelService.getAllNational());
+		model.addAttribute("allTripStyle", service.allTripStyle());
 		
+
 		return "accounts/profile-update1";
 	}
 	
 	//프로필 수정 화면 2
 	@RequestMapping(value = "/update2Form")
-	public String update2Form(@RequestParam Map<String, Object> params) {
+	public String update2Form(Model model,@RequestParam Map<String, Object> params,Authentication authentication) {
 		System.out.println("update2Form param: " + params);
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		int userNum = user.getUser_num();
+		service.profileUpdate_Language(params,userNum);
+		service.profileUpdate_Interest(params, userNum);
+		service.profileUpdate_TripStyle(params, userNum);
+		
+		
+		
 		return "accounts/profile-update2";
 	}
 	
 	//레알 프로필 수정 화면3
 	@RequestMapping(value = "/update3Form")
-	public String update3Form(@RequestParam Map<String, Object> params, Model model) {
+	public String update3Form(@RequestParam Map<String, Object> params, Model model, Authentication authentication) {
+		System.out.println("update3Form param : " + params);
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		int userNum = user.getUser_num();
+		service.self_introduce_update(params, userNum);
+		
+		//System.out.println("update3Form");
+		//System.out.println(motelService.getAllNational());
+		//System.out.println(motelService.getAllCity());
 		model.addAttribute("national", motelService.getAllNational());
 		model.addAttribute("city", motelService.getAllCity());
 		return "accounts/profile-update3";
@@ -174,9 +193,14 @@ public class AccountsController {
 	
 	//프로필 업데이트 최종 후 메인으로 보내기
 	@RequestMapping(value="/update_complete")
-	public String update_complete() {
-		
-		
+	public String update_complete(@RequestParam Map<String, Object> params,  Authentication authentication) {
+		System.out.println("update_complete : " + params);
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		int userNum = user.getUser_num();
+		if(params.size() <= 0) {
+			return "home/main";
+		}
+		service.live_city_nation_phoneNumber(params, userNum);
 		return "home/main";
 	}
 	
