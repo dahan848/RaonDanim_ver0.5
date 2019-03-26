@@ -13,7 +13,7 @@
 
 <script type="text/javascript">
 //-------------- 프로필 팝오버 --------------//		
-$(function(){
+$(function(){ 
     $('[rel="popover"]').popover({
         container: 'body',
         html: true,
@@ -44,16 +44,17 @@ $(window).on("scroll",function() {
 	#box {
  		float: left; 
 		margin: 10px;
-		border: 1px solid black;
+/* 		border: 1px solid black; */
 		width: 350px;
 		height: 350px;
+		background-color: #eeeeee;
 	}
 	#backimg { 
    		background-image: url("${contextPath}/img/search-back.jpg");   
  		background-repeat: no-repeat; 
  		background-position: left; 
  		background-size: cover; 
-	  	border: 1px solid red;  
+/*  	  	border: 1px solid red;   */
  		z-index: 1; 
  		width: 348px; 
  		height: 120px; 
@@ -140,17 +141,21 @@ input[type=text]:focus {
 	<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
-				<h3 id="h3" style="font-family: 'Jua', sans-serif; font-size: 50px;"><b>동행후기</b></h3>
-				<h5 style="font-family: 'Jua', sans-serif;  font-size: 30px;">함께 여행한 친구의 타임라인에 후기를 남겨주세요</h5>
+				<h3 id="h3" style="font-family: 'Jua', sans-serif; font-size: 40px;"><b>동행후기</b></h3>
+				<h5 style="font-family: 'Jua', sans-serif;  font-size: 20px; color: gray;">함께 여행한 친구의 타임라인에 후기를 남겨주세요</h5>
 				
 				<br>
 				
 				<!------------ 검색 시작 ------------>
 				<div style="display: inline;">
-					<input type="text" name="keyword" placeholder="검색어를 입력하세요">
+					<input type="text" class="form-control input-lg" name="keyword" placeholder="아이디를 검색하세요" style="width: 50%; display: inline;">
 				</div>
 				<div style="display: inline;">
-					<input type="submit" value="검색">
+					<button type="submit" class="btn btn-primary"
+					style="background-color: #eeeeee; color: green; display: inline; margin-left: 10px; border: 0.5px solid green;">
+						<i class="fas fa-search"></i>
+					</button>
+					
 				</div>
             	<!------------ 검색 끝 ------------>
             
@@ -158,7 +163,7 @@ input[type=text]:focus {
             
             <div id="scroll">
             <!------------ 회원 프로필 화면 시작 ------------>
-            <c:forEach items="${with}" var="with" varStatus="status"> 
+            <c:forEach items="${with.searchList}" var="with" varStatus="status"> 
             <input type="hidden" name="num" value="${with.USER_NUM }">
                <div class="box" id="box">
                   <div id="backimg"></div>
@@ -181,7 +186,7 @@ input[type=text]:focus {
 						${with.USER_LNM} ${with.USER_FNM} <br>
 						<a href="${contextPath}/accounts/profile?user=${with.USER_NUM}">프로필보기</a><br>
 						<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->
-							<a onclick="chatClickbyUser(${user_num},${with.USER_NUM})">대화하기</a>
+<%-- 							<a onclick="chatClickbyUser(${user_num},${with.USER_NUM})">대화하기</a> --%>
 						</sec:authorize>
 				 </div>
 				 <br>
@@ -190,7 +195,7 @@ input[type=text]:focus {
                      	<br>
                      	<span style="text-align: center; display: inline-block; font-size: 18px;">${with.USER_ID}</span>
                      	<br>
-                     	<span style="text-align: center; display: inline-block; font-size: 18px;">NATIONALITY : ${with.USER_NATIONALITY}</span>
+                     	<span style="text-align: center; display: inline-block; font-size: 15px;">NATIONALITY : ${with.USER_NATIONALITY}</span>
                      	<br><br>
                     	 <i class="fas fa-home">
                         	<br>

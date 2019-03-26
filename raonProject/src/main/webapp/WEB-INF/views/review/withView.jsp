@@ -133,6 +133,8 @@ $(function(){
 			dataType : "json",
 			success : function(data) {
 				
+				var boardList = data.boardList;
+				
 				//console.log(data.boardList);
 				for(var i in data.boardList) {
 					
@@ -207,7 +209,7 @@ $(function(){
 				}
 				
 			}
-		});
+		}); 
 	}
 	
 	function moveTopage(start) {
@@ -270,6 +272,9 @@ $(function(){
 	#btnSave {
 		display: inline;
 		float: right;
+		background-color: #eeeeee;
+		color: green;
+		border: 1px solid #cccccc;
 	}
 	#inputReply {
 		width: 1000px; 
@@ -379,11 +384,17 @@ $(function(){
 			
 			<br><br>
 			
-			<button type="button" class="btn btn-primary" id="List" onclick="location.href='withList?num=${withBoard.TL_USER_NUM}'">후기 목록</button>
-			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?withNum=${withBoard.WITH_NUM}'">수정하기</button>
+			<button type="button" class="btn btn-primary" id="List" onclick="location.href='withList?num=${withBoard.TL_USER_NUM}'">
+				<i class="fas fa-align-justify"></i> 후기 목록
+			</button>
+			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?withNum=${withBoard.WITH_NUM}'">
+				<i class="fas fa-wrench"></i> 수정하기
+			</button>
 			
 			<!------- 삭제 버튼, 모달  시작------->
-			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="Delete">삭제하기</button>
+			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="Delete">
+				<i class='far fa-trash-alt'></i> 삭제하기
+			</button>
 			<input type="hidden" name="num" value="${withBoard.WITH_NUM}">
 			<input type="hidden" name=userNum value="${userNum}">
 			<div class="modal fade" id="myModal" role="dialog">
@@ -507,7 +518,9 @@ $(function(){
   				<input type="hidden" name="WITH_NUM" value="${withBoard.WITH_NUM}">
   				<input type="hidden" name="USER_NUM" value="${withBoard.USER_NUM}">
   				<input type="text" class="form-control form-control-sm" placeholder="댓글을 입력하세요" id="inputReply" name="WI_REP_CONTENT">
-				<input type="submit" class="btn btn-primary" id="btnSave" value="등록">
+				<button type="submit" class="btn btn-primary" id="btnSave">
+					<i class="far fa-edit"></i> 등록 
+				</button>
 			</form>
 			<!------------ 댓글 달기 끝 ------------>
 			

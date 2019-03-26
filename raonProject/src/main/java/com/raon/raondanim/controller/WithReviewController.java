@@ -32,35 +32,12 @@ public class WithReviewController {
 			Model model,
 			@RequestParam(required = false) String keyword) {
 		
-		System.out.println("동행후기 메인");
-		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("keyword", keyword);
 		
-		if(keyword == null) {
-			//keyword가 입력 되지 않을 때 selectAll 
-			model.addAttribute("with", wiService.selectAll());
-		} else if(keyword != null){
-//			model.addAttribute("with",wiService.getViewData(params));
-			model.addAllAttributes(wiService.getViewData(params));
-		}
-		
-		
-//		if(keyword == null) {
-//			//keyword가 입력 되지 않을 때 selectAll 
-//			model.addAttribute("with", wiService.selectAll());
-//		} else {
-//			//keyword가 입력 되었을 때 
-//			Map<String, Object> params = new HashMap<String, Object>();
-//			params.put("keyword", keyword);
-//			model.addAttribute("with", wiService.getViewData(params));
-//			model.addAllAttributes(wiService.getViewData(params));
+		model.addAttribute("with",wiService.getViewData(params));
+		model.addAllAttributes(wiService.getViewData(params));
 			
-//			System.out.println("---------------------------------------------------------------------");
-//			System.out.println("동행후기 검색 params: " + params);
-//			System.out.println("동행후기 검색 wiService.getViewData(params): " + wiService.getViewData(params));
-//			System.out.println("---------------------------------------------------------------------");
-//		}
 		return "review/withMain";
 	}
 	
@@ -70,21 +47,22 @@ public class WithReviewController {
 			Model model,
 			Authentication authentication,
 			HttpServletRequest req,
-			@RequestParam(value="num") int num,		//num = TL_USER_NUM
-			@RequestParam Map<String, Object> param
+			@RequestParam(value="num") int num,		
+			@RequestParam Map<String, Object> param,
+			@RequestParam(value = "page", defaultValue = "1") int page
 			) {
 		
-//		System.out.println(num + "번 회원의 타임라인");
+		//num = TL_USER_NUM
+		//param ==>> {num=} TL_USER_NUM 들어감
 		
-//		System.out.println("withList param : " + param);
+		System.out.println("num" + num);
+		System.out.println("param : " + param);
 		
 		
+		
+		//로그인한 USER_NUM
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
-		int userNum = user.getUser_num();	//로그인한 USER_NUM
-
-//		System.out.println("WITH_NUM : " + req.getParameter("WITH_NUM"));
-//		String withNum = req.getParameter("WITH_NUM");
-//		int WITH_NUM = Integer.parseInt(withNum);
+		int userNum = user.getUser_num();	
 		
 		//타임라인 USER 정보 
 		String strNum = String.valueOf(num);
@@ -94,11 +72,21 @@ public class WithReviewController {
 		revrev.put("userNum",userNum);
 		model.addAttribute("withBoard", revrev);
 		
-//		System.out.println("revrev : " + revrev);
-		
 		//리스트 부분
 		List<Map<String, Object>> rev2 = wiService.getWithBoard(num);
 		model.addAttribute("withList", rev2);
+		
+		//페이징 부분(page=1) ==> startPage 들어있음
+		Map<String, Object> paging = new HashMap<String, Object>();
+		paging.put("page", page);
+		paging.put("num", num);
+		
+		
+		
+		//startPage, totalPage, endPage, page, boardList(리스트 맵)
+		model.addAllAttributes(wiService.getViewPagingData(paging));
+		System.out.println("wiService.getViewPagingData(paging) : " + wiService.getViewPagingData(paging));
+		
 		
 		return "review/withList";
 	}

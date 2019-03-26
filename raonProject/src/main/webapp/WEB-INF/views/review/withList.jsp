@@ -125,11 +125,14 @@ $(function(){
                 </div>
                 <!----------------------------------------- 프로필 끝 -------------------------------------->
  				<input type="hidden" name="num" value="${param.num}">
-                <input type="button" class="btn btn-primary" id="upload"
-                    style="float: right; background-color: #eeeeee; color: green;" onclick="location.href='withWriteForm?num=${param.num}'" value="후기올리기">
-                    
+                <button type="button" class="btn btn-primary" id="upload"
+                    style="float: right; background-color: #eeeeee; color: green;" onclick="location.href='withWriteForm?num=${param.num}'">
+                	<i class="far fa-edit"></i> 후기올리기
+                </button>
                 <button type="button" class="btn btn-primary" id="btnMain"
-                    style="float: right; background-color: #eeeeee; color: green; margin-right: 20px;" onclick="location.href='withMain'">메인화면</button>
+                    style="float: right; background-color: #eeeeee; color: green; margin-right: 20px;" onclick="location.href='withMain'">
+                    	<i class="fas fa-align-justify"></i> 메인화면
+                </button>
                     
             </div>
  
@@ -186,9 +189,11 @@ $(function(){
                         	<input type="hidden" name="WITH_NUM" value="${withList.WITH_NUM}">
                         	<input type="hidden" name="TL_USER_NUM" value="${withList.TL_USER_NUM }">
                         	<input type="hidden" name="userNum" value="${withBoard.userNum}">
-                            <input type="button" class="btn btn-primary" id="btnWithReview" 
+                            <button type="button" class="btn btn-primary" id="btnWithReview" 
                                 onclick="location.href='withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}&userNum=${withBoard.userNum}'" 
-                                value="상세보기" style="background-color: #eeeeee; color: green;">
+                                style="background-color: #eeeeee; color: green;">
+                                <i class="fas fa-check-circle"></i> 상세보기 
+                            </button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -199,20 +204,38 @@ $(function(){
             <!---------------------------------- 동행후기 리스트 페이징 시작 ---------------------------------->
             <div style="margin-top: 50px; text-align: center;">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">Previous</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">1</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">2</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">3</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">4</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">5</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">Next</a></li>
+                    
+                    <li class="page-item">
+                    	<c:if test="${startPage != 1}">
+                    		<a class="page-link" href="withList?page=1">                        
+                        		START
+                    		</a>
+                   		</c:if>
+                   	</li>
+                    <li class="page-item">
+                    	<c:forEach var="pageNum" begin="${startPage}" end="${endPage < totalPage ? endPage : totalPage}">
+                    	pageNum : ${pageNum}
+                    		<c:choose>
+                    			<c:when test="${pageNum == page}">
+                    				<a class="page-link">
+                    					${pageNum}
+                    				</a>	
+                    			</c:when>
+                    			<c:otherwise>
+                    				<a class="page-link" href="withList?page=${pageNum}">
+                    					${pageNum}	
+                    				</a>	
+                    			</c:otherwise>
+                    		</c:choose>
+                    	</c:forEach>
+                    </li>
+                    <li class="page-item">
+                    	<c:if test="${totalPage > endPage}">
+                    		<a class="page-link" href="withList?page=${totalPage}">
+                    			END
+                    		</a>
+                    	</c:if>
+                    </li>
                 </ul>
             </div>
             <!---------------------------------- 동행후기 리스트 페이징 끝 ---------------------------------->

@@ -21,6 +21,65 @@
 	href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
 	integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ"
 	crossorigin="anonymous">
+	
+	
+	<script type="text/javascript">
+	$(function() {
+		
+		//국가입력 스크립트
+		$("#national").click(function() {
+			$(this).next().show();
+			$(this).next().hide();
+		});
+		
+		$("#write").on("submit", function () {
+			var nation = $("#national").val();
+			
+			var nation_split = nation.split(', ');
+			var nation_en = nation_split[0];
+			var nation_ko = nation_split[1];
+			
+			var checkNum = 0;
+			
+			$.ajax({
+				url : "${contextPath}/review/DB_nation",
+				type : "get",
+				async : false,
+				dataType : "json",
+				success : function (data) {
+					for(var i in data) {
+						if(data[i].NATIONALITY_KOR_NAME == nation_ko && data[i].NATIONALITY_NAME == nation_en) {
+							checkNum++;
+							break;
+						}
+					}
+				}
+			});
+			
+			//debugger
+			if(checkNum == 2) {
+				
+			}else {
+				swal({
+		               text:"국가를 정확히 선택해 주세요.",
+		               icon:"warning",
+		               buttons:[false,"확인"]
+		            })
+				return false;
+			}
+			
+		});
+		
+	});
+	
+	//국가 도시 검색 후 엔터키 쳤을 때 페이지 넘어가는것 막는 코드
+	 function captureReturnKey(e) {
+         if(e.keyCode==13 && e.srcElement.type != 'textarea')
+         return false;
+     }
+	</script>
+	
+	
 </head>
 <body>
 	<!-- 인클루드 심플 헤더 -->
@@ -49,7 +108,22 @@
 			
 			<div class="form-group">
 				<label for="inputlg">여행지</label> 
-				<input class="form-control input-lg" name="REV_DESTINATION" id="inputlg" type="text" value="${review.REV_DESTINATION}">
+<%-- 				<input class="form-control input-lg" name="REV_DESTINATION" id="inputlg" type="text" value="${review.REV_DESTINATION}"> --%>
+					<c:if test="${!empty national}">
+						<input list="brow" id="national" class="form-control input-lg" name="REV_DESTINATION" value="${review.REV_DESTINATION}">
+						<datalist id="brow">
+
+							<c:forEach var="national" items="${national}" varStatus="i">
+
+								<option id = "nationDB"
+									value="${national.NATIONALITY_NAME}, ${national.NATIONALITY_KOR_NAME}" 
+										onkeypress='chkCode(this,event.keyCode)'>
+								</option>
+
+							</c:forEach>
+
+						</datalist>
+					</c:if>
 			</div>
 		
 			<!-- Summernote -->

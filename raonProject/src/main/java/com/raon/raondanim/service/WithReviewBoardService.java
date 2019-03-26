@@ -28,4 +28,12 @@ public interface WithReviewBoardService {
 	//검색된 조건을 가지고 프로필 정보 출력
 	public List<Map<String, Object>> getSearchUser(Map<String, Object> params);
 	public Map<String, Object> getViewData(Map<String, Object> params);
+	
+	//----------------페이징----------------
+	//네비게이션 표시 위한 정보 받기
+	public Map<String, Object> getViewPagingData(Map<String, Object> params);
+	//게시글 하나 정보 가져오기
+	public Map<String, Object> getBoardByNum(int num);
+	//페이지 번호 받아서 해당 목록 가져오기
+	public List<Map<String, Object>> getBoardList(Map<String, Object> params);
 }

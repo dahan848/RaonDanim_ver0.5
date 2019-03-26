@@ -25,5 +25,10 @@ public interface WithReviewBoardDao {
 	
 	//검색
 	public List<Map<String, Object>> searchUser(Map<String, Object> param);
-	public int searchTotal(Map<String, Object> param);	
+	
+	//페이징
+	public List<Map<String, Object>> boardList(Map<String, Object> param);
+	public int selectTotalCount();
+	public Map<String, Object> selectOneByWithNum(int num);
+	
 }

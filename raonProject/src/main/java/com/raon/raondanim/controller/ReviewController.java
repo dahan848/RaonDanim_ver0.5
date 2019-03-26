@@ -1,6 +1,7 @@
 package com.raon.raondanim.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.raon.raondanim.model.customUserDetails;
+import com.raon.raondanim.service.MotelTbService;
 import com.raon.raondanim.service.ReviewBoardService;
-import com.raon.raondanim.service.ReviewReplyService;
 
 @Controller
 @RequestMapping("/review")
@@ -29,6 +29,9 @@ public class ReviewController {
 	
 	@Autowired
 	private ReviewBoardService reService;
+	
+	@Autowired
+	private MotelTbService moService;
 	
 	//여행 후기 메인화면  
 	@RequestMapping(value = "/reviewMain", method = RequestMethod.GET)
@@ -52,6 +55,11 @@ public class ReviewController {
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		int userNum = user.getUser_num();
 		model.addAttribute("userNum", userNum);
+		
+//		System.out.println("여행후기 작성 나라 선택 : " + moService.getAllNational());
+		
+		model.addAttribute("national", moService.getAllNational());
+		
 		return "review/reviewWrite";
 	}
 	
@@ -62,15 +70,20 @@ public class ReviewController {
 			@RequestParam(value="REV_DESTINATION") String REV_DESTINATION,
 			@RequestParam(value="RE_CONTENT") String RE_CONTENT,
 			@RequestParam(value="userNum") int userNum,
-			RedirectAttributes ra
-			) {
+			RedirectAttributes ra,
+			@RequestParam Map<String, Object> param
+			)throws Exception {
 		System.out.println("여행 후기 작성 중...");
+		
+		
 		
 		Map<String, Object> review = new HashMap<>();
 		review.put("REV_TITLE", REV_TITLE);
 		review.put("REV_DESTINATION", REV_DESTINATION);	
 		review.put("RE_CONTENT", RE_CONTENT);
 		review.put("USER_NUM", userNum);
+		
+		model.addAttribute("national", moService.getAllNational());
 		
 //		System.out.println("후기 내용 : " + review);
 		
@@ -145,6 +158,8 @@ public class ReviewController {
 		
 		String user_Num = String.valueOf(rev.get("USER_NUM"));
 		
+		model.addAttribute("national", moService.getAllNational());
+		
 //		System.out.println("글쓴 USER_NUM : " + user_Num);
 //		System.out.println("로그인 한 USER_NUM : " + userNum);
 		
@@ -177,4 +192,11 @@ public class ReviewController {
 
 		return "redirect:reviewView?num="+num;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/DB_nation")
+	public List<Map<String, Object>> DB_nation() {
+		return moService.getAllNational();
+	}
+	
 }

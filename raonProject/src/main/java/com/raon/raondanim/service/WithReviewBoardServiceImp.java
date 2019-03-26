@@ -24,21 +24,16 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 	
 	@Override
 	public boolean insertWith(Map<String, Object> param) {
-//		System.out.println("서비스 -> 동행후기 작성");
-//		System.out.println(param);
+
 		if(dao.insertWith(param)>0) {
-//			System.out.println("서비스 -> 동행후기 작성 성공");
 			return true;
 		} else {
-//			System.out.println("서비스 -> 동행후기 작성 실패");
 			return false;
 		}
 	}
 
 	@Override
 	public boolean updateWith(Map<String, Object> params) {
-		
-		System.out.println("서비스 -> 동행후기 수정");
 		
 		//parmas ==>> userNum(로그인한 USER_NUM), WITH_GPA, WITH_CONTENT, num(WITH_NUM)
 		System.out.println("서비스 -> 동행 후기 수정 params : " + params);
@@ -57,16 +52,12 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 		String user_Num = String.valueOf(with.get("WR_USER_NUM"));
 		
 		if(user_Num.equals(userNum)) {
-			System.out.println("USER_NUM 같음");
 			if(dao.updateWith(params)>0) {
-				System.out.println("서비스 -> 동행후기 수정 성공");
 				return true;
 			} else {		
-				System.out.println("서비스 -> 동행후기 수정 실패");
 				return false;
 			}
 		} else {
-			System.out.println("USER_NUM 다름");
 			return false;
 		}
 		
@@ -78,46 +69,35 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 		
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		
-//		System.out.println("서비스 -> 여행후기 삭제");
-//		System.out.println("서비스 삭제 param : " + param);
-		
 		//입력한 비밀번호
 		String input_pass = String.valueOf(param.get("input_pass"));
+		
 		//게시글 번호
 		String numStr = String.valueOf(param.get("num"));
-		int num = Integer.parseInt(numStr);			// num = WITH_NUM 
+		
+		// num = WITH_NUM
+		int num = Integer.parseInt(numStr);
+		
 		//로그인한 USER_NUM
 		String userNum = String.valueOf(param.get("userNum"));
 		
 		Map<String, Object> with = dao.selectWithOne(num);
-//		System.out.println("서비스 삭제 Map : " + review);
-		
-//		System.out.println("userNum : " + userNum);
-//		System.out.println("USER_NUM : " + with.get("USER_NUM"));
-//		System.out.println("USER_PW : " + with.get("USER_PW"));
-//		System.out.println("input_pass : " + input_pass);
 		
 		String user_Num =  String.valueOf(with.get("USER_NUM"));
 		String user_Pw =  String.valueOf(with.get("USER_PW"));
 		
 		
 		if(user_Num.equals(userNum)) {
-//			System.out.println("num 같음");
 			if(encoder.matches(input_pass, user_Pw)){
-//				System.out.println("서비스 -> 비밀번호 같음");
 				if(dao.deleteWith(num)>0) {
-//					System.out.println("서비스 -> 여행후기 삭제 성공");
 					return true;
 				} else {
-//					System.out.println("서비스 -> 여행후기 삭제 실패");
 					return false;
 				}
 			} else {
-//				System.out.println("서비스 -> 비밀번호 다름");
 				return false;
 			}
 		} else {
-//			System.out.println("num 다름");
 			return false;
 		}
 	}
@@ -167,32 +147,104 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 	@Override
 	public Map<String, Object> getViewData(Map<String, Object> params) {
 		
-//		System.out.println("검색 params : " + params);
+		//keyword를 입력받으면 daoparam에 집어넣음
+		//daoparam에 있는 키워드로 getSearchUser(daoParam) 해서 관련된 회원 뽑아 냄   --> searchList
+		//searchList를 map에 집어넣음
 		
 		String keyword = (String)params.get("keyword");
-		System.out.println("서비스 -> 검색 keyword : " + keyword);
-		
 		
 		Map<String, Object> daoParam = new HashMap<String, Object>();
-		
-//		daoParam.put("USER_LNM", keyword);
-//		daoParam.put("USER_FNM", keyword);
 		daoParam.put("USER_ID", keyword);
-		
-		System.out.println("서비스 -> 검색 daoParam : " + daoParam);
 	
-		Map<String, Object> viewData = new HashMap<String, Object>();
 		List<Map<String, Object>> searchList = getSearchUser(daoParam);
+		Map<String, Object> viewData = new HashMap<String, Object>();
 		viewData.put("searchList", searchList);
-		
-		System.out.println("서비스 -> 검색 searchList : " + searchList);
-		System.out.println("서비스 -> 검색 viewData : " + viewData);
 		
 		return viewData;
 		
 	}
 
+	//---------------- 페이징 부분 ----------------//
 	
+		//한 페이지에 표시될 게시글의 갯수 
+		private static final int NUM_OF_BOARD_PER_PAGE=10;
+		//한 번에 표시될 네비게이션 갯수
+		private static final int NUM_OF_NAVI_PAGE=10;
+		
+		
+		@Override
+		public List<Map<String, Object>> getBoardList(Map<String, Object> params) {
+			return dao.boardList(params);
+		}
+		
+		private int getFirstRow(int page) {
+			int result = (page-1)*NUM_OF_BOARD_PER_PAGE+1;
+			return result;
+		}
+		
+		private int getEndRow(int page) {
+			int result = ((page-1)+1)*NUM_OF_BOARD_PER_PAGE;
+			return result;
+		}
+		
+		private int getStartPage(int page) {
+			int result = ((page-1)/NUM_OF_BOARD_PER_PAGE)*NUM_OF_BOARD_PER_PAGE+1;
+			return result;
+		}
+		
+		private int getEndPage(int page) {
+			int result = getStartPage(page) + 9;
+			return result;
+		}
+		
+		private int getTotalPage() {
+			int totalCount = dao.selectTotalCount();
+			int totalPage = (totalCount-1)/NUM_OF_BOARD_PER_PAGE+1;
+			return totalPage;
+		}
+		
+		@Override
+		public Map<String, Object> getViewPagingData(Map<String, Object> params) {
+			
+			System.out.println("=-===================");
+			System.out.println("param : " + params);
+			System.out.println("=-===================");
+			
+			//page=1   --> startPage
+			int page = Integer.parseInt(String.valueOf(params.get("page")));
+			
+			int num = Integer.parseInt(String.valueOf(params.get("num")));
+			
+			//daoParam --> firstRow=1, endRow=10
+			Map<String, Object> daoParam = new HashMap<String, Object>();
+			daoParam.put("firstRow", getFirstRow(page));
+			daoParam.put("endRow", getEndRow(page));
+			daoParam.put("num", num);
+			
+			System.out.println("getFirstRow(page) : " + getFirstRow(page));
+			System.out.println("getEndRow(page) : " + getEndRow(page));
+			
+			//viewData ==>> startPage, totalPage, endPage, page, boardList
+			Map<String, Object> viewData = new HashMap<String, Object>();
+			List<Map<String, Object>> boardList = getBoardList(daoParam);
+			
+			viewData.put("boardList", boardList);
+			viewData.put("startPage", getStartPage(page));
+			viewData.put("endPage", getEndPage(page));
+			viewData.put("totalPage", getTotalPage());
+			viewData.put("page", page);
+			
+			
+			System.out.println("리스트 길이 : "+boardList.size());
+			System.out.println("서비스 -> viewData : " + viewData);
+			
+			return viewData;
+		}
+
+		@Override
+		public Map<String, Object> getBoardByNum(int num) {
+			return dao.selectOneByWithNum(num);
+		}
 	
 	
 

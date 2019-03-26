@@ -263,6 +263,9 @@
 	#btnSave {
 		display: inline;
 		float: right;
+		background-color: #eeeeee;
+		color: green;
+		border: 1px solid #cccccc;
 	}
 	#inputReply {
 		width: 1000px; 
@@ -345,11 +348,16 @@
 			
 			<br><br>
 			
-			<button type="button" class="btn btn-primary" id="List" onclick="location.href='reviewMain'">후기 목록</button>
-			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?num=${review.REVIEW_NUM}'">수정하기</button>
+			<button type="button" class="btn btn-primary" id="List" onclick="location.href='reviewMain'"><i class="fas fa-align-justify"></i> 후기 목록</button>
+			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?num=${review.REVIEW_NUM}'">
+				<i class="fas fa-wrench"></i> 수정하기
+			</button>
 			
 			<!------- 삭제 버튼, 모달  시작------->
-			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="Delete">삭제하기</button>
+			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="Delete">
+				<i class='far fa-trash-alt'></i> 삭제하기
+			</button>
+			
 			<input type="hidden" name="num" value="${review.REVIEW_NUM}">
 			<input type="hidden" name=userNum value="${userNum}">
 			<div class="modal fade" id="myModal" role="dialog">
@@ -438,41 +446,7 @@
   			<div align="center" >
   			
   				<ul class="pagination justify-content-center" id="replyPager">
-<!--   					<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						Previous -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						1 -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						2 -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						3 -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						4 -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						5 -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						Next -->
-<!--     					</a> -->
-<!--     				</li> -->
+
   				</ul>
   			</div>
 			<!------------ 댓글 리스트 페이징 끝 ------------>
@@ -483,7 +457,9 @@
   				<input type="hidden" name="REVIEW_NUM" value="${review.REVIEW_NUM}">
   				<input type="hidden" name="USER_NUM" value="${review.USER_NUM}">
   				<input type="text" class="form-control form-control-sm" placeholder="댓글을 입력하세요" id="inputReply" name="REV_REP_CONTENT">
-				<input type="submit" class="btn btn-primary" id="btnSave" value="등록">
+				<button type="submit" class="btn btn-primary" id="btnSave">
+					<i class="far fa-edit"></i> 등록
+				</button>
 			</form>
 			<!------------ 댓글 달기 끝 ------------>
 			
