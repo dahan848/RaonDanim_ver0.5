@@ -161,7 +161,7 @@
 		});
 	}	
 	$(document).ready(function() {
-		alert("악!15");
+		//alert("악!15");
 	});//onLoad END
 	
 	//메시지를 읽은 경우 읽은 수 만큼 개수 수정

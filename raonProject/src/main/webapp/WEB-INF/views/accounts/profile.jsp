@@ -417,14 +417,14 @@ input[type="file"] {
                         <div id="googleMap" style="width: 700px; height: 500px;"></div>
                     </div>
                 </div>
-                <div class="row">
-                    <label class="col-sm-3 control-label text-right">숙박 제공 가능 여부</label>
-                    	<div class="col-sm-9">
-                    		<c:if test="${user.accom_st eq 0 }"><span class="label label-gray label-lg">불가능</span></c:if>
-                    		<c:if test="${user.accom_st eq 2 }"><span class="label label-skyblue label-lg">가능(무료)</span></c:if>
-                    		<c:if test="${user.accom_st eq 3 }"><span class="label label-pink label-lg">가능(유료)</span></c:if>
-						</div>
-                </div>
+<!--                 <div class="row"> -->
+<!--                     <label class="col-sm-3 control-label text-right">숙박 제공 가능 여부</label> -->
+<!--                     	<div class="col-sm-9"> -->
+<%--                     		<c:if test="${user.accom_st eq 0 }"><span class="label label-gray label-lg">불가능</span></c:if> --%>
+<%--                     		<c:if test="${user.accom_st eq 2 }"><span class="label label-skyblue label-lg">가능(무료)</span></c:if> --%>
+<%--                     		<c:if test="${user.accom_st eq 3 }"><span class="label label-pink label-lg">가능(유료)</span></c:if> --%>
+<!-- 						</div> -->
+<!--                 </div> -->
 				</div> <!-- 유저 상세 정보 출력 부  END-->
 			</section> <!-- 프로필 section END-->
 		</div>
