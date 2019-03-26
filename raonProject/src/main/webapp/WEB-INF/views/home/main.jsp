@@ -69,21 +69,17 @@
     </section> <!-- 중단 : 각 도시 별 친구 END -->
     
     <!-- 하단 : 현재 가입된 회원 목록 -->
-    <section id="section-members">
+<section id="section-members">
         <div class="container">
-            <h3 class="h3-title text-center">
-                <img class="section-header-icon" src="${contextPath}/img/accounts_Chart.png" alt=""> 라온다님 회원을 만나보세요!
+            <h3 class="h3-title text-center" style="margin-bottom: 0px;">
+                <img class="section-header-icon" src="/img/accounts_Chart.png" alt=""> 라온다님 회원을 만나보세요!
             </h3>
-            <div class="row mt-50 mb-30">
-                <div class="col-sm-6">
-                    <h3 class="h3-sub-title text-center">
-                        <img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt=""> 라온친구
-                    </h3>
-                    <a href="/accounts/profiles/" class="badge badge-gray">+더보기</a>
-                    <div class="row row-p5 mb-20">
+            <a href="/accounts/profiles/" class="badge badge-gray" style="margin-left: 1090px; margin-bottom: 10px;">+더보기</a><div class="row mb-30">
+                <div class="col-sm-12" style="margin-left: 40px;">
+                    <div class="mb-20">
 	                   	<!-- 12개의 유저 목록을 반복문으로 그려줌 (랜덤하게) -->
 	                   	<c:forEach items="${userList}" var="user" varStatus="status">
-	                   		<div class="col-xs-2 col-sm-3 col-md-2">
+	                   		<div class="col-xs-2 col-sm-3 col-md-2" style="padding-bottom: 10px; padding-top: 10px;">
 		                     	<c:choose>
 			             			<c:when test="${user.USER_PROFILE_PIC eq 'n'}">
 			             				<a href="#" rel="popover" data-placement="bottom" data-trigger="focus" data-popover-content="#userInfo${status.index}">
@@ -104,67 +100,9 @@
 									<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->
 									<a onclick="chatClickbyUser(${user_num},${user.USER_NUM})">대화하기</a>
 									</sec:authorize>
-										   
 								</div>   	
 	                       	</div>
 	                   	</c:forEach>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <h3 class="h3-sub-title text-center">
-                        <img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt=""> 여행자
-                    </h3>
-                    <a href="/accounts/profiles/" class="badge badge-gray">+더보기</a>
-                    <div class="row row-p5 mb-20">
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
-                            <div class="col-xs-2 col-sm-3 col-md-2">
-                                <img class="img-circle" src="#">
-                            </div>
-                        
                     </div>
                 </div>
             </div>
