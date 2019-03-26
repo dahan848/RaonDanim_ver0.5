@@ -41,7 +41,8 @@
 									<div class="form-group">
 										<label class="control-label" for="id_email">이메일</label><input
 											class="form-control" id="id_email" maxlength="200"
-											name="inquiry_reg_id" placeholder="이메일" title="" type="email" />
+											name="inquiry_reg_id" placeholder="이메일 주소" title="" type="email" />
+										<div id="idCheck" class="help-block" style="display: none; color: #a94442; margin-top: 5px;"></div>
 									</div>
 									<div class="form-group">
 										<label class="control-label" for="id_subject">제목</label><input
@@ -67,6 +68,52 @@
 	<!-- 인클루드-푸터 END -->
 </body>
 	<script type="text/javascript">
+	//이메일 입력 칸 벗어남
+	$("#id_email").change(function(){
+		emailCheck($('#id_email').val());
+	});
+	
+	//이메일 유효성 검사 
+	function emailCheck(email) {
+		var path = "http://localhost:8081";
+		/*
+		 1.유효성 검사를 통해 이메일 주소 인지 판단
+		 2.사용자가 입력 한 이메일 주소가 이미 가입되어 있는 이메일 주소인지 Ajax로 비동기적 체크 
+		*/
+		
+		//1.유효성 검사
+		var idForm = $("#idCheck"); 
+		var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; //정규식 
+		if(exptext.test(email)==false){
+			idForm.text("유효한 이메일 주소를 입력하십시오."); 
+			idForm.show(); 
+			$('#id_email').val('').focus();
+		}else{
+			idForm.hide();
+			//2.Ajax 활용 중복여부 체크 
+			$.ajax({
+		        type : 'get',
+		        url : path + '/accounts/emailCheck',
+		        data : {"check":email},
+		        datType:"json",
+		        success : function(result) {
+		        	if(!result){
+		        		idForm.hide();
+		        	}else{
+		        		idForm.text("'비회원'으로 문의 글이 등록됩니다. 답변을 확인할 수 있는 이메일인지 확인해주세요."); 
+		        		idForm.show(); 
+		        		$('#id_email').focus();
+		        	}
+		        },
+		        error : function(error) {
+		            console.log(error);
+		            console.log(error.status);
+		        }
+		    });
+		}
+	}
+	
+	
 	$("#inquiryForm").on("submit", function() {
 		var data = $(this).serialize();
 		//alert(data);
