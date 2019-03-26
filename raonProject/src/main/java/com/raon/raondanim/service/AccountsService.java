@@ -178,6 +178,12 @@ public class AccountsService {
 		if(!dao.getUserLanguage(userNum).isEmpty()) {
 			language = dao.getUserLanguage(userNum);
 		}
+		
+		//숙박 평점 예외처리
+		double motelAvg = 0;
+		if(!dao.motelNullCheck(userNum).isEmpty()) {
+			motelAvg = Math.round(dao.getMotelAvg(userNum)*10)/10.0;
+		}
 
 		result.put("profile", user.getUser_profile_pic());				//프로필 사진 : 디폴트n
 		result.put("name", user_name); 			 						//이름
@@ -185,7 +191,7 @@ public class AccountsService {
 		result.put("gender", user.getUser_gender()); 					//성별
 		result.put("lastLogin", lastLogin);								//마지막 로그인 시간
 		result.put("with_avg", user.getUser_with_avg());				//후기 평점
-		result.put("motel_avg", Math.round(dao.getMotelAvg(userNum)*10)/10.0);				//숙소 평점
+		result.put("motel_avg", motelAvg);								//숙소 평점
 		result.put("intro", user.getUser_intro());						//자기소개
 		result.put("age", age);											//나이 : 따로 메서드로 구해야 됨.
 		result.put("interest", interest);								//좋아하는 것 : 테이블 조인 해서 얻어와야 함

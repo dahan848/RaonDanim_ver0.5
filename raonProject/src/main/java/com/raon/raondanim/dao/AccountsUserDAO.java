@@ -26,6 +26,7 @@ public interface AccountsUserDAO {
 	public void passwordReset(Map<String, Object> param); //해당 아이디의 비밀번호를 초기화 하는 () 이메일과 초기화 된 비밀번호를 인자로 받는다. 
 	public void setAdmin(User user);
 	public double getMotelAvg(String usernum);
+	public List<Map<String, Object>> motelNullCheck(String usernum);
 	
 	
 	

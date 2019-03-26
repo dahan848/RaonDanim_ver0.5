@@ -124,6 +124,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where user_num = #{usernum}
 	</select>
 	
+	<select id="motelNullCheck" parameterType="string" resultType="map">
+		select * from motel_tb where user_num = #{usernum}
+	</select>
+	
 <!-- 	여행파트 dao추가 -->
 <select id="getTrStyle" parameterType="String" resultType="map">
 select *

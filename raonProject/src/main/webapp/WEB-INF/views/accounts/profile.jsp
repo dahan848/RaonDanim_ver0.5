@@ -338,14 +338,18 @@ input[type="file"] {
 				  		<c:if test="${user.lastLogin ne 666 }"><p><small>Last login ${user.lastLogin} minutes ago</small></p></c:if> 
                    		<hr>
                    		<div class="row">
+                       		<!-- 숙박평점 -->
                         	<div class="col-xs-6">
-                            	<div class="friends-count"><i class="ion ion-ios-heart"></i> ${user.motel_avg}</div>
-                            		<!-- 숙박평점 -->
+                            	<div class="friends-count">
+                            		${user.motel_avg} 
+                            	</div>
                             		<small>숙박평점</small> 
                        		</div>
+                       		<!-- 후기평점 -->
                         	<div class="col-xs-6">
-                            	<div class="friends-count"><i class="ion ion-android-person"></i> ${user.with_avg}</div>
-                            		<!-- 후기평점 -->
+                            	<div class="friends-count">
+                            		${user.with_avg}
+                           		</div>
                             		<small>후기평점</small>	
                         	</div>
                     	</div>
