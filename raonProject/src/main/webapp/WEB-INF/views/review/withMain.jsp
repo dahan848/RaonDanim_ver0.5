@@ -195,8 +195,7 @@ input[type=text]:focus {
                      	<a href="withList?num=${with.USER_NUM}" style="text-align: center; display: inline-block;">${with.USER_LNM}${with.USER_FNM}</a>
                      	<br>
                      	<span style="text-align: center; display: inline-block; font-size: 18px;">-${with.USER_ID}-</span>
-                     	<br>
-                     	<span style="text-align: center; display: inline-block; font-size: 15px;">NATIONALITY : ${with.USER_NATIONALITY}</span>
+                     	
                      	<br>
                      	<c:if test="${with.USER_GENDER == 1}">
                      		<i class="fas fa-mars"></i>
