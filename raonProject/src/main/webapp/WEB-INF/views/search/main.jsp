@@ -155,7 +155,7 @@
 											
 											<!-- 상세 검색 - 언어 -->
 											<div class="form-group">
-												<label class="col-sm-3 control-label" for="id_languages">사용 언어</label>
+												<label class="col-sm-3 control-label" for="id_language">사용 언어</label>
 												<div class="col-sm-9">
 													<select class="form-control select-language" name="language">
 														<!-- placeholder 사용을 위한 option blank -->
@@ -211,15 +211,15 @@
 											
 											<!-- 상세 검색 - 여행스타일 -->
 											<div class="form-group">
-												<label class="col-sm-3 control-label" for="id_travlestyles">여행 스타일</label>
+												<label class="col-sm-3 control-label" for="id_travlestyle">여행 스타일</label>
 												<div class="col-sm-9">
-													<select class="form-control select-travlestyles" name="travlestyles">
+													<select class="form-control select-travlestyle" name="travlestyle">
 														<!-- placeholder 사용을 위한 option blank -->
 														<option></option>
 													</select>
 													<script>
 														$(document).ready(function(){
-															$(".select-travlestyles").select2({
+															$(".select-travlestyle").select2({
 																placeholder: "선택",
 																allowClear: true,
 																language: "ko",
@@ -273,24 +273,24 @@
 										
 											<!-- 상세 검색 - 이름 -->
 											<div class="form-group">
-												<label class="col-sm-3 control-label" for="id_search_name">이름 </label>
+												<label class="col-sm-3 control-label" for="id_name">이름 </label>
 												<div class="col-sm-9">
-													<input class="form-control" name="search_name" placeholder="이름" type="text"/>
+													<input class="form-control" name="name" placeholder="이름" type="text"/>
 												</div>
 											</div>
 											<!-- 상세 검색 - 이름 END -->
 											
 											<!-- 상세 검색 - 국적 START -->
 											<div class="form-group">
-												<label class="col-sm-3 control-label" for="id_nationalities">국적</label>
+												<label class="col-sm-3 control-label" for="id_nationality">국적</label>
 												<div class="col-sm-9">
-													<select class="form-control select-nationalities" name="nationalities">
+													<select class="form-control select-nationality" name="nationality">
 														<!-- placeholder 사용을 위한 option blank -->
 														<option></option>
 													</select>
 													<script>
 														$(document).ready(function(){
-															$(".select-nationalities").select2({
+															$(".select-nationality").select2({
 																placeholder: "선택",
 																allowClear: true,
 																language: "ko",
@@ -343,8 +343,8 @@
 													 <select class="form-control select-gender" name="gender">
 													 	<!-- placeholder 사용을 위한 option blank -->
 													 	<option></option>
-													 	<option value="1">남</option>
-													 	<option value="2">여</option>
+													 	<option value="0">남</option>
+													 	<option value="1">여</option>
 													 </select>
 													 <script>
 														$(document).ready(function(){
@@ -361,15 +361,15 @@
 											
 											<!-- 상세 검색 - 관심사 -->
 											<div class="form-group">
-												<label class="col-sm-3 control-label" for="id_interests">관심</label>
+												<label class="col-sm-3 control-label" for="id_interest">관심</label>
 												<div class="col-sm-9">
-													<select class="form-control select-interests" name="interests">
+													<select class="form-control select-interest" name="interest">
 														<!-- placeholder 사용을 위한 option blank -->
 														<option></option>
 													</select>
 													<script>
 														$(document).ready(function(){
-															$(".select-interests").select2({
+															$(".select-interest").select2({
 																placeholder: "선택",
 																allowClear: true,
 																language: "ko",
@@ -433,6 +433,7 @@
 				</form>
 				<!-- 상단 검색 섹션 END -->
 				
+				
 				<!-- 회원 정보 -->
 				<div class="row">
 				<c:forEach items="${userList}" var="user">
@@ -444,32 +445,33 @@
 							
 							<!-- 프로필 이미지 -->
 							<div class="cover-profile-image">
-								<a href="#" class="img-circle img-avatar">
+								<a href="${contextPath}/accounts/profile?user=${user.USER_NUM}" class="img-circle img-avatar">
 								<img src="${contextPath}/img/profile/profile_circle_cover_1.jpg" class="img-profile">
 								</a>
 							</div>
 							
 							<!-- 닉네임 -->
-							<h4 class="profile-name">${user.USER_LNM} ${user.USER_FNM}</h4>
+							
+								<h4 class="profile-name">${user.USER_LNM} ${user.USER_FNM}</h4>							
 							
 							<!-- 거주도시 -->
-							<p class="profile-city">거주도시: ${user.USER_CITY}</p>
+							<p class="profile-city">거주도시: ${user.city}</p>
 							
 							<hr>
 							
 							<!-- 관심사 -->
 							<div class="cover-tags cover-tags-properties">
-								<c:forEach items="${interestList}" var="interest">
-									<c:if test="${user.INTEREST == interest.INTEREST_NUM }">
-									<span class="label label-default">${interest.INTEREST_EN_NAME}</span>
-									</c:if>
+								<c:forEach items="${user.interests}" var="interests">
+									<span class="label label-default">${interests.INTEREST_KO_NAME}</span>
 								</c:forEach>
 							</div>
 							
 							<!-- 희망 여행도시 -->
+							<!--  
 							<div class="cover-tags cover-tags-certification">
-								<span class="label">${user.HOPECITY }</span>
+								<span class="label">hopecity</span>
 							</div>
+							-->
 						</div>
 					</div>
 					</c:forEach>

@@ -2,25 +2,77 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.raon.raondanim.dao.SearchUserDAO">
-	<select id="userList" parameterType="map" resultType="map">
+	<select id="getUserList" parameterType="map" resultType="map">
 		SELECT *
-			FROM (SELECT ROWNUM as RNUM, user_num, user_fnm, user_lnm, user_city_country, interest, hopecity
-			FROM (SELECT u.user_num, u.user_fnm, u.user_lnm, u.user_city_country, i.interest_num as interest, h.hope_city as hopecity
-			FROM user_tb u
-			     left outer join interest_tb i ON u.user_num = i.user_num
-			     left outer join travle_hope h ON u.user_num = h.user_num
-    	ORDER BY u.user_num DESC))
-		WHERE RNUM between #{firstRow} and #{endRow}
-	</select>
-	
-	<select id="interestList" resultType="map">
-		SELECT *
-		  FROM interest_tb
+		  FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_FNM, USER_LNM, USER_GENDER
+		          FROM (SELECT u.USER_NUM, u.USER_FNM, u.USER_LNM, u.USER_GENDER
+		                  FROM user_tb u
+		         ORDER BY u.USER_NUM DESC))
+		 WHERE RNUM between #{firstRow} and #{endRow}
 	</select>
 	
 	<select id="selectTotalCount" parameterType="map" resultType="int">
 		SELECT count(*)
-		  FROM user_tb
+		  FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_FNM, USER_LNM, USER_GENDER
+		          FROM (SELECT u.USER_NUM, u.USER_FNM, u.USER_LNM, u.USER_GENDER
+		                  FROM user_tb u
+		 ORDER BY u.USER_NUM DESC))
+	</select>
+	
+	<select id="selectByUserNum" parameterType="string" resultType="user">
+		SELECT USER_NUM, USER_FNM, USER_LNM, USER_GENDER
+		  FROM USER_TB
+		 WHERE USER_NUM = #{userNum}
+	</select>
+	
+	<select id="getUserCity" parameterType="string" resultType="map">
+		SELECT *
+		  FROM CITY_COUNTRY_DTB
+		 WHERE CITY_COUNTRY_NUM = (SELECT USER_CITY_COUNTRY
+                           			 FROM USER_TB
+                          		    WHERE USER_NUM = #{userNnum})
+	</select>
+	
+	<select id="getUserLanguages" parameterType="string" resultType="map">
+		SELECT *
+ 		  FROM LANGUAGE_DTB
+ 		 WHERE LANGUAGE_NUM IN (SELECT LANGUAGE_NUM
+                         		  FROM LANGUAGE_TB
+                       			 WHERE USER_NUM = #{userNum})
+	</select>
+	
+	<select id="getUserTravlestyles" parameterType="string" resultType="map">
+		SELECT *
+		  FROM TRAVLE_STYLE_DTB
+		 WHERE TRAVLE_STYLE_NUM IN (SELECT TRAVLE_STYLE_NUM
+								  FROM TRAVLE_STYLE_TB
+								 WHERE USER_NUM = #{userNum})
+	</select>
+	
+	<select id="getUserNationality" parameterType="string" resultType="string">
+		SELECT NATIONALITY_EN_NAME
+		  FROM NATIONALITY_DTB
+		 WHERE NATIONALITY_NUM = (SELECT USER_NATIONALITY
+                           			FROM USER_TB
+                          		   WHERE USER_NUM = #{userNum})
+	</select>
+	
+	<select id="getUserInterests" parameterType="string" resultType="map">
+		SELECT *
+		  FROM INTEREST_DTB
+		 WHERE INTEREST_NUM IN (SELECT INTEREST_NUM
+                         		  FROM INTEREST_TB
+                        		 WHERE USER_NUM = #{userNum})
+	</select>
+	
+	<select id="searchByLanguage" parameterType="string" resultType="map">
+		SELECT *
+		  FROM (SELECT ROWNUM as RNUM, user_num, language_ko_name
+		          FROM (SELECT l.USER_NUM, ld.LANGUAGE_KO_NAME
+						  FROM LANGUAGE_TB l, LANGUAGE_DTB ld
+						 WHERE l.LANGUAGE_NUM = ld.LANGUAGE_NUM
+						   AND l.LANGUAGE_NUM = #{language}
+						 ORDER BY l.USER_NUM DESC))
 	</select>
 	
 </mapper>
