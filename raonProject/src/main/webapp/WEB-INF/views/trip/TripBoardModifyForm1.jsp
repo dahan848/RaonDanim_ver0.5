@@ -99,7 +99,7 @@ $(function() {
 						<c:choose>
 							<c:when test="${userInfo.UserInterest != null}">			
 								<c:forEach items="${userInfo.UserInterest}" var="i">
-									<span class="label label-mint label-lg"><b>${i.INTEREST_NAME}</b></span>
+									<span class="label label-mint label-lg"><b>${i.INTEREST_EN_NAME}</b></span>
 								</c:forEach>	
 							</c:when>
 							<c:otherwise>			
@@ -129,7 +129,7 @@ $(function() {
 						<c:choose>
 							<c:when test="${userInfo.UserTrStyle != null}">
 								<c:forEach items="${userInfo.UserTrStyle}" var="tr">
-									<span class="label label-mint label-lg"><b>${tr.TR_STYLE}</b></span>
+									<span class="label label-mint label-lg"><b>${tr.USERTRSTYLE}</b></span>
 								</c:forEach>	
 							</c:when>
 							<c:otherwise>
