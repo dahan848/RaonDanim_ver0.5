@@ -24,17 +24,18 @@
 	</bean>
 
 	<!-- 오라클 접속 -->
-	<bean
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		id="dataSource">
-		<property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
-			name="driverClassName" />
-		<property
-			value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE" name="url" />
-		<property value="pr" name="username" />
-		<property value="123" name="password" />
 
-	</bean>
+	<bean class="org.apache.commons.dbcp2.BasicDataSource" id="dataSource">
+      <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
+      <property name="url" value="jdbc:log4jdbc:oracle:thin:@localhost:1521/XE"/>
+      <property name="username" value="pr"/>
+      <property name="password" value="123"/>
+      <property name="maxTotal" value="8"></property>
+      <property name="maxIdle" value="10"></property>
+      <property name="maxWaitMillis" value="1000"></property>
+   </bean>
+
+
 
 	<!-- 마이바티스 연동 -->
 	<bean id="sqlSessionFactory"

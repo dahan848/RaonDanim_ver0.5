@@ -73,6 +73,8 @@ public class FileUploadController {
         if(!dir.isDirectory()){
             dir.mkdir();
         }
+        
+        //System.out.println("프로필 사진 업로드 경로 :" + FILE_PATH);
          
         Iterator<String> files = multi.getFileNames();
         while(files.hasNext()){

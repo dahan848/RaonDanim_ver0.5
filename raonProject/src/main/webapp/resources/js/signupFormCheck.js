@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	alert("테스트4");
+	//alert("테스트4");
 	//이메일 유효성 및 중복여부 체크 
 	$("#id_email").change(function(){
 		emailCheck($('#id_email').val());

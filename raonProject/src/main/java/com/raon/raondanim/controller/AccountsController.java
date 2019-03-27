@@ -22,8 +22,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.raon.raondanim.model.User;
 import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.AccountsService;
+import com.raon.raondanim.service.MotelTbService;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,8 +37,11 @@ import javax.servlet.http.HttpServletResponse;
 public class AccountsController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+
 	@Autowired
 	private AccountsService service;
+	@Autowired
+	private MotelTbService motelService;
 	
 	//로그인 화면 요청
 	@RequestMapping(value = "/loginForm")
@@ -88,23 +93,13 @@ public class AccountsController {
 		service.logout(request, response);
 		return "redirect:/home";
 	}
-	
-	//비밀번호 찾기 (초기화 화면 요청)
-	public String passwordResetForm() {
-		return "";
-	}
-	
-	//비밀번호 로직
-	public String passwordReset() {
-		return "";
-	}
-	
+		
 	//프로필 화면 요청 
 	@RequestMapping("/profile")
 	public String profile(Model model, @RequestParam(value="user") int userNum) {
 		Map<String, Object> userData = service.getProfileData(userNum);
-		//System.out.println("==============프로필 데이터==============");
-		//System.out.println(userData);
+		System.out.println("==============프로필 데이터==============");
+		System.out.println(userData);
 		model.addAttribute("user", userData);
 		model.addAttribute("profileUser", userNum);
 		return "accounts/profile";
@@ -140,29 +135,77 @@ public class AccountsController {
 	
 	//프로필 수정 화면 1
 	@RequestMapping(value = "/update1Form")
-	public String update1Form() {
+	public String update1Form(Authentication authentication, Model model) {
 		//나의 정보를 클릭하면, 추가 프로필 등록 1단계 화면이 나옴.
 		//사용자의 정보를 추가 프로필 1단계 화면으로 넘겨주어야 한다.
 		//1. 수정(입력)된 정보 발생
 		//'다음'버튼 클릭 시 별도의 알림 창 없이 [저장]
 		//'다른 탭'을 클릭 하려고 하면 수정된 정보가 있는데 저장 할 것인가를 물음.
+		
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		String usernum = Integer.toString(user.getUser_num());
+		//System.out.println("update1Form : " + user);
+		int userNum = user.getUser_num();
+		service.getProfileData(userNum);
+
+		
+		model.addAttribute("allInterest", service.allInterest(userNum));
+		model.addAttribute("allLanguage", service.allLanguage(userNum));
+		model.addAttribute("allTripStyle", service.allTripStyle(userNum));
+
 		return "accounts/profile-update1";
 	}
 	
 	//프로필 수정 화면 2
 	@RequestMapping(value = "/update2Form")
-	public String update2Form() {
+	public String update2Form(Model model,@RequestParam Map<String, Object> params,Authentication authentication) {
+		//System.out.println("update2Form param: " + params);
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		int userNum = user.getUser_num();
+		
+		//첫 번째 화면에서 입력 받은 정보를 DB에 저장한다.
+		service.profileUpdate_Language(params,userNum);
+		service.profileUpdate_Interest(params, userNum);
+		service.profileUpdate_TripStyle(params, userNum);
+		
+		//사용자 DB에 저장 된 자기소개 보내주기  
+		model.addAttribute("userIntro", service.getUserIntro(userNum));
+		
 		return "accounts/profile-update2";
 	}
 	
-	//프로필 수정 화면 3
+
+	//레알 프로필 수정 화면3
 	@RequestMapping(value = "/update3Form")
-	public String update3Form() {
+	public String update3Form(@RequestParam Map<String, Object> params, Model model, Authentication authentication) {
+		System.out.println("update3Form param : " + params);
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		int userNum = user.getUser_num();
+		service.self_introduce_update(params, userNum);
+		
+		//System.out.println("update3Form");
+		//System.out.println(motelService.getAllNational());
+		//System.out.println(motelService.getAllCity());
+		model.addAttribute("national", motelService.getAllNational());
+		model.addAttribute("city", motelService.getAllCity());
 		return "accounts/profile-update3";
 	}
 	
+	//프로필 업데이트 최종 후 메인으로 보내기
+	@RequestMapping(value="/update_complete")
+	public String update_complete(@RequestParam Map<String, Object> params,  Authentication authentication) {
+		System.out.println("update_complete : " + params);
+		customUserDetails user = (customUserDetails) authentication.getPrincipal();
+		int userNum = user.getUser_num();
+		if(params.size() <= 0) {
+			return "home/main";
+		}
+		service.live_city_nation_phoneNumber(params, userNum);
+		return "home/main";
+	}
 	
-	//프로필 수정 화면 3
+	//프로필 수정 화면 3 ==== 갤러리 수정
+
 	@RequestMapping(value = "/gallerySettings")
 	public String gallerySettings(Authentication authentication, Model model) {
 		//현재 로그인 한 유저 (시큐리티 세션 이용)의 유저넘을 가지고 온다.
@@ -272,6 +315,57 @@ public class AccountsController {
 		return "accounts/password-reset";
 	}
 	
+
+	//대시보드 작성 - 조현길
+	//대시보드 페이지 호출
+	@RequestMapping("/dashboard")
+	public String viewDashboard() {
+		System.out.println("왜왜왜");
+		return "accounts/dashboard";
+	}
+	//대시보드 ajax(여행활동 탭)
+	@RequestMapping(value="trip_list",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> trip_list(@RequestParam(value="page",defaultValue="1")int page,
+			Model model, int num){
+		System.out.println("ajax 요청 받았다(여행활동 - 여행 작성글");
+		Map<String, Object>params = new HashMap<String, Object>();
+		params.put("num", num);
+		params.put("page", page);
+		System.out.println(params);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("board", service.getViewData(params));
+		System.out.println("보드 리스트 결과");
+		System.out.println(result);
+		return result;
+	}
+	
+	//대시보드 ajax(여행활동 탭 여행 댓글)
+		@RequestMapping(value="trip_reply_list",method=RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> trip_reply_list(@RequestParam(value="page",defaultValue="1")int page,
+				Model model, int num){
+			System.out.println("ajax 요청 받았다(여행활동 - 여행 댓글");
+			Map<String, Object>params = new HashMap<String, Object>();
+			params.put("num", num);
+			params.put("page", page);
+			System.out.println(params);
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("board", service.getReplyViewData(params));
+			System.out.println("댓글 보드 리스트 결과");
+			System.out.println(result);
+			return result;
+		}
+		
+		//대시보드 댓글 삭제
+		@RequestMapping(value="/replyDelete",method=RequestMethod.POST)
+		public int reply_delete (@RequestParam Map<String, Object>params) {
+			System.out.println("재미없다~~~~~~");
+			System.out.println(params);
+			return 0;
+		}
+	
+
 	//비밀번호 찾기 Ajax 요청 
 	@ResponseBody
 	@RequestMapping(value = "/passwordreset")

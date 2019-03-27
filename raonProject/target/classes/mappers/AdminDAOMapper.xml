@@ -75,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             					OR a.ANSWER_NUM is null
         					</if>
                         GROUP BY i.INQUIRY_NUM,i.INQUIRY_TYPE,i.INQUIRY_REG_ID,i.INQUIRY_SUBJECT,i.INQUIRY_CONTENT,i.INQUIRY_REG_DATE,i.INQUIRY_RGE_TYPE,a.ANSWER_NUM
-                        ORDER BY i.INQUIRY_NUM))
+                        ORDER BY i.INQUIRY_NUM desc))
         WHERE RNUM between #{firstRow} and #{endRow}
 	</select>
 	<!-- 문의글 더미 데이터 생성 -->

@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ImageController {
+
 	@Resource(name = "uploadPath")
 	private String FILE_PATH;
+
 	//private static final String FILE_PATH = "c:\\temp";
 	
 	@ResponseBody

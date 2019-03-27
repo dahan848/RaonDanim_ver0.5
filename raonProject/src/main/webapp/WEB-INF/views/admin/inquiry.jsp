@@ -204,7 +204,7 @@
 	                                        	<c:if test="${inquiry.INQUIRY_RGE_TYPE eq 0}"><td>비회원</td></c:if>
 	                                        	<c:if test="${inquiry.INQUIRY_RGE_TYPE eq 1}"><td>회원</td></c:if>
 	                                        	<td>${inquiry.INQUIRY_REG_ID}</td>
-	                                        	<td><a class="btn btn-primary" data-toggle="modal" data-target="#modalPoll-${inquiry.INQUIRY_NUM}">${inquiry.INQUIRY_SUBJECT}</a></td>
+	                                        	<td><a style='cursor:pointer' data-toggle="modal" data-target="#modalPoll-${inquiry.INQUIRY_NUM}">${inquiry.INQUIRY_SUBJECT}</a></td>
 	                                        	<td>${inquiry.INQUIRY_REG_DATE}</td>
 	                                        	<c:if test="${inquiry.ANSWER_ST eq 0}"><td>X</td></c:if>
 	                                        	<c:if test="${inquiry.ANSWER_ST ne 0}"><td>O</td></c:if>
@@ -248,13 +248,10 @@
 											        <div class="form-check mb-4">
 														<p style="text-align: center;">${inquiry.INQUIRY_CONTENT}</p>
 											        </div>
-											        <p class="text-center">
-											          <strong>답변작성</strong>
-											        </p>
 											        <!-- 답변이 미등록인 경우 -->
 <%-- 											        <c:if test="${inquiry.ANSWER_ST eq 0}"> --%>
 												        <div class="md-form">
-												          <textarea type="text" id="answer_content" class="md-textarea form-control" rows="3"></textarea>
+												          <textarea type="text" id="answer_content" class="md-textarea form-control" rows="3" placeholder="답변을 작성해주세요."></textarea>
 												        </div>
 <%-- 											        </c:if> --%>
 											        <!-- 답변이 등력 된 경우 -->

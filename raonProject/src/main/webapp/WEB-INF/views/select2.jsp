@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-css/1.4.6/select2-bootstrap.min.css" />
 </head>
 <body>
-	<div class="container">
+	<div class="container" style="margin-left: 30px; margin-bottom: 10px;">
 		<input id="test" style="width: 100%;"
 			placeholder="숫자를 입력하고 스크롤하여 자세한 결과를 확인하십시오." />
 	</div>

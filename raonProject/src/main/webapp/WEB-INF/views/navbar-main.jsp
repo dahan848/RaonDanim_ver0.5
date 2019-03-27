@@ -47,6 +47,52 @@
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal.user_email_verify" var="verify"/>
 	<sec:authentication property="principal.user_num" var="user_num"/>
+	
+	<!-- 시큐리티 함수 안에 스크립트를 설정하여, 로그인이 되어 있는 상태 일 때만 스크립트가 실행 될 수 있도록 설정 -->
+	<script type="text/javascript">
+	//접속 한 사용자가 가지고 있는 메시지의 개수를 얻는 ()
+		var wsUri = "ws://localhost:8081/count";
+		//웹소켓 객체를 생성하고 연결하는 ()
+		 function send_message() {
+			//새로운 웹소켓 객체를 생성 
+	        websocket = new WebSocket(wsUri);
+			//웹소켓 연결
+	        websocket.onopen = function(evt) {
+	            onOpen(evt);
+	        };
+	        //웹소켓에 메시지 전송 
+	        websocket.onmessage = function(evt) {
+	            onMessage(evt);
+	        };
+	        //에러 발생 시 에러를 받아옴 
+	        websocket.onerror = function(evt) {
+	            onError(evt);
+	        };
+	    }
+		
+		//MessageAlarm 핸들러로 로그인 한 user의 num을 보낸다
+	    function onOpen(evt) {
+	       websocket.send("${user_num}");
+	    }
+	    
+		//MessageAlarm로 부터 해당 유저의 count를 받는다
+	    function onMessage(evt) {
+			//읽지 않은 메시지의 개수를 화면에 출력해준다.
+			var count = evt.data;
+			if(count > 0){
+	    		$('#mCount').append(evt.data);				
+			}
+	    }
+		
+	    function onError(evt) {
+	    }
+	    
+		
+	    //사용자가 로그인을 하고 화면이 온로드 되면 소켓 연결을 실행한다.
+	    $(document).ready(function(){
+	    		send_message();
+	    });
+	</script>
 </sec:authorize>
 <script type="text/javascript">
 	var check = ${verify};
@@ -71,6 +117,7 @@
 	function getChatRoomList() {
 		var path = "http://localhost:8081";
 		var usernum = ${user_num}
+		var colon = ",";
 		//alert(path);
 		//alert(usernum);
 		
@@ -97,23 +144,49 @@
 					var name = data[i].USER_LNM +" "+data[i].USER_FNM;
 					var user_num = data[i].USER_NUM;
 					var room_num = data[i].CHAT_ROOM_NUM;
+					var unread = "미확인 메시지 : "+data[i].UNREAD; //채팅 방의 읽지 않은 메시지의 개수 
+					var check = data[i].UNREAD;
 					//roomList
 					var content = data[i].CONTENT;
-					 //화면 그리기  
-					 $(".chat_body").append("<div class='user' onclick='chatClickbyRoom("+room_num+")'> <img src='"+profile_pic+"'/><div class='namechat'>"+name+"</div><div class='chat_msg'>"+content+"</div><hr></div");
+					 //화면 그리기
+					 if(typeof check != "undefined"){
+						 //미확인 메시지가 있는 경우
+						 $(".chat_body").append("<div class='user' style='padding-bottom: 0px; padding-top: 0px;' onclick='chatClickbyRoom("+room_num+colon+usernum+colon+check+")'> <img src='"+profile_pic+"'/><div class='namechat' style='padding-bottom: 0px;'>"+name+"</div><div class='chat_msg'>"+content+"</div><strong class='text-potluck' style='margin-left: 10px;'>"+unread+"</strong><hr style='margin-top: 5px; margin-bottom: 10px;'></div>");
+					 }else{
+						 //미확인 메시지가 없는 경우
+						 $(".chat_body").append("<div class='user' style='padding-bottom: 0px; padding-top: 0px;' onclick='chatClickbyRoom("+room_num+colon+usernum+")'> <img src='"+profile_pic+"'/><div class='namechat' style='padding-bottom: 0px;'>"+name+"</div><div class='chat_msg'>"+content+"</div><hr style='margin-top: 5px; margin-bottom: 10px;'></div>");
+					 }
 				}//반복문 종료
 			}
 		});
-	}
-	
+	}	
 	$(document).ready(function() {
-// 		getChatRoomList(); //화면이 그려지면 메시지 리스트를 그려줌
+		//alert("악!15");
 	});//onLoad END
+	
+	//메시지를 읽은 경우 읽은 수 만큼 개수 수정
+   function updateUnread(check) {
+		//현재 그려져 있는 카운트 개수를 변수에 담는다 
+		var count = $("#mCount").text();
+		if(typeof check != "undefined"){
+			//인자로 받은 해당 채팅방의 미확인 메시지 개수가 값이 있는 경우 실행
+			//총 미확인 메시지 - 현재 채팅방 미확인 메시지 = 현재 미확인 메시지 개수 
+			var update = count - check;
+			if(update != 0){
+				//적혀있는 값 지워주기
+				$('#mCount').text("");
+				//현재 메시지 개수를 화면에 그려주기
+				$('#mCount').append(update);						
+			}else{
+				//결과 값이 0인 경우 그냥 적혀있는 값만 지워준다.
+				$('#mCount').text("");
+			}
+		}
+	}
 </script>
-
 <!-- navbar-main -->
 <header>
-<input type="hidden" value="${user_num}" name="user_num" id="user_num">
+<input type="hidden" value="${user_num}" name="user_num" id="user_num" style="padding-bottom: 0px;">
 	<nav class="navbar navbar-default">
     	<div class="container">
         	<div class="navbar-header" style="width: 875px;">
@@ -125,7 +198,7 @@
 		        <sec:authorize access="isAuthenticated()">
 		        <sec:authentication property="principal.user_profile_pic" var="pic"/>
 		        <c:if test="${verify eq 1}"> <!-- 이메일 인증 사용자가 아니면 정보 안나오게 -->
-		        	<div class="profile-summary">
+		        	<div class="profile-summary" style="margin-right: 10px;">
 		        	<sec:authorize access="hasRole('ROLE_ADMIN')">
 		        		<a href="${contextPath}/admin/main">관리자</a>
 		        	</sec:authorize>
@@ -160,10 +233,12 @@
 
 					<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 O -->
 						<c:if test="${verify eq 1}"> <!-- 이메일 인증 사용자가 아니면 탭 안나오게 -->
-							<li><span class="vertical-separator"></span>
+							<li>
+								<span class="vertical-separator" style="margin-bottom: 5px;"></span>
 								<!-- 메시지List 버튼 -->
 								<a onclick="getChatRoomList()" id="btn_msg" href="#" rel="popover" data-trigger="focus" data-placement="bottom" data-popover-content="#chatList">
-										<i class="fa fa-envelope fa-lg"></i>
+										<i class="fa fa-envelope fa-lg icon-red"></i>
+										<strong id="mCount" class="text-potluck"></strong>
 								</a>
 							</li>
 							<li><span class="vertical-separator"></span><a href="${contextPath}/inquiry"><i class="fa fa-info-circle fa-lg"></i></a></li>
@@ -195,4 +270,18 @@
 </div>
 </nav>
 </header>
+<script type="text/javascript">
+$(function(){
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+            return clone;
+        }
+    }).click(function(e) {
+        e.preventDefault();
+    });
+});
+</script>
 <!-- navbar-main END -->

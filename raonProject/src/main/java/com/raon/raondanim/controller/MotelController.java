@@ -115,11 +115,7 @@ public class MotelController {
 		System.out.println("댓글 요청");
 		CsrfToken _csrf1 = (CsrfToken) req.getAttribute("CsrfToken");
 		CsrfToken _csrf2 = (CsrfToken) req.getAttribute("_csrf");
-		
-		System.out.println("token1 : " + _csrf1);
-		System.out.println("token2 :" + _csrf2);
-		
-		
+
 		Map<String, Object>params = new HashMap<String, Object>();
 		params.put("page", page);
 		params.put("num", num);
@@ -512,7 +508,7 @@ public class MotelController {
 		System.out.println("step2 진입");
 		//System.out.println(param);
 		//System.out.println(service.getAllNational());
-		//System.out.println("도시 : " + service.getAllCity());
+		System.out.println("도시 : " + service.getAllCity());
 		model.addAttribute("city", service.getAllCity());
 		model.addAttribute("national", service.getAllNational());
 		model.addAttribute("motel_type", param.get("motel_type"));

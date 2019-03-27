@@ -87,7 +87,9 @@ public class ChatService {
 		//DAO를 통해 전달받은 값을 참조 할 List<Map>와 합친 결과 List<Map>을 선언
 		List<Map<String, Object>> room = dao.getRoomList(usernum);
 		List<Map<String, Object>> partner = dao.getRoomPartner(usernum);
-		//두개의 List<Map>을 하나의 List<Map>으로 만들기
+		List<Map<String, Object>> unread = dao.getUnreadList(usernum);
+		
+		//두개의 List<Map>(room,partner)을 하나의 List<Map>으로 만들기 1
 		for (int i = 0; i < room.size(); i++) {
 			for (int n = 0; n < partner.size(); n++) {
 				//파트너 정보를 Map에 넣어준다.
@@ -99,9 +101,21 @@ public class ChatService {
 			}
 		}
 		
-//		for(Map<String, Object> test : room) {
-//			System.out.println("합치기 테스트 : "+test.toString());
-//		}
+		//두개의 List<Map>(room,unread)을 하나의 List<Map>으로 만들기 2
+		for (int i = 0; i < room.size(); i++) {
+			for (int n = 0; n < unread.size(); n++) {
+				//파트너 정보를 Map에 넣어준다.
+				Map<String, Object> map = unread.get(n); 
+				//조건문 비교를 통해서 같은 채팅 방 넘버라면 방정보 맵에 파트너 정보 맵의 데이터를 putAll 
+				if (room.get(i).get("CHAT_ROOM_NUM").equals(map.get("CHAT_ROOM_NUM"))) {
+					room.get(i).putAll(map);
+				}
+			}
+		}
+		
+		for(Map<String, Object> test : room) {
+			System.out.println("합치기 테스트 : "+test.toString());
+		}
 		
 //		System.out.println("======================================================");
 //		//선언 한 Map에 두 개의 List을 넣어줌 
@@ -153,6 +167,11 @@ public class ChatService {
 		//sysout 테스트
 //		System.out.println(data.toString());
 		return data;
+	}
+	
+	//채팅방이 열렸을 떄 읽은 시간을 DB에 넣는 ()
+	public void updateReadMessage(Map<String, Object> data) {
+		dao.setReadTime(data);
 	}
 }
 	
