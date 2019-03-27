@@ -83,7 +83,7 @@
 		}
 		// price 숫자입력 및 액수 제한 유효성검사 
 		var priceCheck = /^[0-9]+$/;
-			if(!priceCheck.test(motel_price) || motel_price > 9){
+			if(!priceCheck.test(motel_price) || motel_price.length > 9){
 				swal({
 		               text:"가격을 확인해 주세요.",
 		               icon:"warning",

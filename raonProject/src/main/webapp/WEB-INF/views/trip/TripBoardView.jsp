@@ -812,14 +812,14 @@ th{
                          <th>
                             <c:choose>
 									<c:when test="${boardInfo.USER_PROFILE_PIC eq 'n'}">
-										<a href="#" rel="popover" data-placement="bottom"
+										<a href="" rel="popover" class="img-circle" data-placement="bottom"
 											data-popover-content="#userInfo"> <img
 											src="${contextPath}/img/trip_Profile.png">
 										</a>
 
 									</c:when>
 									<c:otherwise>
-										<a href="#" rel="popover" data-placement="bottom"
+										<a href="" rel="popover" class="img-circle" data-placement="bottom"
 											data-popover-content="#userInfo"> <img
 											src="${contextPath}/image?fileName=${boardInfo.USER_PROFILE_PIC}"
 											style="width: 40px; height: 40px;">
@@ -862,10 +862,11 @@ th{
                       </tr>
                       <tr>
                          <td>
+                         <!-- 잘안돌아갈 가능성 있음  -->
                          <c:choose>
 							<c:when test="${userInfo.UserInterest != null}">			
 								<c:forEach items="${userInfo.UserInterest}" var="i">
-									<span class="label label-mint label-lg"><b>${i.INTEREST_NAME}</b></span>
+									<span class="label label-mint label-lg"><b>${i.INTEREST_EN_NAME}</b></span>
 								</c:forEach>	
 							</c:when>
 							<c:otherwise>			
@@ -884,7 +885,7 @@ th{
                          <c:choose>
 							<c:when test="${userInfo.UserTrStyle != null}">
 								<c:forEach items="${userInfo.UserTrStyle}" var="tr">
-									<span class="label label-mint label-lg"><b>${tr.TR_STYLE}</b></span>
+									<span class="label label-mint label-lg"><b>${tr.USERTRSTYLE}</b></span>
 								</c:forEach>	
 							</c:when>
 							<c:otherwise>
@@ -1172,10 +1173,22 @@ th{
 
 
   
-<script>
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip();   
+<script type="text/javascript">
+	
+$(function(){
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+            return clone;
+        }
+    }).click(function(e) {
+        e.preventDefault();
+    });
 });
+
+
 </script>
    <!-- 인클루드-푸터 -->
    <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>

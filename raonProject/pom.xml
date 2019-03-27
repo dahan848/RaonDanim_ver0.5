@@ -158,12 +158,20 @@
 		</dependency>
 		
 		<!-- 데이터 불러올 때 오류나서 데이타소스 드라이버 바꿈 -->
+<<<<<<< HEAD
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-dbcp2 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-dbcp2</artifactId>
 			<version>2.1.1</version>
 		</dependency>
+=======
+		<dependency>
+         <groupId>org.apache.commons</groupId>
+         <artifactId>commons-dbcp2</artifactId>
+         <version>2.1.1</version>
+      </dependency>
+>>>>>>> 66277e5f1559f3cd923d363644096e93f105f4cd
 
 		<!-- 스프링-JDBC -->
 		<dependency>

@@ -13,7 +13,10 @@ public interface WithReviewBoardDao {
 	//타임라인 주인 TL_USER_NUM 으로 select
 	public Map<String, Object> selectOne(int num);
 	//타임라인에 글쓴 사람 WR_USER_NUM 으로 select
-	public Map<String, Object> selectWithOne(int num);
+	public Map<String, Object> selectOneByWrUserNum(int num);
+	//WITH_NUM으로 select
+	public Map<String, Object> selectWithOne(int num);						
+	
 	
 	public List<Map<String, Object>> selectByUserNum(int USER_NUM);
 	
@@ -22,5 +25,14 @@ public interface WithReviewBoardDao {
 	
 	//검색
 	public List<Map<String, Object>> searchUser(Map<String, Object> param);
-	public int searchTotal(Map<String, Object> param);	
+	
+	//페이징
+	public List<Map<String, Object>> boardList(Map<String, Object> param);
+	public int selectTotalCount();
+	public Map<String, Object> selectOneByWithNum(int num);
+	
+	//별점 계산 계산 식
+	public int avgStar(int TL_USER_NUM);
+	//별점 계산 시 NULL 잡아줌
+	public List<Map<String, Object>> avgStarNullCheck(int TL_USER_NUM);
 }

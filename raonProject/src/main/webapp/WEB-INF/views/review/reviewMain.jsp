@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <% request.setAttribute("contextPath", request.getContextPath()); %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,14 +18,32 @@
   crossorigin="anonymous"></script>
 
 <script type="text/javascript">
-	$(window).on("scroll",function() {
-		var scrollHeight = $(document).height();
-		var scrollPosition = $(window).height() + $(window).scrollTop();
+//-------------- 무한 스크롤 --------------//	
+// 	$(window).on("scroll",function() {
+// 		var scrollHeight = $(document).height();
+// 		var scrollPosition = $(window).height() + $(window).scrollTop();
 		
-		if(scrollPosition > scrollHeight - 300) {
-			$("#scroll").append('<div class="box" id="box"></div>');
-		}
+// 		if(scrollPosition > scrollHeight - 300) {
+// 			$("#scroll").append('<div class="box" id="box"></div>');
+// 		}
+// 	});
+
+	//-------------- 프로필 팝오버 --------------//		
+	$(function(){ 
+	    $('[rel="popover"]').popover({
+	        container: 'body',
+	        html: true,
+	        content: function () {
+	            var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+	            return clone;
+	        }
+	    }).click(function(e) {
+	        e.preventDefault();
+	    });
 	});
+
+	
+
 </script>
 
 <style type="text/css">
@@ -33,38 +52,39 @@
 		margin-right: 40px;
 		background-color: #eeeeee;
 		color: green;
-		border: 1px solid #cccccc;
 	}
 	#box {
  		float: left; 
 		margin: 10px;
-		border: 1px solid black;
+/* 		border: 1px solid black; */
 		width: 350px;
 		height: 350px;
+		background-color: #eeeeee;
 	}
 	#backimg { 
    		background-image: url("${contextPath}/img/search-back.jpg");   
  		background-repeat: no-repeat; 
  		background-position: left; 
  		background-size: cover; 
-	  	border: 1px solid red;  
+/*  	  	border: 1px solid red;   */
  		z-index: 1; 
  		width: 348px; 
- 		height: 190px; 
+ 		height: 120px; 
  		margin: auto; 
  	} 
  	#userimg { 
-     	background-image: url("${contextPath}/img/user.jpg");      
-  		background-repeat: no-repeat;  
-  		background-position: bottom;  
- 		background-size: cover; 
+/*   	background-repeat: no-repeat;   */
+/*   	background-position: bottom;   */
+/*  	background-size: cover;  */
  		border-radius: 50%; 
  		z-index: 2; 
- 		border: 1px solid black; 
- 		margin: 0 auto; 
-   		margin-top: -50px;   
+/*  	border: 1px solid black;  */
+  		margin: 0 auto;  
+   		margin-top: -50px;    
  		width: 100px; 
  		height: 100px; 
+/*  	margin-left: 100px; */
+		margin-left: 35%; 
  	} 
  	#profile { 
  		font-size: 20px; 
@@ -82,13 +102,29 @@
 	<jsp:include page="/WEB-INF/views/review/review-navbar.jsp"></jsp:include>
 	<!-- 인클루드 심플 헤더 END -->
 
+<script type="text/javascript">
+var msg = "${msg}";
+if(msg){
+	
+	swal({
+		icon:"success",
+		text:msg,
+	});
+}
+
+
+</script>
+
+
 	<!-- 본문 -->
 	<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
 			<div class="container">
-				<h3 id="h3" style="font-family: 'Nanum Pen Script', cursive; font-size: 50px;"><b>여행후기</b></h3>
-				<h5 style="font-family: 'Nanum Pen Script', cursive;  font-size: 30px;">다른 회원들에게 여행지 정보를 공유해주세요</h5>
-				<input type="button" onclick="location.href='writeForm'" class="btn btn-primary" id="upload" value="후기 올리기">
+				<h3 id="h3" style="font-family: 'Jua', sans-serif; font-size: 40px;"><b>여행후기</b></h3>
+				<h5 style="font-family: font-family: 'Jua', sans-serif;  font-size: 20px; color: gray;">다른 회원들에게 여행지 정보를 공유해주세요</h5>
+				<button type="button" onclick="location.href='writeForm'" class="btn btn-primary" id="upload">
+					<i class="far fa-edit"></i> 후기 올리기
+				</button>
 				<br><br>			
 				
 				<div id="scroll">
@@ -96,11 +132,45 @@
 				<c:forEach items="${review}" var="review" varStatus="status">
 					<div class="box" id="box">
 						<div id="backimg"></div>
-	  					<div id="userimg"></div>  
+	  					<c:choose>
+				  			<c:when test="${review.USER_PROFILE_PIC eq 'n'}">
+								<a href="" rel="popover" data-placement="bottom" data-trigger="focus"
+										data-popover-content="#userInfo${status.index}"> 
+									<img id="userimg"  class="img-circle" src="${contextPath}/img/home_profile_2.jpg">
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="" rel="popover" data-placement="bottom"
+										data-popover-content="#userInfo${status.index}"> 
+									<img id="userimg" class="img-circle" src="${contextPath}/image?fileName=${review.USER_PROFILE_PIC}">
+								</a>
+							</c:otherwise>
+				  		 </c:choose>
+                  
+                  <div id="userInfo${status.index}" class="hide" style=" text-align: center;">
+						${with.USER_LNM} ${with.USER_FNM} <br>
+						<a href="${contextPath}/accounts/profile?user=${review.USER_NUM}">프로필보기</a><br>
+						<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->
+<%-- 							<a onclick="chatClickbyUser(${user_num},${with.USER_NUM})">대화하기</a> --%>
+								<a>대화하기</a>
+						</sec:authorize>
+				 </div>  
 						<div id="profile">
 							<span style="text-align: center; display: inline-block;">${review.USER_LNM}${review.USER_FNM}</span>
 							<br>
-							<span style="text-align: center; display: inline-block; text-decoration: none;">여행지 : <b>${review.REV_DESTINATION}</b></span>
+							<span style="text-align: center; display: inline-block; font-size: 18px;">-${review.USER_ID}-</span>
+							<br>
+							<c:if test="${review.USER_GENDER == 1}">
+                     			<i class="fas fa-mars"></i>
+                     		</c:if>
+                     		<c:if test="${review.USER_GENDER == 2}">
+                     			<i class="fas fa-venus"></i>
+                     		</c:if>
+                     		<c:if test="${review.USER_GENDER == 0}">
+                     			<i class="fas fa-skull-crossbones"></i>
+                     		</c:if>
+							<br>
+							<span style="text-align: center; display: inline-block; text-decoration: none;"><b>${review.REV_DESTINATION}</b></span>
 							<br>
 							<a href="reviewView?num=${review.REVIEW_NUM}" style="text-align: center;">${review.REV_TITLE}</a>
 						</div>
@@ -109,8 +179,8 @@
 				<!------------ 회원 프로필 화면 끝 ------------>
 				</div>
 			
-				<!------------ 화면 맨 위로 시작 ------------>
-				<div style="position: fixed; bottom: 20px; right: 150px;">
+				<!------------ 화면 맨 위로 시작  ------------>
+				<div style="position: fixed; bottom: 20px; right: 300px;">
 					<a href="#h3" style="font-size: 50px;">
 						<i class="fas fa-arrow-alt-circle-up" style="color: #cccccc;"></i>
 					</a>

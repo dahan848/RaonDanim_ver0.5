@@ -67,10 +67,10 @@
            				 </div>
        				 </div>
                     <button class="btn btn-potluck btn-block" type="submit" id="btn_submit">회원가입</button>
-					<a href="#" class="btn btn-block btn-social btn-kakao">
-					  <span class="fa fa-kakao" style="width: 32px;"></span>
-					 		 <span style="display: inline-block; text-align: center; width: 250px;">카카오톡 로그인</span>
-					</a>
+<!-- 					<a href="#" class="btn btn-block btn-social btn-kakao"> -->
+<!-- 					  <span class="fa fa-kakao" style="width: 32px;"></span> -->
+<!-- 					 		 <span style="display: inline-block; text-align: center; width: 250px;">카카오톡 로그인</span> -->
+<!-- 					</a> -->
                     <hr>
                     <p>이미 라온다님 회원인가요?</p>
                     <div class="form-link">

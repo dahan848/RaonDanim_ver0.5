@@ -46,21 +46,21 @@ public class TripController {
 		System.out.println("list 요청받음");
 		Map<String, Object> params = new HashMap<>();
 
-		System.out.println("페이지 번호 : " + pageNum);
-		System.out.println("타입 : " + type);
-		System.out.println("키워드 : " + keyword);
-		System.out.println("성 : " + lName);
-		System.out.println("이름 : " + fName);
+//		System.out.println("페이지 번호 : " + pageNum);
+//		System.out.println("타입 : " + type);
+//		System.out.println("키워드 : " + keyword);
+//		System.out.println("성 : " + lName);
+//		System.out.println("이름 : " + fName);
 
 		params.put("pageNum", pageNum);
 		params.put("type", type);
 		params.put("keyword", keyword);
 		if (lName != "") {
-			System.out.println("컨트롤러/리스트/검색테스트1");
+			//System.out.println("컨트롤러/리스트/검색테스트1");
 			params.put("lName", lName);
 		}
 		if (fName != "") {
-			System.out.println("컨트롤러/리스트/검색테스트2");
+			//System.out.println("컨트롤러/리스트/검색테스트2");
 			params.put("fName", fName);
 		}
 
@@ -138,7 +138,7 @@ public class TripController {
 		Map<String, Object> userInfo = new HashMap<>();
 		List<Map<String, Object>> UserInterest = tripService.getUserInterest(userNum);
 		List<Map<String, Object>> UserTrStyle = tripService.getTrStyle(userNum);
-		List<Map<String, Object>> UserTravleHope = tripService.getTravleHope(userNum);
+		//List<Map<String, Object>> UserTravleHope = tripService.getTravleHope(userNum);
 
 		if (!UserInterest.isEmpty()) {
 			userInfo.put("UserInterest", UserInterest);
@@ -146,9 +146,9 @@ public class TripController {
 		if (!UserTrStyle.isEmpty()) {
 			userInfo.put("UserTrStyle", UserTrStyle);
 		}
-		if (!UserTravleHope.isEmpty()) {
-			userInfo.put("UserTravleHope", UserTravleHope);
-		}
+//		if (!UserTravleHope.isEmpty()) {
+//			userInfo.put("UserTravleHope", UserTravleHope);
+//		}
 
 		model.addAttribute("userInfo", userInfo);//게시판 등록한 사람의 관심사 여행스타일 등등
 		model.addAttribute("userNum", user_Num);//로그인한사람 유저 넘버
@@ -174,7 +174,7 @@ public class TripController {
 		Map<String, Object> userInfo = new HashMap<>();
 		List<Map<String, Object>> UserInterest = tripService.getUserInterest(userNum);
 		List<Map<String, Object>> UserTrStyle = tripService.getTrStyle(userNum);
-		List<Map<String, Object>> UserTravleHope = tripService.getTravleHope(userNum);
+		//List<Map<String, Object>> UserTravleHope = tripService.getTravleHope(userNum);
 
 		if (!UserInterest.isEmpty()) {
 			userInfo.put("UserInterest", UserInterest);
@@ -182,9 +182,9 @@ public class TripController {
 		if (!UserTrStyle.isEmpty()) {
 			userInfo.put("UserTrStyle", UserTrStyle);
 		}
-		if (!UserTravleHope.isEmpty()) {
-			userInfo.put("UserTravleHope", UserTravleHope);
-		}
+//		if (!UserTravleHope.isEmpty()) {
+//			userInfo.put("UserTravleHope", UserTravleHope);
+//		}
 
 		System.out.println("컨트롤러/write1/유저프로필정보 확인:" + userInfo);
 		/////////////////////////////////////
@@ -256,7 +256,7 @@ public class TripController {
 		Map<String, Object> userInfo = new HashMap<>();
 		List<Map<String, Object>> UserInterest = tripService.getUserInterest(userNum);
 		List<Map<String, Object>> UserTrStyle = tripService.getTrStyle(userNum);
-		List<Map<String, Object>> UserTravleHope = tripService.getTravleHope(userNum);
+		//List<Map<String, Object>> UserTravleHope = tripService.getTravleHope(userNum);
 
 		if (!UserInterest.isEmpty()) {
 			userInfo.put("UserInterest", UserInterest);
@@ -264,9 +264,9 @@ public class TripController {
 		if (!UserTrStyle.isEmpty()) {
 			userInfo.put("UserTrStyle", UserTrStyle);
 		}
-		if (!UserTravleHope.isEmpty()) {
-			userInfo.put("UserTravleHope", UserTravleHope);
-		}
+//		if (!UserTravleHope.isEmpty()) {
+//			userInfo.put("UserTravleHope", UserTravleHope);
+//		}
 
 		// 수정화면 1로 가는 메소드 기존 정보 가지고 이동
 		model.addAttribute("userInfo", userInfo);

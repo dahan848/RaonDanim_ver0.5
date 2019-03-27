@@ -51,4 +51,22 @@
 		<websocket:simple-broker prefix="/category"/>
 	</websocket:message-broker>
 
+	
+	<!-- Websocket 활용 메시지 알람 -->
+    <websocket:handlers>
+        <websocket:mapping path="/count" handler="messageAlarm"/>
+    </websocket:handlers>
+    <beans:bean id="messageAlarm" class="com.raon.raondanim.handler.MessageAlarm"/>
+     
+   	<!-- Websocket 활용 메시지 읽음 시간 업데이트 -->
+    <websocket:handlers>
+        <websocket:mapping path="/read" handler="readMessageTime"/>
+    </websocket:handlers>
+    <beans:bean id="readMessageTime" class="com.raon.raondanim.handler.ReadMessageTime"/>
+	 
+	
+	
+
+
 </beans:beans>
+

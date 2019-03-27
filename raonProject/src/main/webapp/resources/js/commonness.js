@@ -1,17 +1,15 @@
-
-
-//대화하기 버튼 눌렀을 때 모달 창 출력 및 필요한 데이터를 인자로 받아옴 
 function chatClickbyUser(user, targetid) {
+	//대화하기 버튼 눌렀을 때 모달 창 출력 및 필요한 데이터를 인자로 받아옴 
 	//인자로 받아온 데이터를 변수에 참조 : Ajax로 전송 할 데이터 
 	var usernum = user //본인
 	var target = targetid //상대방
+	
 	var data = {
 		"user" : user,
 		"ta" : targetid
 	}
 
 	var path = "http://localhost:8081"; //경로
-	//alert("로그인유저 : " + usernum + " 대상 : " + targetid);
 
 	//ajax를 이용해서 채팅방 번호 얻어내기 : 채팅방이 없는 경우 컨트롤러에서 새롭게 생성 된 채팅방 번호를 반환
 	var chatRomm;
@@ -30,20 +28,34 @@ function chatClickbyUser(user, targetid) {
 		}
 	});//ajax END
 
-	//alert("반환 받은 채팅방 넘버 : "+chatRomm);
-
 	//채팅방 번호로 채팅 진행하는 함수 실행
-	chatClickbyRoom(chatRomm);
+	chatClickbyRoom(chatRomm,user);
 }
 
-//채팅방 목록에서 채팅방을 클릭하면 실행되는 함수
-function chatClickbyRoom(roomnum) {
-	
-
-
-	alert(roomnum + "번 방 대화창 오픈!");
+//채팅창이 오픈되는 함수
+function chatClickbyRoom(roomnum,usernum,check) {	
 	var path = "http://localhost:8081";
 	var conveyRoomNum = roomnum; //인자로 전달 받은 ROOMNUM
+	
+	updateUnread(check);
+	
+	//Ajax로 전송 할 데이터 생성 
+	var data = {
+			"user" : usernum,
+			"roomnum" : roomnum
+				}
+	
+	//Ajax를 통해서 해당 채팅방의 메시지를 읽음 처리 해줌
+	$.ajax({
+		type : "get",
+		url : path + "/read",
+		data : data,
+		async : false, //ajax 동기 선언
+		error : function(error) {
+			console.log(error);
+			console.log(error.status);
+		}
+	});//ajax END
 
 	//기존에 작성 된 메시지를 지우기 위한 코드
 	$(".msg_b").remove();
@@ -82,8 +94,6 @@ function chatClickbyRoom(roomnum) {
 
 				//반복문을 통해 DB에 저장 된 해당 방의 메시지 목록을 그려준다.
 				//mList가 null이 아닐 때만 화면에 리스트 목록을 그림 : 예외방지
-
-				
 
 				if (!checknull) {
 					//alert("mList가 있음");
@@ -126,10 +136,10 @@ function chatClickbyRoom(roomnum) {
 	//Ajax로 DB에 저장 된 메시지를 그려준 이후로는 일반적인 채팅 메서드 구현
 	var t = $('#target').val(); //타겟 유저 
 	var u = $('#user').val(); //로그인 유저
-	alert("전송자 : " + u + " 대상자 : " + t);
+	//alert("전송자 : " + u + " 대상자 : " + t);
 	connect(u, t); //웹소켓 연결 : 본인의 아이디와 타겟 아이디를 넘겨줌 > 화면 그릴 때 간선 방지
 	send(u, t); //메시지 전송 
-	alert("전달 완료");
+	//alert("전달 완료");
 }//chatClickbyRoom() END
 
 //ContextPath 구하기
@@ -139,10 +149,11 @@ function getContextPath() {
 			offset + 1));
 	return ctxPath;
 }
+
 //웹소켓 연결 ()
 function connect(user, target) {
 	//alert("connect!");
-	alert("connect ! "+"전송자 : " + user + " 대상자 : " + target);
+	//alert("connect ! "+"전송자 : " + user + " 대상자 : " + target);
 	var path = "http://localhost:8081";
 
 	sock = new SockJS(path + "/chat");
@@ -157,10 +168,11 @@ function connect(user, target) {
 		});
 	});
 }
+
 //메시지 전송()
 function send(user, target) {
 	//alert("send!");
-	alert("send ! "+"전송자 : " + user + " 대상자 : " + target);
+	//alert("send ! "+"전송자 : " + user + " 대상자 : " + target);
 	$('textarea').keypress(
 			function(e) {
 				//엔터키를 눌렀다면 
@@ -179,18 +191,19 @@ function send(user, target) {
 				}
 			});
 }
+
 //받은 메시지 그리기 
 function addMsg(m, target) {
 	obj = JSON.parse(m); //전달 받은 json 객체를 파싱하기 위해서 변수에 참조 
 	var send_user = obj.userid; //메시지 전송자를 변수에 담는다.
 	var message = obj.msg; //전달받은 메시지를 변수에 담는다.
-	
 	//자신이 메시지를 보낸 사람 (현재 메시지창)과 상대측 발송자가 동일 할 때만 메시지 창에 수신 메시지를 그린다.
 	if (send_user == target) {
 		$('<div class="msg_a">' + message + '</div>').insertBefore('.msg_push');
 		$('.msg_body').scrollTop($('.msg_body')[0].scrollHeight);
 	}	
 }
+
 //ajax로 반환 받은 데이터의 값이 있는지 체크하는 함수
 function nullCheck(value) {
 	if (value == ""
@@ -204,33 +217,28 @@ function nullCheck(value) {
 	}
 }
 
-//연결해제//
+//연결해제
 function disconnect() {
-
-		//alert("접근!");
 		stompClient.send("/client/out", {}, ' is out chatroom');
 		stompClient.disconnect();
-		//alert("성공!");
-		
 //		window.location.href=chatoutaddress.value; //정체불명
-	
 }
 
 $(document).ready(function() {
+	//alert("테스트");
 	//소켓 통신을 위한 객체 선언 
 	var sock;
 	var stompClient = null;
 	
-	//alert("새로고침적용8");
 	//웹소켓 연결 해제 관련
 	$('.close').click(function(){
-		//alert("닫힘!");
 		disconnect();
 	});
 	
-	//웹소켓 초기화 
-//	function init(){
-//		connect();
-//	}
+	/* 웹소켓 초기화
+	function init(){
+		connect();
+	}
+	 */
 });//onLoad END
 

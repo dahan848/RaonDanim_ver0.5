@@ -207,7 +207,16 @@
 	});
 	
 	
-	
+    $('[rel="popover"]').popover({
+        container: 'body',
+        html: true,
+        content: function () {
+            var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
+            return clone;
+        }
+    }).click(function(e) {
+        e.preventDefault();
+    });
 	
 	
 
@@ -320,7 +329,7 @@
 						<tr>
 							<td><c:choose>
 									<c:when test="${list.USER_PROFILE_PIC eq 'n'}">
-										<a href="" rel="popover" data-placement="bottom"
+										<a href="" rel="popover" class="img-circle" data-placement="bottom"
 											data-popover-content="#userInfo${status.index}"> <img
 											src="${contextPath}/img/trip_Profile.png">
 										</a>
@@ -328,8 +337,7 @@
 									</c:when>
 									<c:otherwise>
 										<a href="" rel="popover" data-placement="bottom"
-											data-popover-content="#userInfo${status.index}"> <img
-											src="${contextPath}/image?fileName=${list.USER_PROFILE_PIC}"
+											data-popover-content="#userInfo${status.index}"> <img src="${contextPath}/image?fileName=${list.USER_PROFILE_PIC}"
 											style="width: 40px; height: 40px;">
 										</a>
 									</c:otherwise>
@@ -348,9 +356,7 @@
 							</td>
 
 					
-						<!-- 	<td>
-								<span class="label label-pink label-lg">미작성</span>
-							</td> -->
+
 							<td>${list.TRIP_BOARD_TOGETHER}<small><b>인</b></small></td>
 							<td>${list.TRIP_BOARD_READCOUNT}</td>
 						</tr>

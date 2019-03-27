@@ -35,10 +35,10 @@
                			</div>
            			</div>
                     <button class="btn btn-potluck btn-block" type="submit">로그인</button>
-					<a href="#" class="btn btn-block btn-social btn-kakao">
-					  <span class="fa fa-kakao" style="width: 32px;"></span>
-					 		 <span style="display: inline-block; text-align: center; width: 250px;">카카오톡 로그인</span>
-					</a>
+<!-- 					<a href="#" class="btn btn-block btn-social btn-kakao"> -->
+<!-- 					  <span class="fa fa-kakao" style="width: 32px;"></span> -->
+<!-- 					 		 <span style="display: inline-block; text-align: center; width: 250px;">카카오톡 로그인</span> -->
+<!-- 					</a> -->
                     <hr>
                     <div class="form-link">
                         <a class="text-gray" href="#">비밀번호 찾기</a>

@@ -118,20 +118,214 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 WHERE GALLERY_FILE_NUM = #{num} 
 	</delete>
 	
-	<!-- 여행파트 dao추가 -->
-	<select id="getTrStyle" parameterType="String" resultType="map">
+	 
+	<!-- userNum 으로 사용가능언어 num 불러오기 -->
+	<select id="selectUserLanguageNum" parameterType="int" resultType="map">
+		select LANGUAGE_NUM as SELECT_NUM
+			from LANGUAGE_TB
+    		where user_num = #{userNum}
+	</select>
+	<!-- userNum 으로  interest num 불러오기-->
+	<select id="selectUserInterestNum" parameterType="int" resultType="map">
+		select INTEREST_NUM as SELECT_NUM
+		  from INTEREST_TB
+    	 where user_num = #{userNum}
+	</select>
+	<!-- userNum 으로  tripStyle num 불러오기 -->
+	<select id="selectUserTripStyleNum" parameterType="int" resultType="map">
+		  select TRAVLE_STYLE_NUM as SELECT_NUM
+			from TRAVLE_STYLE_TB
+    		where user_num = #{userNum}
+	</select>
+	<!-- 사용가능언어를  사용가능언어 num 으로 불러오기  화면에 뿌려줄 데이터 미완성-->
+	<select id="userUseLanguage" parameterType="int" resultType="map">
+		select LANGUAGE_KO_NAME, LANGUAGE_EN_NAME from LANGUAGE_DTB
+			where = #{userLanguageNum}
+	</select>
+	
+		<!-- Interest_DTB에서 전부 가져오기 -->
+	<select id="getAll_Interest" resultType="map">
+		select * from INTEREST_DTB
+	</select>
+	<select id="getAll_TripStyle" resultType="map">
+		select * from TRAVLE_STYLE_DTB
+	
+	</select>
+	<select id="selectAllLanuage" resultType="map">
+		select * from LANGUAGE_DTB
+	
+	</select>
+	
+	<!-- 사용가능언어 insert/update 하기 -->
+	<insert id="insert_Language_tb">
+		insert into language_tb (USER_NUM, LANGUAGE_NUM)
+			values(#{param2},
+					#{param1})
+	</insert>
+	<delete id="delete_Language_tb" parameterType="int">
+		delete language_tb
+		 WHERE USER_NUM = #{userNum}
+	</delete>
+	
+	<!-- 좋아하는 것 insert/update 하기 -->
+	<insert id="insert_Interest_tb">
+		insert into INTEREST_TB (USER_NUM, INTEREST_NUM)
+			values(#{param2},
+					#{param1})
+	</insert>
+	<delete id="delete_Interest_tb" parameterType="int">
+		delete INTEREST_TB
+		 WHERE USER_NUM = #{userNum}
+	</delete>
+	
+	<!-- 여행스타일 insert/update 하기 -->
+	<insert id="insert_trip_style_tb">
+		insert into TRAVLE_STYLE_TB (USER_NUM, TRAVLE_STYLE_NUM)
+			values(#{param2},
+					#{param1})
+	</insert>
+	<delete id="delete_trip_style_tb" parameterType="int">
+		delete TRAVLE_STYLE_TB
+		 WHERE USER_NUM = #{userNum}
+	</delete>
+	
+	<!-- userIntro update -->
+	<update id="user_intro_update" parameterType="map">
+		UPDATE user_tb
+		   SET USER_INTRO	= #{userIntro}
+		WHERE user_num 		= #{userNum} 
+	</update>
+	<!-- 거주도시 국가 전화번호 업데이트  -->
+	<update id="user_city_nation_phoneNumber" parameterType="map">
+		UPDATE user_tb
+		   SET USER_PHONE_NUM	= #{USER_PHONE_NUM},
+		   		USER_NATIONALITY	= #{USER_NATIONALITY},
+		   		USER_CITY_COUNTRY	= #{USER_CITY_COUNTRY}
+		WHERE user_num 		= #{userNum} 		
+	</update>
+
+	<!-- 대시보드 mapper 작성 - 조현길 -->
+	<!-- 여행탭 여행 작성글 리스트 호출 -->
+	<select id="trip_list" resultType="Map" parameterType="Map">
 		select *
-		from user_tb u join TRAVLE_STYLE_TB t
-		on u.user_num = t.user_num
-		where u.user_num = #{userNum}
+		from(
+			select rownum as rnum, trip_board_title,trip_board_countent ,trip_writedate, trip_board_readcount, trip_board_key
+			from(
+				select * from TRIP_BOARD_TB
+				where user_num = #{num}
+				and trip_board_st = 0
+				order by trip_board_key desc
+			)
+		)
+		where rnum between #{firstRow} and #{endRow}
+	</select>
+	<!-- 토탈 카운트 -->
+	<select id="selectTotalCount" resultType="int" parameterType="int">
+		select count(*) from TRIP_BOARD_TB
+		where user_num = #{num}
+		and trip_board_st = 0
+		
+	</select>	
+	<!-- 여행탭 여행 댓글 리스트 호출 -->
+	<select id="trip_reply_list" parameterType="Map" resultType="Map">
+		select *
+		from(
+			select rownum as rnum, trip_reply_content, trip_reply_writedate, trip_reply_key, trip_board_key, trip_board_st
+			from(
+				select reply.trip_reply_content, reply.trip_reply_writedate, reply.trip_reply_key, reply.trip_board_key , board.trip_board_st
+				from TRIP_REPLY_TB reply, TRIP_BOARD_TB board
+				where reply.trip_board_key = board.trip_board_key
+				and reply.user_num = #{num}
+				and reply.trip_reply_st = 0
+				order by reply.trip_reply_key desc
+				)
+		)
+		where rnum between #{firstRow} and #{endRow}
+	</select>
+	<!-- 댓글 토탈 카운트 -->
+	<select id="selectReplyTotalCount" resultType="int" parameterType="int">
+		select count(*) from TRIP_REPLY_TB
+		where user_num = #{num}
+		and trip_reply_st = 0
+	</select>	
+	<!-- 댓글 삭제 로직 -->
+	<update id="deleteReply" parameterType="Map">
+		update trip_reply_tb
+			set trip_reply_st = 1
+			where user_num = #{user_num}
+			and trip_reply_key = #{replyNum}
+	</update>
+	
+	<!-- 여행 삭제 로직 -->
+	<update id="deleteTrip" parameterType="Map">
+		update TRIP_BOARD_TB
+			set trip_board_st = 1
+			where user_num = #{user_num}
+			and trip_board_key = #{boardNum}
+	</update>
+	
+	<!-- 여행 후기 게시판 토탈 카운트 -->
+	<select id="selectTripReviewTotalCount" resultType="int" parameterType="int">
+		select count(*) from REVIEW_BOARD_TB
+		where user_num = #{num}
+		and RE_ST = 0
+	</select>	
+	<!-- 여행 후기 게시판 리스트 -->
+	<select id="tripReview_review" resultType="Map" parameterType="Map">
+		select *
+		from(
+			select rownum as rnum, review_num, rev_title, re_reg_date, re_count
+			from(
+				select * from REVIEW_BOARD_TB
+				where user_num = #{num}
+				and re_st = 0
+				order by review_num desc
+			)
+		)
+		where rnum between #{firstRow} and #{endRow}
+	</select>
+	
+		<!-- 여행 후기 게시판 삭제 로직 -->
+	<update id="deleteTripReview_review" parameterType="Map">
+		update REVIEW_BOARD_TB
+			set re_st = 1
+			where user_num = #{user_num}
+			and review_num = #{boardNum}
+	</update>
+	
+		<!-- 여행후기 댓글 게시판 토탈 카운트 -->
+	<select id="selectTripReview_ReplyTotalCount" resultType="int" parameterType="int">
+		select count(*) from REVIEW_REPLY_TB
+		where user_num = #{num}
+		and RE_REPLY_ST = 0
 	</select>	
 
-	<select id="getTravleHope" parameterType="String" resultType="map">
-		select *
-		from user_tb u join TRAVLE_HOPE h
-		on u.user_num = h.user_num
-		where u.user_num = #{userNum}
+	<!-- 
+		여기 까지 현길 & 문형
+	 -->
+
+	<select id="getMotelAvg" parameterType="string" resultType="double">
+		select avg(motel_avg)
+		from motel_tb
+		where user_num = #{usernum}
+	</select>
+	
+	<select id="motelNullCheck" parameterType="string" resultType="map">
+		select * from motel_tb where user_num = #{usernum}
+	</select>
+	
+	<!-- 	여행파트 dao추가 -->
+	<select id="getTrStyle" parameterType="String" resultType="map">
+	select  u.USER_NUM,
+			td.TRAVLE_STYLE_NUM,
+			td.TRAVLE_STYLE_NAME as UserTrStyle
+	from user_tb u join TRAVLE_STYLE_TB t
+	on u.user_num = t.user_num
+	join TRAVLE_STYLE_DTB td
+	on t.TRAVLE_STYLE_NUM = td.TRAVLE_STYLE_NUM
+	where u.user_num = #{userNum}
 	</select>	
+
 	
 	<select id="getUserRegDate" resultType="map">
 		<!-- 데이터가 충분치 않아 정렬에 오류가 있을수 있음 -->
@@ -147,4 +341,51 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		   SET user_pw 		= #{reset_pw}
 		 WHERE user_id		= #{userid}
 	</update>
+	
+	<!-- 어드민 계정 생성문 -->
+	<insert id="setAdmin" parameterType="User">
+	INSERT INTO USER_TB
+			   (USER_NUM, AUTHORITY, USER_ID, USER_PW, USER_FNM, USER_LNM, USER_EMAIL_VERIFY , USER_REG_DATE)
+		VALUES (
+				USER_TB001_SEQ.nextval,
+				#{authority},
+				#{user_id},
+				#{user_pw},
+				#{user_fnm},
+				#{user_lnm},
+				1,
+				sysdate
+				)
+	</insert>
+
+	<!-- 여행 후기 댓글 게시판 리스트 -->
+	<select id="tripReview_review_reply" resultType="Map" parameterType="Map">
+		select *
+		from(
+			select rownum as rnum, re_reply_num, rev_rep_content, re_st, re_reply_date, review_num
+			from(
+				select reply.re_reply_num, reply.rev_rep_content, board.re_st, reply.re_reply_date, board.review_num
+				from REVIEW_REPLY_TB reply, REVIEW_BOARD_TB board
+				where reply.review_num = board.review_num
+                and reply.user_num = #{num}
+				and reply.re_reply_st = 0
+				order by reply.re_reply_num desc
+				)
+		)
+		where rnum between #{firstRow} and #{endRow}
+	</select>
+	
+	<!-- 여행 후기 댓글 게시판 삭제 로직 -->
+	<update id="deleteTripReview_review_reply" parameterType="Map">
+		update REVIEW_REPLY_TB
+			set re_reply_st = 1
+			where user_num = #{user_num}
+			and re_reply_num = #{boardNum}
+	</update>
+	
+	
+	
+	
+	
+
 </mapper>

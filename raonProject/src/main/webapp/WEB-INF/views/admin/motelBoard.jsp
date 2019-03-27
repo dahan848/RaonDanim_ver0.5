@@ -80,6 +80,12 @@
                         	<p>결제</p>
                     </a>
                 </li> -->
+				<li>
+                    <a href="inquiry">
+                        <i class="pe-7s-note2"></i>
+                        <p>회원문의</p>
+                    </a>
+                </li>
 
             </ul>
     	</div>
@@ -104,11 +110,7 @@
 
 <!-- 					네비바 우측 -->
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                           <a href="">
-                               <p>Account</p>
-                            </a>
-                        </li>
+                        
 <!--                         <li class="dropdown"> -->
 <!--                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"> -->
 <!--                                     <p> -->
@@ -128,7 +130,7 @@
 <!--                               </ul> -->
 <!--                         </li> -->
                         <li>
-                            <a href="">
+                            <a href="${contextPath}/accounts/logout">
                                 <p>Log out</p>
                             </a>
                         </li>
@@ -159,6 +161,7 @@
                                <ul class="dropdown-menu">
                                  <li><a href="board">여행게시글</a></li> 
                                  <li><a href="motelBoard">숙박게시글</a></li> 
+                                 <li><a href="motelReply">숙박댓글</a></li>
                                </ul> 
                          </li> 
                          </ul>
@@ -176,12 +179,12 @@
                                     	</tr>                                   
                                     </thead>
                                     <tbody>
-                                       <c:forEach items="${dBoardList}" var="list" varStatus="status">
+                                       <c:forEach items="${motelData.dMotelList}" var="list" varStatus="status">
                                        		<tr id="boardDelete${status.index}">
                                        			<td>${list.USER_NUM}번</td>
                                        			<td>${list.USER_ID}</td>
                                        			<td>${list.USER_LNM}${list.USER_FNM}</td>
-                                       			<td>${list.TRIP_BOARD_TITLE}</td>
+                                       			<td>${list.MOTEL_TITLE}</td>
                                        			<td>${list.DECLARATION_CONTENT}</td>
                                        			<td> <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal${status.index}">상세내용</button></td>
                                        		</tr>
@@ -192,6 +195,24 @@
 
                                     </tbody>
                                 </table>
+                                
+                                <div class="container" style="text-align: center;">
+										
+										<ul class="pager" style="display: inline-block;">
+											<c:if test="${motelData.page!=1}">
+												<li><a
+													href="motelBoard?page=${param.pageNum-1}">Previous</a></li>
+											</c:if>
+											<c:forEach var="pageNum" begin="${motelData.start}"
+												end="${motelData.end < motelData.total ? motelData.end: motelData.total}">
+												<a href="motelBoard?page=${pageNum}">${pageNum}&nbsp;&nbsp;&nbsp;</a>
+											</c:forEach>
+											<c:if test="${motelData.page!=motelData.total}">
+												<li><a href="motelBoard?page=${param.pageNum+1}">Next</a></li>
+											</c:if>
+										</ul>
+									</div>
+                                
 
                             </div>
                         </div>
@@ -208,7 +229,7 @@
 </div>
 
 
-<c:forEach items="${dBoardList}" var="list" varStatus="status">
+<c:forEach items="${motelData.dMotelList}" var="list" varStatus="status">
   								<div class="container">
 										  <!-- Trigger the modal with a button -->
 										 
@@ -226,15 +247,21 @@
 										         	<table class="table">
 										         		<tr>
 										         			<td><label> 글 제목:</label> 
-										         		 <h5>${list.TRIP_BOARD_TITLE}</h5>
+										         		 <h5>${list.MOTEL_TITLE}</h5>
 										         		 </td>
 										         		</tr>
 										         		<tr>
-										         			<td><label> 글 제목:</label> 
-										         		 <h5>${list.TRIP_BOARD_COUNTENT}</h5></td>
+										         			<td><label> 글 내용:</label> 
+										         		 <h5>${list.MOTEL_INTRO}</h5></td>
+										         		</tr>
+										         		<tr>
+										         			<td><label> 신고사유:</label> 
+										         		 <h5>${list.DECLARATION_CONTENT}</h5></td>
 										         		</tr>
 										         		<tr>
 										         			<td>
+										         		<input type="hidden" id="user_num${status.index}" name="user_num" value="${list.USER_NUM}">
+										         		<input type="hidden" id="motel_num${status.index}" name="motel_num" value="${list.MOTEL_NUM}">
 										          		<input type="button" id="delete${status.index}" onclick="dummyDelete(${status.index})" class="btn btn-danger"  value="삭제"/>
 										          		<input type="button" data-dismiss="modal" id="cancel${status.index}" class="btn btn-danger" value="삭제취소"/></td>
 										         		</tr>
@@ -303,13 +330,28 @@
     	});
     	
     	function dummyDelete(i) {
-			var boardDelete = $("#boardDelete"+i);
-
-			swal({
-				icon:"success",
-				text:"삭제 처리 되었습니다.",
+			var user_num = $("#user_num"+i).val();
+			var motel_num = $("#motel_num"+i).val();
+			
+			$.ajax({
+				url:"MotelDelete",
+				type:"get",
+				data:{"user_num":user_num,"motel_num":motel_num},
+				dataType:"json",
+				success:function(result){
+					if(result){
+						location.href="motelBoard";
+		
+					}else{
+						swal({
+							icon:"warning",
+							text:"삭제 처리 실패",
+						});
+					}
+				}
+				
+				
 			});
-			boardDelete.remove();
     		
 		}
     	

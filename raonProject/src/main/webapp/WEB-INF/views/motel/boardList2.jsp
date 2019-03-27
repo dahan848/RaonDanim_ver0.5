@@ -321,7 +321,7 @@
 		
 		var conHeight = $("#con").height();
 		var heightNum=0;
-		var naver = "http://www.naver.com";
+// 		var naver = "accounts/profile";
 
 		
 		$.ajax({
@@ -339,18 +339,50 @@
 							var col="#col"+n;
 							$(col).append('<div class="item-cover item-cover-sm" id="itemCover'+n+'">');
 							var itemCover = "#itemCover"+n;
-							$(itemCover).append('<a href="view?num='+data.board.boardList[i].MOTEL_NUM+'&host='+data.board.boardList[i].MOTEL_USER_NUM+'&checkIn='+startDate+'&checkOut='+endDate+'&tripDate='+date+'&people='+motel_people+'"><div class="cover-background" style="background-image:url(${contextPath}/img/house1.jpg);"></div></a>');
+							
+							
+							for(var k in data.board.motel_pic){
+								var tmpMotel_num = data.board.boardList[i].MOTEL_NUM
+								var tmpMotelPic = data.board.motel_pic[k].MOTEL_NUM;
+								if(tmpMotel_num == tmpMotelPic){
+									$(itemCover).append('<a href="view?num='+data.board.boardList[i].MOTEL_NUM+'&host='+data.board.boardList[i].MOTEL_USER_NUM+'&checkIn='+startDate+'&checkOut='+endDate+'&tripDate='+date+'&people='+motel_people+'"><div class="cover-background" style="background-image:url(${contextPath}/motel/image?fileName='+data.board.motel_pic[k].MOTEL_PIC_1+');"></div></a>');
+								}
+							}
+							
+							
 							$(itemCover).append('<div class="cover-profile-image" id="profile'+n+'"> </div>');
 							var profile="#profile"+n;
 							var user_numTest1 = "${user_num}";
 							var user_numTest2 = data.board.boardList[i].MOTEL_USER_NUM;
+							var naver = "accounts/profile?user="+user_numTest2;
 							if(user_numTest1 != user_numTest2){
-								var $pop=$('<a href="#none" data-toggle="popover" data-html="true" data-content="<a href='+naver+'>프로필 보기</a><br>친구 신청<br>대화 하기" data-trigger="focus"><img src="${contextPath}/img/duny.jpg" class="img-profile"></a>');
-								$(profile).append($pop);
-								$pop.popover();
+								for(var j in data.board.user_pic){
+									var tmpPic = data.board.user_pic[j].USER_PROFILE_PIC;
+									if(user_numTest2 == data.board.user_pic[j].USER_NUM && tmpPic != 'n'){
+													
+											var $pop=$('<a href="#none" data-toggle="popover" data-html="true" data-content="<a href=${contextPath}/'+naver+'>프로필 보기</a><br>친구 신청<br>대화 하기" data-trigger="focus"><img src="${contextPath}/image?fileName='+data.board.user_pic[j].USER_PROFILE_PIC+'" class="img-profile"></a>');
+											$(profile).append($pop);
+											$pop.popover();
+
+										
+									}else if(user_numTest2 == data.board.user_pic[j].USER_NUM && data.board.user_pic[j].USER_PROFILE_PIC == 'n'){
+										var $pop=$('<a href="#none" data-toggle="popover" data-html="true" data-content="<a href=${contextPath}/'+naver+'>프로필 보기</a><br>친구 신청<br>대화 하기" data-trigger="focus"><img src="${contextPath}/img/home_profile_2.jpg" class="img-profile"></a>');
+										$(profile).append($pop);
+										$pop.popover();
+									}
+								}
 							}else{
-								var $pop=$('<a href="${contextPath}/accounts/profile?user='+user_numTest2+'"><img src="${contextPath}/img/duny.jpg" class="img-profile"></a>');
-								$(profile).append($pop);
+								for(var j in data.board.user_pic){
+									var tmpPic = data.board.user_pic[j].USER_PROFILE_PIC;
+									if(user_numTest2 == data.board.user_pic[j].USER_NUM && tmpPic != 'n'){
+										
+										var $pop=$('<a href="${contextPath}/accounts/profile?user='+user_numTest2+'"><img src="${contextPath}/image?fileName='+data.board.user_pic[j].USER_PROFILE_PIC+'" class="img-profile"></a>');
+										$(profile).append($pop);
+									}else if(user_numTest2 == data.board.user_pic[j].USER_NUM && data.board.user_pic[j].USER_PROFILE_PIC == 'n'){
+										var $pop=$('<a href="${contextPath}/accounts/profile?user='+user_numTest2+'"><img src="${contextPath}/img/home_profile_2.jpg" class="img-profile"></a>');
+										$(profile).append($pop);
+									}
+								}
 							}
 							
 							$(itemCover).append('<h4 class="profile-name">'+data.board.boardList[i].USER_FNM+data.board.boardList[i].USER_LNM+'</h4>');

@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -362,13 +364,20 @@ public class TripBoardServiceImp implements TripBoardService {
 		String userNum = tripDao.selectOneByBoardKey(boardKey).getUser_Num()+"";
 		//System.out.println("서비스  유저 넘 int->String : "+userNum);
 		String userPw = userDao.selectByUserNum(userNum).getUser_pw();
-		if(userPw.equals(user_pwCheck)) {
+		
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		
+		if(encoder.matches(user_pwCheck, userPw)) {
 			//비번 일치
 			return true;
 		}else {
 			//비번 불일치
 			return false;
 		}
+		
+		
+		
 		
 		
 	}
@@ -478,11 +487,11 @@ public class TripBoardServiceImp implements TripBoardService {
 		return userDao.getTrStyle(usernum);
 	}
 
-	@Override
-	public List<Map<String, Object>> getTravleHope(String usernum) {
-		
-		return userDao.getTravleHope(usernum);
-	}
+//	@Override
+//	public List<Map<String, Object>> getTravleHope(String usernum) {
+//		
+//		return userDao.getTravleHope(usernum);
+//	}
 
 	@Override
 	public List<Map<String, Object>> getDeclaration() {
@@ -525,14 +534,14 @@ public class TripBoardServiceImp implements TripBoardService {
 		
 		try {
 			
-			for(int i =0;i<(int)(Math.random()*50)+10;i++) {
+			for(int i =1;i<(int)(Math.random()*50)+10;i++) {
 				Map<String, Object> tripBoard = new HashMap<>();
 				tripBoard.put("user_Num", i);
-				tripBoard.put("trip_Board_Title", "dummy"+i);
-				tripBoard.put("trip_Board_Content", "dummy"+i);
+				tripBoard.put("trip_Board_Title", i+"번째 여행 갑니다.");
+				tripBoard.put("trip_Board_Content", i+"번째 여행은 즐겁네요");
 				tripBoard.put("trip_Board_Start", "2019-01-01");
-				tripBoard.put("trip_Board_End", "2019-01-01");
-				tripBoard.put("trip_Board_Together", 0);
+				tripBoard.put("trip_Board_End", "2019-02-01");
+				tripBoard.put("trip_Board_Together", 1);
 				tripBoard.put("trip_WriteDate", writeDate);
 				tripDao.insertDummyData(tripBoard);
 				

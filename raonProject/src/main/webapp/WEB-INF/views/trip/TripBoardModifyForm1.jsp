@@ -99,7 +99,7 @@ $(function() {
 						<c:choose>
 							<c:when test="${userInfo.UserInterest != null}">			
 								<c:forEach items="${userInfo.UserInterest}" var="i">
-									<span class="label label-mint label-lg"><b>${i.INTEREST_NAME}</b></span>
+									<span class="label label-mint label-lg"><b>${i.INTEREST_EN_NAME}</b></span>
 								</c:forEach>	
 							</c:when>
 							<c:otherwise>			
@@ -108,28 +108,28 @@ $(function() {
 						</c:choose>
 					</td>
 				</tr>
-				<tr>
-					<th style="padding: 20px;" class="info">나의 여행희망도시</th>
-					<td style="padding: 20px;">
-						<c:choose>
-							<c:when test="${userInfo.UserTravleHope != null}">
-								<c:forEach items="${userInfo.UserTravleHope}" var="th">
-									<span class="label label-mint label-lg"><b>${th.HOPE_CITY}</b></span>
-								</c:forEach>	
-							</c:when>
-							<c:otherwise>
-									<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span>
-							</c:otherwise>
-						</c:choose>
-					</td>
-				</tr>
+<!-- 				<tr> -->
+<!-- 					<th style="padding: 20px;" class="info">나의 여행희망도시</th> -->
+<!-- 					<td style="padding: 20px;"> -->
+<%-- 						<c:choose> --%>
+<%-- 							<c:when test="${userInfo.UserTravleHope != null}"> --%>
+<%-- 								<c:forEach items="${userInfo.UserTravleHope}" var="th"> --%>
+<%-- 									<span class="label label-mint label-lg"><b>${th.HOPE_CITY}</b></span> --%>
+<%-- 								</c:forEach>	 --%>
+<%-- 							</c:when> --%>
+<%-- 							<c:otherwise> --%>
+<!-- 									<span class="label label-pink label-lg profile" onclick="goToProfile()" data-toggle="tooltip" data-placement="right" title="프로필 설정은 나의 정보에서 가능합니다.">미등록</span> -->
+<%-- 							</c:otherwise> --%>
+<%-- 						</c:choose> --%>
+<!-- 					</td> -->
+<!-- 				</tr> -->
 				<tr>
 					<th style="padding: 20px;" class="warning">나의 여행 스타일</th>
 					<td style="padding: 20px;">
 						<c:choose>
 							<c:when test="${userInfo.UserTrStyle != null}">
 								<c:forEach items="${userInfo.UserTrStyle}" var="tr">
-									<span class="label label-mint label-lg"><b>${tr.TR_STYLE}</b></span>
+									<span class="label label-mint label-lg"><b>${tr.USERTRSTYLE}</b></span>
 								</c:forEach>	
 							</c:when>
 							<c:otherwise>

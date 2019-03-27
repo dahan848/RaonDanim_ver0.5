@@ -4,147 +4,152 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.raon.raondanim.dao.ReviewBoardDao">
-	
-	
-	
-	<select id="selectAll" resultType="map">
-		SELECT 	r.REVIEW_NUM,
-				r.USER_NUM,
-				r.REV_TITLE,
-				r.REV_DESTINATION,
-				r.RE_CONTENT,
-				r.RE_ST,
-				r.RE_COUNT,
-				r.RE_REG_DATE,
-				u.USER_NUM,
-				u.USER_ID,
-				u.USER_FNM,
-				u.USER_LNM,
-				u.USER_NATIONALITY,
-				u.USER_CITY_COUNTRY,
-				u.USER_GENDER,
-				u.USER_PROFILE_PIC,
-				u.USER_WITH_AVG,
-				u.USER_MOTEL_AVG,
-				u.USER_ID,
-				u.USER_PW
-		  FROM 	REVIEW_BOARD_TB r left outer join USER_TB u
-		    ON  r.USER_NUM = u.USER_NUM
-		 ORDER BY REVIEW_NUM DESC
-	</select>
-	
-	
-	
-	<insert id="insertReview" parameterType="map">
-		<selectKey order="BEFORE" keyProperty="NUM" resultType="int">
-			select REVIEW_BOARD_TB_SEQ.nextval from dual
-		</selectKey>
-		INSERT
-		  INTO REVIEW_BOARD_TB
-			  (	REVIEW_NUM, 
-			  	USER_NUM, 
-			  	REV_TITLE, 
-			  	REV_DESTINATION, 
-			  	RE_CONTENT, 
-			  	RE_ST, 
-			  	RE_COUNT, 
-			  	RE_REG_DATE)
-		VALUES (#{NUM}, #{USER_NUM}, #{REV_TITLE}, #{REV_DESTINATION}, #{RE_CONTENT}, 0, 0, SYSDATE)
-	</insert>
-	
-	
-	
-	<update id="updateReview" parameterType="map">
-		UPDATE 		REVIEW_BOARD_TB
-		   SET 		REV_TITLE = #{REV_TITLE},
-					REV_DESTINATION = #{REV_DESTINATION},
-					RE_CONTENT = #{RE_CONTENT}
-		WHERE 		REVIEW_NUM = #{num}
-	</update>
-	
-	
-	
-	<delete id="deleteReview" parameterType="int">
-		DELETE
-		  FROM 	REVIEW_BOARD_TB
-		 WHERE 	REVIEW_NUM = #{NUM}
-	</delete>
-	
-	
-	
-	<select id="selectOne" parameterType="int" resultMap="reviewMap">
-		SELECT 	r.REVIEW_NUM,
-				r.USER_NUM,
-				r.REV_TITLE,
-				r.REV_DESTINATION,
-				r.RE_CONTENT,
-				r.RE_ST,
-				r.RE_COUNT,
-				r.RE_REG_DATE,
-				u.USER_NUM,
-				u.USER_ID,
-				u.USER_FNM,
-				u.USER_LNM,
-				u.USER_NATIONALITY,
-				u.USER_CITY_COUNTRY,
-				u.USER_GENDER,
-				u.USER_PROFILE_PIC,
-				u.USER_WITH_AVG,
-				u.USER_MOTEL_AVG,
-				u.USER_ID,
-				u.USER_PW
-		  FROM 	REVIEW_BOARD_TB r left outer join USER_TB u
-		    ON  r.USER_NUM = u.USER_NUM
-		 WHERE  r.USER_NUM = #{NUM}
-	</select>
-	<resultMap type="HashMap" id="reviewMap">
-		<result property="RE_CONTENT" column="RE_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
-	</resultMap>
-	
-	
-	<select id="selectReviewOne" parameterType="int" resultMap="reviewViewMap">
-		SELECT 	r.REVIEW_NUM,
-				r.USER_NUM,
-				r.REV_TITLE,
-				r.REV_DESTINATION,
-				r.RE_CONTENT,
-				r.RE_ST,
-				r.RE_COUNT,
-				r.RE_REG_DATE,
-				u.USER_NUM,
-				u.USER_ID,
-				u.USER_FNM,
-				u.USER_LNM,
-				u.USER_NATIONALITY,
-				u.USER_CITY_COUNTRY,
-				u.USER_GENDER,
-				u.USER_PROFILE_PIC,
-				u.USER_WITH_AVG,
-				u.USER_MOTEL_AVG,
-				u.USER_ID,
-				u.USER_PW
-		  FROM 	REVIEW_BOARD_TB r left outer join USER_TB u
-		    ON  r.USER_NUM = u.USER_NUM
-		 WHERE  r.REVIEW_NUM = #{NUM}
-	</select>
-	<resultMap type="HashMap" id="reviewViewMap">
-		<result property="RE_CONTENT" column="RE_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
-	</resultMap>
-	
-	<update id="plusReadCount" parameterType="int">
-		UPDATE 		REVIEW_BOARD_TB
-		   SET 		RE_COUNT = RE_COUNT + 1
-		 WHERE 		REVIEW_NUM = #{NUM}
-	</update>
-	
-	
-	
-	<select id="selectByUserNum" parameterType="int" resultType="map">
-		SELECT *
-		  FROM REVIEW_BOARD_TB
-		 WHERE USER_NUM = #{USER_NUM}
-	</select>
-	
-	
-	
+   
+   
+   
+   <select id="selectAll" resultType="map">
+      SELECT    r.REVIEW_NUM,
+            r.USER_NUM,
+            r.REV_TITLE,
+            r.REV_DESTINATION,
+            r.RE_CONTENT,
+            r.RE_ST,
+            r.RE_COUNT,
+            r.RE_REG_DATE,
+            u.USER_NUM,
+            u.USER_ID,
+            u.USER_FNM,
+            u.USER_LNM,
+            u.USER_NATIONALITY,
+            u.USER_CITY_COUNTRY,
+            u.USER_GENDER,
+            u.USER_PROFILE_PIC,
+            u.USER_WITH_AVG,
+            u.USER_MOTEL_AVG,
+            u.USER_ID,
+            u.USER_PW
+        FROM    REVIEW_BOARD_TB r left outer join USER_TB u
+          ON  r.USER_NUM = u.USER_NUM
+       WHERE  r.RE_ST = 0
+       ORDER BY REVIEW_NUM DESC
+   </select>
+   
+   
+   
+   <insert id="insertReview" parameterType="map">
+      <selectKey order="BEFORE" keyProperty="NUM" resultType="int">
+         select REVIEW_BOARD_TB_SEQ.nextval from dual
+      </selectKey>
+      INSERT
+        INTO REVIEW_BOARD_TB
+           (   REVIEW_NUM, 
+              USER_NUM, 
+              REV_TITLE, 
+              REV_DESTINATION, 
+              RE_CONTENT, 
+              RE_ST, 
+              RE_COUNT, 
+              RE_REG_DATE)
+      VALUES (#{NUM}, #{USER_NUM}, #{REV_TITLE}, #{REV_DESTINATION}, #{RE_CONTENT}, 0, 0, SYSDATE)
+   </insert>
+   
+   
+   
+   <update id="updateReview" parameterType="map">
+      UPDATE       REVIEW_BOARD_TB
+         SET       REV_TITLE = #{REV_TITLE},
+               REV_DESTINATION = #{REV_DESTINATION},
+               RE_CONTENT = #{RE_CONTENT}
+      WHERE       REVIEW_NUM = #{num}
+   </update>
+   
+   
+   
+   <delete id="deleteReview" parameterType="int">
+<!--       DELETE -->
+<!--         FROM    REVIEW_BOARD_TB -->
+<!--        WHERE    REVIEW_NUM = #{NUM} -->
+       
+       UPDATE    REVIEW_BOARD_TB
+          SET    RE_ST = 1
+        WHERE     REVIEW_NUM = #{num}
+   </delete>
+   
+   
+   
+   <select id="selectOne" parameterType="int" resultMap="reviewMap">
+      SELECT    r.REVIEW_NUM,
+            r.USER_NUM,
+            r.REV_TITLE,
+            r.REV_DESTINATION,
+            r.RE_CONTENT,
+            r.RE_ST,
+            r.RE_COUNT,
+            r.RE_REG_DATE,
+            u.USER_NUM,
+            u.USER_ID,
+            u.USER_FNM,
+            u.USER_LNM,
+            u.USER_NATIONALITY,
+            u.USER_CITY_COUNTRY,
+            u.USER_GENDER,
+            u.USER_PROFILE_PIC,
+            u.USER_WITH_AVG,
+            u.USER_MOTEL_AVG,
+            u.USER_ID,
+            u.USER_PW
+        FROM    REVIEW_BOARD_TB r left outer join USER_TB u
+          ON  r.USER_NUM = u.USER_NUM
+       WHERE  r.USER_NUM = #{NUM} and r.RE_ST = 0
+   </select>
+   <resultMap type="HashMap" id="reviewMap">
+      <result property="RE_CONTENT" column="RE_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
+   </resultMap>
+   
+   
+   <select id="selectReviewOne" parameterType="int" resultMap="reviewViewMap">
+      SELECT    r.REVIEW_NUM,
+            r.USER_NUM,
+            r.REV_TITLE,
+            r.REV_DESTINATION,
+            r.RE_CONTENT,
+            r.RE_ST,
+            r.RE_COUNT,
+            r.RE_REG_DATE,
+            u.USER_NUM,
+            u.USER_ID,
+            u.USER_FNM,
+            u.USER_LNM,
+            u.USER_NATIONALITY,
+            u.USER_CITY_COUNTRY,
+            u.USER_GENDER,
+            u.USER_PROFILE_PIC,
+            u.USER_WITH_AVG,
+            u.USER_MOTEL_AVG,
+            u.USER_ID,
+            u.USER_PW
+        FROM    REVIEW_BOARD_TB r left outer join USER_TB u
+          ON  r.USER_NUM = u.USER_NUM
+       WHERE  r.REVIEW_NUM = #{NUM} and r.RE_ST = 0
+   </select>
+   <resultMap type="HashMap" id="reviewViewMap">
+      <result property="RE_CONTENT" column="RE_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
+   </resultMap>
+   
+   <update id="plusReadCount" parameterType="int">
+      UPDATE       REVIEW_BOARD_TB
+         SET       RE_COUNT = RE_COUNT + 1
+       WHERE       REVIEW_NUM = #{NUM}
+   </update>
+   
+   
+   
+   <select id="selectByUserNum" parameterType="int" resultType="map">
+      SELECT *
+        FROM REVIEW_BOARD_TB
+       WHERE USER_NUM = #{USER_NUM} and r.RE_ST = 0
+   </select>
+   
+   
+   
 </mapper>

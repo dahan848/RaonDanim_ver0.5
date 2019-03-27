@@ -15,7 +15,7 @@
 <!-- 인클루드 심플 헤더 END -->
 	<section id="section-authentication">
         <div class="container">
-            <div class="form-block">
+            <div class="form-block" style="margin-top: 70px;">
                 <img src="${contextPath}/img/home_logo-raon.png" alt="">
                 <form action="login" method="post"> <!-- 로그인 폼  -->
                 	<!-- 시큐리티 사용하기 위한 파라미터 (토큰) -->
@@ -40,10 +40,10 @@
 				        </font>
 					</c:if>
                     <button class="btn btn-potluck btn-block" type="submit">로그인</button>
-					<a href="#" class="btn btn-block btn-social btn-kakao">
-					  <span class="fa fa-kakao" style="width: 32px;"></span>
-					 		 <span style="display: inline-block; text-align: center; width: 250px;">카카오톡 로그인</span>
-					</a>
+<!-- 					<a href="#" class="btn btn-block btn-social btn-kakao"> -->
+<!-- 					  <span class="fa fa-kakao" style="width: 32px;"></span> -->
+<!-- 					 		 <span style="display: inline-block; text-align: center; width: 250px;">카카오톡 로그인</span> -->
+<!-- 					</a> -->
                     <hr>
                     <div class="form-link">
                         <a class="text-gray" href="${contextPath}/accounts/passwordresetform">비밀번호 찾기</a>

@@ -338,14 +338,18 @@ input[type="file"] {
 				  		<c:if test="${user.lastLogin ne 666 }"><p><small>Last login ${user.lastLogin} minutes ago</small></p></c:if> 
                    		<hr>
                    		<div class="row">
+                       		<!-- 숙박평점 -->
                         	<div class="col-xs-6">
-                            	<div class="friends-count"><i class="ion ion-ios-heart"></i> ${user.motel_avg}</div>
-                            		<!-- 숙박평점 -->
+                            	<div class="friends-count">
+                            		${user.motel_avg} 
+                            	</div>
                             		<small>숙박평점</small> 
                        		</div>
+                       		<!-- 후기평점 -->
                         	<div class="col-xs-6">
-                            	<div class="friends-count"><i class="ion ion-android-person"></i> ${user.with_avg}</div>
-                            		<!-- 후기평점 -->
+                            	<div class="friends-count">
+                            		${user.with_avg}
+                           		</div>
                             		<small>후기평점</small>	
                         	</div>
                     	</div>
@@ -381,7 +385,7 @@ input[type="file"] {
 	                  			<span class="label label-pink label-lg">미작성</span>
 	                  		</c:if>
                     		<c:forEach items="${user.interest}" var="interest">
-                    			<span class="label label-default label-lg">${interest.INTEREST_NAME}</span>	
+                    			<span class="label label-default label-lg">${interest.INTEREST_KO_NAME}</span>	
                     		</c:forEach>
                     	</div>
                 </div>
@@ -393,7 +397,7 @@ input[type="file"] {
 	                  			<span class="label label-pink label-lg">미작성</span>
 	                  		</c:if>
                            	<c:forEach items="${user.language}" var="language">
-                    			<span class="label label-default label-lg">${language.LANGUAGE_NAME}</span>	
+                    			<span class="label label-default label-lg">${language.LANGUAGE_KO_NAME}</span>	
                     		</c:forEach>
                    		</div>
                 </div>
@@ -417,14 +421,14 @@ input[type="file"] {
                         <div id="googleMap" style="width: 700px; height: 500px;"></div>
                     </div>
                 </div>
-                <div class="row">
-                    <label class="col-sm-3 control-label text-right">숙박 제공 가능 여부</label>
-                    	<div class="col-sm-9">
-                    		<c:if test="${user.accom_st eq 0 }"><span class="label label-gray label-lg">불가능</span></c:if>
-                    		<c:if test="${user.accom_st eq 2 }"><span class="label label-skyblue label-lg">가능(무료)</span></c:if>
-                    		<c:if test="${user.accom_st eq 3 }"><span class="label label-pink label-lg">가능(유료)</span></c:if>
-						</div>
-                </div>
+<!--                 <div class="row"> -->
+<!--                     <label class="col-sm-3 control-label text-right">숙박 제공 가능 여부</label> -->
+<!--                     	<div class="col-sm-9"> -->
+<%--                     		<c:if test="${user.accom_st eq 0 }"><span class="label label-gray label-lg">불가능</span></c:if> --%>
+<%--                     		<c:if test="${user.accom_st eq 2 }"><span class="label label-skyblue label-lg">가능(무료)</span></c:if> --%>
+<%--                     		<c:if test="${user.accom_st eq 3 }"><span class="label label-pink label-lg">가능(유료)</span></c:if> --%>
+<!-- 						</div> -->
+<!--                 </div> -->
 				</div> <!-- 유저 상세 정보 출력 부  END-->
 			</section> <!-- 프로필 section END-->
 		</div>
@@ -532,23 +536,6 @@ input[type="file"] {
 	        </div>
 	    </div>
 	</div>
-	
-
-<script type="text/javascript">
-$(function(){
-    $('[rel="popover"]').popover({
-        container: 'body',
-        html: true,
-        content: function () {
-            var clone = $($(this).data('popover-content')).clone(true).removeClass('hide');
-            return clone;
-        }
-    }).click(function(e) {
-        e.preventDefault();
-    });
-});
-</script>
-
 <!-- 인클루드-푸터 -->
 <jsp:include page="/WEB-INF/views/test.jsp"></jsp:include> <!-- 채팅방 모달창 -->
 <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>

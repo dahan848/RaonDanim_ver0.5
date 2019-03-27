@@ -106,7 +106,7 @@
 					}		
 				}
 			});
- 			//debugger;
+
 			if(checkNum == 2){
 				//console.log("같다!!!");
 				
@@ -170,42 +170,6 @@
          return false;
      }
 
-// 주소로 지도에 찍는 함수
-
-
-////////////////////////////////
-// var re;
-// function chkCode(obj,evn){
-// evn=String.fromCharCode(evn).toUpperCase().charCodeAt(0)
-
-//     switch(evn){
-//         case 82:re=/[가-낗]/;break; //ㄱ
-//         case 83:re=/[나-닣]/;break; //ㄴ
-//         case 69:re=/[다-띻]/;break; //ㄷ
-//         case 70:re=/[라-맇]/;break; //ㄹ
-//         case 65:re=/[마-밓]/;break; //ㅁ
-//         case 81:re=/[바-삫]/;break; //ㅂ
-//         case 84:re=/[사-앃]/;break; //ㅅ
-//         case 68:re=/[아-잏]/;break; //ㅇ
-//         case 87:re=/[자-찧]/;break; //ㅈ
-//         case 67:re=/[차-칳]/;break; //ㅊ
-//         case 90:re=/[카-킿]/;break; //ㅋ
-//         case 88:re=/[타-팋]/;break; //ㅌ
-//         case 86:re=/[파-핗]/;break; //ㅍ
-//         case 71:re=/[하-힣]/;break; //ㅎ
-//     }
-//     dataCode(obj,re)
-// }
-// var cnt2=0;
-// function dataCode(obj,re){
-// var tmpdata=new Array();
-// var cnt=-1;
-//     for(i=0;i<=obj.length-1;i++){
-//             if(re.test(obj.options[i].text.substr(0,1))) {cnt++;tmpdata[cnt]=i;}
-//     }
-// tmpdata.length-1<=cnt2 ? cnt2=0:cnt2++;
-// obj.selectedIndex=tmpdata[cnt2]
-// }
 
 </script>	
 <style type="text/css">
@@ -299,14 +263,6 @@
 </style>
 </head>
 <body>
-
-<%-- 	확이 : ${city}.length<br> --%>
-<%-- 	motel_bath : ${motel_bathroom } --%>
-<%-- 	<br> motel_type : ${motel_type } --%>
-<%-- 	<br> motel_category : ${motel_category } --%>
-<%-- 	<br> motel_people : ${motel_people } --%>
-<%-- 	<br> motel_room : ${motel_room } --%>
-<!-- 	<br> -->
 	<!-- 인클루드 심플 헤더 -->
 	<jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/views/navbar-sub.jsp"></jsp:include>

@@ -62,15 +62,15 @@
 // 							icon:"success",
 // 							text:"삭제 되었습니다",
 // 						});
-						alert("삭제 되었습니다");
+// 						alert("삭제 되었습니다");
 						location.href="reviewMain";
 					} else {
-// 						swal({
-// 							icon:"fail",
-// 							text:"비밀번호가 틀렸습니다",
-// 						});
-						alert("비밀번호가 일치하지 않습니다");
-						location.href="reviewView?num=${review.REVIEW_NUM}";	
+						swal({
+							icon:"warning",
+							text:"비밀번호가 틀렸습니다. 다시 시도해 주세요.",
+						});
+// 						alert("비밀번호가 일치하지 않습니다");
+// 						location.href="reviewView?num=${review.REVIEW_NUM}";	
 					}
 				}
 			});
@@ -113,10 +113,15 @@
 				
 				
 				//게시판키랑 댓글이 가지고 있는 게시판 키가 같을 때  다 그리기
+				var boardList = data.boardList;
 				
-				if("${review.REVIEW_NUM}" == "${reply.REVIEW_NUM}") {
+				
+			
 					//console.log(data.boardList);
 					for(var i in data.boardList) {
+						
+					if("${review.REVIEW_NUM}" == boardList[i].REVIEW_NUM) {
+						
 						var tr = $("<tr>");
 						var href = $("<a href='#' style='text-decoration: none;'>신고</a>");	
 						var btnDelete = $("<button class='far fa-trash-alt' id='btnDelete' data-toggle='modal' data-target='#replyModal'></button>");	
@@ -127,6 +132,10 @@
 						$("<td style='border: white;'>").append("<input type='hidden' name='RE_REPLY_NUM' id='RE_REPLY_NUM"+i+"' value='"+data.boardList[i].RE_REPLY_NUM+"'>").appendTo(tr);
 						tr.appendTo(replyTable);
 					
+						
+					
+						
+						
 						//-------페이저 부분-------//
 						var start = data.startPage;		                
 						var end =data.endPage;			                
@@ -167,22 +176,30 @@
 										dataType: "json",
 										success: function(data){
 											if(data){
-												alert("삭제 되었습니다");
-												location.href="reviewView?num=${review.REVIEW_NUM}";
+												swal({
+						 							icon:"success",
+						 							text:"삭제 되었습니다",
+						 						}).then(function(isConfirm){
+													location.reload()
+// 						 							createReplyList(1);
+												})
 											} else {
-												alert("비밀번호가 일치하지 않습니다");
-												location.href="reviewView?num=${review.REVIEW_NUM}";	
+												swal({
+						 							icon:"warning",
+						 							text:"비밀번호가 틀렸습니다. 다시 시도해 주세요.",
+						 						});	
 											}			
 										}
 									});
 								})
 							});
 						})(i);
+						
+					}
+						
 					}
 				
-				} else {
-					alert("댓글 리스트 실패");
-				}	
+			 
 				
 				
 				
@@ -220,7 +237,8 @@
   		float: left;  
 		margin: 30px;
 		border: 1px solid #cccccc;
-		width: 250px;
+/* 		width: 250px; */
+width: auto;
 		height: auto;
 		text-align: center;
 		font-size: 20px;
@@ -253,6 +271,9 @@
 	#btnSave {
 		display: inline;
 		float: right;
+		background-color: #eeeeee;
+		color: green;
+		border: 1px solid #cccccc;
 	}
 	#inputReply {
 		width: 1000px; 
@@ -301,25 +322,33 @@
 		<div class="tab-content">
 			<!----------------------------------------- 프로필 시작 -------------------------------------->
 			<div class="box" id="box">
-				<div id="userimg"></div>
-				<br>
+				<c:choose>
+				  			<c:when test="${review.USER_PROFILE_PIC eq 'n'}">
+									<img id="userimg"  class="img-circle" src="${contextPath}/img/home_profile_2.jpg">
+							</c:when>
+							<c:otherwise> 
+									<img id="userimg" class="img-circle" src="${contextPath}/image?fileName=${review.USER_PROFILE_PIC}">
+							</c:otherwise>
+				</c:choose>
+				<br><br>
 				<span>${review.USER_LNM}${review.USER_FNM}</span>
+				<br>
+				<span>-${review.USER_ID}-</span>
+				<br>
+				<c:if test="${review.USER_GENDER == 1}">
+                     <i class="fas fa-mars"></i>
+                </c:if>
+				<c:if test="${review.USER_GENDER == 2}">
+					<i class="fas fa-venus"></i>
+				</c:if>
+				<c:if test="${review.USER_GENDER == 0}">
+					<i class="fas fa-skull-crossbones"></i>
+				</c:if>
+				<br>
+				<span><b>${review.REV_DESTINATION}</b></span>
 				<br><br>
-				<span>여행지 : <b>${review.REV_DESTINATION}</b></span>
-				<br><br>
-				<i class="fas fa-home">
-					<br>
-					<span>숙소 평점</span>
-					<br>
-					<span><i style="color: blue;">4.2</i> / 5</span>
-				</i>
-				<i class="fas fa-camera" style="margin-left: 20px;">
-					<br>
-					<span>후기 평점</span>
-					<br>
-					<span><i style="color: blue;">4.8</i> / 5</span>
-				</i>
-				<br><br>
+				
+				
 			</div>
 			<!----------------------------------------- 프로필 끝 -------------------------------------->
 			
@@ -335,11 +364,16 @@
 			
 			<br><br>
 			
-			<button type="button" class="btn btn-primary" id="List" onclick="location.href='reviewMain'">후기 목록</button>
-			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?num=${review.REVIEW_NUM}'">수정하기</button>
+			<button type="button" class="btn btn-primary" id="List" onclick="location.href='reviewMain'"><i class="fas fa-align-justify"></i> 후기 목록</button>
+			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?num=${review.REVIEW_NUM}'">
+				<i class="fas fa-wrench"></i> 수정하기
+			</button>
 			
 			<!------- 삭제 버튼, 모달  시작------->
-			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="Delete">삭제하기</button>
+			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="Delete">
+				<i class='far fa-trash-alt'></i> 삭제하기
+			</button>
+			
 			<input type="hidden" name="num" value="${review.REVIEW_NUM}">
 			<input type="hidden" name=userNum value="${userNum}">
 			<div class="modal fade" id="myModal" role="dialog">
@@ -428,41 +462,7 @@
   			<div align="center" >
   			
   				<ul class="pagination justify-content-center" id="replyPager">
-<!--   					<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						Previous -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						1 -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						2 -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						3 -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						4 -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						5 -->
-<!--     					</a> -->
-<!--     				</li> -->
-<!--     				<li class="page-item"> -->
-<!--     					<a class="page-link" href="javascript:void(0);"> -->
-<!--     						Next -->
-<!--     					</a> -->
-<!--     				</li> -->
+
   				</ul>
   			</div>
 			<!------------ 댓글 리스트 페이징 끝 ------------>
@@ -473,7 +473,9 @@
   				<input type="hidden" name="REVIEW_NUM" value="${review.REVIEW_NUM}">
   				<input type="hidden" name="USER_NUM" value="${review.USER_NUM}">
   				<input type="text" class="form-control form-control-sm" placeholder="댓글을 입력하세요" id="inputReply" name="REV_REP_CONTENT">
-				<input type="submit" class="btn btn-primary" id="btnSave" value="등록">
+				<button type="submit" class="btn btn-primary" id="btnSave">
+					<i class="far fa-edit"></i> 등록
+				</button>
 			</form>
 			<!------------ 댓글 달기 끝 ------------>
 			

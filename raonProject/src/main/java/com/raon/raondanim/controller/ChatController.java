@@ -126,4 +126,12 @@ public class ChatController {
 		}
 		return chatRomm;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/read")
+	public void readMessage(@RequestParam Map<String, Object> data) {
+		//System.out.println("read 요청 : " + data);
+		service.updateReadMessage(data);
+	}
+	
 }

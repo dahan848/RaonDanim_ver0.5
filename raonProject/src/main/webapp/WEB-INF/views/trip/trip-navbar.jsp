@@ -14,7 +14,7 @@
 
 	<div
 		class="navbar navbar-inverse navbar-sub navbar-sub-light hidden-xs">
-		<div class="container" style="margin-left: 31%">
+		<div class="container" style="margin-left: 26%">
 			<ul class="nav navbar-nav navbar-core">
 			<sec:authorize access="isAuthenticated()">
 				<li><a href="write1">여행일정</a></li>

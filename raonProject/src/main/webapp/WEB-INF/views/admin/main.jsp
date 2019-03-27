@@ -80,6 +80,12 @@
                         	<p>결제</p>
                     </a>
                 </li> -->
+				 <li>
+                    <a href="inquiry">
+                        <i class="pe-7s-note2"></i>
+                        <p>회원문의</p>
+                    </a>
+                </li>
 
             </ul>
     	</div>
@@ -104,11 +110,7 @@
 
 <!-- 					네비바 우측 -->
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                           <a href="">
-                               <p>Account</p>
-                            </a>
-                        </li>
+                       
 <!--                         <li class="dropdown"> -->
 <!--                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"> -->
 <!--                                     <p> -->
@@ -128,7 +130,7 @@
 <!--                               </ul> -->
 <!--                         </li> -->
                         <li>
-                            <a href="">
+                            <a href="${contextPath}/accounts/logout">
                                 <p>Log out</p>
                             </a>
                         </li>
@@ -257,11 +259,11 @@
 									        datasets: [
 										        {
 										          label: "여행 게시글",
-										          backgroundColor:["#f44141","#f46a41","#f4a941","#f4ee41","#94f441","#41f48b","#41b2f4","#41b2f4","#41b2f4","#6f39e5","#b523ba","#c1204b"],
+										          backgroundColor:["#3728d6","#f46a41","#f4a941","#f4ee41","#94f441","#41f48b","#41b2f4","#41b2f4","#41b2f4","#6f39e5","#b523ba","#c1204b"],
 										          data: boardList
 										        }, {
 										          label: "숙박 게시글",
-										          backgroundColor: ["#c1204b","#b523ba","#6f39e5","#41b2f4","#41b2f4","#41b2f4","#41f48b","#94f441","#f4ee41","#f4a941","#f46a41","#f44141"],
+										          backgroundColor: ["#a8fff1","#b523ba","#6f39e5","#41b2f4","#41b2f4","#41b2f4","#41f48b","#94f441","#f4ee41","#f4a941","#f46a41","#f44141"],
 										          data: motelList
 										        }
 										      ],
@@ -405,7 +407,17 @@
 						  							  	<label for="checkbox3"></label>
 					  						  		</div>
                                                 </td>
-                                                <td>현재 계정이 잠긴 유저가 존재합니다.
+                                                <td>
+                                                	<c:choose>
+                                                		<c:when test="${empty userList}">
+                                                			현재 계정이 잠긴 유저가 존재하지 않습니다.
+                                                		</c:when>
+                                                		<c:otherwise>
+                                                			현재 계정이 잠긴 유저가 존재합니다.
+                                                		</c:otherwise>
+                                                	</c:choose>
+                                                
+                                                
 												</td>
                                                 <td class="td-actions text-right">
                                                     <button type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">

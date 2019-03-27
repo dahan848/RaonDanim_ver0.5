@@ -4,187 +4,240 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.raon.raondanim.dao.WithReviewBoardDao">
-	
-	
-	<select id="selectAll" resultType="map">
-		SELECT * 
-		  FROM USER_TB
-		  order by USER_NUM desc
-	</select>
-	
+   
+   
+   <select id="selectAll" resultType="map">
+      SELECT * 
+        FROM USER_TB
+        order by USER_NUM desc
+   </select>
+   
 
-	<insert id="insertWith" parameterType="map">
-		<selectKey order="BEFORE" keyProperty="NUM" resultType="int">
-			select WITH_BOARD_TB_SEQ.nextval from dual
-		</selectKey>
-		INSERT
-		  INTO WITH_BOARD_TB
-			  (	WITH_NUM, 
-			  	TL_USER_NUM,
-			  	WR_USER_NUM, 
-			  	WITH_CONTENT, 
-			  	WITH_GPA, 
-			  	WITH_COUNT, 
-			  	WITH_REG_DATE, 
-			  	WITH_ST, 
-			  	WITH_AVG)
-		VALUES (#{NUM}, #{TL_USER_NUM}, #{WR_USER_NUM}, #{WITH_CONTENT}, #{WITH_GPA}, 0, SYSDATE, 0, 0)
-	</insert>
-	
-	
-	
-	<update id="updateWith" parameterType="map">
-		UPDATE 		WITH_BOARD_TB
-		   SET 		WITH_CONTENT = #{REV_TITLE},
-					WITH_GPA = #{REV_DESTINATION}
-		WHERE 		WITH_NUM = #{NUM}
-	</update>
-	
-	
-	
-	<delete id="deleteWith" parameterType="int">
-		DELETE
-		  FROM 	WITH_BOARD_TB
-		 WHERE 	WITH_NUM = #{NUM}
-	</delete>
-	
-	
-	<!-- 타임라인 주인 TL_USER_NUM 으로 select -->
-	<select id="selectOne" parameterType="int" resultMap="reviewMap" resultType="map">
-		SELECT 	r.WITH_NUM,
-				r.TL_USER_NUM,
-				r.WR_USER_NUM,
-				r.WITH_CONTENT,
-				r.WITH_GPA,
-				r.WITH_COUNT,
-				r.WITH_REG_DATE,
-				r.WITH_ST,
-				r.WITH_AVG,
-				u.USER_NUM,
-				u.USER_ID,
-				u.USER_FNM,
-				u.USER_LNM,
-				u.USER_NATIONALITY,
-				u.USER_CITY_COUNTRY,
-				u.USER_GENDER,
-				u.USER_PROFILE_PIC,
-				u.USER_WITH_AVG,
-				u.USER_MOTEL_AVG,
-				u.USER_ID,
-				u.USER_PW
-		  FROM 	USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r  
-		    ON  r.TL_USER_NUM = u.USER_NUM
-		 WHERE  r.TL_USER_NUM = #{TL_USER_NUM}
-	</select>
-	<resultMap type="HashMap" id="reviewMap">
-		<result property="WITH_CONTENT" column="WITH_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
-	</resultMap>
-	
-	<!-- 타임라인에 글쓴 사람 WR_USER_NUM 으로 select -->
-	<select id="selectWithOne" parameterType="int" resultMap="reviewViewMap">
-		SELECT 	r.WITH_NUM,
-				r.TL_USER_NUM,
-				r.WR_USER_NUM,
-				r.WITH_CONTENT,
-				r.WITH_GPA,
-				r.WITH_COUNT,
-				r.WITH_REG_DATE,
-				r.WITH_ST,
-				r.WITH_AVG,
-				u.USER_NUM,
-				u.USER_ID,
-				u.USER_FNM,
-				u.USER_LNM,
-				u.USER_NATIONALITY,
-				u.USER_CITY_COUNTRY,
-				u.USER_GENDER,
-				u.USER_PROFILE_PIC,
-				u.USER_WITH_AVG,
-				u.USER_MOTEL_AVG,
-				u.USER_ID,
-				u.USER_PW
-		  FROM 	USER_TB u left outer join WITH_BOARD_TB r
-		    ON  r.WR_USER_NUM = u.USER_NUM
-		 WHERE  r.WITH_NUM = #{WITH_NUM}
-	</select>
-	<resultMap type="HashMap" id="reviewViewMap">
-		<result property="WITH_CONTENT" column="WITH_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
-	</resultMap>
-	
-	<update id="plusReadCount" parameterType="int">
-		UPDATE 		WITH_BOARD_TB
-		   SET 		WITH_COUNT = WITH_COUNT + 1
-		 WHERE 		WITH_NUM = #{NUM}
-	</update>
-	
-	
-<!-- 	리스트 그리는 부분 -->
-	<select id="selectByUserNum" parameterType="int" resultType="map">
-		SELECT 	r.WITH_NUM,
-				r.TL_USER_NUM,
-				r.WR_USER_NUM,
-				r.WITH_CONTENT,
-				r.WITH_GPA,
-				r.WITH_COUNT,
-				r.WITH_REG_DATE,
-				r.WITH_ST,
-				r.WITH_AVG,
-				u.USER_NUM,
-				u.USER_ID,
-				u.USER_FNM,
-				u.USER_LNM,
-				u.USER_NATIONALITY,
-				u.USER_CITY_COUNTRY,
-				u.USER_GENDER,
-				u.USER_PROFILE_PIC,
-				u.USER_WITH_AVG,
-				u.USER_MOTEL_AVG,
-				u.USER_ID,
-				u.USER_PW
-		  FROM 	WITH_BOARD_TB r LEFT OUTER JOIN USER_TB u   
-		    ON  r.WR_USER_NUM = u.USER_NUM
-		 WHERE r.TL_USER_NUM = #{USER_NUM}
-		 ORDER BY r.WITH_NUM DESC
-	</select>
-	
-	
-	<!-- 조인해서 다시 해보기 -->
-	<select id="searchUser" parameterType="map" resultType="map">
-		SELECT       *
-		  FROM       USER_TB
-  		 WHERE 	     
-<!--   		 <if test="USER_LNM != null"> -->
-  		 			 USER_LNM   like   ('%${USER_LNM}%') 
-<!--   		 </if> -->
-<!--   		 <if test="USER_FNM != null">  -->
-  		        and   USER_FNM   like   ('%${USER_FNM}%') 
-<!--   		 </if> -->
-<!--   		 <if test="USER_ID != null"> -->
-  		        and   USER_ID    like   ('%${USER_ID}%')
-<!--   		 </if> -->
-<!--   		 <if test="type == 0"> -->
-<!--   		 		or   1=1 -->
-<!--   		 </if> -->
-		ORDER BY USER_NUM DESC
-  		 
-	</select>
-	
-	<select id="searchTotal" parameterType="map" resultType="int">
-		SELECT       count(*) 
-		  FROM       USER_TB
-  		 WHERE 	     
-<!--   		 <if test="USER_LNM != null"> -->
-  		 			 USER_LNM   like   ('%${USER_LNM}%') 
-<!--   		 </if> -->
-<!--   		 <if test="USER_FNM != null">  -->
-  		        and   USER_FNM   like   ('%${USER_FNM}%') 
-<!--   		 </if> -->
-<!--   		 <if test="USER_ID != null"> -->
-  		        and   USER_ID    like   ('%${USER_ID}%')
-<!--   		 </if> -->
-<!--   		 <if test="type == 0"> -->
-<!--   		 		or   1=1 -->
-<!--   		 </if> -->
-		ORDER BY USER_NUM DESC
-	</select>
+   <insert id="insertWith" parameterType="map">
+      <selectKey order="BEFORE" keyProperty="NUM" resultType="int">
+         select WITH_BOARD_TB_SEQ.nextval from dual
+      </selectKey>
+      INSERT
+        INTO WITH_BOARD_TB
+           (   WITH_NUM, 
+              TL_USER_NUM,
+              WR_USER_NUM, 
+              WITH_CONTENT, 
+              WITH_GPA, 
+              WITH_COUNT, 
+              WITH_REG_DATE, 
+              WITH_ST, 
+              WITH_AVG)
+      VALUES (#{NUM}, #{TL_USER_NUM}, #{WR_USER_NUM}, #{WITH_CONTENT}, #{WITH_GPA}, 0, SYSDATE, 0, 0)
+   </insert>
+   
+   
+   
+   <update id="updateWith" parameterType="map">
+      UPDATE       WITH_BOARD_TB
+         SET       WITH_CONTENT = #{WITH_CONTENT},
+               WITH_GPA = #{WITH_GPA}
+      WHERE       WITH_NUM = #{num}
+   </update>
+   
+   
+   
+   <delete id="deleteWith" parameterType="int">
+<!--       DELETE -->
+<!--         FROM    WITH_BOARD_TB -->
+<!--        WHERE    WITH_NUM = #{NUM} -->
+
+      UPDATE       WITH_BOARD_TB
+         SET       WITH_ST = 1
+      WHERE       WITH_NUM = #{num}
+   </delete>
+   
+   
+   <!-- 타임라인 주인 TL_USER_NUM 으로 select -->
+   <select id="selectOne" parameterType="int" resultMap="reviewMap" resultType="map">
+      SELECT    r.WITH_NUM,
+            r.TL_USER_NUM,
+            r.WR_USER_NUM,
+            r.WITH_CONTENT,
+            r.WITH_GPA,
+            r.WITH_COUNT,
+            r.WITH_REG_DATE,
+            r.WITH_ST,
+            r.WITH_AVG,
+            u.USER_NUM,
+            u.USER_ID,
+            u.USER_FNM,
+            u.USER_LNM,
+            u.USER_NATIONALITY,
+            u.USER_CITY_COUNTRY,
+            u.USER_GENDER,
+            u.USER_PROFILE_PIC,
+            u.USER_WITH_AVG,
+            u.USER_MOTEL_AVG,
+            u.USER_ID,
+            u.USER_PW
+        FROM    USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r  
+          ON  r.TL_USER_NUM = u.USER_NUM
+       WHERE  r.TL_USER_NUM = #{TL_USER_NUM} and r.WITH_ST = 0
+   </select>
+   
+   
+   
+   <!-- 타임라인에 글쓴 사람 WR_USER_NUM 으로 select -->
+   <select id="selectOneByWrUserNum" parameterType="int" resultMap="reviewMap" resultType="map">
+      SELECT    r.WITH_NUM,
+            r.TL_USER_NUM,
+            r.WR_USER_NUM,
+            r.WITH_CONTENT,
+            r.WITH_GPA,
+            r.WITH_COUNT,
+            r.WITH_REG_DATE,
+            r.WITH_ST,
+            r.WITH_AVG,
+            u.USER_NUM,
+            u.USER_ID,
+            u.USER_FNM,
+            u.USER_LNM,
+            u.USER_NATIONALITY,
+            u.USER_CITY_COUNTRY,
+            u.USER_GENDER,
+            u.USER_PROFILE_PIC,
+            u.USER_WITH_AVG,
+            u.USER_MOTEL_AVG,
+            u.USER_ID,
+            u.USER_PW
+        FROM    USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r  
+          ON  r.WR_USER_NUM = u.USER_NUM
+       WHERE  r.WR_USER_NUM = #{WR_USER_NUM} and r.WITH_ST = 0
+   </select>
+   
+   
+   
+   <!-- 게시글 번호 WITH_NUM 으로 select -->
+   <select id="selectWithOne" parameterType="int" resultMap="reviewMap" resultType="map">
+      SELECT    r.WITH_NUM,
+            r.TL_USER_NUM,
+            r.WR_USER_NUM,
+            r.WITH_CONTENT,
+            r.WITH_GPA,
+            r.WITH_COUNT,
+            r.WITH_REG_DATE,
+            r.WITH_ST,
+            r.WITH_AVG,
+            u.USER_NUM,
+            u.USER_ID,
+            u.USER_FNM,
+            u.USER_LNM,
+            u.USER_NATIONALITY,
+            u.USER_CITY_COUNTRY,
+            u.USER_GENDER,
+            u.USER_PROFILE_PIC,
+            u.USER_WITH_AVG,
+            u.USER_MOTEL_AVG,
+            u.USER_ID,
+            u.USER_PW
+        FROM    USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r
+          ON  r.WR_USER_NUM = u.USER_NUM
+       WHERE  r.WITH_NUM = #{WITH_NUM} and r.WITH_ST = 0
+   </select>
+   
+   
+   <resultMap type="HashMap" id="reviewMap">
+      <result property="WITH_CONTENT" column="WITH_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
+   </resultMap>
+   
+   <update id="plusReadCount" parameterType="int">
+      UPDATE       WITH_BOARD_TB
+         SET       WITH_COUNT = WITH_COUNT + 1
+       WHERE       WITH_NUM = #{NUM} and WITH_ST = 0
+   </update>
+   
+   
+<!--    리스트 그리는 부분 -->
+   <select id="selectByUserNum" parameterType="int" resultType="map">
+      SELECT    r.WITH_NUM,
+            r.TL_USER_NUM,
+            r.WR_USER_NUM,
+            r.WITH_CONTENT,
+            r.WITH_GPA,
+            r.WITH_COUNT,
+            r.WITH_REG_DATE,
+            r.WITH_ST,
+            r.WITH_AVG,
+            u.USER_NUM,
+            u.USER_ID,
+            u.USER_FNM,
+            u.USER_LNM,
+            u.USER_NATIONALITY,
+            u.USER_CITY_COUNTRY,
+            u.USER_GENDER,
+            u.USER_PROFILE_PIC,
+            u.USER_WITH_AVG,
+            u.USER_MOTEL_AVG,
+            u.USER_ID,
+            u.USER_PW
+        FROM    WITH_BOARD_TB r LEFT OUTER JOIN USER_TB u   
+          ON  r.WR_USER_NUM = u.USER_NUM
+       WHERE r.TL_USER_NUM = #{USER_NUM} and r.WITH_ST = 0
+       ORDER BY r.WITH_NUM DESC
+   </select>
+   
+   <!-- 별점 평균 계산하는 계산 식 -->
+   <select id="avgStar" parameterType="int" resultType="int">
+      SELECT       avg(WITH_GPA)
+          FROM       WITH_BOARD_TB
+         WHERE       TL_USER_NUM = #{TL_USER_NUM}
+   </select>
+   
+   <!-- 평균 계산 할 떄 null 잡아줌 -->
+   <select id="avgStarNullCheck" parameterType="int" resultType="map">
+      select       * 
+        from       WITH_BOARD_TB 
+       where       TL_USER_NUM = #{TL_USER_NUM}
+   </select>
+   
+   
+   <!-- ==================== 검색 ====================  -->
+   <select id="searchUser" parameterType="map" resultType="map">
+      SELECT        *
+        FROM        USER_TB
+         WHERE        USER_ID    like   ('%${USER_ID}%')
+         ORDER BY USER_NUM DESC 
+                 
+<!--                 or     USER_LNM   like   ('%${USER_LNM}%')  -->
+<!--                  or   USER_FNM   like   ('%${USER_FNM}%')  -->
+   </select>
+   
+   <!-- ==================== 페이징 ====================  -->
+   <select id="selectTotalCount" resultType="int">
+      SELECT       count(*)
+      FROM       WITH_BOARD_TB
+      WHERE      WITH_ST = 0
+   </select>
+   
+   <select id="boardList" parameterType="map" resultType="map">
+      SELECT *          
+        FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_ID, USER_PW, USER_LNM, USER_FNM, wcount,
+                          WITH_NUM, TL_USER_NUM, WR_USER_NUM, WITH_GPA, WITH_REG_DATE, WITH_ST, WITH_AVG
+                FROM (SELECT u.USER_NUM, u.USER_ID, u.USER_PW, u.USER_LNM, u.USER_FNM,
+                              count(w.with_num) as wcount, w.WITH_NUM, w.TL_USER_NUM, w.WR_USER_NUM,
+                              w.WITH_GPA, w.WITH_REG_DATE, w.WITH_ST, w.WITH_AVG
+                        FROM WITH_BOARD_TB w left outer join USER_TB u
+                          ON w.WR_USER_NUM = u.USER_NUM
+                       WHERE w.TL_USER_NUM = #{num} and w.WITH_ST = 0
+                         GROUP BY u.USER_NUM, u.USER_ID, u.USER_PW, u.USER_LNM, u.USER_FNM,
+                                 w.WITH_NUM, w.TL_USER_NUM, w.WR_USER_NUM,
+                                    w.WITH_GPA, w.WITH_REG_DATE, w.WITH_ST, w.WITH_AVG
+                         ORDER BY    w.WITH_REG_DATE DESC)
+               )
+       WHERE RNUM between #{firstRow} and #{endRow}
+   </select>
+   
+   <select id="selectOneByWithNum" parameterType="int" resultType="map">
+      SELECT *
+        FROM WITH_BOARD_TB
+       WHERE WITH_NUM = #{WITH_NUM} and WITH_ST = 0
+   </select>
+   
+   
 </mapper>
