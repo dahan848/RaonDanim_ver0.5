@@ -118,9 +118,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 WHERE GALLERY_FILE_NUM = #{num} 
 	</delete>
 	
-	<!-- 
-		여기서 부터 현길 & 문형
-	 -->
 	 
 	<!-- userNum 으로 사용가능언어 num 불러오기 -->
 	<select id="selectUserLanguageNum" parameterType="int" resultType="map">
@@ -273,28 +270,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from motel_tb where user_num = #{usernum}
 	</select>
 	
-<!-- 	여행파트 dao추가 -->
-<select id="getTrStyle" parameterType="String" resultType="map">
-select  u.USER_NUM,
-		td.TRAVLE_STYLE_NUM,
-		td.TRAVLE_STYLE_NAME as UserTrStyle
-from user_tb u join TRAVLE_STYLE_TB t
-on u.user_num = t.user_num
-join TRAVLE_STYLE_DTB td
-on t.TRAVLE_STYLE_NUM = td.TRAVLE_STYLE_NUM
-where u.user_num = #{userNum}
-</select>	
+	<!-- 	여행파트 dao추가 -->
+	<select id="getTrStyle" parameterType="String" resultType="map">
+	select  u.USER_NUM,
+			td.TRAVLE_STYLE_NUM,
+			td.TRAVLE_STYLE_NAME as UserTrStyle
+	from user_tb u join TRAVLE_STYLE_TB t
+	on u.user_num = t.user_num
+	join TRAVLE_STYLE_DTB td
+	on t.TRAVLE_STYLE_NUM = td.TRAVLE_STYLE_NUM
+	where u.user_num = #{userNum}
+	</select>	
 
 	
-<select id="getUserRegDate" resultType="map">
-<!-- 데이터가 충분치 않아 정렬에 오류가 있을수 있음 -->
-SELECT TO_CHAR(USER_REG_DATE,'MM')||'월' as USER_REG_DATE,count(TO_CHAR(USER_REG_DATE,'MM')) as monthCount
-FROM user_tb
-group by TO_CHAR(USER_REG_DATE,'MM')
-order by USER_REG_DATE
-</select>	
+	<select id="getUserRegDate" resultType="map">
+		<!-- 데이터가 충분치 않아 정렬에 오류가 있을수 있음 -->
+		SELECT TO_CHAR(USER_REG_DATE,'MM')||'월' as USER_REG_DATE,count(TO_CHAR(USER_REG_DATE,'MM')) as monthCount
+		FROM user_tb
+		group by TO_CHAR(USER_REG_DATE,'MM')
+		order by USER_REG_DATE
+	</select>	
 	
-<!-- 	여행파트 dao추가 -->
+	<!-- 여행파트 dao추가 -->
 	<update id="passwordReset" parameterType="map">
 		UPDATE user_tb
 		   SET user_pw 		= #{reset_pw}

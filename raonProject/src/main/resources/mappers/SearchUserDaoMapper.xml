@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.raon.raondanim.dao.SearchUserDAO">
+	<select id="userList" parameterType="map" resultType="map">
+		SELECT *
+			FROM (SELECT ROWNUM as RNUM, user_num, user_fnm, user_lnm, user_city_country, interest, hopecity
+			FROM (SELECT u.user_num, u.user_fnm, u.user_lnm, u.user_city_country, i.interest_num as interest, h.hope_city as hopecity
+			FROM user_tb u
+			     left outer join interest_tb i ON u.user_num = i.user_num
+			     left outer join travle_hope h ON u.user_num = h.user_num
+    	ORDER BY u.user_num DESC))
+		WHERE RNUM between #{firstRow} and #{endRow}
+	</select>
+	
+	<select id="interestList" resultType="map">
+		SELECT *
+		  FROM interest_tb
+	</select>
+	
+	<select id="selectTotalCount" parameterType="map" resultType="int">
+		SELECT count(*)
+		  FROM user_tb
+	</select>
+	
+</mapper>

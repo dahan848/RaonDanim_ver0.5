@@ -112,22 +112,52 @@ $(function(){
  
                 <!----------------------------------------- 프로필 시작 -------------------------------------->
                 <div class="box" id="box">
-                    <div id="userimg"></div>
-                    <br> <a>${withBoard.User.user_lnm}${withBoard.User.user_fnm}</a> <br>
-                    <br> <a>여행지 : <b>${withBoard.User.user_gender}</b></a> <br>
+                    <c:choose>
+				  			<c:when test="${withBoard.User.user_profile_pic eq 'n'}">
+								<a href="" rel="popover" data-placement="bottom" data-trigger="focus"
+										data-popover-content="#userInfo${status.index}"> 
+									<img id="userimg"  class="img-circle" src="${contextPath}/img/home_profile_2.jpg">
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="" rel="popover" data-placement="bottom"
+										data-popover-content="#userInfo${status.index}"> 
+									<img id="userimg" class="img-circle" src="${contextPath}/image?fileName=${withBoard.User.user_profile_pic}">
+								</a>
+							</c:otherwise>
+				  		 </c:choose>
+                    <br>
+                    <span style="text-align: center; display: inline-block;">${withBoard.User.user_lnm}${withBoard.User.user_fnm}</span>
+                    <br>
+                    <span style="text-align: center; display: inline-block; font-size: 18px;">-${withBoard.User.user_id}-</span>
+                    
+                    
+                    <br>
+                    <c:if test="${withBoard.User.user_gender == 1}">
+                     	<i class="fas fa-mars"></i>
+                     </c:if>
+                     <c:if test="${withBoard.User.user_gender == 2}">
+                     	<i class="fas fa-venus"></i>
+                     </c:if>
+                     <c:if test="${withBoard.User.user_gender == 0}">
+                     	<i class="fas fa-skull-crossbones"></i>
+                     </c:if>
                     <br> <i class="fas fa-home"> <br> <a>숙소 평점</a> <br>
-                        <a><i style="color: blue;">4.2</i> / 5</a>
+                        <span><i style="color: blue;">4.2</i> / 5</span>
                     </i> <i class="fas fa-camera" style="margin-left: 20px;"> <br>
-                        <a>후기 평점</a> <br> <a><i style="color: blue;">4.8</i> / 5</a>
+                        <span>후기 평점</span> <br> <span><i style="color: blue;">${avgStar.reviewAvg}</i> / 5</span>
                     </i>
                 </div>
                 <!----------------------------------------- 프로필 끝 -------------------------------------->
  				<input type="hidden" name="num" value="${param.num}">
-                <input type="button" class="btn btn-primary" id="upload"
-                    style="float: right;" onclick="location.href='withWriteForm?num=${param.num}'" value="후기올리기">
-                    
+                <button type="button" class="btn btn-primary" id="upload"
+                    style="float: right; background-color: #eeeeee; color: green;" onclick="location.href='withWriteForm?num=${param.num}'">
+                	<i class="far fa-edit"></i> 후기올리기
+                </button>
                 <button type="button" class="btn btn-primary" id="btnMain"
-                    style="float: right; margin-right: 20px;" onclick="location.href='withMain'">메인화면</button>
+                    style="float: right; background-color: #eeeeee; color: green; margin-right: 20px;" onclick="location.href='withMain'">
+                    	<i class="fas fa-align-justify"></i> 메인화면
+                </button>
                     
             </div>
  
@@ -146,9 +176,9 @@ $(function(){
                 <c:forEach items="${withList}" var="withList" varStatus="status">
                     <tr style="border: 1px solid #cccccc;">
                         <td style="border: 1px solid #cccccc; text-align: center;">
-                            <a style="font-size: 20px; vertical-align: middle;">
+                            <span style="font-size: 20px; vertical-align: middle;">
                                 ${withList.USER_LNM}${withList.USER_FNM}
-                            </a>
+                            </span>
                         </td>
 <!--                         <td style="border: 1px solid #cccccc; text-align: center;"> -->
 <!--                             <a style="font-size: 20px;"> -->
@@ -179,19 +209,16 @@ $(function(){
 							</div>
 						<!----------------------------------------- 별점 끝 -------------------------------------->
                    	 	</td>
-                        
-                        
-                        
-                        
-                        
                         <td style="border: 1px solid #cccccc; text-align: center;">
                         	<input type="hidden" name="WR_USER_NUM" value="${withList.WR_USER_NUM }">
                         	<input type="hidden" name="WITH_NUM" value="${withList.WITH_NUM}">
                         	<input type="hidden" name="TL_USER_NUM" value="${withList.TL_USER_NUM }">
                         	<input type="hidden" name="userNum" value="${withBoard.userNum}">
-                            <input type="button" class="btn btn-primary" id="btnWithReview" 
+                            <button type="button" class="btn btn-primary" id="btnWithReview" 
                                 onclick="location.href='withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}&userNum=${withBoard.userNum}'" 
-                                value="상세보기" style="background-color: #eeeeee; color: green;">
+                                style="background-color: #eeeeee; color: green;">
+                                <i class="fas fa-check-circle"></i> 상세보기 
+                            </button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -202,20 +229,37 @@ $(function(){
             <!---------------------------------- 동행후기 리스트 페이징 시작 ---------------------------------->
             <div style="margin-top: 50px; text-align: center;">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">Previous</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">1</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">2</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">3</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">4</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">5</a></li>
-                    <li class="page-item"><a class="page-link"
-                        href="javascript:void(0);">Next</a></li>
+                    
+                    <li class="page-item">
+                    	<c:if test="${startPage != 1}">
+                    		<a class="page-link" href="withList?page=1">                        
+                        		START
+                    		</a>
+                   		</c:if>
+                   	</li>
+                    <li class="page-item">
+                    	<c:forEach var="pageNum" begin="${startPage}" end="${endPage < totalPage ? endPage : totalPage}">
+                    		<c:choose>
+                    			<c:when test="${pageNum == page}">
+                    				<a class="page-link">
+                    					${pageNum}
+                    				</a>	
+                    			</c:when>
+                    			<c:otherwise>
+                    				<a class="page-link" href="withList?page=${pageNum}">
+                    					${pageNum}	
+                    				</a>	
+                    			</c:otherwise>
+                    		</c:choose>
+                    	</c:forEach>
+                    </li>
+                    <li class="page-item">
+                    	<c:if test="${totalPage > endPage}">
+                    		<a class="page-link" href="withList?page=${totalPage}">
+                    			END
+                    		</a>
+                    	</c:if>
+                    </li>
                 </ul>
             </div>
             <!---------------------------------- 동행후기 리스트 페이징 끝 ---------------------------------->

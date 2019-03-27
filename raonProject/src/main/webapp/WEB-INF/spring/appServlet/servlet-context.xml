@@ -8,6 +8,7 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
@@ -17,6 +18,7 @@
 	<resources mapping="/css/**" location="/resources/css/" /> 
 	<resources mapping="/img/**" location="/resources/img/" /> 
 	<resources mapping="/js/**" location="/resources/js/" />
+	<resources mapping="/json/**" location="/resources/json/" />
 	<resources mapping="/fonts/**" location="/resources/fonts/" /> 
 	<resources mapping="/resources/**" location="/resources/" />
 
@@ -48,6 +50,7 @@
 		</websocket:stomp-endpoint>
 		<websocket:simple-broker prefix="/category"/>
 	</websocket:message-broker>
+
 	
 	<!-- Websocket 활용 메시지 알람 -->
     <websocket:handlers>
@@ -63,5 +66,7 @@
 	 
 	
 	
-	
+
+
 </beans:beans>
+

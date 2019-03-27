@@ -76,7 +76,7 @@ $(function(){
 					   "input_pass" : input_pass,				//입력한 비밀번호
 					   "${_csrf.parameterName}":'${_csrf.token}', 
 					   "userNum":userNum},				//로그인한 USER_NUM
-				type: "post",
+				type: "get",
 				dataType: "json",
 				success: function(data) {
 					if(data){
@@ -85,14 +85,14 @@ $(function(){
 // 							text:"삭제 되었습니다",
 // 						});
 						alert("삭제 되었습니다");
-						location.href="withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}&userNum=${withBoard.userNum}";
+						location.href="withMain";
 					} else {
 // 						swal({
 // 							icon:"fail",
 // 							text:"비밀번호가 틀렸습니다",
 // 						});
 						alert("비밀번호가 일치하지 않습니다");
-						location.href="withView?tlUser=${withList.TL_USER_NUM}&wrUser=${withList.WR_USER_NUM}&withNum=${withList.WITH_NUM}&userNum=${withBoard.userNum}";	
+						location.href="withMain";	
 					}
 				}
 			});
@@ -133,8 +133,13 @@ $(function(){
 			dataType : "json",
 			success : function(data) {
 				
+				var boardList = data.boardList;
+				
 				//console.log(data.boardList);
 				for(var i in data.boardList) {
+					
+					if("${withBoard.WITH_NUM}" == boardList[i].WITH_NUM){
+						
 					var tr = $("<tr>");
 					var href = $("<a href='#' style='text-decoration: none;'>신고</a>");	
 					var btnDelete = $("<button class='far fa-trash-alt' id='btnDelete' data-toggle='modal' data-target='#replyModal'></button>");	
@@ -196,9 +201,15 @@ $(function(){
 							})
 						});
 					})(i);
+				
+					
+					
+					}
+				
 				}
+				
 			}
-		});
+		}); 
 	}
 	
 	function moveTopage(start) {
@@ -261,6 +272,9 @@ $(function(){
 	#btnSave {
 		display: inline;
 		float: right;
+		background-color: #eeeeee;
+		color: green;
+		border: 1px solid #cccccc;
 	}
 	#inputReply {
 		width: 1000px; 
@@ -364,17 +378,23 @@ $(function(){
 			<!------- 조회수 시작------->
 			<div style="float: right;">
 				<i class="far fa-eye" style="font-size: 20px; color: #cccccc;"></i>
-				<span style="margin-left: 10px; font-size: 20px; color: #cccccc;">${withBoard.WITH_COUNT}</span>
+				<span style="margin-left: 10px; font-size: 20px; color: #cccccc;">${plus.WITH_COUNT}</span>
 			</div>
 			<!------- 조회수 끝------->
 			
 			<br><br>
 			
-			<button type="button" class="btn btn-primary" id="List" onclick="location.href='#'">후기 목록</button>
-			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?num=${withBoard.REVIEW_NUM}'">수정하기</button>
+			<button type="button" class="btn btn-primary" id="List" onclick="location.href='withList?num=${withBoard.TL_USER_NUM}'">
+				<i class="fas fa-align-justify"></i> 후기 목록
+			</button>
+			<button type="button" class="btn btn-primary" id="Update" onclick="location.href='updateForm?withNum=${withBoard.WITH_NUM}'">
+				<i class="fas fa-wrench"></i> 수정하기
+			</button>
 			
 			<!------- 삭제 버튼, 모달  시작------->
-			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="Delete">삭제하기</button>
+			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="Delete">
+				<i class='far fa-trash-alt'></i> 삭제하기
+			</button>
 			<input type="hidden" name="num" value="${withBoard.WITH_NUM}">
 			<input type="hidden" name=userNum value="${userNum}">
 			<div class="modal fade" id="myModal" role="dialog">
@@ -498,7 +518,9 @@ $(function(){
   				<input type="hidden" name="WITH_NUM" value="${withBoard.WITH_NUM}">
   				<input type="hidden" name="USER_NUM" value="${withBoard.USER_NUM}">
   				<input type="text" class="form-control form-control-sm" placeholder="댓글을 입력하세요" id="inputReply" name="WI_REP_CONTENT">
-				<input type="submit" class="btn btn-primary" id="btnSave" value="등록">
+				<button type="submit" class="btn btn-primary" id="btnSave">
+					<i class="far fa-edit"></i> 등록 
+				</button>
 			</form>
 			<!------------ 댓글 달기 끝 ------------>
 			
