@@ -124,17 +124,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 
 	<!-- userNum 으로 사용가능언어 num 불러오기 -->
 	<select id="selectUserLanguageNum" parameterType="int" resultType="map">
-		select LANGUAGE_NUM from LANGUAGE_TB
+		select LANGUAGE_NUM as SELECT_NUM
+			from LANGUAGE_TB
     		where user_num = #{userNum}
 	</select>
 	<!-- userNum 으로  interest num 불러오기-->
 	<select id="selectUserInterestNum" parameterType="int" resultType="map">
-		select INTEREST_NUM from INTEREST_TB
-    		where user_num = #{userNum}
+		select INTEREST_NUM as SELECT_NUM
+		  from INTEREST_TB
+    	 where user_num = #{userNum}
 	</select>
 	<!-- userNum 으로  tripStyle num 불러오기 -->
 	<select id="selectUserTripStyleNum" parameterType="int" resultType="map">
-		select TRAVLE_STYLE_NUM from TRAVLE_STYLE_TB
+		  select TRAVLE_STYLE_NUM as SELECT_NUM
+			from TRAVLE_STYLE_TB
     		where user_num = #{userNum}
 	</select>
 	<!-- 사용가능언어를  사용가능언어 num 으로 불러오기  화면에 뿌려줄 데이터 미완성-->

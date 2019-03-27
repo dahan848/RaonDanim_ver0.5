@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>	
 <%
    request.setAttribute("contextPath", request.getContextPath());
 %>
@@ -31,8 +32,7 @@
       <section id="section-profile-update" class="bg-gray">
          <div class="container">
             <h3 class="section-title">
-               <img class="section-header-icon"
-                  src="${contextPath}/img/Profile.png" alt=""> 2단계: 자기 소개 문구
+              <img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt=""> 2단계: 자기 소개 문구
                입력하기
             </h3>
             <div class="progress">
@@ -89,25 +89,27 @@
 </body>
 <script type="text/javascript">
 
-function form_Check(){
-	var intro = $("#id_description").val()
-	if(intro < 20){
-		swal({
-         text:"자기소개를 작성해주세요.",
-         icon:"warning",
-         buttons:[false,"확인"]
+	function form_Check(){
+		var intro = $("#id_description").val()
 		
-      })
-		return false;
-	}
-	var up;
-	up = confirm("저장하시겠습니까 ??");
-
-	if (up) {
-		return true;
-	} else {
-		return false;
-	}
+		if(intro < 20){
+			swal({
+	         text:"자기소개를 작성해주세요.",
+	         icon:"warning",
+	         buttons:[false,"확인"]
+			
+	      })
+			return false;
+		}
+		
+		var up;
+		up = confirm("저장하시겠습니까 ??");
+	
+		if (up) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 </script>

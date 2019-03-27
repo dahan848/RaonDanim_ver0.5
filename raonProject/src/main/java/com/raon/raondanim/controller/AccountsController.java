@@ -143,18 +143,15 @@ public class AccountsController {
 		//'다른 탭'을 클릭 하려고 하면 수정된 정보가 있는데 저장 할 것인가를 물음.
 		
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
-		//String usernum = Integer.toString(user.getUser_num());
+		String usernum = Integer.toString(user.getUser_num());
 		//System.out.println("update1Form : " + user);
 		int userNum = user.getUser_num();
 		service.getProfileData(userNum);
-		service.userUseLanguage(userNum);
-		//System.out.println("service allLanguage : " + service.allLanguage());
-		//System.out.println(service.allInterest());
-		System.out.println("getAll_TripStyle : " + service.allTripStyle());
-		model.addAttribute("allInterest", service.allInterest());
-		model.addAttribute("allLanguage", service.allLanguage());
-		model.addAttribute("allTripStyle", service.allTripStyle());
+
 		
+		model.addAttribute("allInterest", service.allInterest(userNum));
+		model.addAttribute("allLanguage", service.allLanguage(userNum));
+		model.addAttribute("allTripStyle", service.allTripStyle(userNum));
 
 		return "accounts/profile-update1";
 	}
@@ -162,14 +159,17 @@ public class AccountsController {
 	//프로필 수정 화면 2
 	@RequestMapping(value = "/update2Form")
 	public String update2Form(Model model,@RequestParam Map<String, Object> params,Authentication authentication) {
-		System.out.println("update2Form param: " + params);
+		//System.out.println("update2Form param: " + params);
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		int userNum = user.getUser_num();
+		
+		//첫 번째 화면에서 입력 받은 정보를 DB에 저장한다.
 		service.profileUpdate_Language(params,userNum);
 		service.profileUpdate_Interest(params, userNum);
 		service.profileUpdate_TripStyle(params, userNum);
 		
-		
+		//사용자 DB에 저장 된 자기소개 보내주기  
+		model.addAttribute("userIntro", service.getUserIntro(userNum));
 		
 		return "accounts/profile-update2";
 	}

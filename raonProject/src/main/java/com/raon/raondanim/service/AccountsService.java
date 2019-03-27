@@ -138,20 +138,58 @@ public class AccountsService {
 		}
 	}
 	
-// 언어DB에서 전부 불러오기
-	public List<Map<String, Object>> allLanguage(){
-		return dao.selectAllLanuage();
-		
+	/*
+	 	DB에 저장되어 있는 언어, 관심사, 스타일 가져오면서 
+	 	추가적으로 유저의 정보를 담아주는 () 
+	*/
+	//언어
+	public List<Map<String, Object>> allLanguage(int usernum){
+		List<Map<String,Object>> data = dao.selectAllLanuage();
+		List<Map<String,Object>> userData = dao.selectUserLanguageNum(usernum);
+		if(userData.get(0) != null) {
+			for (int i = 0; i < data.size(); i++) {
+				for (int n = 0; n < userData.size(); n++) {
+					Map<String, Object> map = userData.get(n);  
+					if (data.get(i).get("LANGUAGE_NUM").equals(map.get("SELECT_NUM"))) {
+						data.get(i).putAll(map);
+					}
+				}
+			}			
+		}
+		return data;
 	}
-	// 좋아하는 것 DB에서 전부 불러오기
-	public List<Map<String, Object>> allInterest(){
-		return dao.getAll_Interest();
+	//관심사
+	public List<Map<String, Object>> allInterest(int usernum){
+		List<Map<String,Object>> data = dao.getAll_Interest();
+		List<Map<String,Object>> userData = dao.selectUserInterestNum(usernum);
+		if(userData.get(0) != null) {
+			for (int i = 0; i < data.size(); i++) {
+				for (int n = 0; n < userData.size(); n++) {
+					Map<String, Object> map = userData.get(n);  
+					if (data.get(i).get("INTEREST_NUM").equals(map.get("SELECT_NUM"))) {
+						data.get(i).putAll(map);
+					}
+				}
+			}			
+		}
+		return data;
 	}
 	
-	//여행 스타일 DB에서 전부 불러오기 
-	public List<Map<String, Object>> allTripStyle(){
-		return dao.getAll_TripStyle();
-		
+	//여행스타일
+	public List<Map<String, Object>> allTripStyle(int usernum){
+		List<Map<String,Object>> data = dao.getAll_TripStyle();
+		List<Map<String,Object>> userData = dao.selectUserTripStyleNum(usernum);
+		if(userData.get(0) != null) {
+			for (int i = 0; i < data.size(); i++) {
+				for (int n = 0; n < userData.size(); n++) {
+					Map<String, Object> map = userData.get(n);  
+					if (data.get(i).get("TRAVLE_STYLE_NUM").equals(map.get("SELECT_NUM"))) {
+						data.get(i).putAll(map);
+					}
+				}
+			}			
+		}
+		return data;
 	}
 	
 		
@@ -268,21 +306,7 @@ public class AccountsService {
 		System.out.println("userInfo : " + userInfo);
 		dao.user_city_nation_phoneNumber(userInfo);
 	}
-	
-	
-	//userNum 으로 사용가능 언어 불러오는 메서드 (화면에 뿌려줄 데이터 미완성)
-	public List<Map<String, Object>> userUseLanguage(int userNum){
-		//System.out.println("userUserLanguageNum : " + dao.selectUserLanguageNum(userNum));
-		List<String> userLanguageNum = dao.selectUserLanguageNum(userNum);
-		System.out.println("userLanguageNum : " + userLanguageNum);
-		//List<Integer> languageNum = new ArrayList<Integer>();
-		for(int i=0;i<userLanguageNum.size();i++) {
-			
-			//Map<String, Object> userUserLange = dao.userUseLanguage(Integer.parseInt(userLanguageNum[i]));
-		}
-		return null;
-	}	
-	
+		
 	//프로필 화면에 넘길 데이터 (Map) 반환하는 서비스
 	public Map<String, Object> getProfileData(int usernum){
 		//System.out.println("프로필 화면 요청 받음 : " + usernum);
@@ -845,8 +869,22 @@ public class AccountsService {
 	//유저 월별 가입 숫자 뽑아오기 -
 	public List<Map<String, Object>> getUserRegDate(){
 		return dao.getUserRegDate();	
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//유저 자기소개 반환
+	public String getUserIntro(int usernum) {
+		String user_num = Integer.toString(usernum);
+		User user = dao.selectByUserNum(user_num);
+		return user.getUser_intro();
 	}
-
-	
-	
 }

@@ -39,8 +39,7 @@
       <section id="section-profile-update" class="bg-gray">
          <div class="container">
             <h3 class="section-title">
-               <img class="section-header-icon"
-                  src="/static/potluck/img/icon/Profile.png" alt=""> 3단계: 현지친구 정보 입력하기
+			<img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt="">3단계: 현지친구 정보 입력하기
             </h3>
             <div class="progress">
                <div class="progress-bar" role="progressbar"
@@ -112,7 +111,7 @@
                               <label class="col-sm-3 control-label">전화번호</label>
                               <div class="col-sm-4">
                                  <div class="input-group">
-                                    <input class="form-control" value="" name="USER_PHONE_NUM">
+                                    <input class="form-control" value="" name="USER_PHONE_NUM" id="USER_PHONE_NUM">
                                  </div>
                               </div>
                            </div>

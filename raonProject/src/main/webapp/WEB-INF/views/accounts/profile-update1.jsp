@@ -59,11 +59,13 @@
 											<label class="col-sm-3 control-label" for="e2_2" style="">사용가능언어</label>
 											<select id="userLanguage" multiple="multiple" style="width: 100%;"
 												class="select2-multi-col ">
-												
 												<c:forEach var="allLanguage" items="${allLanguage}">
-
-													<option value="${allLanguage.LANGUAGE_NUM}">${allLanguage.LANGUAGE_KO_NAME}, ${allLanguage.LANGUAGE_EN_NAME}</option>
-
+													<option value="${allLanguage.LANGUAGE_NUM}"
+														<c:if test="${allLanguage.SELECT_NUM eq allLanguage.LANGUAGE_NUM}">selected</c:if>
+													>
+														${allLanguage.LANGUAGE_KO_NAME},
+														${allLanguage.LANGUAGE_EN_NAME}
+													</option>
 												</c:forEach>
 
 											</select>
@@ -75,14 +77,14 @@
 											<select id="userInterest" multiple="multiple"
 												style="width: 100%;" 
 												class="select2-multi-col ">
-
-												<c:forEach var="allInterest" items="${allInterest}">
-
-													<option value="${allInterest.INTEREST_NUM}">${allInterest.INTEREST_KO_NAME},
-														${allInterest.INTEREST_EN_NAME}</option>
-
+												<c:forEach var="interest" items="${allInterest}">
+													<option value="${interest.INTEREST_NUM}"
+														<c:if test="${interest.SELECT_NUM eq interest.INTEREST_NUM}">selected</c:if>
+													>
+														${interest.INTEREST_KO_NAME},
+														${interest.INTEREST_EN_NAME}
+													</option>
 												</c:forEach>
-
 											</select>
 										</div>
 									</div>
@@ -95,11 +97,12 @@
 												style="width: 100%;"
 												class="select2-multi-col ">
 												<c:forEach var="allTripStyle" items="${allTripStyle}">
-
-													<option value="${allTripStyle.TRAVLE_STYLE_NUM}">${allTripStyle.TRAVLE_STYLE_NAME}</option>
-														
+													<option value="${allTripStyle.TRAVLE_STYLE_NUM}"
+														<c:if test="${allTripStyle.SELECT_NUM eq allTripStyle.TRAVLE_STYLE_NUM}">selected</c:if>
+													>
+														${allTripStyle.TRAVLE_STYLE_NAME}
+													</option>
 												</c:forEach>
-												
 											</select>
 										</div>
 									</div>
@@ -122,18 +125,24 @@
 	  if (!state.id) return state.text; // optgroup
 	  return "<img class='flag' src='//select2.github.io/vendor/images/flags/" + state.id.toLowerCase() + ".png'>" + state.text;
 	}
+	
+	//사용가능언어 select2
 	$("#userLanguage").select2({
 		  placeholder: "",
 		  formatResult: format,
 		  formatSelection: format,
 		  escapeMarkup: function(m) { return m; }
 	});
+	
+	//관심사 select2
 	$("#userInterest").select2({
 		  placeholder: "",
 		  formatResult: format,
 		  formatSelection: format,
 		  escapeMarkup: function(m) { return m; }
 	});
+	
+	//여행스타일 select2
 	$("#userTripStyle").select2({
 		  placeholder: "",
 		  formatResult: format,
@@ -143,37 +152,20 @@
 	
 	//다음 버튼 눌렀을때 실행되는 함수
  	function form_Check(){
-	//사용가능 언어 value 넘기기
-	var userLanguage = $("#userLanguage").val();
-		//alert(userLanguage);
-	var user_allLanguage = $("#user_allLanguage").val(userLanguage);
-	alert("user_allLanguage : " + user_allLanguage);
+		//사용가능 언어 value 넘기기
+		var userLanguage = $("#userLanguage").val();
+		var user_allLanguage = $("#user_allLanguage").val(userLanguage);
 	
-	//좋아하는 것 value 넘기기
-	var userInterest = $("#userInterest").val();
-		//alert(userInterest);
-	var user_allInterest = $("#user_allInterest").val(userInterest);
-	alert("user_allInterest : " + user_allInterest);
+		
+		//좋아하는 것 value 넘기기
+		var userInterest = $("#userInterest").val();
+		var user_allInterest = $("#user_allInterest").val(userInterest);
 	
-	//여행스타일 value 넘기기
-	var userTripstyle = $("#userTripStyle").val();
-	//alert(userTripstyle);
-	var user_allTripStyle = $("#user_allTripStyle").val(userTripstyle);
-	//alert("user_allTripStyle : " + user_allTripStyle);
-	
-// 	//사용가능언어는 개수 확인스크립트
-// 	var userLanguage = $("#userLanguage").val();
-// 		//alert(userLanguage.length);
-// 	if(userLanguage.length > 3){
-// 		swal({
-//              text:"사용가능언어는 최대 3개입니다.",
-//              icon:"warning",
-//              buttons:[false,"확인"]
-			
-//           })
-//  		return false;
-// 	}
-
+		
+		//여행스타일 value 넘기기
+		var userTripstyle = $("#userTripStyle").val();
+		var user_allTripStyle = $("#user_allTripStyle").val(userTripstyle);
+		
 		var up;
 		up = confirm("저장하시겠습니까 ??");
 

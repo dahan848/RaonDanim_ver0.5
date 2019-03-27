@@ -28,9 +28,9 @@ public interface AccountsUserDAO {
 	
 	//======추가 프로필 관련 =======
 	//userNum 기준으로 사용가능 언어 취미 여행스타일 출력
-	public List<String> selectUserLanguageNum(int userNum);
-	public List<String> selectUserInterestNum(int userNum);
-	public List<String> selectUserTripStyleNum(int userNum);
+	public List<Map<String,Object>> selectUserLanguageNum(int userNum);
+	public List<Map<String,Object>> selectUserInterestNum(int userNum);
+	public List<Map<String,Object>> selectUserTripStyleNum(int userNum);
 	
 	public List<Map<String, Object>> userUseLanguage(int languageNum);
 	
