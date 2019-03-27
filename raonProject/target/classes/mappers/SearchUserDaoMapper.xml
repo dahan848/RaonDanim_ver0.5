@@ -5,7 +5,7 @@
 	<select id="getUserList" parameterType="map" resultType="map">
 		SELECT *
 		  FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_FNM, USER_LNM, USER_GENDER, USER_PROFILE_PIC, CITY, NATIONALITY
-				  FROM (SELECT u.USER_NUM, u.USER_FNM, u.USER_LNM, u.USER_GENDER, u.USER_PROFILE_PIC, c.CITY AS CITY, n.NATIONALITY_NAME AS NATIONALITY
+				  FROM (SELECT u.USER_NUM, u.USER_FNM, u.USER_LNM, u.USER_GENDER, u.USER_PROFILE_PIC, c.CITY AS CITY, n.NATIONALITY_EN_NAME AS NATIONALITY
 						  FROM USER_TB u, CITY_COUNTRY_DTB c, NATIONALITY_DTB n
 						 WHERE u.USER_CITY_COUNTRY = c.CITY_COUNTRY_NUM (+)
 						 <if test="city != null and city != ''">
@@ -49,7 +49,7 @@
 	<select id="selectTotalCount" parameterType="map" resultType="int">
 		SELECT count(*)
 		  FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_FNM, USER_LNM, USER_GENDER, USER_PROFILE_PIC, CITY, NATIONALITY
-				  FROM (SELECT u.USER_NUM, u.USER_FNM, u.USER_LNM, u.USER_GENDER, u.USER_PROFILE_PIC, c.CITY AS CITY, n.NATIONALITY_NAME AS NATIONALITY
+				  FROM (SELECT u.USER_NUM, u.USER_FNM, u.USER_LNM, u.USER_GENDER, u.USER_PROFILE_PIC, c.CITY AS CITY, n.NATIONALITY_EN_NAME AS NATIONALITY
 						  FROM USER_TB u, CITY_COUNTRY_DTB c, NATIONALITY_DTB n
 						 WHERE u.USER_CITY_COUNTRY = c.CITY_COUNTRY_NUM (+)
 						 <if test="city != null and city != ''">
@@ -120,7 +120,7 @@
 	</select>
 	
 	<select id="getUserNationality" parameterType="string" resultType="string">
-		SELECT NATIONALITY_NAME
+		SELECT NATIONALITY_EN_NAME
 		  FROM NATIONALITY_DTB
 		 WHERE NATIONALITY_NUM = (SELECT USER_NATIONALITY
                            			FROM USER_TB
@@ -134,4 +134,5 @@
                          		  FROM INTEREST_TB
                         		 WHERE USER_NUM = #{userNum})
 	</select>
+	
 </mapper>

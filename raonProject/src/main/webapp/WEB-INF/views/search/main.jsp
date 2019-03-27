@@ -343,8 +343,8 @@
 													 <select class="form-control select-gender" name="gender">
 													 	<!-- placeholder 사용을 위한 option blank -->
 													 	<option></option>
-													 	<option value="0">남</option>
-													 	<option value="1">여</option>
+													 	<option value="1">남</option>
+													 	<option value="2">여</option>
 													 </select>
 													 <script>
 														$(document).ready(function(){
