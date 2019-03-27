@@ -179,7 +179,10 @@
 												swal({
 						 							icon:"success",
 						 							text:"삭제 되었습니다",
-						 						});
+						 						}).then(function(isConfirm){
+													location.reload()
+// 						 							createReplyList(1);
+												})
 											} else {
 												swal({
 						 							icon:"warning",
@@ -234,7 +237,8 @@
   		float: left;  
 		margin: 30px;
 		border: 1px solid #cccccc;
-		width: 250px;
+/* 		width: 250px; */
+width: auto;
 		height: auto;
 		text-align: center;
 		font-size: 20px;

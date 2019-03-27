@@ -144,7 +144,11 @@ public class WithReviewController {
 		String TL_USER_NUM = request.getParameter("tlUser");
 		User rev2 = wiService.selectByUserNum(TL_USER_NUM);
 		model.addAttribute("tlUser", rev2);		
-				
+		
+		
+		int tlUserNum = Integer.parseInt(TL_USER_NUM);
+		model.addAttribute("avgStar", wiService.avgStar(tlUserNum));
+		
 		return "review/withView";
 	}
 	

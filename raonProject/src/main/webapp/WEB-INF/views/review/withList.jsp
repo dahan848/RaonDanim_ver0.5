@@ -142,7 +142,7 @@ $(function(){
                      <c:if test="${withBoard.User.user_gender == 0}">
                      	<i class="fas fa-skull-crossbones"></i>
                      </c:if>
-                    <br> <i class="fas fa-home"> <br> <a>숙소 평점</a> <br>
+                    <br> <i class="fas fa-home"> <br> <span>숙소 평점</span> <br>
                         <span><i style="color: blue;">4.2</i> / 5</span>
                     </i> <i class="fas fa-camera" style="margin-left: 20px;"> <br>
                         <span>후기 평점</span> <br> <span><i style="color: blue;">${avgStar.reviewAvg}</i> / 5</span>

@@ -348,7 +348,20 @@ $(function(){
 				<div class="tab-content">
 			<!----------------------------------------- 프로필 시작 -------------------------------------->
 			<div class="box" id="box">
-				<div id="userimg"></div>
+				<c:choose>
+				  			<c:when test="${tlUser.user_profile_pic eq 'n'}">
+								<a href="" rel="popover" data-placement="bottom" data-trigger="focus"
+										data-popover-content="#userInfo${status.index}"> 
+									<img id="userimg"  class="img-circle" src="${contextPath}/img/home_profile_2.jpg">
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="" rel="popover" data-placement="bottom"
+										data-popover-content="#userInfo${status.index}"> 
+									<img id="userimg" class="img-circle" src="${contextPath}/image?fileName=${tlUser.user_profile_pic}">
+								</a>
+							</c:otherwise>
+				  		 </c:choose>
 				<br>
 				<span>${tlUser.user_lnm}${tlUser.user_fnm}</span>
 				<br><br>
@@ -364,7 +377,7 @@ $(function(){
 					<br>
 					<span>후기 평점</span>
 					<br>
-					<span><i style="color: blue;">4.8</i> / 5</span>
+					<span><i style="color: blue;">${avgStar.reviewAvg}</i> / 5</span>
 				</i>
 				<br><br>
 			</div>
