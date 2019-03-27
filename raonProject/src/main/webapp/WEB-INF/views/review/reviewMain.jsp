@@ -19,14 +19,14 @@
 
 <script type="text/javascript">
 //-------------- 무한 스크롤 --------------//	
-	$(window).on("scroll",function() {
-		var scrollHeight = $(document).height();
-		var scrollPosition = $(window).height() + $(window).scrollTop();
+// 	$(window).on("scroll",function() {
+// 		var scrollHeight = $(document).height();
+// 		var scrollPosition = $(window).height() + $(window).scrollTop();
 		
-		if(scrollPosition > scrollHeight - 300) {
-			$("#scroll").append('<div class="box" id="box"></div>');
-		}
-	});
+// 		if(scrollPosition > scrollHeight - 300) {
+// 			$("#scroll").append('<div class="box" id="box"></div>');
+// 		}
+// 	});
 
 	//-------------- 프로필 팝오버 --------------//		
 	$(function(){ 
