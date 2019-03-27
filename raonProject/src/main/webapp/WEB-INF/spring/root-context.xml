@@ -152,6 +152,10 @@
       <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
    </bean>
    
-
+<!-- 서치DAO -->
+   <bean id="searchUserDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+      <property name="mapperInterface" value="com.raon.raondanim.dao.SearchUserDAO"></property>
+      <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+   </bean>
 
 </beans>
