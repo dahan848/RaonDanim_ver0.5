@@ -84,6 +84,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where rnum between #{firstRow} and #{endRow}
 	</select>
 	
+	<select id="getUser_pic" resultType="Map">
+		select user_num, USER_PROFILE_PIC
+        from user_tb
+	</select>
+	
+	<select id="getUser_pic_one" resultType="Map">
+		select user_num, USER_PROFILE_PIC
+        from user_tb
+        where user_num = #{user_num}
+	</select>
+	
+	<select id="getMotel_pic" resultType="Map">
+		select motel_num, motel_pic_1 
+		from MOTEL_PIC_TB
+	</select>
+	
 	
 	<select id="viewSelect" resultType="Map" parameterType="int">
 		select motel.MOTEL_NUM, motel.MOTEL_TYPE, motel.MOTEL_CATEGORY, motel.MOTEL_PEOPLE, motel.MOTEL_ROOM, motel.MOTEL_BATHROOM, motel.MOTEL_NATION_EN, motel.MOTEL_NATION_KO, motel.MOTEL_CITY_EN, motel.MOTEL_CITY_KO, motel.MOTEL_ADDRESS, motel.MOTEL_INTRO, motel.MOTEL_TITLE, motel.MOTEL_PRICE, motel.MOTEL_AVG, user1.USER_FNM, user1.USER_LNM, user1.user_num

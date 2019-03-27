@@ -177,7 +177,7 @@ public class MotelTbService {
 		}
 	}
 	
-
+	
 	public Map<String, Object> getViewData(Map<String, Object> params) {
 		// startPage, endPage, totalPage, boardList 반환
 		System.out.println("서비스 호출");
@@ -208,15 +208,12 @@ public class MotelTbService {
 		daoParam.put("city", params.get("city"));
 		
 
-		
-		
-		/*Map<String, Object> viewData = new HashMap<String,Object>();*/
-		
-
 		viewData.put("boardList", getBoardList(daoParam));
 		viewData.put("startPage", getStartPage(page));
 		viewData.put("endPage", getEndPage(page));
 		viewData.put("totalPage", getTotalPage(daoParam));
+		viewData.put("user_pic", dao.getUser_pic());
+		viewData.put("motel_pic", dao.getMotel_pic());
 		viewData.put("page", page);
 
 		return viewData;
@@ -275,6 +272,20 @@ public class MotelTbService {
 	//숙박 게시글 상세정보(view화면용)
 	public Map<String, Object> viewSelect(Map<String, Object> params){
 		return dao.viewSelect(params);
+	}
+	public String getUser_pic_one(String user_num) {
+		Map<String, Object>tmp = new HashMap<String, Object>(); 
+		System.out.println(user_num);
+		tmp = dao.getUser_pic_one(user_num);
+		String pic="";
+		String tmpPic = tmp.get("USER_PROFILE_PIC").toString();
+		if(tmpPic.equals("n")) {
+			pic = "n";
+		}else {
+			pic =  tmp.get("USER_PROFILE_PIC").toString();
+		}
+		
+		return pic;
 	}
 
 	// 숙박 게시글 댓글(view화면용)

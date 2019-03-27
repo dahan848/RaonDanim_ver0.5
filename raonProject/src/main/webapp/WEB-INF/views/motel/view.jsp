@@ -826,15 +826,31 @@ function replyList(){
 		  			<i><b style="font-size: 40px;">${MOTEL_TITLE}</b></i>
 		  		</div>
 		  		<div style="border-radius: 50%; margin-top:15px; width: 100px; height: 100px; display: inline-block;  margin-left: 100px;">
+		  		
 		  			<c:choose>
 		  				<c:when test="${test_num1 != test_num2 }">
 		  					<a href="#none" data-toggle="popover" data-html="true" data-content='<a href="http://www.naver.com">프로필 보기</a><br>친구 신청<br>대화 하기' data-trigger="focus">		
-		  						<img src="${contextPath}/img/duny.jpg" class="img-profile" style="width: 100%; height: 100%; border-radius: 50%;">
+		  						<c:choose>
+		  						<c:when test="${user_pic == 'n'}">
+		  							<img src="${contextPath}/img/home_profile_2.jpg" class="img-profile" style="width: 100%; height: 100%; border-radius: 50%;">
+		  						</c:when>	
+		  						<c:otherwise>
+		  							<img src="${contextPath}/image?fileName=${user_pic}" class="img-profile" style="width: 100%; height: 100%; border-radius: 50%;">
+		  						</c:otherwise>
+		  					</c:choose>
 		  					</a>
 		  				</c:when>
 		  				<c:otherwise>
 		  					<a href="${contextPath}/accounts/profile?user=${test_num1}">		
-		  						<img src="${contextPath}/img/duny.jpg" class="img-profile" style="width: 100%; height: 100%; border-radius: 50%;">
+		  					<c:choose>
+		  						<c:when test="${user_pic == 'n'}">
+		  							<img src="${contextPath}/img/home_profile_2.jpg" class="img-profile" style="width: 100%; height: 100%; border-radius: 50%;">
+		  						</c:when>	
+		  						<c:otherwise>
+		  							<img src="${contextPath}/image?fileName=${user_pic}" class="img-profile" style="width: 100%; height: 100%; border-radius: 50%;">
+		  						</c:otherwise>
+		  					</c:choose>
+		  						
 		  					</a>
 		  				</c:otherwise>
 		  			</c:choose>

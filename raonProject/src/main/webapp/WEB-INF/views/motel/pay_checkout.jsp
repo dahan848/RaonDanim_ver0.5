@@ -47,7 +47,7 @@ function initialize() {
 	function geocodeAddress(geocoder, resultsMap) {
         
         var address = "${ad}";
-        debugger;
+        
         geocoder.geocode({'address': address}, function(results, status) {
            
           if (status === 'OK') {
@@ -188,7 +188,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 																			<div>
 																				<span aria-hidden="true">
 																					<span class="_so3dpm2">
-																					후기 45개
+																					
 																					</span>
 																				</span>
 																			</div>

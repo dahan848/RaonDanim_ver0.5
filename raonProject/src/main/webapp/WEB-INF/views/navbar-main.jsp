@@ -237,7 +237,7 @@
 								<span class="vertical-separator" style="margin-bottom: 5px;"></span>
 								<!-- 메시지List 버튼 -->
 								<a onclick="getChatRoomList()" id="btn_msg" href="#" rel="popover" data-trigger="focus" data-placement="bottom" data-popover-content="#chatList">
-										<i class="fa fa-envelope fa-lg icon-red"></i>
+										<i class="fa fa-envelope fa-lg"></i>
 										<strong id="mCount" class="text-potluck"></strong>
 								</a>
 							</li>

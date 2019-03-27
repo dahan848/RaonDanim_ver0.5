@@ -23,8 +23,10 @@ import com.raon.raondanim.model.User;
 import com.raon.raondanim.model.customUserDetails;
 import com.raon.raondanim.service.AccountsService;
 import com.raon.raondanim.service.MotelTbService;
+import com.raon.raondanim.service.WithReviewBoardService;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,7 @@ public class AccountsController {
 	private AccountsService service;
 	@Autowired
 	private MotelTbService motelService;
+
 	
 	//로그인 화면 요청
 	@RequestMapping(value = "/loginForm")
@@ -359,11 +362,132 @@ public class AccountsController {
 		
 		//대시보드 댓글 삭제
 		@RequestMapping(value="/replyDelete",method=RequestMethod.POST)
-		public int reply_delete (@RequestParam Map<String, Object>params) {
+		@ResponseBody
+		public boolean reply_delete (@RequestParam(value="rNums[]") List<String>params,@RequestParam(value="user_num") String user_num, @RequestParam(value="_csrf") String code) {
 			System.out.println("재미없다~~~~~~");
 			System.out.println(params);
-			return 0;
+			System.out.println(user_num);
+			System.out.println("rNums : ");
+			List<String> paramList = new ArrayList<String>();
+			for(String a:params) {
+				
+				System.out.println();
+				if(!a.equals("")) {
+					System.out.print(a+" ");
+					paramList.add(a);
+				}
+			}
+			System.out.println("파라미터 리스트");
+			System.out.println(paramList);
+			
+			return service.deleteReplyCount(paramList, user_num);
 		}
+		
+		//대시보드 여행 게시글 삭제
+		@RequestMapping(value="/tripDelete",method=RequestMethod.POST)
+		@ResponseBody
+		public boolean trip_delete (@RequestParam(value="tNums[]") List<String>params,@RequestParam(value="user_num") String user_num, @RequestParam(value="_csrf") String code) {
+			System.out.println("여행 게시글 지워버려");
+			System.out.println(params);
+			System.out.println(user_num);
+			System.out.println("tripNum : ");
+			List<String> paramList = new ArrayList<String>();
+			for(String a:params) {
+				
+				System.out.println();
+				if(!a.equals("")) {
+					System.out.print(a+" ");
+					paramList.add(a);
+				}
+			}
+			System.out.println("파라미터 리스트");
+			System.out.println(paramList);
+			
+			return service.deleteTrip(paramList, user_num);
+		}
+		
+		
+		//여행후기 탭 여행 후기 게시판 리스트
+		@RequestMapping(value="tripReview_review",method=RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> trip_review_review(@RequestParam(value="page",defaultValue="1")int page,
+				Model model, int num){
+			System.out.println("ajax 요청 받았다(여행 후기)");
+			Map<String, Object>params = new HashMap<String, Object>();
+			params.put("num", num);
+			params.put("page", page);
+			System.out.println(params);
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("board", service.getTripReviewViewData(params));
+			System.out.println("여행후기 리스트 체크");
+			System.out.println(result);
+			return result;
+		}
+		
+		
+		//여행후기 탭 여행 후기 게시판 삭제 로직
+				@RequestMapping(value="/deleteTripReview_review",method=RequestMethod.POST)
+				@ResponseBody
+				public boolean deleteTripReview_review (@RequestParam(value="tNums[]") List<String>params,@RequestParam(value="user_num") String user_num, @RequestParam(value="_csrf") String code) {
+					System.out.println("여행 게시글 지워버려");
+					System.out.println(params);
+					System.out.println(user_num);
+					System.out.println("tripNum : ");
+					List<String> paramList = new ArrayList<String>();
+					for(String a:params) {
+						
+						System.out.println();
+						if(!a.equals("")) {
+							System.out.print(a+" ");
+							paramList.add(a);
+						}
+					}
+					System.out.println("파라미터 리스트");
+					System.out.println(paramList);
+					
+					return service.deleteTripReview_review(paramList, user_num);
+				}
+				
+				//여행후기 탭 댓글 게시판 리스트
+				@RequestMapping(value="tripReview_review_reply",method=RequestMethod.POST)
+				@ResponseBody
+				public Map<String, Object> tripReview_review_reply(@RequestParam(value="page",defaultValue="1")int page,
+						Model model, int num){
+					System.out.println("ajax 요청 받았다(여행 후기-댓글)");
+					Map<String, Object>params = new HashMap<String, Object>();
+					params.put("num", num);
+					params.put("page", page);
+					System.out.println(params);
+					Map<String, Object> result = new HashMap<String, Object>();
+					result.put("board", service.getTripReview_ReplyViewData(params));
+					System.out.println("여행후기 리스트 체크-댓글");
+					System.out.println(result);
+					return result;
+				}
+				
+				
+				//여행후기 탭 여행 후기 게시판 삭제 로직
+				@RequestMapping(value="/tripReview_review_reply_delete",method=RequestMethod.POST)
+				@ResponseBody
+				public boolean tripReview_review_reply_delete (@RequestParam(value="rNums[]") List<String>params,@RequestParam(value="user_num") String user_num, @RequestParam(value="_csrf") String code) {
+					System.out.println("여행 게시글 지워버려111");
+					System.out.println(params);
+					System.out.println(user_num);
+					System.out.println("tripNum : ");
+					List<String> paramList = new ArrayList<String>();
+					for(String a:params) {
+						
+						System.out.println();
+						if(!a.equals("")) {
+							System.out.print(a+" ");
+							paramList.add(a);
+						}
+					}
+					System.out.println("파라미터 리스트");
+					System.out.println(paramList);
+					
+					return service.deleteTripReview_review_reply(paramList, user_num);
+				}
 	
 
 	//비밀번호 찾기 Ajax 요청 

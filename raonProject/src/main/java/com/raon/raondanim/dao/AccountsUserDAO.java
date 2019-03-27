@@ -7,6 +7,7 @@ import com.raon.raondanim.model.User;
 
 public interface AccountsUserDAO {
 
+
    public int setDnmmyData (User user);
    public int joinUser (User user); //회원가입
    public User selectByUserId (String UserId); //아이디로 유저 선택
@@ -58,11 +59,6 @@ public interface AccountsUserDAO {
    //user_tb 에 국적/나의 거주도시/ 전화번호 업데이트 하기
    public int user_city_nation_phoneNumber(Map<String, Object>param);
    
-   //dashboard 작성 - 조현길
-   public List<Map<String, Object>> trip_list(Map<String, Object>params);//dashboard 여행활동 탭 - 여행 작성글 리스트
-   public int selectTotalCount(int num);//여행 게시글 토탈카운트
-   public List<Map<String, Object>> trip_reply_list(Map<String, Object>params);//여행탭 여행 댓글 리스트 호출 
-   public int selectReplyTotalCount(int num);//여행 댓글 토탈카운트
 
 
    public void passwordReset(Map<String, Object> param); //해당 아이디의 비밀번호를 초기화 하는 () 이메일과 초기화 된 비밀번호를 인자로 받는다. 
@@ -73,21 +69,27 @@ public interface AccountsUserDAO {
    
    
    
-   
-   
-   
-   
-   
-   
-   
-   
-   
    ///////////////////////////////
    //여행파트 dao추가
    public List<Map<String, Object>> getTrStyle(String usernum); //번호로 유저 여행스타일 선택
-   public List<Map<String, Object>> getTravleHope(String usernum); //번호로 유저 희망국가 도시 선택
+   //public List<Map<String, Object>> getTravleHope(String usernum); //번호로 유저 희망국가 도시 선택
    public List<Map<String, Object>> getUserRegDate(); // 월별 가입일로 유저 총 갯수 뽑아오기 
    ////////////////////////////////
 
 
+	//dashboard 작성 - 조현길
+	public List<Map<String, Object>> trip_list(Map<String, Object>params);//dashboard 여행활동 탭 - 여행 작성글 리스트
+	public int selectTotalCount(int num);//여행 게시글 토탈카운트
+	public List<Map<String, Object>> trip_reply_list(Map<String, Object>params);//여행탭 여행 댓글 리스트 호출 
+	public int selectReplyTotalCount(int num);//여행 댓글 토탈카운트
+	public int deleteReply(Map<String, Object>param);//여행 댓글 삭제로직(반복 시킬 로직임)
+	public int deleteTrip(Map<String, Object>param);//여행 게시글 삭제로직(반복 시킬 로직임)
+	public int selectTripReviewTotalCount(int num);//여행 후기 게시판 토탈 카운트
+	public List<Map<String, Object>> tripReview_review(Map<String, Object>params);//dashboard 여행 후기 게시판 리스트
+	public int deleteTripReview_review(Map<String, Object>param);//여행 후기 게시판 삭제 로직(반복 시킬 로직임)
+	public int selectTripReview_ReplyTotalCount(int num);//여행 후기 댓글 게시판 토탈 카운트
+	public List<Map<String, Object>> tripReview_review_reply(Map<String, Object>params);//여행 후기 게시판 리스트
+	public int deleteTripReview_review_reply(Map<String, Object>param);//여행 후기 게시판 삭제 로직(반복 시킬 로직임)
+
 }
+

@@ -233,6 +233,7 @@ public class MotelController {
 		
 		Map<String, Object> motel = new HashMap<String, Object>();
 		motel=service.viewSelect(params);
+		motel.put("user_pic", service.getUser_pic_one(motel.get("USER_NUM").toString()));
 		motel.put("checkIn", checkIn);
 		motel.put("checkOut", checkOut);
 		motel.put("tripDate", tripDate);
@@ -306,6 +307,7 @@ public class MotelController {
 	
 	@RequestMapping(value="/checkout",method=RequestMethod.POST)
 	public String checkoutPage(@RequestParam Map<String,Object> paramMap, Model model,HttpSession session, HttpServletRequest req) {
+		System.out.println("체크아웃 페이지 파라미터 체크1");
 		System.out.println(paramMap);
 		CsrfToken _csrf1 = (CsrfToken) req.getAttribute("CsrfToken");
 		CsrfToken _csrf2 = (CsrfToken) req.getAttribute("_csrf");
@@ -315,7 +317,7 @@ public class MotelController {
 		model.addAttribute("_csrf", _csrf2);
 		if(service.checkDate(paramMap)) {
 			model.addAllAttributes(paramMap);
-			System.out.println("체크아웃 파라미터 확인");
+			System.out.println("체크아웃 파라미터 확인2");
 			System.out.println(paramMap);
 			return "motel/pay_checkout";
 		}else {
@@ -497,7 +499,7 @@ public class MotelController {
 	@RequestMapping(value = "/write_registor_type_style", method = RequestMethod.GET)
 	public String registor_step1(HttpSession session) {
 		System.out.println("숙소 등록 진입 ");
-		System.out.println("session motel_photo : " + session.getAttribute("motel_photo"));
+		//System.out.println("session motel_photo : " + session.getAttribute("motel_photo"));
 		return "motel/registor_type_style";
 	}
 	
@@ -508,7 +510,7 @@ public class MotelController {
 		System.out.println("step2 진입");
 		//System.out.println(param);
 		//System.out.println(service.getAllNational());
-		System.out.println("도시 : " + service.getAllCity());
+		//System.out.println("도시 : " + service.getAllCity());
 		model.addAttribute("city", service.getAllCity());
 		model.addAttribute("national", service.getAllNational());
 		model.addAttribute("motel_type", param.get("motel_type"));
@@ -521,7 +523,7 @@ public class MotelController {
 	@RequestMapping(value="/registor_photo", method = RequestMethod.POST)
 	public String registor_step3(@RequestParam Map<String, Object> param, Model model) {
 		System.out.println("setp3  진입");
-		System.out.println(param);
+		//System.out.println(param);
 		
 		//파라미터에 있는 nation, city 의 값을 영어/한글 값으로 나누어서 저장(테이블에 영문/한글 따로 컬럼에 저장됨)
 		
@@ -617,15 +619,15 @@ public class MotelController {
 	@RequestMapping(value="/registor_complete", method = RequestMethod.POST)
 	public String registor_complete(@RequestParam Map<String, Object> param, Model model, HttpSession session) {
 		System.out.println("registor_complete 진입");
-		System.out.println("complete : " + param);
-		System.out.println("complete motel_photo : " + session.getAttribute("motel_photo"));
-		System.out.println("complete motel_photo : " + session.getAttribute("motel_photo").getClass());
+//		System.out.println("complete : " + param);
+//		System.out.println("complete motel_photo : " + session.getAttribute("motel_photo"));
+//		System.out.println("complete motel_photo : " + session.getAttribute("motel_photo").getClass());
 		List<MultipartFile> files = (List<MultipartFile>) session.getAttribute("motel_photo");
 		int motel_num = service.write_Motel1(param, files);
 		if(motel_num!=0) {
 			//숙박 글 정상 등록
 			System.out.println("숙박글 등록 성공");
-			System.out.println(motel_num);
+			//System.out.println(motel_num);
 		}else {
 			//숙박 글 등록 실패
 			System.out.println("숙박글 등록 실패");
