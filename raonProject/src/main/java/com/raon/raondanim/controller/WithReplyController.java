@@ -37,7 +37,6 @@ public class WithReplyController {
 		model.addAttribute("loginUserNum", loginUserNum);
 		params.put("USER_NUM", loginUserNum);
 
-
 		return wiService.insertReply(params);
 	}
 	
@@ -46,19 +45,12 @@ public class WithReplyController {
 	public ResponseEntity<Map<String, Object>> list (
 			@PathVariable("WITH_NUM") int num,
 			@RequestParam(value="page", defaultValue="1")int page) {
-		System.out.println("댓글 리스트 출력");
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("page", page);
 		Map<String, Object> viewData = wiService.getViewData(params);
 		
-//		System.out.println("동행후기 viewData: " + viewData);
-		
-		
 		ResponseEntity <Map<String, Object>> entity = new ResponseEntity<Map<String,Object>>(viewData,HttpStatus.OK);
-		
-//		System.out.println("동행후기 댓글 entity : " + entity);
-			
 		
 		return entity;
 	}
@@ -71,12 +63,6 @@ public class WithReplyController {
 			@RequestParam(value="num") int num,
 			@RequestParam(value="wi_Reply_Num") int wi_Reply_Num
 			) {
-		System.out.println("댓글 삭제 컨트롤러 진입");
-
-//		System.out.println("입력한 비밀번호 : " + input_reply_pass);
-//		System.out.println("로그인된 USER_NUM : " + userNum);
-//		System.out.println("게시글 번호 : " + num);
-//		System.out.println("댓글 번호 : "+wi_Reply_Num);
 		
 		Map<String, Object> replyDelete = new HashMap<>();
 		replyDelete.put("input_reply_pass", input_reply_pass);

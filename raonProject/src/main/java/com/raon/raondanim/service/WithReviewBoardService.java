@@ -36,4 +36,10 @@ public interface WithReviewBoardService {
 	public Map<String, Object> getBoardByNum(int num);
 	//페이지 번호 받아서 해당 목록 가져오기
 	public List<Map<String, Object>> getBoardList(Map<String, Object> params);
+	
+	//----------------별점----------------
+	//별점 계산 계산 식
+	public Map<String, Object> avgStar(int TL_USER_NUM);
+	//별점 계산 시 NULL 잡아줌
+	public List<Map<String, Object>> avgStarNullCheck(int TL_USER_NUM);
 }

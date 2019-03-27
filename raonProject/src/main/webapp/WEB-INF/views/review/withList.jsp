@@ -114,22 +114,38 @@ $(function(){
                 <div class="box" id="box">
                     <c:choose>
 				  			<c:when test="${withBoard.User.user_profile_pic eq 'n'}">
+								<a href="" rel="popover" data-placement="bottom" data-trigger="focus"
+										data-popover-content="#userInfo${status.index}"> 
 									<img id="userimg"  class="img-circle" src="${contextPath}/img/home_profile_2.jpg">
+								</a>
 							</c:when>
-							<c:otherwise> 
-									<img id="userimg" class="img-circle" src="${contextPath}/image?fileName=${withBoar.User.user_profile_pic}">
+							<c:otherwise>
+								<a href="" rel="popover" data-placement="bottom"
+										data-popover-content="#userInfo${status.index}"> 
+									<img id="userimg" class="img-circle" src="${contextPath}/image?fileName=${withBoard.User.user_profile_pic}">
+								</a>
 							</c:otherwise>
 				  		 </c:choose>
-                    <br> <span>${withBoard.User.user_lnm}${withBoard.User.user_fnm}</span> <br>
-                    
+                    <br>
+                    <span style="text-align: center; display: inline-block;">${withBoard.User.user_lnm}${withBoard.User.user_fnm}</span>
+                    <br>
                     <span style="text-align: center; display: inline-block; font-size: 18px;">-${withBoard.User.user_id}-</span>
+                    
+                    
                     <br>
-                    <span style="text-align: center; display: inline-block; font-size: 15px;">NATIONALITY : ${withBoard.User.user_nationality}</span>
-                    <br>
+                    <c:if test="${withBoard.User.user_gender == 1}">
+                     	<i class="fas fa-mars"></i>
+                     </c:if>
+                     <c:if test="${withBoard.User.user_gender == 2}">
+                     	<i class="fas fa-venus"></i>
+                     </c:if>
+                     <c:if test="${withBoard.User.user_gender == 0}">
+                     	<i class="fas fa-skull-crossbones"></i>
+                     </c:if>
                     <br> <i class="fas fa-home"> <br> <a>숙소 평점</a> <br>
                         <span><i style="color: blue;">4.2</i> / 5</span>
                     </i> <i class="fas fa-camera" style="margin-left: 20px;"> <br>
-                        <span>후기 평점</span> <br> <span><i style="color: blue;">4.8</i> / 5</span>
+                        <span>후기 평점</span> <br> <span><i style="color: blue;">${avgStar.reviewAvg}</i> / 5</span>
                     </i>
                 </div>
                 <!----------------------------------------- 프로필 끝 -------------------------------------->
@@ -223,7 +239,6 @@ $(function(){
                    	</li>
                     <li class="page-item">
                     	<c:forEach var="pageNum" begin="${startPage}" end="${endPage < totalPage ? endPage : totalPage}">
-                    	pageNum : ${pageNum}
                     		<c:choose>
                     			<c:when test="${pageNum == page}">
                     				<a class="page-link">

@@ -177,7 +177,7 @@ input[type=text]:focus {
 							<c:otherwise>
 								<a href="" rel="popover" data-placement="bottom"
 										data-popover-content="#userInfo${status.index}"> 
-									<img id="userimg" class="img-circle" src="${contextPath}/image?fileName=${user.USER_PROFILE_PIC}">
+									<img id="userimg" class="img-circle" src="${contextPath}/image?fileName=${with.USER_PROFILE_PIC}">
 								</a>
 							</c:otherwise>
 				  		 </c:choose>
@@ -197,26 +197,24 @@ input[type=text]:focus {
                      	<span style="text-align: center; display: inline-block; font-size: 18px;">-${with.USER_ID}-</span>
                      	<br>
                      	<span style="text-align: center; display: inline-block; font-size: 15px;">NATIONALITY : ${with.USER_NATIONALITY}</span>
-                     	<br><br>
-                    	 <i class="fas fa-home">
-                        	<br>
-                        	<span>숙소 평점</span>
-                       		<br>
-                        	<span><i style="color: blue;">4.2</i> / 5</span>
-                     	</i>
-                    	<i class="fas fa-camera" style="margin-left: 20px;">
-                        	<br>
-                        	<span>후기 평점</span>
-                        	<br>
-                        	<span><i style="color: blue;">4.8</i> / 5</span>
-                    	 </i>
+                     	<br>
+                     	<c:if test="${with.USER_GENDER == 1}">
+                     		<i class="fas fa-mars"></i>
+                     	</c:if>
+                     	<c:if test="${with.USER_GENDER == 2}">
+                     		<i class="fas fa-venus"></i>
+                     	</c:if>
+                     	<c:if test="${with.USER_GENDER == 0}">
+                     		<i class="fas fa-skull-crossbones"></i>
+                     	</c:if>
+                     	<br>
                   	</div>
                </div>      
             </c:forEach>
             <!------------ 회원 프로필 화면 끝 ------------>
 			</div>	
 				<!------------ 화면 맨 위로 시작 ------------>
-				<div style="position: fixed; bottom: 20px; right: 150px;">
+				<div style="position: fixed; bottom: 20px; right: 300px;">
 					<a href="#" style="font-size: 50px;">
 						<i class="fas fa-arrow-alt-circle-up" style="color: #cccccc;"></i>
 					</a>

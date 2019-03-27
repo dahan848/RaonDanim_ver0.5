@@ -36,7 +36,6 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 	public boolean updateWith(Map<String, Object> params) {
 		
 		//parmas ==>> userNum(로그인한 USER_NUM), WITH_GPA, WITH_CONTENT, num(WITH_NUM)
-		System.out.println("서비스 -> 동행 후기 수정 params : " + params);
 		
 		//WITH_NUM
 		String numStr = String.valueOf(params.get("num"));
@@ -61,7 +60,6 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 			return false;
 		}
 		
-		
 	}
 
 	@Override
@@ -85,7 +83,6 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 		
 		String user_Num =  String.valueOf(with.get("USER_NUM"));
 		String user_Pw =  String.valueOf(with.get("USER_PW"));
-		
 		
 		if(user_Num.equals(userNum)) {
 			if(encoder.matches(input_pass, user_Pw)){
@@ -125,7 +122,7 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 	@Override
 	public Map<String, Object> plusReadCount(int num) {
 		dao.plusReadCount(num);
-		return dao.selectOne(num);
+		return dao.selectWithOne(num);
 	}
 
 	@Override
@@ -206,10 +203,6 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 		@Override
 		public Map<String, Object> getViewPagingData(Map<String, Object> params) {
 			
-			System.out.println("=-===================");
-			System.out.println("param : " + params);
-			System.out.println("=-===================");
-			
 			//page=1   --> startPage
 			int page = Integer.parseInt(String.valueOf(params.get("page")));
 			
@@ -220,10 +213,7 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 			daoParam.put("firstRow", getFirstRow(page));
 			daoParam.put("endRow", getEndRow(page));
 			daoParam.put("num", num);
-			
-			System.out.println("getFirstRow(page) : " + getFirstRow(page));
-			System.out.println("getEndRow(page) : " + getEndRow(page));
-			
+		
 			//viewData ==>> startPage, totalPage, endPage, page, boardList
 			Map<String, Object> viewData = new HashMap<String, Object>();
 			List<Map<String, Object>> boardList = getBoardList(daoParam);
@@ -234,10 +224,6 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 			viewData.put("totalPage", getTotalPage());
 			viewData.put("page", page);
 			
-			
-			System.out.println("리스트 길이 : "+boardList.size());
-			System.out.println("서비스 -> viewData : " + viewData);
-			
 			return viewData;
 		}
 
@@ -245,7 +231,26 @@ public class WithReviewBoardServiceImp implements WithReviewBoardService{
 		public Map<String, Object> getBoardByNum(int num) {
 			return dao.selectOneByWithNum(num);
 		}
-	
-	
+		
+		
+		//---------------- 별점 부분 ----------------//
+		@Override
+		public Map<String, Object> avgStar(int TL_USER_NUM) {
+			
+			Map<String, Object> avg = new HashMap<>();
+			
+			double reviewAvg = 0;
+			
+			if(!dao.avgStarNullCheck(TL_USER_NUM).isEmpty()) {
+				reviewAvg = Math.round(dao.avgStar(TL_USER_NUM)*10)/10.0;
+				avg.put("reviewAvg", reviewAvg);
+			}
+			return avg;
+		}
 
+		@Override
+		public List<Map<String, Object>> avgStarNullCheck(int TL_USER_NUM) {
+			return dao.avgStarNullCheck(TL_USER_NUM);
+		}
+	
 }

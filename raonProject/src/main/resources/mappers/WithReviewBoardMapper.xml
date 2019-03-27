@@ -43,9 +43,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	<delete id="deleteWith" parameterType="int">
-		DELETE
-		  FROM 	WITH_BOARD_TB
-		 WHERE 	WITH_NUM = #{NUM}
+<!-- 		DELETE -->
+<!-- 		  FROM 	WITH_BOARD_TB -->
+<!-- 		 WHERE 	WITH_NUM = #{NUM} -->
+
+		UPDATE 		WITH_BOARD_TB
+		   SET 		WITH_ST = 1
+		WHERE 		WITH_NUM = #{num}
 	</delete>
 	
 	
@@ -74,8 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_PW
 		  FROM 	USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r  
 		    ON  r.TL_USER_NUM = u.USER_NUM
-		 
-		 WHERE  r.TL_USER_NUM = #{TL_USER_NUM}
+		 WHERE  r.TL_USER_NUM = #{TL_USER_NUM} and r.WITH_ST = 0
 	</select>
 	
 	
@@ -105,7 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_PW
 		  FROM 	USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r  
 		    ON  r.WR_USER_NUM = u.USER_NUM
-		 WHERE  r.WR_USER_NUM = #{WR_USER_NUM}
+		 WHERE  r.WR_USER_NUM = #{WR_USER_NUM} and r.WITH_ST = 0
 	</select>
 	
 	
@@ -135,7 +138,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_PW
 		  FROM 	USER_TB u LEFT OUTER JOIN WITH_BOARD_TB r
 		    ON  r.WR_USER_NUM = u.USER_NUM
-		 WHERE  r.WITH_NUM = #{WITH_NUM}
+		 WHERE  r.WITH_NUM = #{WITH_NUM} and r.WITH_ST = 0
 	</select>
 	
 	
@@ -146,7 +149,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="plusReadCount" parameterType="int">
 		UPDATE 		WITH_BOARD_TB
 		   SET 		WITH_COUNT = WITH_COUNT + 1
-		 WHERE 		WITH_NUM = #{NUM}
+		 WHERE 		WITH_NUM = #{NUM} and WITH_ST = 0
 	</update>
 	
 	
@@ -175,8 +178,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_PW
 		  FROM 	WITH_BOARD_TB r LEFT OUTER JOIN USER_TB u   
 		    ON  r.WR_USER_NUM = u.USER_NUM
-		 WHERE r.TL_USER_NUM = #{USER_NUM}
+		 WHERE r.TL_USER_NUM = #{USER_NUM} and r.WITH_ST = 0
 		 ORDER BY r.WITH_NUM DESC
+	</select>
+	
+	<!-- 별점 평균 계산하는 계산 식 -->
+	<select id="avgStar" parameterType="int" resultType="int">
+		SELECT 		avg(WITH_GPA)
+          FROM 		WITH_BOARD_TB
+         WHERE 		TL_USER_NUM = #{TL_USER_NUM}
+	</select>
+	
+	<!-- 평균 계산 할 떄 null 잡아줌 -->
+	<select id="avgStarNullCheck" parameterType="int" resultType="map">
+		select 		* 
+		  from 		WITH_BOARD_TB 
+		 where 		TL_USER_NUM = #{TL_USER_NUM}
 	</select>
 	
 	
@@ -184,7 +201,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="searchUser" parameterType="map" resultType="map">
 		SELECT        *
 		  FROM        USER_TB
-  		 WHERE		  USER_ID    like   ('%${USER_ID}%')		 		  
+  		 WHERE		  USER_ID    like   ('%${USER_ID}%')
   		 ORDER BY USER_NUM DESC 
   		 		  
 <!--   		 		 or	  USER_LNM   like   ('%${USER_LNM}%')  -->
@@ -195,6 +212,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectTotalCount" resultType="int">
 		SELECT 		count(*)
 		FROM 		WITH_BOARD_TB
+		WHERE		WITH_ST = 0
 	</select>
 	
 	<select id="boardList" parameterType="map" resultType="map">
@@ -206,8 +224,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                      			w.WITH_GPA, w.WITH_REG_DATE, w.WITH_ST, w.WITH_AVG
                 		  FROM WITH_BOARD_TB w left outer join USER_TB u
                 		    ON w.WR_USER_NUM = u.USER_NUM
-                		 WHERE w.TL_USER_NUM = #{num}
-                  			
+                		 WHERE w.TL_USER_NUM = #{num} and w.WITH_ST = 0
                			 GROUP BY u.USER_NUM, u.USER_ID, u.USER_PW, u.USER_LNM, u.USER_FNM,
                         			w.WITH_NUM, w.TL_USER_NUM, w.WR_USER_NUM,
                         				w.WITH_GPA, w.WITH_REG_DATE, w.WITH_ST, w.WITH_AVG
@@ -219,7 +236,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectOneByWithNum" parameterType="int" resultType="map">
 		SELECT *
 		  FROM WITH_BOARD_TB
-		 WHERE WITH_NUM = #{WITH_NUM}
+		 WHERE WITH_NUM = #{WITH_NUM} and WITH_ST = 0
 	</select>
 	
 	

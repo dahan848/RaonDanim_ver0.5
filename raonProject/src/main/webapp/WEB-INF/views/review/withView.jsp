@@ -378,7 +378,7 @@ $(function(){
 			<!------- 조회수 시작------->
 			<div style="float: right;">
 				<i class="far fa-eye" style="font-size: 20px; color: #cccccc;"></i>
-				<span style="margin-left: 10px; font-size: 20px; color: #cccccc;">${withBoard.WITH_COUNT}</span>
+				<span style="margin-left: 10px; font-size: 20px; color: #cccccc;">${plus.WITH_COUNT}</span>
 			</div>
 			<!------- 조회수 끝------->
 			

@@ -19,20 +19,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<delete id="deleteReply" parameterType="int">
-		DELETE
-		  FROM 	WITH_REPLY_TB
-		 WHERE 	WI_REPLY_NUM = #{WI_REPLY_NUM}
+<!-- 		DELETE -->
+<!-- 		  FROM 	WITH_REPLY_TB -->
+<!-- 		 WHERE 	WI_REPLY_NUM = #{WI_REPLY_NUM} -->
+		 UPDATE 		WITH_REPLY_TB
+		    SET 		WI_REPLY_ST = 1
+		  WHERE 		WI_REPLY_NUM = #{WI_REPLY_NUM}
+		 
 	</delete>
 
 	<select id="selectAll" resultType="map">
 		SELECT 	*  
-		  FROM  WITH_REPLY_TB	
+		  FROM  WITH_REPLY_TB
+		 WHERE  WI_REPLY_ST = 0	
 	</select>
 	
 	<select id="selectOne" parameterType="int" resultType="map">
 		SELECT *
 		  FROM WITH_REPLY_TB
-		 WHERE WI_REPLY_NUM = #{WI_REPLY_NUM}
+		 WHERE WI_REPLY_NUM = #{WI_REPLY_NUM} and WI_REPLY_ST = 0
 	</select>
 	
 	<select id="selectByWithNum" parameterType="int" resultType="map">
@@ -47,31 +52,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			   u.USER_PW
 		  FROM WITH_REPLY_TB r left outer join USER_TB u
 		    ON  r.USER_NUM = u.USER_NUM
-		 WHERE WITH_NUM = #{WITH_NUM} 
+		 WHERE WITH_NUM = #{WITH_NUM} and r.WI_REPLY_ST = 0
 	</select>
 	
 	<select id="selectByUserNum" parameterType="int" resultType="map">
 		SELECT *
 		  FROM WITH_REPLY_TB
-		 WHERE USER_NUM = #{USER_NUM}
+		 WHERE USER_NUM = #{USER_NUM} and WI_REPLY_ST = 0
+		 
 	</select>
 	
 	<select id="selectTotalCount" resultType="int">
 		SELECT count(*)
 		  FROM WITH_REPLY_TB
+		 WHERE WI_REPLY_ST = 0
 	</select>
 	
 	<select id="replyList" parameterType="map" resultType="map">
 		SELECT *         
   		  FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_ID, USER_PW, USER_LNM, USER_FNM, rcount,
-                            		WI_REPLY_NUM, WITH_NUM,  WI_REP_CONTENT, WI_REPLY_DATE
+                            		WI_REPLY_NUM, WITH_NUM,  WI_REP_CONTENT, WI_REPLY_DATE, WI_REPLY_ST
           		  FROM (SELECT u.USER_NUM, u.USER_ID, u.USER_PW, u.USER_LNM, u.USER_FNM, 
                         			count(r.WI_REPLY_NUM) as rcount, r.WI_REPLY_NUM, r.WITH_NUM, 
-                        				r.WI_REP_CONTENT, r.WI_REPLY_DATE
+                        				r.WI_REP_CONTENT, r.WI_REPLY_DATE, r.WI_REPLY_ST
                   		  FROM WITH_REPLY_TB r left outer join USER_TB u
                     		ON u.USER_NUM = r.USER_NUM
+                    	 WHERE r.WI_REPLY_ST = 0
                  		 GROUP BY u.USER_NUM, u.USER_ID, u.USER_PW, u.USER_LNM, u.USER_FNM, 
-                            			r.WI_REPLY_NUM, r.WITH_NUM, r.WI_REP_CONTENT, r.WI_REPLY_DATE
+                            			r.WI_REPLY_NUM, r.WITH_NUM, r.WI_REP_CONTENT, r.WI_REPLY_DATE, r.WI_REPLY_ST
                  		 ORDER BY r.WI_REPLY_DATE DESC)
         		)
  		 WHERE RNUM between #{firstRow} and #{endRow}

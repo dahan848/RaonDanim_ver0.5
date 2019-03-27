@@ -43,7 +43,7 @@
 	});
 
 	
-	
+
 </script>
 
 <style type="text/css">
@@ -102,6 +102,20 @@
 	<jsp:include page="/WEB-INF/views/review/review-navbar.jsp"></jsp:include>
 	<!-- 인클루드 심플 헤더 END -->
 
+<script type="text/javascript">
+var msg = "${msg}";
+if(msg){
+	
+	swal({
+		icon:"success",
+		text:msg,
+	});
+}
+
+
+</script>
+
+
 	<!-- 본문 -->
 	<div class="main-container">
 		<section id="section-profile-update" class="bg-gray">
@@ -146,6 +160,16 @@
 							<br>
 							<span style="text-align: center; display: inline-block; font-size: 18px;">-${review.USER_ID}-</span>
 							<br>
+							<c:if test="${review.USER_GENDER == 1}">
+                     			<i class="fas fa-mars"></i>
+                     		</c:if>
+                     		<c:if test="${review.USER_GENDER == 2}">
+                     			<i class="fas fa-venus"></i>
+                     		</c:if>
+                     		<c:if test="${review.USER_GENDER == 0}">
+                     			<i class="fas fa-skull-crossbones"></i>
+                     		</c:if>
+							<br>
 							<span style="text-align: center; display: inline-block; text-decoration: none;"><b>${review.REV_DESTINATION}</b></span>
 							<br>
 							<a href="reviewView?num=${review.REVIEW_NUM}" style="text-align: center;">${review.REV_TITLE}</a>
@@ -155,8 +179,8 @@
 				<!------------ 회원 프로필 화면 끝 ------------>
 				</div>
 			
-				<!------------ 화면 맨 위로 시작 ------------>
-				<div style="position: fixed; bottom: 20px; right: 150px;">
+				<!------------ 화면 맨 위로 시작  ------------>
+				<div style="position: fixed; bottom: 20px; right: 300px;">
 					<a href="#h3" style="font-size: 50px;">
 						<i class="fas fa-arrow-alt-circle-up" style="color: #cccccc;"></i>
 					</a>

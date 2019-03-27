@@ -62,15 +62,15 @@
 // 							icon:"success",
 // 							text:"삭제 되었습니다",
 // 						});
-						alert("삭제 되었습니다");
+// 						alert("삭제 되었습니다");
 						location.href="reviewMain";
 					} else {
-// 						swal({
-// 							icon:"fail",
-// 							text:"비밀번호가 틀렸습니다",
-// 						});
-						alert("비밀번호가 일치하지 않습니다");
-						location.href="reviewView?num=${review.REVIEW_NUM}";	
+						swal({
+							icon:"warning",
+							text:"비밀번호가 틀렸습니다. 다시 시도해 주세요.",
+						});
+// 						alert("비밀번호가 일치하지 않습니다");
+// 						location.href="reviewView?num=${review.REVIEW_NUM}";	
 					}
 				}
 			});
@@ -176,11 +176,15 @@
 										dataType: "json",
 										success: function(data){
 											if(data){
-												alert("삭제 되었습니다");
-												location.href="reviewView?num=${review.REVIEW_NUM}";
+												swal({
+						 							icon:"success",
+						 							text:"삭제 되었습니다",
+						 						});
 											} else {
-												alert("비밀번호가 일치하지 않습니다");
-												location.href="reviewView?num=${review.REVIEW_NUM}";	
+												swal({
+						 							icon:"warning",
+						 							text:"비밀번호가 틀렸습니다. 다시 시도해 주세요.",
+						 						});	
 											}			
 										}
 									});
@@ -326,6 +330,16 @@
 				<span>${review.USER_LNM}${review.USER_FNM}</span>
 				<br>
 				<span>-${review.USER_ID}-</span>
+				<br>
+				<c:if test="${review.USER_GENDER == 1}">
+                     <i class="fas fa-mars"></i>
+                </c:if>
+				<c:if test="${review.USER_GENDER == 2}">
+					<i class="fas fa-venus"></i>
+				</c:if>
+				<c:if test="${review.USER_GENDER == 0}">
+					<i class="fas fa-skull-crossbones"></i>
+				</c:if>
 				<br>
 				<span><b>${review.REV_DESTINATION}</b></span>
 				<br><br>

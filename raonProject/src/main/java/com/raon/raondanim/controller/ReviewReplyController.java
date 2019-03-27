@@ -38,9 +38,6 @@ public class ReviewReplyController {
 		customUserDetails user = (customUserDetails) authentication.getPrincipal();
 		int loginUserNum = user.getUser_num();
 		params.put("USER_NUM", loginUserNum);
-				
-//		System.out.println("loginUserNum : " + loginUserNum);
-//		System.out.println("여행 후기 댓글 param : " + params);
 		
 		return reService.insertReply(params);
 	}
@@ -56,8 +53,6 @@ public class ReviewReplyController {
 		
 		//param -> {page=1}   ==>> param에 startPage 들어있음
 		//num = REVIEW_NUM
-		
-		System.out.println("댓글 리스트 출력");
 		
 		//params -> {page=1}   ==>> params에 startPage 들어있음
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -89,12 +84,6 @@ public class ReviewReplyController {
 			@RequestParam(value="num") int num,
 			@RequestParam(value="re_Reply_Num") int re_Reply_Num
 			) {
-		System.out.println("댓글 삭제 컨트롤러 진입");
-
-//		System.out.println("입력한 비밀번호 : " + input_reply_pass);
-//		System.out.println("로그인된 USER_NUM : " + userNum);
-//		System.out.println("게시글 번호 : " + num);
-//		System.out.println("댓글 번호 : "+re_Reply_Num);
 		
 		Map<String, Object> replyDelete = new HashMap<>();
 		replyDelete.put("input_reply_pass", input_reply_pass);

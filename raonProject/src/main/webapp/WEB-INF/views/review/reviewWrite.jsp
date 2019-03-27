@@ -77,6 +77,15 @@
 	         if(e.keyCode==13 && e.srcElement.type != 'textarea')
 	         return false;
 	     }
+		
+		 var msg = "${msg}";
+			if(msg!=null&&msg!=""){
+				
+				swal({
+					icon:"success",
+					text:msg,
+				});
+			}
 	</script>
 	
 	

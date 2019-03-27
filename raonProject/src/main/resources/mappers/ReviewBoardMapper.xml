@@ -30,6 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_PW
 		  FROM 	REVIEW_BOARD_TB r left outer join USER_TB u
 		    ON  r.USER_NUM = u.USER_NUM
+		 WHERE  r.RE_ST = 0
 		 ORDER BY REVIEW_NUM DESC
 	</select>
 	
@@ -65,9 +66,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	
 	<delete id="deleteReview" parameterType="int">
-		DELETE
-		  FROM 	REVIEW_BOARD_TB
-		 WHERE 	REVIEW_NUM = #{NUM}
+<!-- 		DELETE -->
+<!-- 		  FROM 	REVIEW_BOARD_TB -->
+<!-- 		 WHERE 	REVIEW_NUM = #{NUM} -->
+		 
+		 UPDATE 	REVIEW_BOARD_TB
+		    SET 	RE_ST = 1
+		  WHERE     REVIEW_NUM = #{num}
 	</delete>
 	
 	
@@ -95,7 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_PW
 		  FROM 	REVIEW_BOARD_TB r left outer join USER_TB u
 		    ON  r.USER_NUM = u.USER_NUM
-		 WHERE  r.USER_NUM = #{NUM}
+		 WHERE  r.USER_NUM = #{NUM} and r.RE_ST = 0
 	</select>
 	<resultMap type="HashMap" id="reviewMap">
 		<result property="RE_CONTENT" column="RE_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
@@ -125,7 +130,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				u.USER_PW
 		  FROM 	REVIEW_BOARD_TB r left outer join USER_TB u
 		    ON  r.USER_NUM = u.USER_NUM
-		 WHERE  r.REVIEW_NUM = #{NUM}
+		 WHERE  r.REVIEW_NUM = #{NUM} and r.RE_ST = 0
 	</select>
 	<resultMap type="HashMap" id="reviewViewMap">
 		<result property="RE_CONTENT" column="RE_CONTENT" jdbcType="CLOB" javaType="java.lang.String" />
@@ -142,7 +147,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectByUserNum" parameterType="int" resultType="map">
 		SELECT *
 		  FROM REVIEW_BOARD_TB
-		 WHERE USER_NUM = #{USER_NUM}
+		 WHERE USER_NUM = #{USER_NUM} and r.RE_ST = 0
 	</select>
 	
 	
