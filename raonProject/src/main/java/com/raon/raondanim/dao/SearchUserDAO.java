@@ -16,8 +16,5 @@ public interface SearchUserDAO {
 	public List<Map<String, Object>> getUserTravlestyles(String userNum);
 	public String getUserNationality(String userNum);
 	public List<Map<String, Object>> getUserInterests(String userNum);
-	
-	// 조건검색
-	public List<Map<String, Object>> searchByLanguage(String language);
-	
+
 }
