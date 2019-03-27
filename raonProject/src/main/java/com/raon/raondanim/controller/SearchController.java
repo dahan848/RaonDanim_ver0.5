@@ -24,12 +24,20 @@ public class SearchController {
 	private SearchService service;
 	
 	@RequestMapping("/home")
-	public String search(Model model, @RequestParam(value= "page", defaultValue = "1") int page, @RequestParam(required = false) String language){
+	public String search(Model model, @RequestParam(value= "page", defaultValue = "1") int page, @RequestParam(required = false) String city,
+			@RequestParam(required = false) String language, @RequestParam(required = false) String travlestyle, @RequestParam(required = false) String name,
+			@RequestParam(required = false) String nationality, @RequestParam(required = false) String gender, @RequestParam(required = false) String interest){
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		params.put("page", page);
+		params.put("city", city);
 		params.put("language", language);
+		params.put("travlestyle", travlestyle);
+		params.put("name", name);
+		params.put("nationality", nationality);
+		params.put("gender", gender);
+		params.put("interest", interest);
 		
 		model.addAllAttributes(service.getViewData(params));
 		

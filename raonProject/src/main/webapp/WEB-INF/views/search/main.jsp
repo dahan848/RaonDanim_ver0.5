@@ -446,7 +446,14 @@
 							<!-- 프로필 이미지 -->
 							<div class="cover-profile-image">
 								<a href="${contextPath}/accounts/profile?user=${user.USER_NUM}" class="img-circle img-avatar">
-								<img src="${contextPath}/img/profile/profile_circle_cover_1.jpg" class="img-profile">
+								<c:choose>
+									<c:when test="${user.USER_PROFILE_PIC eq 'n'}">
+										<img src="${contextPath}/img/home_profile_2.jpg" class="img-profile">
+									</c:when>
+									<c:otherwise>
+										<img src="${contextPath}/image?fileName=${user.USER_PROFILE_PIC}" class="img-profile">
+									</c:otherwise>
+								</c:choose>
 								</a>
 							</div>
 							

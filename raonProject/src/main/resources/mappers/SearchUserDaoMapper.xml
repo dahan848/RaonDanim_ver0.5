@@ -4,19 +4,89 @@
 <mapper namespace="com.raon.raondanim.dao.SearchUserDAO">
 	<select id="getUserList" parameterType="map" resultType="map">
 		SELECT *
-		  FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_FNM, USER_LNM, USER_GENDER
-		          FROM (SELECT u.USER_NUM, u.USER_FNM, u.USER_LNM, u.USER_GENDER
-		                  FROM user_tb u
-		         ORDER BY u.USER_NUM DESC))
-		 WHERE RNUM between #{firstRow} and #{endRow}
+		  FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_FNM, USER_LNM, USER_GENDER, USER_PROFILE_PIC, CITY, NATIONALITY
+				  FROM (SELECT u.USER_NUM, u.USER_FNM, u.USER_LNM, u.USER_GENDER, u.USER_PROFILE_PIC, c.CITY AS CITY, n.NATIONALITY_EN_NAME AS NATIONALITY
+						  FROM USER_TB u, CITY_COUNTRY_DTB c, NATIONALITY_DTB n
+						 WHERE u.USER_CITY_COUNTRY = c.CITY_COUNTRY_NUM (+)
+						 <if test="city != null and city != ''">
+						   AND u.USER_CITY_COUNTRY LIKE ('%${city}%')
+						 </if>
+					 	   AND u.USER_NATIONALITY = n.NATIONALITY_NUM (+)
+					 	 <if test="nationality != null and nationality != ''">
+					 	   AND u.USER_NATIONALITY LIKE ('%${nationality}%')
+					 	 </if>
+					 	 <if test="language != null and language != ''">
+					 	   AND u.USER_NUM IN (SELECT u1.user_num
+											    FROM USER_TB u1, language_tb l1, language_dtb ld1
+											   WHERE u1.USER_NUM = l1.USER_NUM (+)
+											     AND l1.LANGUAGE_NUM = ld1.LANGUAGE_NUM
+											     AND ld1.LANGUAGE_NUM LIKE ('%${language}%'))
+					 	 </if>
+					 	 <if test="travlestyle != null and travlestyle != ''">
+					 	   AND u.USER_NUM IN (SELECT u2.USER_NUM
+											    FROM USER_TB u2, TRAVLE_STYLE_TB t1, TRAVLE_STYLE_DTB td1
+											   WHERE u2.USER_NUM = t1.USER_NUM (+)
+											     AND t1.TRAVLE_STYLE_NUM = td1.TRAVLE_STYLE_NUM
+											     AND td1.TRAVLE_STYLE_NUM LIKE ('%${language}%'))
+					 	 </if>
+					 	 <if test="name != null and name != ''">
+					 	   AND u.USER_FNM LIKE ('%${name}%')
+					 	 </if>
+					 	 <if test="gender != null and gender != ''">
+					 	   AND u.USER_GENDER LIKE ('%${gender}%')
+					 	 </if>
+					 	 <if test="interest != null and interest != ''">
+					 	   AND u.USER_NUM IN (SELECT u3.USER_NUM
+											    FROM USER_TB u3, INTEREST_TB i1, INTEREST_DTB id1
+											   WHERE u3.USER_NUM = i1.USER_NUM (+)
+											     AND i1.interest_num = id1.interest_num
+											     AND id1.interest_num LIKE ('%${interest}%'))
+					 	 </if>
+						 ORDER BY u.USER_NUM DESC))
+	 WHERE RNUM between #{firstRow} and #{endRow}
 	</select>
 	
 	<select id="selectTotalCount" parameterType="map" resultType="int">
 		SELECT count(*)
-		  FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_FNM, USER_LNM, USER_GENDER
-		          FROM (SELECT u.USER_NUM, u.USER_FNM, u.USER_LNM, u.USER_GENDER
-		                  FROM user_tb u
-		 ORDER BY u.USER_NUM DESC))
+		  FROM (SELECT ROWNUM as RNUM, USER_NUM, USER_FNM, USER_LNM, USER_GENDER, USER_PROFILE_PIC, CITY, NATIONALITY
+				  FROM (SELECT u.USER_NUM, u.USER_FNM, u.USER_LNM, u.USER_GENDER, u.USER_PROFILE_PIC, c.CITY AS CITY, n.NATIONALITY_EN_NAME AS NATIONALITY
+						  FROM USER_TB u, CITY_COUNTRY_DTB c, NATIONALITY_DTB n
+						 WHERE u.USER_CITY_COUNTRY = c.CITY_COUNTRY_NUM (+)
+						 <if test="city != null and city != ''">
+						   AND u.USER_CITY_COUNTRY LIKE ('%${city}%')
+						 </if>
+					 	   AND u.USER_NATIONALITY = n.NATIONALITY_NUM (+)
+					 	 <if test="nationality != null and nationality != ''">
+					 	   AND u.USER_NATIONALITY LIKE ('%${nationality}%')
+					 	 </if>
+					 	 <if test="language != null and language != ''">
+					 	   AND u.USER_NUM IN (SELECT u1.user_num
+											    FROM USER_TB u1, language_tb l1, language_dtb ld1
+											   WHERE u1.USER_NUM = l1.USER_NUM (+)
+											     AND l1.LANGUAGE_NUM = ld1.LANGUAGE_NUM
+											     AND ld1.LANGUAGE_NUM LIKE ('%${language}%'))
+					 	 </if>
+					 	 <if test="travlestyle != null and travlestyle != ''">
+					 	   AND u.USER_NUM IN (SELECT u2.USER_NUM
+											    FROM USER_TB u2, TRAVLE_STYLE_TB t1, TRAVLE_STYLE_DTB td1
+											   WHERE u2.USER_NUM = t1.USER_NUM (+)
+											     AND t1.TRAVLE_STYLE_NUM = td1.TRAVLE_STYLE_NUM
+											     AND td1.TRAVLE_STYLE_NUM LIKE ('%${language}%'))
+					 	 </if>
+					 	 <if test="name != null and name != ''">
+					 	   AND u.USER_FNM LIKE ('%${name}%')
+					 	 </if>
+					 	 <if test="gender != null and gender != ''">
+					 	   AND u.USER_GENDER LIKE ('%${gender}%')
+					 	 </if>
+					 	 <if test="interest != null and interest != ''">
+					 	   AND u.USER_NUM IN (SELECT u3.USER_NUM
+											    FROM USER_TB u3, INTEREST_TB i1, INTEREST_DTB id1
+											   WHERE u3.USER_NUM = i1.USER_NUM (+)
+											     AND i1.interest_num = id1.interest_num
+											     AND id1.interest_num LIKE ('%${interest}%'))
+					 	 </if>
+						 ORDER BY u.USER_NUM DESC))
 	</select>
 	
 	<select id="selectByUserNum" parameterType="string" resultType="user">
@@ -64,15 +134,4 @@
                          		  FROM INTEREST_TB
                         		 WHERE USER_NUM = #{userNum})
 	</select>
-	
-	<select id="searchByLanguage" parameterType="string" resultType="map">
-		SELECT *
-		  FROM (SELECT ROWNUM as RNUM, user_num, language_ko_name
-		          FROM (SELECT l.USER_NUM, ld.LANGUAGE_KO_NAME
-						  FROM LANGUAGE_TB l, LANGUAGE_DTB ld
-						 WHERE l.LANGUAGE_NUM = ld.LANGUAGE_NUM
-						   AND l.LANGUAGE_NUM = #{language}
-						 ORDER BY l.USER_NUM DESC))
-	</select>
-	
 </mapper>
