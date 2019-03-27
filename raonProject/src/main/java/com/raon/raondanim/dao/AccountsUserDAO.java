@@ -17,6 +17,7 @@ public interface AccountsUserDAO {
 	public List<Map<String, Object>> getUserInterest(String usernum); //번호로 유저 관심사 선택
 	public List<Map<String, Object>> getUserLanguage(String usernum); //번호로 유저 사용가능언어 선택
 	public List<Map<String, Object>> getUserGallery(String usernum); //번호로 유저의 갤러리 정보 (사진넘, 사진이름, 등록일) 얻기
+	public Map<String, Object> getUserCityCountry(String usernum); //번호로 유저 거주 도시 선택
 	public String getUserNationality(String usernum); //번호로 유저 국적 선택 
 	public List<Map<String, Object>> getHomeUserList (); //메인(홈) 화면 하단에 출력 될 유저리스트 (유저넘, 프로필픽, 유저 이름(lnm, fnm))
 	public int setProfilePic(Map<String, Object> param); //프로필 사진 등록하는 ()
@@ -62,6 +63,31 @@ public interface AccountsUserDAO {
 	public int selectTotalCount(int num);//여행 게시글 토탈카운트
 	public List<Map<String, Object>> trip_reply_list(Map<String, Object>params);//여행탭 여행 댓글 리스트 호출 
 	public int selectReplyTotalCount(int num);//여행 댓글 토탈카운트
+
+
+	public void passwordReset(Map<String, Object> param); //해당 아이디의 비밀번호를 초기화 하는 () 이메일과 초기화 된 비밀번호를 인자로 받는다. 
+	public void setAdmin(User user);
+	public double getMotelAvg(String usernum);
+	public List<Map<String, Object>> motelNullCheck(String usernum);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///////////////////////////////
+	//여행파트 dao추가
+	public List<Map<String, Object>> getTrStyle(String usernum); //번호로 유저 여행스타일 선택
+	public List<Map<String, Object>> getTravleHope(String usernum); //번호로 유저 희망국가 도시 선택
+	public List<Map<String, Object>> getUserRegDate(); // 월별 가입일로 유저 총 갯수 뽑아오기 
+	////////////////////////////////
 
 
 }

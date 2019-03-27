@@ -232,7 +232,6 @@ $("#form-profile-update")
 					         text:"전화번호를 정확히 입력하여 주세요.",
 					         icon:"warning",
 					         buttons:[false,"확인"]
-							
 					      })
 							return false;
 						}

@@ -13,24 +13,28 @@
 <!-- 인클루드 심플 헤더 -->
 <jsp:include page="/WEB-INF/views/navbar-main.jsp"></jsp:include>
 <!-- 인클루드 심플 헤더 END -->
+<script src="${contextPath}/js/signupFormCheck.js" ></script> <!-- Ajax -->
  <section id="section-authentication">
         <div class="container">
             <div class="form-block">
-                <img src="../img/logo-raon.png" alt="">
+                <img src="${contextPath}/img/home_logo-raon.png" alt="">
                 <!-- 가입자 폼 -->
-                <form action="signup" method="post">
+                <form action="signup" method="post" id="signupform">
                  	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                     <div class="form-group">
                     	<label class="sr-only control-label" for="id_email">이메일</label>
                     		<input class="form-control" id="id_email" name="user_id" placeholder="이메일 주소" title="" type="email" required />
+                    		<div id="idCheck" class="help-block" style="display: none; color: #a94442;"></div>
                		</div>
                     <div class="form-group">
                     	<label class="sr-only control-label" for="id_password1">비밀번호</label>
                     		<input class="form-control" id="id_password1" name="user_pw" placeholder="비밀번호" title="" type="password" required />
+                    		<div id="pwCheck" class="help-block" style="display: none; color: #a94442;"></div>
                		</div>
                     <div class="form-group">
                     	<label class="sr-only control-label" for="id_password2">비밀번호 (확인)</label>
                     		<input class="form-control" id="id_password2" name="user_pw2" placeholder="비밀번호 (확인)" title="" type="password" required />
+                    		<div id="pwCheck2" class="help-block" style="display: none; color: #a94442;"></div>
                		</div>
                     <div class="row row-p5">
                         <div class="col-xs-4">
@@ -50,7 +54,7 @@
                     	<div class="checkbox">
                     		<label for="id_is_agreed_1">
                     			<input class="" id="id_is_agreed_1" name="is_agreed_1" type="checkbox" required /> 
-                    				회원약관 동의 <a href='/policies/terms/' class='text-potluck' target='_blank'>(보기)</a>
+                    				회원약관 동의 <a href='${contextPath}/policies' class='text-potluck' target='_blank'>(보기)</a>
                				</label>
            				</div>
        				</div>
@@ -58,11 +62,11 @@
                     	<div class="checkbox">
                     		<label for="id_is_agreed_2">
                     			<input class="" id="id_is_agreed_2" name="is_agreed_2" type="checkbox" required /> 개인정보취급방침 동의
-                    				 <a href='/policies/privacy/' class='text-potluck' target='_blank'>(보기)</a>
+                    				 <a href='${contextPath}/privacyPolicy' class='text-potluck' target='_blank'>(보기)</a>
                				 </label>
            				 </div>
        				 </div>
-                    <button class="btn btn-potluck btn-block" type="submit">회원가입</button>
+                    <button class="btn btn-potluck btn-block" type="submit" id="btn_submit">회원가입</button>
 					<a href="#" class="btn btn-block btn-social btn-kakao">
 					  <span class="fa fa-kakao" style="width: 32px;"></span>
 					 		 <span style="display: inline-block; text-align: center; width: 250px;">카카오톡 로그인</span>
@@ -70,7 +74,7 @@
                     <hr>
                     <p>이미 라온다님 회원인가요?</p>
                     <div class="form-link">
-                        <a class="text-potluck" href="login.jsp">로그인</a>
+                        <a class="text-potluck" href="${contextPath}/accounts/loginForm">로그인</a>
                     </div>
                 </form>
             </div>
@@ -80,5 +84,11 @@
 <!-- 인클루드-푸터 -->
 <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 <!-- 인클루드-푸터 END -->
+<script type="text/javascript">
+
+	if($("input:checkbox[id='id_is_agreed_2']").is(":checked") == true){
+		alert("테");
+	}
+</script>
 </body>
 </html>

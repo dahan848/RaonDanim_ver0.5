@@ -74,6 +74,9 @@ public class TripBoardServiceImp implements TripBoardService {
 		int pageNum = (int) params.get("pageNum");
 		int type = (int) params.get("type");
 		String keyword = (String) params.get("keyword");
+		String lName = (String) params.get("lName");
+		String fName = (String) params.get("fName");
+		
 
 		int startRow = PER_PAGE * (pageNum - 1) + 1;
 		int endRow = PER_PAGE * pageNum;
@@ -85,7 +88,7 @@ public class TripBoardServiceImp implements TripBoardService {
 		params.put("end", endRow);
 		params.put("type", type);
 		
-/*		System.out.println("서비스 파라메터 확인 pageNum :"+pageNum);
+		/*System.out.println("서비스 파라메터 확인 pageNum :"+pageNum);
 		System.out.println("서비스 파라메터 확인  type :"+type);
 		System.out.println("서비스 파라메터 확인  keyword :"+keyword);
 		System.out.println("서비스 파라메터 확인 start :"+startRow);
@@ -99,9 +102,12 @@ public class TripBoardServiceImp implements TripBoardService {
 		} else if (type == 3) {
 			params.put("tripEnd", keyword);
 		} else if (type == 4) {
-			params.put("userNick", keyword);
+			params.put("lName", lName);
+			params.put("fName", fName);
 		} 
 		//System.out.println("서비스 파라메터 확인  params :"+params);
+
+		
 		
 		List<Map<String, Object>> tripBoardList = tripDao.getTenBoardPage(params);
 		//System.out.println("서비스 게시글리스트확인 :"+tripBoardList);
@@ -112,6 +118,17 @@ public class TripBoardServiceImp implements TripBoardService {
 		tripData.put("total", getTotalPage(params));
 		tripData.put("page", pageNum);
 		
+		
+//		System.out.println("서비스 파라메터 확인 lName :"+lName);
+//		System.out.println("서비스 파라메터 확인 fName :"+fName);
+//		System.out.println("서비스 파라메터 확인 start :"+startRow);
+//		System.out.println("서비스 파라메터 확인  end :"+endRow);
+//		System.out.println("서비스/페이징/start 확인 :"+getStartPage(pageNum));
+//		System.out.println("서비스/페이징/end 확인 :"+getEndPage(pageNum));
+//		System.out.println("서비스/페이징/total 확인 :"+getTotalPage(params));
+//		System.out.println("서비스/페이징/page 확인 :"+pageNum);
+//		System.out.println("----------------------------------------------------------------");
+//		System.out.println("서비스/페이징/tripBoardList 확인 :"+tripBoardList);
 
 		return tripData;
 	}
@@ -369,13 +386,10 @@ public class TripBoardServiceImp implements TripBoardService {
 		
 		JsonParser parser = new JsonParser();
 		JsonArray jsonArray = (JsonArray) parser.parse(tripCity);
-		
-		
+
 		try {
 			
-			
-			
-			
+
 			params = tripDao.selectRelKeyAndCityKey(boardKey);
 			//연관된 테이블 row의 상태값 1로 
 			for(Map<String, Object> a :params) {
@@ -431,6 +445,135 @@ public class TripBoardServiceImp implements TripBoardService {
 		
 		
 		
+	}
+
+	@Override
+	public boolean incrementViews(int boardKey) {
+		//조회수 1증가 메소드
+		
+		if(tripDao.incrementViews(boardKey)>0) {
+			//조회수 증가 성공
+			//System.out.println("조회수 증가");
+			return true;
+		}else {
+			//조회수 증가 실패
+			return false;
+		}
+		
+		
+	}
+
+	
+	
+	//유저관련 관심사 여행스타일 여행희망도시
+	@Override
+	public List<Map<String, Object>> getUserInterest(String usernum) {
+		
+		return userDao.getUserInterest(usernum);
+	}
+
+	@Override
+	public List<Map<String, Object>> getTrStyle(String usernum) {
+		
+		return userDao.getTrStyle(usernum);
+	}
+
+	@Override
+	public List<Map<String, Object>> getTravleHope(String usernum) {
+		
+		return userDao.getTravleHope(usernum);
+	}
+
+	@Override
+	public List<Map<String, Object>> getDeclaration() {
+		//신고목록 불러오기
+		return tripDao.getDeclaration();
+	}
+
+	@Override
+	public boolean insertDeclaration(Map<String, Object> params) {
+		//이미 신고했는지 체크 하고 아니면 신고 입력 신고했으면 false반환 
+		
+		if(tripDao.selectOneByDeclaration(params)==null) {
+			//신고 한번도 안한상태
+			if(tripDao.insertDeclaration(params)>0) {
+				//신고 입력 성공
+				return true;
+			}else {
+				//신고 입력 실패
+				return false;
+			}
+			
+		}else {
+			//중복신고상태
+			return false;
+		}
+		
+		
+	}
+
+	@Override
+	public List<Map<String, Object>> getMyDongHangList(String userNum) {
+		// 동행 신청 남긴 게시글 보기 시큐리티에서 유저 넘 끌고와야함
+
+		return tripDao.getMyDongHangList(userNum);
+	}
+
+	@Override
+	public boolean insertDummyData(String writeDate) {
+		
+		
+		try {
+			
+			for(int i =1;i<(int)(Math.random()*50)+10;i++) {
+				Map<String, Object> tripBoard = new HashMap<>();
+				tripBoard.put("user_Num", i);
+				tripBoard.put("trip_Board_Title", "dummy"+i);
+				tripBoard.put("trip_Board_Content", "dummy"+i);
+				tripBoard.put("trip_Board_Start", "2019-01-01");
+				tripBoard.put("trip_Board_End", "2019-01-01");
+				tripBoard.put("trip_Board_Together", 0);
+				tripBoard.put("trip_WriteDate", writeDate);
+				tripDao.insertDummyData(tripBoard);
+				
+			}
+			
+			return true;
+		} catch (Exception e) {
+			System.out.println("더미 데이터 생성중 오류");
+			e.printStackTrace();
+			return false;
+			
+		}
+	
+		
+		
+		
+		
+	}
+
+	@Override
+	public List<Integer> getMonthWriteData() {
+		
+		return tripDao.getMonthWriteData();
+	}
+
+	@Override
+	public Map<String, Integer> getBoardAndDeclatation() {
+		
+		return tripDao.getBoardAndDeclatation();
+	}
+
+	@Override
+	public List<Map<String, Object>> getDeclarationBoard() {
+		
+		return tripDao.getDeclarationBoard();
+	}
+
+	@Override
+	public List<Integer> getMotelMonthWriteData() {
+		
+		return tripDao.getMotelMonthWriteData();
 	}
 
 

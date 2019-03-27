@@ -9,11 +9,8 @@
    <sec:authentication property="principal.user_num" var="user_num"/>
 </sec:authorize>     
 <!-- contextPath 설정 -->
-<%	request.setAttribute("contextPath", request.getContextPath()); %>	  
-<script type="text/javascript">
 
-</script>
-
+<%	request.setAttribute("contextPath", request.getContextPath()); %>
 
 	<!-- 서브 네브바 -->
 	<!-- 서브 네브바 -->

@@ -34,6 +34,11 @@
                    			</label>
                			</div>
            			</div>
+           			<c:if test="${not empty msg}">
+				        <font color="red">
+				        ${msg}
+				        </font>
+					</c:if>
                     <button class="btn btn-potluck btn-block" type="submit">로그인</button>
 					<a href="#" class="btn btn-block btn-social btn-kakao">
 					  <span class="fa fa-kakao" style="width: 32px;"></span>
@@ -41,7 +46,7 @@
 					</a>
                     <hr>
                     <div class="form-link">
-                        <a class="text-gray" href="#">비밀번호 찾기</a>
+                        <a class="text-gray" href="${contextPath}/accounts/passwordresetform">비밀번호 찾기</a>
                         <a class="text-gray" href="${contextPath}/accounts/signupForm">회원가입</a>
                     </div>
                 </form>

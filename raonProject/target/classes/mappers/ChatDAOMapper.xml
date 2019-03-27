@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.raon.raondanim.dao.ChatDAO">
+	<!-- 채팅방 생성 -->
+	<insert id="createRoom">
+		insert into CHAT_ROOM_TB 
+			   (CHAT_ROOM_NUM, USER1_NUM, USER2_NUM)
+		values(
+			   CHAT_ROOM_SEQ.nextval,
+			   #{user1_num},
+			   #{user2_num}
+			   )
+	</insert>
+	
+	<!-- 채팅방 반환 -->
+	<select id ="getRoom" resultType = "ChatRoom">
+	select * from CHAT_ROOM_TB 
+	 WHERE 
+	 		(
+	 			USER1_NUM = #{user1_num} 
+	   		and USER2_NUM = #{user2_num}  
+	 		)
+	 		or
+	 		(
+	 			USER1_NUM = #{user2_num} 
+	   		and USER2_NUM = #{user1_num}
+	 		)
+	</select>
+	
+	<!-- 메시지 insert -->
+	<insert id = "insertMessage">
+	insert into MESSAGE_TB 
+		   (
+		   MESSAGE_NUM, CHAT_ROOM_NUM, SEND_USER, RECEIVE_USER,
+		   CONTENT, SEND_TIME
+		   )
+	values (
+		   MESSAGE_TB_SEQ.nextval, #{chat_room_num}, #{send_user}, #{receive_user},
+		   #{content}, sysdate
+		   )
+	</insert>
+	
+	<!-- user_num으로 채팅방 참여 중인 채팅방 반환 : 채팅방 번호, 마지막 메시지-->
+	<select id="getRoomList" resultType="map" parameterType="int">
+		select r.chat_room_num, m.content
+		  from chat_room_tb r, message_tb m , ( select r.chat_room_num,max( m.message_num) as last_message_num
+	                                          from chat_room_tb r, message_tb m
+	                                         where r.chat_room_num = m.chat_room_num
+	                                           and (r.user1_num = #{usernum}
+	                                            or  r.user2_num = #{usernum})
+	                                           group by r.chat_room_num
+	                                          ) c
+		 where r.chat_room_num = m.chat_room_num
+		   and (r.user1_num = #{usernum}
+		    or  r.user2_num = #{usernum})
+		   and r.chat_room_num = c.chat_room_num
+		   and m.message_num = c.last_message_num
+		   order by c.last_message_num desc
+	</select>
+	
+	<!-- 채팅방에 미확인 메시지 개수를 표기하기 위한 리스트 -->
+	<select id="getUnreadList" resultType="map" parameterType="int">
+		select r.chat_room_num, c.unread
+		  from chat_room_tb r, message_tb m , ( select r.chat_room_num,max( m.message_num) as last_message_num, count(m.message_num) as unread
+	                                          from chat_room_tb r, message_tb m
+	                                         where r.chat_room_num = m.chat_room_num
+	                                           and READ_TIME is null
+	                                           and (r.user1_num = #{usernum}
+	                                            or  r.user2_num = #{usernum})
+	                                           group by r.chat_room_num
+	                                          ) c
+		 where r.chat_room_num = m.chat_room_num
+		   and (r.user1_num = #{usernum}
+		    or  r.user2_num = #{usernum})
+		   and r.chat_room_num = c.chat_room_num
+		   and m.message_num = c.last_message_num
+		   order by c.last_message_num desc
+	</select>
+	
+	
+	
+	<!-- user_num으로 채팅방 참여자 정보 반환 -->
+	<select id="getRoomPartner" resultType="map" parameterType="int">
+		select r.chat_room_num, u.user_num, u.user_lnm, u.user_fnm, u.user_profile_pic
+		  from user_tb u,   (select distinct * 
+	                    from (select decode(c.USER1_NUM,#{usernum},'',c.USER1_NUM)||decode(c.USER2_NUM,#{usernum},'',c.USER2_NUM) as USER_NUM, c.chat_room_num
+	                              from user_tb u,chat_room_tb c
+	                             where (u.USER_NUM = c.USER1_NUM
+	                                or u.USER_NUM = c.USER2_NUM)
+	                               and u.USER_NUM = #{usernum}
+	                              order by c.CHAT_ROOM_NUM
+	                            ))r
+	 	 where u.user_num = r.user_num
+	</select>
+	
+	<!-- 해당하는 방 번호의 메시지를 반환 -->
+	<select id="getMessageList" resultType="map" parameterType="int">
+	    select * from message_tb
+    	where chat_room_num = #{roomnum}
+   		order by message_num asc
+	</select>
+	
+	<!-- 채팅방 참여자의 번호를 얻는 () -->
+	<select id="getRoomPartnerByMap" resultType="map" parameterType="map">
+		select decode(c.USER1_NUM,#{usernum},'',c.USER1_NUM)||decode(c.USER2_NUM,#{usernum},'',c.USER2_NUM) as USER_NUM, c.chat_room_num
+		  from user_tb u,chat_room_tb c
+		 where ((u.USER_NUM = c.USER1_NUM
+		    or u.USER_NUM = c.USER2_NUM)
+		   and (u.USER_NUM = #{usernum}))
+		   and c.chat_room_num = #{chat_room_num}
+	</select>
+	
+	<!-- 해당 사용자가 받은 메시지의 총 갯수를 반환하는 () -->
+	<select id="messageAlarmCount" parameterType="int" resultType="int">
+           SELECT count (*) 
+           	 FROM MESSAGE_TB 
+            WHERE RECEIVE_USER = #{usernum}
+                  and READ_TIME is null
+	</select>
+	
+	<!-- 메시지 읽은 시간 업데이트 -->
+	<update id="setReadTime" parameterType="map">
+		 update message_tb
+  		 	set read_time = sysdate
+ 		  where CHAT_ROOM_NUM = #{roomnum}
+			    and RECEIVE_USER = #{user}
+			    and READ_TIME is null
+	</update>
+	
+	
+</mapper>

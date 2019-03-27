@@ -640,13 +640,13 @@ public class MotelController {
 	@RequestMapping(value = "/DB_nation", method = RequestMethod.GET)
 	public List<Map<String, Object>> DB_nation(){
 		System.out.println("DB_nation 입장!!!");
-		System.out.println("DB_nation 입장!!!" + service.getAllNational());
+		//System.out.println("DB_nation 입장!!!" + service.getAllNational());
 		return service.getAllNational();
 	}
 	@ResponseBody
 	@RequestMapping(value = "/DB_city", method = RequestMethod.GET)
 	public List<Map<String, Object>> DB_city(){
-		System.out.println("DB_city 입장 !! : " + service.getAllCity());
+		//System.out.println("DB_city 입장 !! : " + service.getAllCity());
 		return service.getAllCity();
 	}
 	

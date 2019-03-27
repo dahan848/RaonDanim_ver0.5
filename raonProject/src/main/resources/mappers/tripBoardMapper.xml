@@ -28,10 +28,10 @@ values(#{trip_Board_Key},
 
 <select id="selectOneByBoardKey" parameterType="int" resultType="tripBoard">
 
-select  TRIP_BOARD_KEY,
-      USER_NUM,
+select TRIP_BOARD_KEY,
+       USER_NUM,
        TRIP_BOARD_TITLE,
-        TRIP_BOARD_COUNTENT,
+       TRIP_BOARD_COUNTENT,
        TRIP_BOARD_START,
        TRIP_BOARD_END,
        TRIP_BOARD_TOGETHER,
@@ -44,10 +44,10 @@ where TRIP_BOARD_KEY = #{trip_Board_Key}
 
 <select id="selectOneByUserNum" parameterType="int" resultType="tripBoard">
 
-select  TRIP_BOARD_KEY,
-      USER_NUM,
+select TRIP_BOARD_KEY,
+       USER_NUM,
        TRIP_BOARD_TITLE,
-        TRIP_BOARD_COUNTENT,
+       TRIP_BOARD_COUNTENT,
        TRIP_BOARD_START,
        TRIP_BOARD_END,
        TRIP_BOARD_TOGETHER,
@@ -114,16 +114,18 @@ from (select
                         <if test="tripEnd!=null">
                            or b.TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
                         </if>
-                         <if test="userNick!=null">
+                         <if test="lName!=null">
                            <!-- or u.user_nick like ('%${userNick}%') -->
-                           or 1 = 1
+                            or u.USER_LNM like ('%${lName}%')
+                        </if>
+                         <if test="fName!=null">
+                           <!-- or u.user_nick like ('%${userNick}%') -->
+                           or u.USER_FNM like ('%${fName}%')
                         </if>
                         <if test="type==0">
                            or 1 = 1
                         </if>
-                       <!--이부분 수정 삭제를 위해 쿼리 수정함 리스트 안뽑히면 아마 이거 때문 -->
-                  and TRIP_BOARD_ST = 0
-                  <!--이부분 수정 삭제를 위해 쿼리 수정함  -->
+                  		and TRIP_BOARD_ST = 0
                         order by b.TRIP_BOARD_KEY desc ))
 where r between #{start} and #{end} 
 
@@ -134,26 +136,29 @@ where r between #{start} and #{end}
 <select id="getTotalCount" parameterType="map" resultType="int">
 
 select count(*)
-from TRIP_BOARD_TB
+from TRIP_BOARD_TB b join user_tb u
+on b.user_num = u.user_num
 where 1 = 0
 <if test="title!=null">
-   or TRIP_BOARD_TITLE like ('%${title}%')
+ or b.TRIP_BOARD_TITLE like ('%${title}%')
 </if>
 <if test="tripStart!=null">
-or TRIP_BOARD_START = to_date(#{tripStart},'yyyy/MM/dd')
+ or b.TRIP_BOARD_START = to_date(#{tripStart},'yyyy/MM/dd')
 </if>
 <if test="tripEnd!=null">
- or TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
+ or b.TRIP_BOARD_END =  to_date(#{tripEnd},'yyyy/MM/dd')
 </if>
-<if test="userNick!=null">
- <!--  or user_nick like ('%${userNick}%') -->
- or 1 = 1
+<if test="lName!=null">
+ or u.USER_LNM like ('%${lName}%')
+</if>
+<if test="fName!=null">
+ or u.USER_FNM like ('%${fName}%')
 </if>
 <if test="type==0">
    or 1 = 1
 </if>
 <!--이부분 수정 삭제를 위해 쿼리 수정함 리스트 안뽑히면 아마 이거 때문 -->
-and TRIP_BOARD_ST = 0
+and b.TRIP_BOARD_ST = 0
 <!--이부분 수정 삭제를 위해 쿼리 수정함  -->
 </select>
 
@@ -217,8 +222,9 @@ SELECT  B.TRIP_BOARD_KEY,
         U.USER_NUM,
         U.USER_ID,
         U.USER_PW,
-         U.USER_FNM,
-         U.USER_LNM,
+        U.USER_FNM,
+        U.USER_LNM,
+        U.USER_PROFILE_PIC,
         B.TRIP_BOARD_TITLE,
         B.TRIP_BOARD_COUNTENT,
         B.TRIP_BOARD_START,
@@ -286,7 +292,134 @@ SET REL_ST = 1
 where REL_KEY = #{num}
 </update>
 
+<update id="incrementViews" parameterType="int">
+update TRIP_BOARD_TB
+set TRIP_BOARD_READCOUNT = TRIP_BOARD_READCOUNT+1
+where TRIP_BOARD_KEY = #{boardKey}
+</update>
+
+<select id="getDeclaration" resultType="map">
+select DECLARATION_KEY,
+	   DECLARATION_CONTENT
+from DECLARATION_DTB
+</select>
 
 
+<insert id="insertDeclaration" parameterType="map">
+insert into DECLARATION_TB
+(D_KEY,
+ TRIP_BOARD_KEY,
+ D_USER_NUM,
+ USER_NUM,
+ DECLARATION_KEY,
+ TRIP_D_DETAILCONTENT)
+values( DECLARATION_TB_SEQ.nextval,
+		#{TRIP_BOARD_KEY},
+		#{D_USER_NUM},
+		#{USER_NUM},
+		#{DECLARATION_KEY},
+		#{TRIP_D_DETAILCONTENT})
+</insert>
+
+<select id="selectOneByDeclaration" parameterType="map" resultType="map">
+select  D_KEY,
+		TRIP_BOARD_KEY,
+		D_USER_NUM,
+		USER_NUM,
+		DECLARATION_KEY,
+		TRIP_D_DETAILCONTENT
+from DECLARATION_TB
+where USER_NUM = #{USER_NUM}
+and TRIP_BOARD_KEY = #{TRIP_BOARD_KEY}
+</select>
+
+<select id="getMyDongHangList" parameterType="String" resultType="map">
+select  TRIP_BOARD_KEY,
+        TRIP_BOARD_TITLE,
+        to_char(TRIP_BOARD_START,'yy-MM-dd') as TRIP_BOARD_START,
+        to_char(TRIP_BOARD_END,'yy-MM-dd') as TRIP_BOARD_END,
+        TRIP_BOARD_ST,
+        TRIP_BOARD_TOGETHER
+from trip_board_tb
+where TRIP_BOARD_KEY in (  select TRIP_BOARD_KEY
+                           from trip_reply_tb
+                           where user_num = #{userNum}
+                           group by TRIP_BOARD_KEY)
+and TRIP_BOARD_ST = 0    
+</select>
+
+<insert id="insertDummyData" parameterType="map">
+<!-- 도시정보 그리고 키테이블에 입력 안되는 게시글만 있는 더미 데이터 -->
+insert into TRIP_BOARD_TB
+   (TRIP_BOARD_KEY,
+    USER_NUM,
+    TRIP_BOARD_TITLE,
+    TRIP_BOARD_COUNTENT,
+    TRIP_BOARD_START,
+    TRIP_BOARD_END,
+    TRIP_BOARD_TOGETHER,
+    TRIP_WRITEDATE)
+values(TRIP_BOARD_TB_SEQ.nextval,
+     #{user_Num},
+     #{trip_Board_Title},
+     #{trip_Board_Content},
+     #{trip_Board_Start},
+     #{trip_Board_End},
+     #{trip_Board_Together},
+     #{trip_WriteDate})
+</insert>
+
+
+<select id="getMonthWriteData" resultType="int">
+SELECT count(TO_CHAR(TRIP_WRITEDATE,'MM') ) as monthCount
+FROM TRIP_BOARD_TB
+group by TRIP_WRITEDATE
+order by TRIP_WRITEDATE
+</select>
+
+
+<select id="getMotelMonthWriteData" resultType="int">
+SELECT count(TO_CHAR(MOTEL_WRITEDATE,'MM') ) as monthCount
+FROM motel_tb
+group by MOTEL_WRITEDATE
+order by MOTEL_WRITEDATE
+</select>
+
+
+<select id="getBoardAndDeclatation" resultType="map">
+select count(b.TRIP_BOARD_KEY) as boardcount, count(d.D_KEY) as dcount
+from trip_board_tb b left outer join DECLARATION_TB d
+on b.TRIP_BOARD_KEY = d.TRIP_BOARD_KEY
+where TRIP_BOARD_ST = 0   
+</select>
+
+<select id="getDeclarationBoard" resultType="map">
+select  b.TRIP_BOARD_KEY,
+        b.USER_NUM,
+        u.USER_ID,
+        u.USER_FNM,
+        u.USER_LNM,
+        u.USER_PW,
+        b.TRIP_BOARD_TITLE,
+        b.TRIP_BOARD_COUNTENT,
+        b.TRIP_BOARD_START,
+        b.TRIP_BOARD_END,
+        b.TRIP_BOARD_TOGETHER,
+        b.TRIP_BOARD_READCOUNT,
+        b.TRIP_BOARD_ST,
+        b.TRIP_WRITEDATE,
+        d.D_KEY,
+        d.TRIP_D_DETAILCONTENT,
+        dt.DECLARATION_CONTENT
+from trip_board_tb b join user_tb u
+on b.user_num =  u.user_num
+join DECLARATION_TB d
+on b.TRIP_BOARD_KEY = d.TRIP_BOARD_KEY
+join DECLARATION_DTB dt
+on d.DECLARATION_KEY = dt.DECLARATION_KEY
+where b.TRIP_BOARD_KEY in (select distinct TRIP_BOARD_KEY
+                           from DECLARATION_TB)
+and b.TRIP_BOARD_ST = 0                          
+</select>
 
 </mapper>

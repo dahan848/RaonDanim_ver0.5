@@ -6,11 +6,18 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.raon.raondanim.service.AdminService;
 import com.raon.raondanim.service.HomeService;
 
 
@@ -21,6 +28,9 @@ public class HomeController {
 	
 	@Autowired
 	private HomeService service;
+	
+	@Autowired
+	AdminService adminService;
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -44,10 +54,59 @@ public class HomeController {
 		return "home/inquiry";
 	}	
 	
+	//이용약관 페이지 화면 요청 
+	@RequestMapping(value = "/policies", method = RequestMethod.GET)
+	public String 	policies() {
+		logger.info("");
+		return "home/policies";
+	}
+	
+	//개인정보취급방침 화면 요청
+	@RequestMapping(value = "/privacyPolicy", method = RequestMethod.GET)
+	public String 	privacyPolicy() {
+		logger.info("");
+		return "home/privacyPolicy";
+	}
+	
+	@RequestMapping("/setAdmin")
+	public String setAdmin() {
+		System.out.println("어드민 생성 요청 받음");
+		service.setAdmin();
+		return "home/main";
+	}
+	
 	@RequestMapping("/test")
 	public String test() {
 		System.out.println("home 테스트 요청 받음 ");
-		return "home/test";
+		return "test";
 	}
-
+	
+	@RequestMapping("/test99")
+	public String test99() {
+		System.out.println("home 테스트 요청 받음 ");
+		return "etest";
+	}
+	
+	@RequestMapping("/test98")
+	public String test98() {
+		System.out.println("home 테스트 요청 받음 ");
+		return "select2";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/writeInquiry", method=RequestMethod.POST )
+	public boolean userUnlock(@RequestParam Map<String, Object> param) {
+		//System.out.println("문의 게시판 요청 받음 : " + param);
+		return adminService.insertInquiry(param);
+	}
+	
+	@RequestMapping("/setInquiry")
+	public String setInquiry() {
+		adminService.insertDummyInquiry();
+		return "select2";
+	}
+	
+	
+	
+	
 }

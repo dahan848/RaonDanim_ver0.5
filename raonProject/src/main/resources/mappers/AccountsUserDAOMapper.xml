@@ -57,9 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	<update id="passwordChange" parameterType="map">
 		UPDATE user_tb
-		
-		   SET user_pw 		= #{new_user_pw1}
-		   	   
+		   SET user_pw 		= #{new_user_pw}
 		 WHERE user_num 	= #{user_num}
 	</update>
 	<select id="getUserInterest" parameterType="string" resultType="map">
@@ -80,6 +78,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select NATIONALITY_NAME
 		  from NATIONALITY_DTB
 		 where NATIONALITY_NUM = (select USER_NATIONALITY
+                           			from user_tb
+                          		   where user_num = #{usernum})
+	</select>
+	<select id="getUserCityCountry" parameterType="string" resultType="map">
+		select *
+		  from CITY_COUNTRY_DTB
+		 where CITY_COUNTRY_NUM = (select USER_CITY_COUNTRY
                            			from user_tb
                           		   where user_num = #{usernum})
 	</select>
@@ -108,10 +113,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				)
 	</insert>
 	<delete id="deleteGalleryPic" parameterType="string">
-		delete 
+		DELETE
+		  FROM gallery_tb
+		 WHERE GALLERY_FILE_NUM = #{num} 
 	</delete>
 	
-
+	<!-- 
+		여기서 부터 현길 & 문형
+	 -->
+	 
 	<!-- userNum 으로 사용가능언어 num 불러오기 -->
 	<select id="selectUserLanguageNum" parameterType="int" resultType="map">
 		select LANGUAGE_NUM from LANGUAGE_TB
@@ -246,5 +256,63 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from TRIP_REPLY_TB
 		where user_num = #{num}
 	</select>	
+	<!-- 
+		여기 까지 현길 & 문형
+	 -->
 
+	<select id="getMotelAvg" parameterType="string" resultType="double">
+		select avg(motel_avg)
+		from motel_tb
+		where user_num = #{usernum}
+	</select>
+	
+	<select id="motelNullCheck" parameterType="string" resultType="map">
+		select * from motel_tb where user_num = #{usernum}
+	</select>
+	
+<!-- 	여행파트 dao추가 -->
+<select id="getTrStyle" parameterType="String" resultType="map">
+select *
+from user_tb u join TRAVLE_STYLE_TB t
+on u.user_num = t.user_num
+where u.user_num = #{userNum}
+</select>	
+
+<select id="getTravleHope" parameterType="String" resultType="map">
+select *
+from user_tb u join TRAVLE_HOPE h
+on u.user_num = h.user_num
+where u.user_num = #{userNum}
+</select>	
+	
+<select id="getUserRegDate" resultType="map">
+<!-- 데이터가 충분치 않아 정렬에 오류가 있을수 있음 -->
+SELECT TO_CHAR(USER_REG_DATE,'MM')||'월' as USER_REG_DATE,count(TO_CHAR(USER_REG_DATE,'MM')) as monthCount
+FROM user_tb
+group by TO_CHAR(USER_REG_DATE,'MM')
+order by USER_REG_DATE
+</select>	
+	
+<!-- 	여행파트 dao추가 -->
+	<update id="passwordReset" parameterType="map">
+		UPDATE user_tb
+		   SET user_pw 		= #{reset_pw}
+		 WHERE user_id		= #{userid}
+	</update>
+	
+	<!-- 어드민 계정 생성문 -->
+	<insert id="setAdmin" parameterType="User">
+	INSERT INTO USER_TB
+			   (USER_NUM, AUTHORITY, USER_ID, USER_PW, USER_FNM, USER_LNM, USER_EMAIL_VERIFY , USER_REG_DATE)
+		VALUES (
+				USER_TB001_SEQ.nextval,
+				#{authority},
+				#{user_id},
+				#{user_pw},
+				#{user_fnm},
+				#{user_lnm},
+				1,
+				sysdate
+				)
+	</insert>
 </mapper>

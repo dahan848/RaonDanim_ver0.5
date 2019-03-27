@@ -24,10 +24,10 @@ values(	#{trip_Reply_Key},
 		#{trip_Reply_Key},
 		#{trip_Reply_Depth},
 		#{trip_Reply_Sorts},
-		#{trip_reply_Content})
+		#{trip_Reply_Content})
 
 </insert>
-
+<!--댓글 전체 가져오는 쿼리  -->
 <select id="getReplyList" parameterType="int" resultType="map">
 
 SELECT  r.TRIP_REPLY_KEY,
@@ -46,6 +46,166 @@ on r.USER_NUM = u.USER_NUM
 where r.TRIP_BOARD_KEY = #{num}
 ORDER BY r.TRIP_REPLY_GID ASC,
 		 r.TRIP_REPLY_SORTS ASC
+
+</select>
+
+<!--페이징된 댓글 가져오는 쿼리  -->
+<select id="getReplyListByTen" parameterType="map" resultType="map">
+select r,
+       TRIP_REPLY_KEY,
+       TRIP_BOARD_KEY,
+       USER_NUM,
+       USER_FNM,
+       USER_LNM,
+       TRIP_REPLY_GID,
+       TRIP_REPLY_DEPTH,
+       TRIP_REPLY_SORTS,
+       TRIP_REPLY_CONTENT,
+       TRIP_REPLY_WRITEDATE,
+       TRIP_REPLY_ST
+from (select    rownum as r,
+                TRIP_REPLY_KEY,
+                TRIP_BOARD_KEY,
+                USER_NUM,
+                USER_FNM,
+                USER_LNM,
+                TRIP_REPLY_GID,
+                TRIP_REPLY_DEPTH,
+                TRIP_REPLY_SORTS,
+                TRIP_REPLY_CONTENT,
+                TRIP_REPLY_WRITEDATE,
+                TRIP_REPLY_ST
+from(SELECT  r.TRIP_REPLY_KEY,
+        r.TRIP_BOARD_KEY,
+        r.USER_NUM,
+        u.USER_FNM,
+        u.USER_LNM,
+        r.TRIP_REPLY_GID,
+        r.TRIP_REPLY_DEPTH,
+        r.TRIP_REPLY_SORTS,
+        r.TRIP_REPLY_CONTENT,
+        to_char(r.TRIP_REPLY_WRITEDATE,'yy-MM-dd') as TRIP_REPLY_WRITEDATE,
+        r.TRIP_REPLY_ST 
+    FROM trip_reply_tb r join user_tb u
+    on r.USER_NUM = u.USER_NUM
+    where r.TRIP_BOARD_KEY = #{boardKey}
+    and TRIP_REPLY_ST = 0
+    ORDER BY r.TRIP_REPLY_GID ASC,
+             r.TRIP_REPLY_SORTS ASC))
+ where r between #{start} and #{end}
+ 
+</select>
+
+<!--게시글의 총 댓글이 몇개인지 가져오는 쿼리  -->
+<select id="getReplyTotalCount" parameterType="int" resultType="int">
+ select count(*) 
+ from trip_reply_tb
+ where TRIP_BOARD_KEY = #{boardKey}
+ and TRIP_REPLY_ST = 0
+</select>
+
+
+
+<!--원본글에 댓글  -->
+<select id="insertReply" parameterType="int" resultType="int">
+select  NVL(MAX(TRIP_REPLY_SORTS),0) + 1
+from TRIP_REPLY_TB
+where TRIP_REPLY_GID = #{gId}
+</select>
+
+<insert id="insertReply2" parameterType="tripReply">
+<!--trip_Reply_Sorts 부분에  insertReply의 result값이 들어가야한다  -->
+insert into TRIP_REPLY_TB
+(TRIP_REPLY_KEY,
+TRIP_BOARD_KEY,
+USER_NUM,
+TRIP_REPLY_GID,
+TRIP_REPLY_DEPTH,
+TRIP_REPLY_SORTS,
+TRIP_REPLY_CONTENT)
+values(	TRIP_REPLY_TB_SEQ.NEXTVAL,
+		#{trip_Board_Key},
+		#{user_Num},
+		#{trip_Reply_Gid},
+		#{trip_Reply_Depth}+1,
+		#{trip_Reply_Sorts},
+		#{trip_Reply_Content})
+		
+
+</insert>
+
+
+
+<!--대댓글 부분  -->
+<select id="replyCondition" parameterType="map" resultType="int">
+<!--1 대댓글 을 입력하려고 할때는 이쿼리가 선행되어야하며 이쿼리는 내가 달려는 댓글의 위치를 알려준다  -->
+SELECT NVL(MIN(TRIP_REPLY_SORTS),0) 
+FROM TRIP_REPLY_TB
+WHERE TRIP_REPLY_GID = #{gId}
+AND TRIP_REPLY_SORTS <![CDATA[>]]> #{sorts}
+AND TRIP_REPLY_DEPTH <![CDATA[<=]]>  #{depth}
+
+</select>
+
+<update id="insertReReply" parameterType="map">
+<!--2순서정렬을 위한 소트 구하기  -->
+update TRIP_REPLY_TB
+set TRIP_REPLY_SORTS = TRIP_REPLY_SORTS+1
+where TRIP_REPLY_GID = #{gId}
+and TRIP_REPLY_SORTS <![CDATA[>=]]> #{sorts}
+
+</update>
+
+<insert id="insertReReply2" parameterType="tripReply">
+<!--3 위 두 메소드에서 구한값으로 insert  -->
+<!--trip_Reply_Sorts 부분에  insertReply의 result값이 들어가야한다  -->
+insert into TRIP_REPLY_TB
+(TRIP_REPLY_KEY,
+TRIP_BOARD_KEY,
+USER_NUM,
+TRIP_REPLY_GID,
+TRIP_REPLY_DEPTH,
+TRIP_REPLY_SORTS,
+TRIP_REPLY_CONTENT)
+values(	TRIP_REPLY_TB_SEQ.NEXTVAL,
+		#{trip_Board_Key},
+		#{user_Num},
+		#{trip_Reply_Gid},
+		#{trip_Reply_Depth}+1,
+		#{trip_Reply_Sorts},
+		#{trip_Reply_Content})
+
+
+</insert>
+
+<!-- 원글 삭제 -->
+<update id="deleteReply" parameterType="map">
+ update trip_reply_tb
+ set TRIP_REPLY_ST = 1
+ where TRIP_REPLY_GID = #{gId}
+</update>
+
+<!-- 댓글 대댓글 단독 삭제 -->
+<update id="deleteReply2" parameterType="map">
+ update trip_reply_tb
+ set TRIP_REPLY_ST = 1
+ where TRIP_REPLY_KEY = #{replyKey}
+</update>
+
+
+<select id="selectOneByreplyKey" parameterType="int" resultType="map">
+select  TRIP_REPLY_KEY,
+		TRIP_BOARD_KEY,
+		USER_NUM,
+		TRIP_REPLY_GID,
+		TRIP_REPLY_DEPTH,
+		TRIP_REPLY_SORTS,
+		TRIP_REPLY_CONTENT,
+		TRIP_REPLY_WRITEDATE,
+		TRIP_REPLY_ST
+from 	trip_reply_tb	
+where TRIP_REPLY_KEY = #{replyKey}
+
 
 </select>
 

@@ -18,25 +18,67 @@
 	<script type="text/javascript">
 	
 	 $(document).ready(function(){
-		 //alert("짠88888888");
-		 //기존 비밀번호, 새로운 비밀번호 유효성 검사 : 동일한 값인지
-		 $("#id_password1").on("blur", function() {
-			//비교 할 비밀번호 값 변수에 참조 
-			var oldPw = $("#id_oldpassword").val();
-			var newPw = $(this).val();
-			//조건문 검사. 기존 비밀번호 칸에 값이 입력 된 상태이고, 기존 비밀번호와 동일하다면..
-				//2. 기존 비밀번호와 동일한 비밀번호 인지 검사 
-				if(oldPw.length != 0 && oldPw == newPw){
-					//경고창 문구 출력 
-					$("#alarm").text("기존 비밀번호와 같은 비밀번호는 사용할 수 없습니다.");
-					$("#alarm").css("color","red");
-					//값 비우기 
-					$(this).val('');
-				}else{
-					$("#alarm").text('');
-				}//비교 if END
-		});
 
+		 
+		//비교 할 비밀번호 값 변수에 참조 
+		var oldPw = $("#oldpassword").val(); //DB에 저장 된 비밀번호  
+		var path = "http://localhost:8081";
+		//현재 비밀번호의 입력 유효성 검사
+		/*
+			비밀번호는 암호화 되어 저장되어 있기 때문에 
+			Ajax를 활용해서 비동기적으로 처리한다.
+		*/
+		$("#id_oldpassword").change(function(){
+			var inPutOldPw = $("#id_oldpassword").val(); //사용자가 입력 한 현재 비밀번호			 
+			 //사용자가 '현재 비밀번호' 입력 창에 길이 '0'이상의 문자열을 입력 한 경우 
+			 if(inPutOldPw.length != 0){
+				 	//Ajax로 현재 사용자가 입력 한 비밀번호를 전송한다.
+					$.ajax({
+				        type : 'get',
+				        url : path + '/accounts/passwordCheck',
+				        data : {"check":inPutOldPw},
+				        datType:"json",
+				        success : function(result) {
+				        	if(result){
+				        		//동일한 비밀번호 입력 시, 출력 되었던 메시지를 지워준다.
+				        		$("#alarm").text('');
+				        	}else{
+				        		//DB에 저장 된 비밀번호가 다른 비밀번호가 입력 될 경우 메시지를 화면단에 보여준다,
+								 $("#alarm").text("기존 비밀번호와 다른 비밀번호가 입력되었습니다.");
+								 $("#alarm").css("color","red");
+								 $("#id_oldpassword").val('').focus();
+				        	}
+				        },
+				        error : function(error) {
+				            console.log(error);
+				            console.log(error.status);
+				        }
+				    });
+		 	 }
+		});
+		
+		//새 비밀번호 입력 창 1 유효성 검사 
+		$("#id_password1").change(function(){
+			var inPutOldPw = $("#id_oldpassword").val(); //사용자가 입력 한 현재 비밀번호
+			var newPw = $("#id_password1").val();
+			if(inPutOldPw.length != 0 && inPutOldPw == newPw){
+				$("#alarm").text("기존 비밀번호와 같은 비밀번호는 사용할 수 없습니다.");
+				$("#alarm").css("color","red");
+				$(this).val('').focus();
+			}
+		});
+		
+		//새 비밀번호 입력 창 2 유효성 검사 
+		$("#id_password2").change(function(){
+			var newPw1 = $("#id_password1").val(); 
+			var newPw2 = $("#id_password2").val();
+			if(newPw1.length != 0 && newPw1 != newPw2){
+				$("#alarm").text("새로운 비밀번호가 동일하지 않습니다.");
+				$("#alarm").css("color","red");
+				$(this).val('').focus();
+			}
+		});
+				
 		 $("#password-change-form").on("submit", function() {
 	    		//fomr 요소에 있는 데이터 직렬화 
 	    		var pwdata = $(this).serialize();
@@ -56,12 +98,16 @@
 							$("#alarm").css("color","red");
 							$("#id_password2").val('');
 	    				}else if(data == 1){
+	    					//변경에 성공하면 로그아웃 처리
+	    					logout();
 	        				swal({
-		      					  text: "비밀번호 변경에 성공하였습니다.",
+	        					  title:"비밀번호 변경에 성공하였습니다.",
+		      					  text: "새로운 비밀번호로 로그인 해주세요.",
 		      					  button: "확인",
 		      					  confirmButtonColor: "#484848",
 		      					}).then(function() {
-		      						location.reload();
+		      						//알람 창 출력 후 메인 화면으로 이동 
+		      						window.location = "http://localhost:8081/home";
 		      					});	
 	    				}else if(data == 2){
 	        				swal({
@@ -77,13 +123,19 @@
 	    		return false;
 	    	});//submit END
 	 });//onLoad END
+	 //로그아웃 함수
+	function logout() {
+		$.ajax({
+			url:"/accounts/logout"
+		});
+	}
 	</script>
 	<section id="section-authentication" style="height: 800px;">
 		<div class="container" style="margin-top: 100px;">
 			<div class="form-block">
 				<img src="${contextPath}/img/home_logo-raon.png" alt="">
 				<form name="pwChange" id="password-change-form" method="post">
-					<input type="hidden" name="user_pw" value="${pass}">
+					<input type="hidden" id = "oldpassword" name="user_pw" value="${pass}">
 					<div class="form-group">
 						<label class="sr-only control-label" for="id_oldpassword">현재
 							비밀번호</label> <input class="form-control" id="id_oldpassword"

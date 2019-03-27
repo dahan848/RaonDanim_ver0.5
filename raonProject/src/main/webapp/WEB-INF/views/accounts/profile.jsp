@@ -22,10 +22,11 @@
 <script src="${contextPath}/js/jquery.color.js" ></script>
 <script src="${contextPath}/js/jquery.Jcrop.js" ></script>
 <script src="${contextPath}/js/gallery-image.js" ></script>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAK7HNKK_tIyPeV3pVUZKvX3f_arONYrzc"></script>
 
 <script type="text/javascript">
 $(document).ready(function() { 
-	//alert("로딩 완료45"); 
+	//alert("로딩 완료46"); 
 	
 	createGallery(); //갤러리 그려주는 ()
 	
@@ -192,7 +193,7 @@ function gallerypicSubmit() {
 function createGallery() {
 	var contextPath = '<c:out value="${contextPath}"/>';
 	$.ajax({
-		url: contextPath + "/accounts/gallery/${userNum}",
+		url: contextPath + "/accounts/gallery/${profileUser}",
 		type: "get",
 		dateType : "json",
 		success : function(data){
@@ -211,6 +212,37 @@ function createGallery() {
 		}
 	});
 };
+
+
+//테스트
+function initialize() {
+	//사용자 거주 도시가 있을 때 화면 
+   var searchMap = new google.maps.Map(document.getElementById('googleMap'), {
+        zoom: 14,
+   });
+	
+   var geocoder = new google.maps.Geocoder();
+   geocodeAddress(geocoder, searchMap);
+   function geocodeAddress(geocoder, resultsMap) {
+        
+        var address = "${user.city}";
+	    geocoder.geocode({'address': address}, function(results, status) {        	
+        
+           
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location
+            });
+          } else {
+            //alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+      }
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+
 </script>
 <style type="text/css">
 .head{
@@ -256,7 +288,7 @@ input[type="file"] {
 				<img class="section-header-icon" src="${contextPath}/img/accounts_Profile.png" alt="" >
             		 나의 프로필
             	<!-- 자신의 페이지 일 때만 [프로필 수정]버튼 보임 -->
-				<c:if test="${userNum eq user_num}">
+				<c:if test="${profileUser eq user_num}">
                 	<a href="${contextPath}/accounts/update1Form" class="btn btn-potluck pull-right">프로필 수정</a>
                 </c:if>
 			</h3>
@@ -306,14 +338,18 @@ input[type="file"] {
 				  		<c:if test="${user.lastLogin ne 666 }"><p><small>Last login ${user.lastLogin} minutes ago</small></p></c:if> 
                    		<hr>
                    		<div class="row">
+                       		<!-- 숙박평점 -->
                         	<div class="col-xs-6">
-                            	<div class="friends-count"><i class="ion ion-ios-heart"></i> ${user.motel_avg}</div>
-                            		<!-- 숙박평점 -->
+                            	<div class="friends-count">
+                            		${user.motel_avg} 
+                            	</div>
                             		<small>숙박평점</small> 
                        		</div>
+                       		<!-- 후기평점 -->
                         	<div class="col-xs-6">
-                            	<div class="friends-count"><i class="ion ion-android-person"></i> ${user.with_avg}</div>
-                            		<!-- 후기평점 -->
+                            	<div class="friends-count">
+                            		${user.with_avg}
+                           		</div>
                             		<small>후기평점</small>	
                         	</div>
                     	</div>
@@ -335,24 +371,33 @@ input[type="file"] {
                     	<label class="col-sm-3 control-label text-right">나이</label>
 	                    <div class="col-sm-9">
 	                    	<!-- 나이 -->
-	                    	<p>${user.age}</p> 
+	                    	<c:if test="${user.age eq null}">
+	                  			<span class="label label-pink label-lg">미작성</span>
+							</c:if>
+	                    		<p>${user.age}</p> 
 	                    </div>
                 	</div>
                 <div class="row">
                     <label class="col-sm-3 control-label text-right">좋아하는 것</label>
                     	<div class="col-sm-9">
                     		<!-- 좋아하는 것(관심사) 반복문으로 출력 -->
+      			            <c:if test="${user.interest eq null}">
+	                  			<span class="label label-pink label-lg">미작성</span>
+	                  		</c:if>
                     		<c:forEach items="${user.interest}" var="interest">
-                    			<span class="label label-default label-lg">${interest.INTEREST_NAME}</span>	
+                    			<span class="label label-default label-lg">${interest.INTEREST_KO_NAME}</span>	
                     		</c:forEach>
                     	</div>
                 </div>
                 <div class="row">
                     <label class="col-sm-3 control-label text-right">사용가능언어</label>
                     	<div class="col-sm-9">
-                    		<!-- 사용가능언어 : 반복문 -->
+                    		<!-- 사용가능언어 : 조건문 + 반복문 -->
+      			            <c:if test="${user.language eq null}">
+	                  			<span class="label label-pink label-lg">미작성</span>
+	                  		</c:if>
                            	<c:forEach items="${user.language}" var="language">
-                    			<span class="label label-default label-lg">${language.LANGUAGE_NAME}</span>	
+                    			<span class="label label-default label-lg">${language.LANGUAGE_KO_NAME}</span>	
                     		</c:forEach>
                    		</div>
                 </div>
@@ -369,30 +414,21 @@ input[type="file"] {
                 <div class="row">
                     <label class="col-sm-3 control-label text-right">거주 도시</label>
                     <div class="col-sm-9">
-                        <p>프로필 화면 테스트 더미 데이터</p>
+                    <c:if test="${user.city eq null}">
+                  	  	<span class="label label-pink label-lg">미작성</span>
+                    </c:if>
+                        <p>${user.city}</p>
+                        <div id="googleMap" style="width: 700px; height: 500px;"></div>
                     </div>
                 </div>
-                <div class="row">	<!-- 나와의 거리 영역 지도 필요 -->
-                	<label class="col-sm-3 control-label text-right">나와의 거리</label>
-                    	<div class="col-sm-9">
-                        	<p id="map-address-info"
-                            	data-mylat="37.56600"
-                            	data-mylng="126.97840"
-                            	data-friendlat="37.56600"
-                            	data-friendlng="126.97840">
-                             	Seoul, South Korea - Seoul, South Korea
-                             <strong id="distance"></strong>KM</p>
-                         	<div id="map-canvas" style="height: 300px;"></div>
-                     	</div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-3 control-label text-right">숙박 제공 가능 여부</label>
-                    	<div class="col-sm-9">
-                    		<c:if test="${user.accom_st eq 0 }"><span class="label label-gray label-lg">불가능</span></c:if>
-                    		<c:if test="${user.accom_st eq 2 }"><span class="label label-skyblue label-lg">가능(무료)</span></c:if>
-                    		<c:if test="${user.accom_st eq 3 }"><span class="label label-pink label-lg">가능(유료)</span></c:if>
-						</div>
-                </div>
+<!--                 <div class="row"> -->
+<!--                     <label class="col-sm-3 control-label text-right">숙박 제공 가능 여부</label> -->
+<!--                     	<div class="col-sm-9"> -->
+<%--                     		<c:if test="${user.accom_st eq 0 }"><span class="label label-gray label-lg">불가능</span></c:if> --%>
+<%--                     		<c:if test="${user.accom_st eq 2 }"><span class="label label-skyblue label-lg">가능(무료)</span></c:if> --%>
+<%--                     		<c:if test="${user.accom_st eq 3 }"><span class="label label-pink label-lg">가능(유료)</span></c:if> --%>
+<!-- 						</div> -->
+<!--                 </div> -->
 				</div> <!-- 유저 상세 정보 출력 부  END-->
 			</section> <!-- 프로필 section END-->
 		</div>
@@ -400,14 +436,14 @@ input[type="file"] {
 	<!-- POPOVER DIV -->
 	<div id="userInfo" class="hide" style="margin-left: auto; margin-right: auto; text-align: center;">
 	   <c:choose>
-			<c:when test="${userNum eq user_num}">
+			<c:when test="${profileUser eq user_num}">
 	        	<a href="#" data-toggle="modal" data-target="#modal-profile-image">프로필 사진</a><br>
 	        	<a href="#" data-toggle="modal" data-target="#modal-gallery-image">갤러리 사진</a><br>
 	        	<a href="${contextPath}/accounts/gallerySettings">갤러리 관리</a>
 	   		</c:when>
         	<c:otherwise>
 				<sec:authorize access="isAuthenticated()"> <!-- 로그인 상태 일때만 표시 -->    	    		
-        		<a href="#">대화하기</a>
+        		<a onclick="chatClickbyUser(${profileUser},${user_num})">대화하기</a>
 				</sec:authorize>
 				<sec:authorize access="isAnonymous()"> <!-- 로그인 상태 X -->
 				<a href="#">로그인 이후 사용 가능합니다.</a>
@@ -500,8 +536,8 @@ input[type="file"] {
 	        </div>
 	    </div>
 	</div>
-	
 <!-- 인클루드-푸터 -->
+<jsp:include page="/WEB-INF/views/test.jsp"></jsp:include> <!-- 채팅방 모달창 -->
 <jsp:include page="/WEB-INF/views/footer.jsp"></jsp:include>
 <!-- 인클루드-푸터 END -->
 </body>
