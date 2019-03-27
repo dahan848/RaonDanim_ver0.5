@@ -27,5 +27,13 @@ public interface AccountsUserDAO {
 	public int selectTotalCount(int num);//여행 게시글 토탈카운트
 	public List<Map<String, Object>> trip_reply_list(Map<String, Object>params);//여행탭 여행 댓글 리스트 호출 
 	public int selectReplyTotalCount(int num);//여행 댓글 토탈카운트
+	public int deleteReply(Map<String, Object>param);//여행 댓글 삭제로직(반복 시킬 로직임)
+	public int deleteTrip(Map<String, Object>param);//여행 게시글 삭제로직(반복 시킬 로직임)
+	public int selectTripReviewTotalCount(int num);//여행 후기 게시판 토탈 카운트
+	public List<Map<String, Object>> tripReview_review(Map<String, Object>params);//dashboard 여행 후기 게시판 리스트
+	public int deleteTripReview_review(Map<String, Object>param);//여행 후기 게시판 삭제 로직(반복 시킬 로직임)
+	public int selectTripReview_ReplyTotalCount(int num);//여행 후기 댓글 게시판 토탈 카운트
+	public List<Map<String, Object>> tripReview_review_reply(Map<String, Object>params);//여행 후기 게시판 리스트
+	public int deleteTripReview_review_reply(Map<String, Object>param);//여행 후기 게시판 삭제 로직(반복 시킬 로직임)
 
 }

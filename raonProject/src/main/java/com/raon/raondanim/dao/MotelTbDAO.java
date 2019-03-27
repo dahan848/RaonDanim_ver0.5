@@ -60,6 +60,10 @@ public interface MotelTbDAO {
 	public int add_point(Map<String, Object>params);
 	//숙소 결제시 결제 내역 insert
 	public int pay_history_insert(Map<String, Object>params);
+	//리스트 유저 이미지 뽑아오기
+	public List<Map<String, Object>> getUser_pic();
+	public Map<String, Object> getUser_pic_one(String user_num);
+	public List<Map<String, Object>> getMotel_pic();
 	
 	
 	//모텔 병합중

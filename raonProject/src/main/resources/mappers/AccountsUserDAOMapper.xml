@@ -130,21 +130,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectTotalCount" resultType="int" parameterType="int">
 		select count(*) from TRIP_BOARD_TB
 		where user_num = #{num}
+		and trip_board_st = 0
+		
 	</select>	
 	<!-- 여행탭 여행 댓글 리스트 호출 -->
 	<select id="trip_reply_list" parameterType="Map" resultType="Map">
-<!-- 		select * -->
-<!-- 		from( -->
-<!-- 			select rownum as rnum, trip_reply_content, trip_reply_writedate -->
-<!-- 				from( -->
-<!-- 				select * from TRIP_REPLY_TB -->
-<!-- 				where user_num = #{num} -->
-<!-- 				order by trip_reply_key desc -->
-<!-- 			) -->
-<!-- 		) -->
-<!-- 		where rnum between #{firstRow} and #{endRow} -->
-		
-		
 		select *
 		from(
 			select rownum as rnum, trip_reply_content, trip_reply_writedate, trip_reply_key, trip_board_key, trip_board_st
@@ -159,8 +149,92 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		)
 		where rnum between #{firstRow} and #{endRow}
 	</select>
+	<!-- 댓글 토탈 카운트 -->
 	<select id="selectReplyTotalCount" resultType="int" parameterType="int">
 		select count(*) from TRIP_REPLY_TB
 		where user_num = #{num}
+		and trip_reply_st = 0
 	</select>	
+	<!-- 댓글 삭제 로직 -->
+	<update id="deleteReply" parameterType="Map">
+		update trip_reply_tb
+			set trip_reply_st = 1
+			where user_num = #{user_num}
+			and trip_reply_key = #{replyNum}
+	</update>
+	
+	<!-- 여행 삭제 로직 -->
+	<update id="deleteTrip" parameterType="Map">
+		update TRIP_BOARD_TB
+			set trip_board_st = 1
+			where user_num = #{user_num}
+			and trip_board_key = #{boardNum}
+	</update>
+	
+	<!-- 여행 후기 게시판 토탈 카운트 -->
+	<select id="selectTripReviewTotalCount" resultType="int" parameterType="int">
+		select count(*) from REVIEW_BOARD_TB
+		where user_num = #{num}
+		and RE_ST = 0
+	</select>	
+	<!-- 여행 후기 게시판 리스트 -->
+	<select id="tripReview_review" resultType="Map" parameterType="Map">
+		select *
+		from(
+			select rownum as rnum, review_num, rev_title, re_reg_date, re_count
+			from(
+				select * from REVIEW_BOARD_TB
+				where user_num = #{num}
+				and re_st = 0
+				order by review_num desc
+			)
+		)
+		where rnum between #{firstRow} and #{endRow}
+	</select>
+	
+		<!-- 여행 후기 게시판 삭제 로직 -->
+	<update id="deleteTripReview_review" parameterType="Map">
+		update REVIEW_BOARD_TB
+			set re_st = 1
+			where user_num = #{user_num}
+			and review_num = #{boardNum}
+	</update>
+	
+		<!-- 여행후기 댓글 게시판 토탈 카운트 -->
+	<select id="selectTripReview_ReplyTotalCount" resultType="int" parameterType="int">
+		select count(*) from REVIEW_REPLY_TB
+		where user_num = #{num}
+		and RE_REPLY_ST = 0
+	</select>	
+	
+	<!-- 여행 후기 댓글 게시판 리스트 -->
+	<select id="tripReview_review_reply" resultType="Map" parameterType="Map">
+		select *
+		from(
+			select rownum as rnum, re_reply_num, rev_rep_content, re_st, re_reply_date, review_num
+			from(
+				select reply.re_reply_num, reply.rev_rep_content, board.re_st, reply.re_reply_date, board.review_num
+				from REVIEW_REPLY_TB reply, REVIEW_BOARD_TB board
+				where reply.review_num = board.review_num
+                and reply.user_num = #{num}
+				and reply.re_reply_st = 0
+				order by reply.re_reply_num desc
+				)
+		)
+		where rnum between #{firstRow} and #{endRow}
+	</select>
+	
+	<!-- 여행 후기 댓글 게시판 삭제 로직 -->
+	<update id="deleteTripReview_review_reply" parameterType="Map">
+		update REVIEW_REPLY_TB
+			set re_reply_st = 1
+			where user_num = #{user_num}
+			and re_reply_num = #{boardNum}
+	</update>
+	
+	
+	
+	
+	
+	
 </mapper>

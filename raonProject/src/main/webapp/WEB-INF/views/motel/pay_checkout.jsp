@@ -188,7 +188,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 																			<div>
 																				<span aria-hidden="true">
 																					<span class="_so3dpm2">
-																					후기 45개
+																					
 																					</span>
 																				</span>
 																			</div>

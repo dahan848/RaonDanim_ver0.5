@@ -233,6 +233,7 @@ public class MotelController {
 		
 		Map<String, Object> motel = new HashMap<String, Object>();
 		motel=service.viewSelect(params);
+		motel.put("user_pic", service.getUser_pic_one(motel.get("USER_NUM").toString()));
 		motel.put("checkIn", checkIn);
 		motel.put("checkOut", checkOut);
 		motel.put("tripDate", tripDate);

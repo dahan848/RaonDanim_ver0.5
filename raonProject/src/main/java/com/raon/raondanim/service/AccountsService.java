@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -548,5 +549,170 @@ public class AccountsService {
 		return totalPage;
 	}
 	
+	//대시보드 댓글 삭제
+	public boolean deleteReplyCount(List<String> deleteReply,String user_num) {
+		Map<String, Object>param = new HashMap<String, Object>();
+		int result = 0;
+		for(String n:deleteReply) {
+			param.put("replyNum", n);
+			param.put("user_num", user_num);
+			if(dao.deleteReply(param)>0) {
+				result++;
+			}
+		}
+		if(result>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	//대시보드 여행 삭제
+	public boolean deleteTrip(List<String> deleteReply,String user_num) {
+		Map<String, Object>param = new HashMap<String, Object>();
+		int result = 0;
+		for(String n:deleteReply) {
+			param.put("boardNum", n);
+			param.put("user_num", user_num);
+			if(dao.deleteTrip(param)>0) {
+				result++;
+			}
+		}
+		if(result>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	//여행 후기 게시판 토탈 카운트
+	private int selectTripReviewTotalCount(Map<String, Object> params) {
+		// 총 페이지수 반환
+		// 전체 게시글 개수 /페이지당 게시글 수 >>> 올림해서 반환
+		int totalCount = dao.selectTripReviewTotalCount((Integer.parseInt(params.get("num").toString())));
+		int totalPage = (totalCount - 1) / NUM_OF_BOARD_PER_PAGE + 1;
+		return totalPage;
+	}
+	
+	//여행 후기 게시판 리스트 불러올 메서드
+		public Map<String, Object> getTripReviewViewData(Map<String, Object> params) {
+			// startPage, endPage, totalPage, boardList 반환
+			System.out.println("서비스 호출");
+			System.out.println(params);
+
+			int page = (int) params.get("page");
+
+			Map<String, Object> daoParam = new HashMap<String, Object>();
+			Map<String, Object> viewData = new HashMap<String, Object>();
+
+			System.out.println(getFirstRow(page));
+			System.out.println(getEndRow(page));
+			daoParam.put("firstRow", getFirstRow(page));
+			daoParam.put("endRow", getEndRow(page));
+			daoParam.put("num", params.get("num"));
+
+			System.out.println("service 파라미터 : "+daoParam);
+			viewData.put("boardList", getTripReview_ReviewBoardList(daoParam));
+			viewData.put("startPage", getStartPage(page));
+			viewData.put("endPage", getEndPage(page));
+			viewData.put("totalPage", selectTripReviewTotalCount(daoParam));
+			viewData.put("page", page);
+
+			return viewData;
+		}
+		
+		
+		//여행 후기 게시판 리스트 불러오는 메서드
+		public List<Map<String, Object>> getTripReview_ReviewBoardList(Map<String, Object> params) {
+			// 페이지 번호 받아와서 해당하는 목록만 가져오기
+			// 1. 페이지 번호에 해당하는 firstRow, endRow 구하기
+			// 2. firstRow, endRow에 해당하는 목록 얻어오기
+			// 3. 반환
+			System.out.println(params);
+			return dao.tripReview_review(params);
+		}
+		
+		
+		//대시보드 여행 삭제
+		public boolean deleteTripReview_review(List<String> deleteReply,String user_num) {
+			Map<String, Object>param = new HashMap<String, Object>();
+			int result = 0;
+			for(String n:deleteReply) {
+				param.put("boardNum", n);
+				param.put("user_num", user_num);
+				if(dao.deleteTripReview_review(param)>0) {
+					result++;
+				}
+			}
+			if(result>0) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+		
+		//여행 후기 댓글 게시판 토탈 카운트
+		private int selectTripReview_ReplyTotalCount(Map<String, Object> params) {
+			// 총 페이지수 반환
+			// 전체 게시글 개수 /페이지당 게시글 수 >>> 올림해서 반환
+			int totalCount = dao.selectTripReview_ReplyTotalCount((Integer.parseInt(params.get("num").toString())));
+			int totalPage = (totalCount - 1) / NUM_OF_BOARD_PER_PAGE + 1;
+			return totalPage;
+		}
+		
+		//여행 후기 게시판 리스트 불러오는 메서드
+				public List<Map<String, Object>> getTripReview_Review_ReplyBoardList(Map<String, Object> params) {
+					// 페이지 번호 받아와서 해당하는 목록만 가져오기
+					// 1. 페이지 번호에 해당하는 firstRow, endRow 구하기
+					// 2. firstRow, endRow에 해당하는 목록 얻어오기
+					// 3. 반환
+					System.out.println(params);
+					return dao.tripReview_review_reply(params);
+				}
+				//여행 후기 게시판 리스트 불러올 메서드
+				public Map<String, Object> getTripReview_ReplyViewData(Map<String, Object> params) {
+					// startPage, endPage, totalPage, boardList 반환
+					System.out.println("서비스 호출");
+					System.out.println(params);
+
+					int page = (int) params.get("page");
+
+					Map<String, Object> daoParam = new HashMap<String, Object>();
+					Map<String, Object> viewData = new HashMap<String, Object>();
+
+					System.out.println(getFirstRow(page));
+					System.out.println(getEndRow(page));
+					daoParam.put("firstRow", getFirstRow(page));
+					daoParam.put("endRow", getEndRow(page));
+					daoParam.put("num", params.get("num"));
+
+					System.out.println("service 파라미터 : "+daoParam);
+					viewData.put("boardList", getTripReview_Review_ReplyBoardList(daoParam));
+					viewData.put("startPage", getStartPage(page));
+					viewData.put("endPage", getEndPage(page));
+					viewData.put("totalPage", selectTripReview_ReplyTotalCount(daoParam));
+					viewData.put("page", page);
+
+					return viewData;
+				}
+				
+				
+				//대시보드 여행 삭제
+				public boolean deleteTripReview_review_reply(List<String> deleteReply,String user_num) {
+					Map<String, Object>param = new HashMap<String, Object>();
+					int result = 0;
+					for(String n:deleteReply) {
+						param.put("boardNum", n);
+						param.put("user_num", user_num);
+						if(dao.deleteTripReview_review_reply(param)>0) {
+							result++;
+						}
+					}
+					if(result>0) {
+						return true;
+					}else {
+						return false;
+					}
+				}
+
 	
 }
