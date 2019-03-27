@@ -259,11 +259,11 @@
 									        datasets: [
 										        {
 										          label: "여행 게시글",
-										          backgroundColor:["#f44141","#f46a41","#f4a941","#f4ee41","#94f441","#41f48b","#41b2f4","#41b2f4","#41b2f4","#6f39e5","#b523ba","#c1204b"],
+										          backgroundColor:["#3728d6","#f46a41","#f4a941","#f4ee41","#94f441","#41f48b","#41b2f4","#41b2f4","#41b2f4","#6f39e5","#b523ba","#c1204b"],
 										          data: boardList
 										        }, {
 										          label: "숙박 게시글",
-										          backgroundColor: ["#c1204b","#b523ba","#6f39e5","#41b2f4","#41b2f4","#41b2f4","#41f48b","#94f441","#f4ee41","#f4a941","#f46a41","#f44141"],
+										          backgroundColor: ["#a8fff1","#b523ba","#6f39e5","#41b2f4","#41b2f4","#41b2f4","#41f48b","#94f441","#f4ee41","#f4a941","#f46a41","#f44141"],
 										          data: motelList
 										        }
 										      ],
