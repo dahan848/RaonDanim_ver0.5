@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ import com.raon.raondanim.service.AccountsService;
 
 @Controller
 public class FileUploadController {
+	
+	@Resource(name = "uploadPath")
+	private String FILE_PATH;
 	
 //    @RequestMapping(value = "/successUpload")
 //    public String ajaxUpload() {
@@ -47,8 +51,8 @@ public class FileUploadController {
 	@ResponseBody
 	@RequestMapping(value = "/picInfo")
 	public void data(@RequestParam Map<String, Object> param) {
-		System.out.println("파일 업로드 정보 전달 받음");
-		System.out.println(param);
+		//System.out.println("파일 업로드 정보 전달 받음");
+		//System.out.println(param);
 		setParam(param);
 	}
 	
@@ -57,24 +61,20 @@ public class FileUploadController {
 	@ResponseBody
     @RequestMapping(value = "/profilePicUpload")
     public Boolean fileUp(MultipartHttpServletRequest multi) {
-    	System.out.println("profilePicUpload 요청 받음");
+    	//System.out.println("profilePicUpload 요청 받음");
     	//System.out.println(multi);
     	
     	//ajax로 반환 할 boolean 변수
     	//boolean result = false;
-    	
-        // 저장 경로 설정
-        String root = multi.getSession().getServletContext().getRealPath("/");
-        String path = root+"resources/upload/";
-        System.out.println(path);
-        //System.out.println("경로  ? : " + path);
-         
+    	         
         String newFileName = ""; // 업로드 되는 파일명
         String usernum = (String) getParam().get("user_num") + "_profile_"; //파일명 앞에 작성 할 usernum
-        File dir = new File(path);
+        File dir = new File(FILE_PATH);
         if(!dir.isDirectory()){
             dir.mkdir();
         }
+        
+        //System.out.println("프로필 사진 업로드 경로 :" + FILE_PATH);
          
         Iterator<String> files = multi.getFileNames();
         while(files.hasNext()){
@@ -92,7 +92,7 @@ public class FileUploadController {
             newFileName = System.currentTimeMillis()+randomName+"."
                     +fileName.substring(fileName.lastIndexOf(".")+1);
             try {
-            		mFile.transferTo(new File(path+(usernum+newFileName)));
+            		mFile.transferTo(new File(FILE_PATH+(usernum+newFileName)));
                 //result = true;
             } catch (Exception e) {
             	e.printStackTrace();
@@ -127,18 +127,14 @@ public class FileUploadController {
 	@ResponseBody
     @RequestMapping(value = "/galleryPicUpload")
     public Boolean galleryfileUp(MultipartHttpServletRequest multi) {
-		System.out.println("galleryPicUpload 요청 받음");
-		System.out.println(multi);
-		
-        // 저장 경로 설정
-        String root = multi.getSession().getServletContext().getRealPath("/");
-        String path = root+"resources/upload/";
+		//System.out.println("galleryPicUpload 요청 받음");
+		//System.out.println(multi);
          
         String newFileName = ""; // 업로드 되는 파일명
         String delimiter = "_gallery_"; //구분자
         String usernum = (String) getParam().get("user_num") + delimiter; //파일명 앞에 작성 할 usernum
          
-        File dir = new File(path);
+        File dir = new File(FILE_PATH);
         if(!dir.isDirectory()){
             dir.mkdir();
         }
@@ -183,7 +179,7 @@ public class FileUploadController {
             	if(!check.isEmpty()) {
             		//만약 check 문자열의 값이 Null 이라면 = 확장자명이 없는 파일이라면 = 파일이 선택 안된 input의 더미
             		//즉, check의 값이 Null이 아닐 때만 파일 업로드 로직을 실행한다.
-            		mFile.transferTo(new File(path+(usernum+newFileName)));
+            		mFile.transferTo(new File(FILE_PATH+(usernum+newFileName)));
             		String filename = usernum+newFileName; //실제 저장되는 파일 이름
             		picData.put("filename", filename); //파일네임 put
             		picData.put("user_num", user_num); //유저넘 put
@@ -199,7 +195,7 @@ public class FileUploadController {
             //System.out.println(count+"번 째 생성 된 파일 : " + picData);
             count ++;
         }
-		System.out.println("넘겨줄 데이터 확인 : " + pic);
+		//System.out.println("넘겨줄 데이터 확인 : " + pic);
 		return service.setGalleryPic(pic);
 	}
 	

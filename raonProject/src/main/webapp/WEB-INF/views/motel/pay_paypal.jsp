@@ -38,7 +38,7 @@
 		    pay_method : 'card',
 		    merchant_uid : 'merchant_' + new Date().getTime(),
 		    name : '주문명:결제테스트',
-		    amount : 1,
+		    amount : price,
 		    buyer_email : '',
 		    buyer_name : '',
 		    buyer_tel : '',

@@ -189,10 +189,8 @@ function replyList(){
 	
 	var conHeight = $("#con").height();
 	var replyNum = "${MOTEL_NUM}";
-	var user_num = "${user_num}";
-	
 	$.ajax({
-		url:"${contextPath}/motel/replyList?page=" + count+"&num="+replyNum+"&user_num="+user_num,
+		url:"${contextPath}/motel/replyList?page=" + count+"&num="+replyNum,
 		data:{"${_csrf.parameterName}":"${_csrf.token}"},
 		type : "post",
 		dataType : "json",
@@ -203,39 +201,33 @@ function replyList(){
 			count++;
 			for(var i in data.board.boardList){
 				
-
+				var fileName = getOriginFilename(data.board.boardList[i].FILENAME);
 				
-//  				
+					
+// 					$("#con").append('<div class="card" id="card'+n+'"></div>');
+// 					var id = "#card"+n;
+// 					$("#con").append('<hr>');
+// 					$(id).append('<div class="card-body" id="profile'+n+'" style="border-radius:50%; width:50px; height:50px; border:1px solid black; display:inline-block; background-size:cover; background-image:url(\'${contextPath}/motel/image?fileName='
+// 							+ data.board.boardList[i].FILENAME
+// 							+ '\');"></div>');
+// 					$(id).append('<div id="name'+n+'" style="display:inline-block;"></div>');
+// 					var name="#name"+n;
+					
+// 					$(name).append('<div>'+data.board.boardList[i].USER_ID+'</div>');
+// 					$(name).append('<div>'+data.board.boardList[i].WRITE_DATE+'</div>');
+// 					$(id).append('<div>아무말대잔치다ㅏㅏㅏ</div>');
+// 					n++;
+				
+					
 					$("#con").append('<div class="card" id="card'+n+'"></div>');
 					var id = "#card"+n;
 					$("#con").append('<hr>');
-					var db_user_num1 = data.board.boardList[i].USER_NUM;
-					for(var j in data.board.replyPicList){
-						var db_reply_pic = data.board.replyPicList[j].USER_PROFILE_PIC;
-						var db_user_num2 = data.board.replyPicList[j].USER_NUM
-						if(db_user_num1 == db_user_num2){
-							if(db_reply_pic != 'n'){
-								console.log("사진 있음")
-								$(id).append('<div class="card-body" id="profile'+n+'" style="border-radius:50%; width:50px; height:50px; border:1px solid black; display:inline-block; background-size:cover; background-image:url(${contextPath}/image?fileName='+db_reply_pic+');"></div>');
-							}else{
-								console.log("사진 없음")
-								$(id).append('<div class="card-body" id="profile'+n+'" style="border-radius:50%; width:50px; height:50px; border:1px solid black; display:inline-block; background-size:cover; background-image:url(${contextPath}/img/home_profile_2.jpg);"></div>');
-							}
-						}
-					}
-					
-// 					if(reply_pic1 != 'n'){
-// 						console.log("사진 있음")
-// 						$(id).append('<div class="card-body" id="profile'+n+'" style="border-radius:50%; width:50px; height:50px; border:1px solid black; display:inline-block; background-size:cover; background-image:url(${contextPath}/image?fileName='+reply_pic1+');"></div>');						
-// 					}else{
-// 						console.log("사진 없음")
-// 						$(id).append('<div class="card-body" id="profile'+n+'" style="border-radius:50%; width:50px; height:50px; border:1px solid black; display:inline-block; background-size:cover; background-image:url(${contextPath}/img/home_profile_2.jpg);"></div>');
-// 					}
+					$(id).append('<div class="card-body" id="profile'+n+'" style="border-radius:50%; width:50px; height:50px; border:1px solid black; display:inline-block; background-size:cover; background-image:url(${contextPath}/img/duny.jpg);"></div>');
 					$(id).append('<div id="name'+n+'" style="display:inline-block;"></div>');
 					var name="#name"+n;
 					$(id).append('<div><input type="hidden" id="replyNum'+n+'" value="'+data.board.boardList[i].MOTEL_REPLY_SQ+'"></input></div>')
 					$(id).append('<div><input type="hidden" id="user_num1'+n+'" value="'+data.board.boardList[i].USER_NUM+'"></input></div>')
-					$(name).append('<div><b>'+data.board.boardList[i].USER_LNM+data.board.boardList[i].USER_FNM+'</b></div>');
+					$(name).append('<div><b>'+data.board.boardList[i].USER_FNM+data.board.boardList[i].USER_LNM+'</b></div>');
 					function formatDate(date) {
 						  return date.getFullYear() + '년 ' + 
 						    (date.getMonth() + 1) + '월 ' + 
@@ -699,14 +691,6 @@ function replyList(){
 <jsp:include page="/WEB-INF/views/motel/motel-navbar.jsp"></jsp:include>
 <span id="tmpUser_num" style="display: none;">${user_num}</span>
 
-
-
-
-
-
-
-
-
 <div class="container" style="margin-left: 550px; width: 800px; top: 40px;">
 
   <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false" style="width:700px; height:500px;">
@@ -837,23 +821,15 @@ function replyList(){
 		  		
 		  		
 		  		
-		  			
-		  			<c:choose>
-		  				<c:when test="${test_num1 != test_num2 }">
-		  					<a href="#none" data-toggle="popover" data-html="true" data-content='<a href="http://www.naver.com">프로필 보기</a><br>친구 신청<br>대화 하기' data-trigger="focus">		
-		  						<c:choose>
-		  						<c:when test="${user_pic == 'n'}">
-		  							<img src="${contextPath}/img/home_profile_2.jpg" class="img-profile" style="width: 100%; height: 100%; border-radius: 50%;">
-		  						</c:when>	
-		  						<c:otherwise>
-		  							<img src="${contextPath}/image?fileName=${user_pic}" class="img-profile" style="width: 100%; height: 100%; border-radius: 50%;">
-		  						</c:otherwise>
-		  					</c:choose>
-		  					</a>
-		  				</c:when>
-
-		  				<c:when test="${test_num1 == test_num2 }">
-		  					<a href="${contextPath}/accounts/profile?user=${test_num1}">		
+		  		
+		  		
+		  		
+		  				
+		  				<c:set var="user_pic" value="${user_pic}"></c:set>
+		  				<script type="text/javascript">
+		  					alert(${user_pic});
+		  				</script>
+		  						<a href="${contextPath}/accounts/profile?user=${test_num1}">		
 		  					<c:choose>
 		  						<c:when test="${user_pic == 'n'}">
 		  							<img src="${contextPath}/img/home_profile_2.jpg" class="img-profile" style="width: 100%; height: 100%; border-radius: 50%;">
@@ -861,17 +837,17 @@ function replyList(){
 		  						<c:otherwise>
 		  							<img src="${contextPath}/image?fileName=${user_pic}" class="img-profile" style="width: 100%; height: 100%; border-radius: 50%;">
 		  						</c:otherwise>
-		  					</c:choose>
+		  					</c:choose>		  						
 		  					</a>
-		  				</c:when>
-		  			</c:choose>
+		  				
+		  		
 		  			
 		  			
 		  			
 		  			
 		  		</div>
 		  		<div>
-		  			<p style="margin-left: 620px;"><b>${USER_LNM }${USER_FNM}</b></p>  				
+		  			<p style="margin-left: 620px;"><b>${USER_FNM} ${USER_LNM }</b></p>  				
 		  		</div>
 		  	</div>
 		  	
@@ -1057,7 +1033,7 @@ function replyList(){
 		          		<p><b>Total Price</b></p>
 		          		<p><span id="price_1"></span> X ${tripDate}박	<span id="totalPrice"></span></p>
 						<input type="hidden" id="pay_price" name="price" value="totalPrice" readonly="readonly"><br>
-						<input type="hidden" name="motel_pic1" value="${image.MOTEL_PIC_1}">
+						
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 						<input type="hidden" name="motel_title" value="${MOTEL_TITLE}">
 						<input type="hidden" name="motel_people" value="${people}">

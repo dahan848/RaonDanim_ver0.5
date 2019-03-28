@@ -115,10 +115,12 @@ public class MotelController {
 		System.out.println("댓글 요청");
 		CsrfToken _csrf1 = (CsrfToken) req.getAttribute("CsrfToken");
 		CsrfToken _csrf2 = (CsrfToken) req.getAttribute("_csrf");
-
+//		String num1 = Integer.toString(user_num);
+//		System.out.println("컨트롤러 - 이용자 사진 불러오기"+service.getUser_pic_one(num1));
 		Map<String, Object>params = new HashMap<String, Object>();
 		params.put("page", page);
 		params.put("num", num);
+		
 		System.out.println(params);
 		Map<String, Object>result = new HashMap<String, Object>();
 		result.put("board", service.getReplyData(params));
@@ -271,6 +273,8 @@ public class MotelController {
 		params.put("num", num);
 		params.put("host", host);
 		System.out.println("상세페이지 넘어가는 파라미터");
+		String hostNum = Integer.toString(host);
+		
 		
 		
 		Map<String, Object> motel = new HashMap<String, Object>();
@@ -296,10 +300,12 @@ public class MotelController {
 			motel.put("MOTEL_CATEGORY", "개인실");
 			System.out.println(motel.get("MOTEL_CATEGORY"));
 		}
+		System.out.println("모텔등록");
+		motel.put("user_pic", service.getUser_pic_one(hostNum));
 		System.out.println(motel);
 		model.addAllAttributes(motel);
 		
-		return "motel/view";
+		return "motel/view2";
 	}
 
 	

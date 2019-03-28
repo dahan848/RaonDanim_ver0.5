@@ -172,7 +172,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 																			<div class="_e296pg"
 																				style="width: 80px; height: 60px;">
 																				<img class="_1u6feuz3"
-																					src="https://a0.muscache.com/4ea/air/v2/pictures/f441623c-7da1-4798-92c2-a9b3708ddf41.jpg?t=r:w1200-h720-sfit,e:fjpg-c90"
+																					src="${contextPath}/img/fire-2946038__340.jpg"
 																					width="80" height="60" alt="">
 																			</div>
 																			<div style="margin-top: 16px;">

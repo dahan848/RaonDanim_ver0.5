@@ -9,7 +9,11 @@
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
-
+	
+	<beans:bean id="uploadPath" class="java.lang.String">
+		<beans:constructor-arg value="C:\\raon\"/>
+	</beans:bean>
+	
 	<!-- resources 파일 (img,css 등) 경로 설정 -->
 	<resources mapping="/css/**" location="/resources/css/" /> 
 	<resources mapping="/img/**" location="/resources/img/" /> 

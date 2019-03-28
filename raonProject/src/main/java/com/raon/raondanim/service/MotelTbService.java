@@ -225,12 +225,14 @@ public class MotelTbService {
 		System.out.println(params);
 		int page = (int) params.get("page");
 		int num = (int) params.get("num");
-
+		
 		Map<String, Object> daoParam = new HashMap<String, Object>();
 		daoParam.put("num", num);
 		daoParam.put("firstRow", getReplyFirstRow(page));
 		daoParam.put("endRow", getReplyEndRow(page));
+		
 		Map<String, Object> viewData = new HashMap<String, Object>();
+		viewData.put("replyPicList", dao.getUser_pic());
 		viewData.put("boardList", viewReply(daoParam));
 		viewData.put("startPage", getStartPage(page));
 		viewData.put("endPage", getEndPage(page));
@@ -274,6 +276,7 @@ public class MotelTbService {
 		return dao.viewSelect(params);
 	}
 	public String getUser_pic_one(String user_num) {
+		System.out.println("user사진 불러오기");
 		Map<String, Object>tmp = new HashMap<String, Object>(); 
 		System.out.println(user_num);
 		tmp = dao.getUser_pic_one(user_num);

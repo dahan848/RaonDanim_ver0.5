@@ -385,7 +385,7 @@
 								}
 							}
 							
-							$(itemCover).append('<h4 class="profile-name">'+data.board.boardList[i].USER_FNM+data.board.boardList[i].USER_LNM+'</h4>');
+							$(itemCover).append('<h4 class="profile-name">'+data.board.boardList[i].USER_LNM+data.board.boardList[i].USER_FNM+'</h4>');
 							$(itemCover).append('<p class="profile-city">인원 '+data.board.boardList[i].MOTEL_PEOPLE+'명, 침대 '+data.board.boardList[i].MOTEL_ROOM+'개, 욕실 '+data.board.boardList[i].MOTEL_BATHROOM+'개</p>');
 							var motel_price=data.board.boardList[i].MOTEL_PRICE;										
 							if(motel_price==0){
@@ -425,15 +425,15 @@
 								console.log("5번");
 								
 								if(heightNum==1){
-									conHeight=390;
+									conHeight+=400;
 									$("#con").css("height",conHeight+"px");
 								}
 								if(heightNum==2){
-									conHeight=390*2;
+									conHeight+=400*2;
 									$("#con").css("height",conHeight+"px");								
 								}
 								if(heightNum==3){									
-									conHeight=390*3;
+									conHeight+=400*3;
 									$("#con").css("height",conHeight+"px");								
 								}
 								heightNum=0;
